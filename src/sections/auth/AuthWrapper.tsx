@@ -4,12 +4,7 @@ import { ReactNode } from 'react';
 import { Box, Grid } from '@mui/material';
 
 // project import
-import AuthFooter from 'components/cards/AuthFooter';
-import Logo from 'components/logo';
 import AuthCard from './AuthCard';
-
-// assets
-import AuthBackground from 'assets/images/auth/AuthBackground';
 
 interface Props {
   children: ReactNode;
@@ -19,7 +14,6 @@ interface Props {
 
 const AuthWrapper = ({ children }: Props) => (
   <Box sx={{ minHeight: '100vh' }}>
-    <AuthBackground />
     <Grid
       container
       direction="column"
@@ -28,9 +22,6 @@ const AuthWrapper = ({ children }: Props) => (
         minHeight: '100vh'
       }}
     >
-      <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
-        <Logo />
-      </Grid>
       <Grid item xs={12}>
         <Grid
           item
@@ -44,9 +35,6 @@ const AuthWrapper = ({ children }: Props) => (
             <AuthCard>{children}</AuthCard>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-        <AuthFooter />
       </Grid>
     </Grid>
   </Box>

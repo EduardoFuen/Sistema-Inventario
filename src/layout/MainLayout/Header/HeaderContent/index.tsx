@@ -7,10 +7,9 @@ import { Box, useMediaQuery } from '@mui/material';
 // project import
 import useConfig from 'hooks/useConfig';
 import Search from './Search';
-import Message from './Message';
 import Profile from './Profile';
 import Localization from './Localization';
-import Notification from './Notification';
+import Customization from './Customization';
 import MobileSection from './MobileSection';
 import MegaMenuSection from './MegaMenuSection';
 
@@ -33,8 +32,7 @@ const HeaderContent = () => {
       {!matchesXs && localization}
       {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
 
-      <Notification />
-      <Message />
+      <Customization />
       {!matchesXs && <Profile />}
       {matchesXs && <MobileSection />}
     </>

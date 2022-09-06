@@ -23,12 +23,11 @@ import {
 // project import
 import MainCard from 'components/MainCard';
 import Dot from 'components/@extended/Dot';
-import IconButton from 'components/@extended/IconButton';
 import Transitions from 'components/@extended/Transitions';
 import { drawerWidth } from 'config';
 
 // assets
-import { ArrowRightOutlined, WindowsOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined } from '@ant-design/icons';
 import backgroundVector from 'assets/images/mega-menu/back.svg';
 import imageChart from 'assets/images/mega-menu/chart.svg';
 import AnimateButton from 'components/@extended/AnimateButton';
@@ -40,9 +39,6 @@ const MegaMenuSection = () => {
 
   const anchorRef = useRef<any>(null);
   const [open, setOpen] = useState(false);
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
 
   const handleClose = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -51,23 +47,8 @@ const MegaMenuSection = () => {
     setOpen(false);
   };
 
-  const iconBackColorOpen = theme.palette.mode === 'dark' ? 'grey.200' : 'grey.300';
-  const iconBackColor = theme.palette.mode === 'dark' ? 'background.default' : 'grey.100';
-
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-      <IconButton
-        color="secondary"
-        variant="light"
-        sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
-        aria-label="open profile"
-        ref={anchorRef}
-        aria-controls={open ? 'profile-grow' : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
-      >
-        <WindowsOutlined />
-      </IconButton>
       <Popper
         placement="bottom"
         open={open}

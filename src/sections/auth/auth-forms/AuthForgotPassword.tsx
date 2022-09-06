@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 // material-ui
-import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
+import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -14,7 +14,7 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-// ============================|| FIREBASE - FORGOT PASSWORD ||============================ //
+// ============================|| FORGOT PASSWORD ||============================ //
 
 const AuthForgotPassword = () => {
   const scriptedRef = useScriptRef();
@@ -31,7 +31,7 @@ const AuthForgotPassword = () => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
+          email: Yup.string().email('Email invalido').max(255).required('Email es requerido')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -42,7 +42,7 @@ const AuthForgotPassword = () => {
                 dispatch(
                   openSnackbar({
                     open: true,
-                    message: 'Check mail for reset password link',
+                    message: 'Verifique el correo para restablecer el enlace de contraseña',
                     variant: 'alert',
                     alert: {
                       color: 'success'
@@ -80,7 +80,7 @@ const AuthForgotPassword = () => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-forgot">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-forgot">Email</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -90,7 +90,7 @@ const AuthForgotPassword = () => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder="Ingresa la direccion de Email"
                     inputProps={{}}
                   />
                   {touched.email && errors.email && (
@@ -105,13 +105,10 @@ const AuthForgotPassword = () => {
                   <FormHelperText error>{errors.submit}</FormHelperText>
                 </Grid>
               )}
-              <Grid item xs={12} sx={{ mb: -2 }}>
-                <Typography variant="caption">Do not forgot to check SPAM box.</Typography>
-              </Grid>
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Send Password Reset Email
+                    Enviar
                   </Button>
                 </AnimateButton>
               </Grid>
