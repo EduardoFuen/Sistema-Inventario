@@ -36,7 +36,7 @@ export const AUTH0_API = {
 
 const config: DefaultConfigProps = {
   defaultPath: '/dashboard',
-  fontFamily: `'Public Sans', sans-serif`,
+  fontFamily: `'Montserrat', sans-serif`,
   i18n: 'en',
   miniDrawer: false,
   container: true,

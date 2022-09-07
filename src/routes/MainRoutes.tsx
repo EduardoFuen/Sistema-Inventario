@@ -36,11 +36,9 @@ const AccountTabSettings = Loadable(lazy(() => import('sections/apps/profiles/ac
 const ProfileUserList = Loadable(lazy(() => import('pages/apps/profiles/user-list')));
 const ProfileUserCard = Loadable(lazy(() => import('pages/apps/profiles/user-card')));
 
-const AppECommProducts = Loadable(lazy(() => import('pages/apps/e-commerce/product')));
-const AppECommProductDetails = Loadable(lazy(() => import('pages/apps/e-commerce/product-details')));
-const AppECommProductList = Loadable(lazy(() => import('pages/apps/e-commerce/products-list')));
-const AppECommCheckout = Loadable(lazy(() => import('pages/apps/e-commerce/checkout')));
-const AppECommAddProduct = Loadable(lazy(() => import('pages/apps/e-commerce/add-product')));
+const AppECommProductDetails = Loadable(lazy(() => import('pages/apps/product/product-details')));
+const AppECommProductList = Loadable(lazy(() => import('pages/apps/product/products-list')));
+const AppECommAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
 
 // render - forms & tables
 
@@ -117,12 +115,7 @@ const MainRoutes = {
       children: [
         {
           path: 'dashboard',
-          children: [
-            {
-              path: 'default',
-              element: <DashboardDefault />
-            }
-          ]
+          element: <DashboardDefault />
         },
         {
           path: 'widget',
@@ -142,7 +135,7 @@ const MainRoutes = {
           ]
         },
         {
-          path: 'apps',
+          path: '',
           children: [
             {
               path: 'chat',
@@ -227,12 +220,8 @@ const MainRoutes = {
               ]
             },
             {
-              path: 'e-commerce',
+              path: 'p',
               children: [
-                {
-                  path: 'products',
-                  element: <AppECommProducts />
-                },
                 {
                   path: 'product-details/:id',
                   element: <AppECommProductDetails />
@@ -244,10 +233,6 @@ const MainRoutes = {
                 {
                   path: 'add-new-product',
                   element: <AppECommAddProduct />
-                },
-                {
-                  path: 'checkout',
-                  element: <AppECommCheckout />
                 }
               ]
             }

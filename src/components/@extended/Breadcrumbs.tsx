@@ -73,11 +73,6 @@ const Breadcrumbs = ({
     });
   });
 
-  // only used for component demo breadcrumbs
-  if (location.pathname === '/components-overview/breadcrumbs') {
-    location.pathname = '/dashboard/analytics';
-  }
-
   // set active item state
   const getCollapse = (menu: NavItemType) => {
     if (menu.children) {

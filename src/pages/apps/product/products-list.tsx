@@ -29,7 +29,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 import { getProducts } from 'store/reducers/product';
 
@@ -123,7 +123,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
           <Stack direction="row" alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
-              Add Product
+              Agregar Producto
             </Button>
           </Stack>
         </Stack>
@@ -190,21 +190,12 @@ const ProductList = () => {
   const columns = useMemo(
     () => [
       {
-        title: 'Row Selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
-          <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        accessor: 'selection',
-        Cell: ({ row }: any) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />,
-        disableSortBy: true
-      },
-      {
         Header: '#',
         accessor: 'id',
         className: 'cell-center'
       },
       {
-        Header: 'Product Detail',
+        Header: 'Nombre Producto',
         accessor: 'name',
         Cell: ({ row }: any) => {
           const { values } = row;
@@ -237,7 +228,7 @@ const ProductList = () => {
         accessor: 'description'
       },
       {
-        Header: 'Categories',
+        Header: 'Categorias',
         accessor: 'categories',
         Cell: ({ value }: any) => (
           <Stack direction="row" spacing={0.25}>
@@ -251,7 +242,7 @@ const ProductList = () => {
         )
       },
       {
-        Header: 'Price',
+        Header: 'Precio',
         accessor: 'offerPrice',
         className: 'cell-right',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
@@ -262,10 +253,10 @@ const ProductList = () => {
         className: 'cell-right'
       },
       {
-        Header: 'Status',
+        Header: 'Estado',
         accessor: 'isStock',
         Cell: ({ value }: any) => (
-          <Chip color={value ? 'success' : 'error'} label={value ? 'In Stock' : 'Out of Stock'} size="small" variant="light" />
+          <Chip color={value ? 'success' : 'error'} label={value ? 'Activo' : 'Desactivado'} size="small" variant="light" />
         )
       },
       {

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
 import AppBar from '@mui/material/AppBar';
@@ -8,7 +7,6 @@ import { useTheme } from '@mui/material/styles';
 import {
   useMediaQuery,
   Box,
-  Button,
   Chip,
   Container,
   Drawer,
@@ -24,13 +22,10 @@ import {
 } from '@mui/material';
 
 // project import
-import config from 'config';
-import IconButton from 'components/@extended/IconButton';
-import AnimateButton from 'components/@extended/AnimateButton';
 import Logo from 'components/logo';
 
 // assets
-import { MenuOutlined, LineOutlined } from '@ant-design/icons';
+import { LineOutlined } from '@ant-design/icons';
 
 // ==============================|| COMPONENTS - APP BAR ||============================== //
 
@@ -83,43 +78,6 @@ const Header = ({ handleDrawerOpen, layout = 'landing', ...others }: Props) => {
                 <Logo reverse to="/" />
               </Typography>
             </Stack>
-            <Stack
-              direction="row"
-              sx={{
-                '& .header-link': { px: 1, '&:hover': { color: theme.palette.primary.main } },
-                display: { xs: 'none', md: 'block' }
-              }}
-              spacing={2}
-            >
-              <Link className="header-link" color="white" component={RouterLink} to="/login" target="_blank" underline="none">
-                Dashboard
-              </Link>
-              <Link
-                className="header-link"
-                color={handleDrawerOpen ? 'primary' : 'white'}
-                component={RouterLink}
-                to="/components-overview/buttons"
-                underline="none"
-              >
-                Components
-              </Link>
-              <Link className="header-link" color="white" href="https://codedthemes.gitbook.io/mantis/" target="_blank" underline="none">
-                Documentation
-              </Link>
-              <Box sx={{ display: 'inline-block' }}>
-                <AnimateButton>
-                  <Button
-                    component={Link}
-                    href="https://mui.com/store/items/mantis-react-admin-dashboard-template/"
-                    disableElevation
-                    color="primary"
-                    variant="contained"
-                  >
-                    Purchase Now
-                  </Button>
-                </AnimateButton>
-              </Box>
-            </Stack>
             <Box
               sx={{
                 width: '100%',
@@ -131,42 +89,6 @@ const Header = ({ handleDrawerOpen, layout = 'landing', ...others }: Props) => {
               <Typography component="div" sx={{ textAlign: 'left', display: 'inline-block' }}>
                 <Logo reverse to="/" />
               </Typography>
-              <Stack direction="row" spacing={2}>
-                {layout === 'component' && (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    color="warning"
-                    component={RouterLink}
-                    to={config.defaultPath}
-                    sx={{ mt: 0.5, height: 28 }}
-                  >
-                    Dashboard
-                  </Button>
-                )}
-                {layout !== 'component' && (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    color="warning"
-                    component={RouterLink}
-                    to="/components-overview/buttons"
-                    sx={{ mt: 0.5, height: 28 }}
-                  >
-                    All Components
-                  </Button>
-                )}
-
-                <IconButton
-                  color="secondary"
-                  {...(layout === 'component' ? { onClick: handleDrawerOpen } : { onClick: drawerToggler(true) })}
-                  sx={{
-                    '&:hover': { bgcolor: theme.palette.mode === 'dark' ? 'secondary.lighter' : 'secondary.dark' }
-                  }}
-                >
-                  <MenuOutlined style={{ color: theme.palette.mode === 'dark' ? 'inherit' : theme.palette.grey[100] }} />
-                </IconButton>
-              </Stack>
               <Drawer
                 anchor="top"
                 open={drawerToggle}

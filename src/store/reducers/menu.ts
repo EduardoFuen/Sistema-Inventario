@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState: MenuProps = {
   openItem: ['dashboard'],
   openComponent: 'buttons',
-  drawerOpen: false,
+  drawerOpen: true,
   componentDrawerOpen: true
 };
 

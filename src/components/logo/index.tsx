@@ -6,9 +6,6 @@ import { ButtonBase } from '@mui/material';
 import { SxProps } from '@mui/system';
 import Farmu from 'assets/images/icons/farmu.svg';
 
-// project import
-import config from 'config';
-
 // ==============================|| MAIN LOGO ||============================== //
 
 interface Props {
@@ -19,7 +16,7 @@ interface Props {
 }
 
 const LogoSection = ({ sx, to }: Props) => (
-  <ButtonBase disableRipple component={Link} to={!to ? config.defaultPath : to} sx={sx}>
+  <ButtonBase disableRipple component={Link} to="/" sx={sx}>
     <img src={Farmu} alt="Farmu" style={{ width: 150 }} />
   </ButtonBase>
 );
