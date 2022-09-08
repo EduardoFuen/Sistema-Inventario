@@ -57,30 +57,11 @@ const UserView = ({ data }: any) => {
                     <Avatar alt="Avatar 1" size="xl" src={avatarImage(`./avatar-${data.avatar}.png`).default} />
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{data.fatherName}</Typography>
-                      <Typography color="secondary">{data.role}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-around" alignItems="center">
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">{data.age}</Typography>
-                      <Typography color="secondary">Age</Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">{data.progress}%</Typography>
-                      <Typography color="secondary">Progress</Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">{data.visits}</Typography>
-                      <Typography color="secondary">Visits</Typography>
-                    </Stack>
-                  </Stack>
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
@@ -130,34 +111,20 @@ const UserView = ({ data }: any) => {
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>
             <Stack spacing={2.5}>
-              <MainCard title="Personal Details">
+              <MainCard title="Detalle Proveedor">
                 <List sx={{ py: 0 }}>
                   <ListItem divider={!matchDownMD}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
                         <Stack spacing={0.5}>
-                          <Typography color="secondary">Full Name</Typography>
+                          <Typography color="secondary">Nombre</Typography>
                           <Typography>{data.fatherName}</Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Father Name</Typography>
-                          <Typography>
-                            Mr. {data.firstName} {data.lastName}
-                          </Typography>
                         </Stack>
                       </Grid>
                     </Grid>
                   </ListItem>
                   <ListItem divider={!matchDownMD}>
                     <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Country</Typography>
-                          <Typography>{data.country}</Typography>
-                        </Stack>
-                      </Grid>
                       <Grid item xs={12} md={6}>
                         <Stack spacing={0.5}>
                           <Typography color="secondary">Zip Code</Typography>
@@ -170,16 +137,11 @@ const UserView = ({ data }: any) => {
                   </ListItem>
                   <ListItem>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Address</Typography>
+                      <Typography color="secondary">Dirección</Typography>
                       <Typography>{data.address}</Typography>
                     </Stack>
                   </ListItem>
                 </List>
-              </MainCard>
-              <MainCard title="About me">
-                <Typography color="secondary">
-                  Hello, I’m {data.fatherName} {data.role} based in international company, {data.about}
-                </Typography>
               </MainCard>
             </Stack>
           </Grid>

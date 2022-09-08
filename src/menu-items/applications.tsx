@@ -24,14 +24,14 @@ const applications: NavItemType = {
       id: 'proveedores',
       title: 'Proveedores',
       type: 'item',
-      url: '/profiles/user-list',
+      url: '/supplier-list',
       icon: icons.AppstoreOutlined
     },
     {
       id: 'Compras',
       title: 'Compras',
       type: 'item',
-      url: '/customer/list',
+      url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
     {
@@ -39,14 +39,14 @@ const applications: NavItemType = {
       title: 'Recepción',
       icon: icons.UserOutlined,
       type: 'item',
-      url: '/profiles/user/personal'
+      url: '/reception'
     },
 
     {
       id: 'inventario',
       title: 'Inventario',
       type: 'item',
-      url: '/p/products',
+      url: '/maintenance/coming-soon',
       icon: icons.ShoppingCartOutlined
     }
   ]

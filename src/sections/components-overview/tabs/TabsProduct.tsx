@@ -40,11 +40,10 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
-  const basicTabCodeString = `// BasicTabs.tsx
+  const basicTabCodeString = `// TabsProduct.tsx
 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
   <Tab
-    label="Tab1"
-    icon={<Chip label="99" color="primary" variant="light" size="small" />}
+    label="Lista de productos"
     iconPosition="end"
     {...a11yProps(0)}
   />

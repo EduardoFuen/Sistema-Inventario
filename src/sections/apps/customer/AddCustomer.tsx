@@ -44,7 +44,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 
-const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/users', true);
 
 // constant
 const getInitialValues = (customer: FormikValues | null) => {
@@ -79,9 +79,8 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
   const isCreating = !customer;
 
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
-  const [avatar, setAvatar] = useState<string | undefined>(
-    avatarImage(`./avatar-${isCreating && !customer?.avatar ? 1 : customer.avatar}.png`).default
-  );
+  const [avatar, setAvatar] = useState<string | undefined>();
+  // avatarImage(`./avatar-${isCreating && !customer?.avatar ? 1 : customer.avatar}.png`).default
 
   useEffect(() => {
     if (selectedImage) {

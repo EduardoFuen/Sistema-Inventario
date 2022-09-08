@@ -6,14 +6,14 @@ const newPerson = (index: number) => {
   let status: string;
   switch (statusCode) {
     case 2:
-      status = 'Complicated';
+      status = 'Desactivado';
       break;
     case 1:
-      status = 'Relationship';
+      status = 'Activo';
       break;
     case 0:
     default:
-      status = 'Single';
+      status = 'Pendiente';
       break;
   }
 
@@ -57,7 +57,13 @@ const newPerson = (index: number) => {
     visits: tempData.number.amount,
     progress: tempData.number.percentage,
     status,
+    orderId: tempData.orderId,
     orderStatus,
+    date: tempData.fecha,
+    total: tempData.total,
+    subtotal: tempData.subtotal,
+    iva: tempData.iva,
+    warehouse: tempData.warehouse,
     contact: tempData.contact,
     country: tempData.address.country,
     address: tempData.address.full,

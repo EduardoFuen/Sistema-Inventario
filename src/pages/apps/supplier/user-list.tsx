@@ -22,8 +22,8 @@ import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import CustomerView from 'sections/apps/customer/CustomerView';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import UserView from 'sections/apps/profiles/user-list/UserView';
+import AddUser from 'sections/apps/profiles/user-list/AddUser';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
@@ -33,7 +33,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -123,7 +123,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Orden Compra
+              Agregar Proveedor
             </Button>
           </Stack>
         </Stack>
@@ -174,18 +174,19 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 }
 
-// ==============================|| CUSTOMER - LIST VIEW ||============================== //
+// ==============================|| PROFILE - USER LIST ||============================== //
 
-const CustomerList = () => {
+const UserListPage = () => {
   const theme = useTheme();
 
   const data = useMemo(() => makeData(200), []);
 
-  const [customer, setCustomer] = useState(null);
+  const [user, setUser] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
+
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (user && !add) setUser(null);
   };
 
   const columns = useMemo(
@@ -200,12 +201,12 @@ const CustomerList = () => {
         disableSortBy: true
       },
       {
-        Header: 'Order ID',
-        accessor: 'orderId',
+        Header: 'NIT',
+        accessor: 'id',
         className: 'cell-center'
       },
       {
-        Header: 'Proveedor',
+        Header: 'Nombre',
         accessor: 'fatherName',
         Cell: ({ row }: any) => {
           const { values } = row;
@@ -223,64 +224,43 @@ const CustomerList = () => {
         }
       },
       {
-        Header: 'Fecha',
-        accessor: 'date',
-        disableSortBy: true
+        Header: 'Email',
+        accessor: 'email'
       },
       {
-        Header: 'Bodega',
-        accessor: 'warehouse'
-      },
-      {
-        Header: 'Subtotal',
-        accessor: 'subtotal',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
-      },
-      {
-        Header: 'IVA',
-        accessor: 'iva',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
-      },
-      {
-        Header: 'Total',
-        accessor: 'total',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        Header: 'Nombre Primer Contacto',
+        accessor: 'contact',
+        // eslint-disable-next-line
+        Cell: ({ value }) => <NumberFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />
       },
       {
         Header: 'Estado',
-        accessor: 'orderStatus',
+        accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Refunded':
-              return <Chip color="error" label="Refunded" size="small" variant="light" />;
-            case 'Completed':
-              return <Chip color="success" label="Completed" size="small" variant="light" />;
-            case 'Cancelled':
-              return <Chip color="secondary" label="Cancelled" size="small" variant="light" />;
-            case 'Processing':
-              return <Chip color="info" label="Processing" size="small" variant="light" />;
-            case 'Delivered':
+            case 'Desactivado':
+              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
+            case 'Activo':
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
+            case 'Pendiente':
             default:
-              return <Chip color="warning" label="Delivered" size="small" variant="light" />;
+              return <Chip color="info" label="Pendiente" size="small" variant="light" />;
           }
         }
       },
       {
-        Header: 'Actionse',
+        Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          /*   const collapseIcon = row.isExpanded ? (
+          const collapseIcon = row.isExpanded ? (
             <CloseOutlined style={{ color: theme.palette.error.main }} />
           ) : (
             <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          ); */
+          );
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {/*   <Tooltip title="View">
+              <Tooltip title="View">
                 <IconButton
                   color="secondary"
                   onClick={(e: any) => {
@@ -290,13 +270,13 @@ const CustomerList = () => {
                 >
                   {collapseIcon}
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setCustomer(row.values);
+                    setUser(row.values);
                     handleAdd();
                   }}
                 >
@@ -322,7 +302,7 @@ const CustomerList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
+  const renderRowSubComponent = useCallback(({ row }) => <UserView data={data[row.id]} />, [data]);
 
   return (
     <MainCard content={false}>
@@ -336,12 +316,12 @@ const CustomerList = () => {
         />
       </ScrollX>
 
-      {/* add customer dialog */}
+      {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddCustomer customer={customer} onCancel={handleAdd} />}
+        {add && <AddUser user={user} onCancel={handleAdd} />}
       </Dialog>
     </MainCard>
   );
 };
 
-export default CustomerList;
+export default UserListPage;

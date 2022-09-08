@@ -62,14 +62,14 @@ const MainLayout = () => {
             maxWidth="lg"
             sx={{ px: { xs: 0, sm: 2 }, position: 'relative', minHeight: 'calc(100vh - 110px)', display: 'flex', flexDirection: 'column' }}
           >
-            <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
+            <Breadcrumbs navigation={navigation} titleBottom card={false} divider={false} />
             <Outlet />
             <Footer />
           </Container>
         )}
         {!container && (
           <Box sx={{ position: 'relative', minHeight: 'calc(100vh - 110px)', display: 'flex', flexDirection: 'column' }}>
-            <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
+            <Breadcrumbs navigation={navigation} titleBottom card={false} divider={false} />
             <Outlet />
             <Footer />
           </Box>

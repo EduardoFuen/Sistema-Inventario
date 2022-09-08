@@ -1,39 +1,25 @@
-import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
+import { useCallback, useEffect, useMemo, Fragment } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import {
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 // third-party
-import NumberFormat from 'react-number-format';
+// import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
 import CustomerView from 'sections/apps/customer/CustomerView';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, IndeterminateCheckbox, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { CloseOutlined, EyeTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -60,7 +46,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     headerGroups,
     prepareRow,
     setHiddenColumns,
-    allColumns,
     visibleColumns,
     rows,
     // @ts-ignore
@@ -74,9 +59,8 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     // @ts-ignore
     preGlobalFilteredRows,
     // @ts-ignore
-    setGlobalFilter,
+    setGlobalFilter
     // @ts-ignore
-    setSortBy
   } = useTable(
     {
       columns,
@@ -121,10 +105,10 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
             size="small"
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
+            {/*  <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Orden Compra
-            </Button>
+              Add Customer
+            </Button> */}
           </Stack>
         </Stack>
 
@@ -179,13 +163,14 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 const CustomerList = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
+  const data = useMemo(() => makeData(4), []);
 
-  const [customer, setCustomer] = useState(null);
-  const [add, setAdd] = useState<boolean>(false);
+  /* const [customer, setCustomer] = useState(null);
+  const [add, setAdd] = useState<boolean>(false); */
+
   const handleAdd = () => {
-    setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    // setAdd(!add);
+    //  if (customer && !add) setCustomer(null);
   };
 
   const columns = useMemo(
@@ -228,30 +213,8 @@ const CustomerList = () => {
         disableSortBy: true
       },
       {
-        Header: 'Bodega',
-        accessor: 'warehouse'
-      },
-      {
-        Header: 'Subtotal',
-        accessor: 'subtotal',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
-      },
-      {
-        Header: 'IVA',
-        accessor: 'iva',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
-      },
-      {
-        Header: 'Total',
-        accessor: 'total',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
-      },
-      {
         Header: 'Estado',
-        accessor: 'orderStatus',
+        accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
             case 'Refunded':
@@ -269,18 +232,18 @@ const CustomerList = () => {
         }
       },
       {
-        Header: 'Actionse',
+        Header: 'Actiones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          /*   const collapseIcon = row.isExpanded ? (
+          const collapseIcon = row.isExpanded ? (
             <CloseOutlined style={{ color: theme.palette.error.main }} />
           ) : (
             <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          ); */
+          );
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {/*   <Tooltip title="View">
+              <Tooltip title="View">
                 <IconButton
                   color="secondary"
                   onClick={(e: any) => {
@@ -290,8 +253,8 @@ const CustomerList = () => {
                 >
                   {collapseIcon}
                 </IconButton>
-              </Tooltip> */}
-              <Tooltip title="Edit">
+              </Tooltip>
+              {/*   <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
@@ -302,12 +265,12 @@ const CustomerList = () => {
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
                   onClick={(e: any) => {
-                    e.stopPropagation();
+                    //   e.stopPropagation();
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -337,9 +300,9 @@ const CustomerList = () => {
       </ScrollX>
 
       {/* add customer dialog */}
-      <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+      {/*  <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddCustomer customer={customer} onCancel={handleAdd} />}
-      </Dialog>
+      </Dialog> */}
     </MainCard>
   );
 };

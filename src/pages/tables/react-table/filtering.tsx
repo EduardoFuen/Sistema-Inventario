@@ -1,25 +1,22 @@
 import { useMemo } from 'react';
 
 // material-ui
-import { Box, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // third-party
 import { useTable, useFilters, useGlobalFilter, Column } from 'react-table';
 
 // project import
+import IconButton from 'components/@extended/IconButton';
+
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import LinearWithLabel from 'components/@extended/Progress/LinearWithLabel';
 import makeData from 'data/react-table';
-import {
-  GlobalFilter,
-  DefaultColumnFilter,
-  SelectColumnFilter,
-  SliderColumnFilter,
-  NumberRangeColumnFilter,
-  renderFilterTypes,
-  filterGreaterThan
-} from 'utils/react-table';
+// import {  SortingSelect } from 'components/third-party/ReactTable';
+
+import { GlobalFilter, DefaultColumnFilter, SelectColumnFilter, SliderColumnFilter, renderFilterTypes } from 'utils/react-table';
+import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -54,18 +51,24 @@ function ReactTable({ columns, data }: { columns: Column[]; data: [] }) {
   );
 
   const sortingRow = rows.slice(0, 10);
+  console.log(rows);
 
   return (
     <Stack spacing={2}>
-      <Box sx={{ p: 2, pb: 0 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 0 }}>
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           // @ts-ignore
           globalFilter={state.globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-      </Box>
-
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {/*           <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} /> */}
+          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => {}}>
+            Agregar Envase
+          </Button>
+        </Stack>
+      </Stack>
       <Table {...getTableProps()}>
         <TableHead sx={{ borderTopWidth: 2 }}>
           {headerGroups.map((headerGroup) => (
@@ -77,15 +80,6 @@ function ReactTable({ columns, data }: { columns: Column[]; data: [] }) {
           ))}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
-          {headerGroups.map((group: any) => (
-            <TableRow {...group.getHeaderGroupProps()}>
-              {group.headers.map((column: any) => (
-                <TableCell {...column.getHeaderProps([{ className: column.className }])}>
-                  {column.canFilter ? column.render('Filter') : null}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
           {sortingRow.map((row, i) => {
             prepareRow(row);
             return (
@@ -105,35 +99,21 @@ function ReactTable({ columns, data }: { columns: Column[]; data: [] }) {
 // ==============================|| REACT TABLE - FILTERING ||============================== //
 
 const FilteringTable = () => {
-  const data = useMemo(() => makeData(2000), []);
+  const data = useMemo(() => makeData(5), []);
+  const theme = useTheme();
+
   const columns = useMemo(
     () => [
       {
-        Header: 'First Name',
-        accessor: 'firstName'
+        Header: 'Envase',
+        accessor: 'country'
       },
       {
-        Header: 'Last Name',
-        accessor: 'lastName',
-        filter: 'fuzzyText'
-      },
-      {
-        Header: 'Email',
-        accessor: 'email'
-      },
-      {
-        Header: 'Age',
+        Header: 'Cantidad de Productos',
         accessor: 'age',
-        className: 'cell-right',
+        className: 'cell-center',
         Filter: SliderColumnFilter,
         filter: 'equals'
-      },
-      {
-        Header: 'Visits',
-        accessor: 'visits',
-        className: 'cell-right',
-        Filter: NumberRangeColumnFilter,
-        filter: 'between'
       },
       {
         Header: 'Status',
@@ -142,25 +122,65 @@ const FilteringTable = () => {
         filter: 'includes',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Complicated':
-              return <Chip color="error" label="Complicated" size="small" variant="light" />;
-            case 'Relationship':
-              return <Chip color="success" label="Relationship" size="small" variant="light" />;
+            case 'desactivado':
+              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
+            case 'Activo':
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
             case 'Single':
             default:
-              return <Chip color="info" label="Single" size="small" variant="light" />;
+              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
           }
         }
       },
       {
-        Header: 'Profile Progress',
-        accessor: 'progress',
-        Filter: SliderColumnFilter,
-        filter: filterGreaterThan,
-        Cell: ({ value }: any) => <LinearWithLabel value={value} sx={{ minWidth: 75 }} />
+        Header: 'Actions',
+        className: 'cell-center',
+        disableSortBy: true,
+        Cell: ({ row }: any) => {
+          const collapseIcon = row.isExpanded ? (
+            <CloseOutlined style={{ color: theme.palette.error.main }} />
+          ) : (
+            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
+          );
+          return (
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+              <Tooltip title="View">
+                <IconButton
+                  color="secondary"
+                  onClick={(e: any) => {
+                    /* e.stopPropagation();
+                    row.toggleRowExpanded(); */
+                  }}
+                >
+                  {collapseIcon}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <IconButton
+                  color="primary"
+                  onClick={(e: any) => {
+                    /*                     e.stopPropagation(); */
+                  }}
+                >
+                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  color="error"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          );
+        }
       }
     ],
-    []
+    [theme]
   );
 
   return (

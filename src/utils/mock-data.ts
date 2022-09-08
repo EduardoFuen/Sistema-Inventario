@@ -43,6 +43,13 @@ function mockData(index: number) {
       minutes: chance.integer({ min: 0, max: 59 })
     }),
     boolean: chance.bool(),
+    orderId: `#${chance.integer({ min: 1, max: 100 })}`,
+    fecha: chance.date({ string: true, american: false }),
+    warehouse: chance.province({ country: 'it', full: true }),
+    total: chance.integer({ min: 1, max: 100 }),
+    subtotal: chance.integer({ min: 1, max: 100 }),
+    iva: chance.integer({ min: 1, max: 100 }),
+
     role: chance.profession(),
     company: chance.company(),
     address: {

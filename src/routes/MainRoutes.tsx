@@ -18,6 +18,7 @@ const WidgetChart = Loadable(lazy(() => import('pages/widget/chart')));
 const AppChat = Loadable(lazy(() => import('pages/apps/chat')));
 const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
 const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
+const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/list')));
 
 const UserProfile = Loadable(lazy(() => import('pages/apps/profiles/user')));
 const UserTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/user/TabPersonal')));
@@ -34,6 +35,7 @@ const AccountTabRole = Loadable(lazy(() => import('sections/apps/profiles/accoun
 const AccountTabSettings = Loadable(lazy(() => import('sections/apps/profiles/account/TabSettings')));
 
 const ProfileUserList = Loadable(lazy(() => import('pages/apps/profiles/user-list')));
+const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/user-list')));
 const ProfileUserCard = Loadable(lazy(() => import('pages/apps/profiles/user-card')));
 
 const AppECommProductDetails = Loadable(lazy(() => import('pages/apps/product/product-details')));
@@ -146,16 +148,15 @@ const MainRoutes = {
               element: <AppCalendar />
             },
             {
-              path: 'customer',
-              children: [
-                {
-                  path: 'list',
-                  element: <AppCustomerList />
-                }
-              ]
+              path: 'reception',
+              element: <AppReceptionList />
             },
             {
-              path: 'profiles',
+              path: 'purchase',
+              element: <AppCustomerList />
+            },
+            {
+              path: '',
               children: [
                 {
                   path: 'account',
@@ -212,6 +213,10 @@ const MainRoutes = {
                 {
                   path: 'user-list',
                   element: <ProfileUserList />
+                },
+                {
+                  path: 'supplier-list',
+                  element: <SupplierList />
                 },
                 {
                   path: 'user-card',

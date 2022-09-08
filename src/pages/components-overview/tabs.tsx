@@ -5,7 +5,7 @@ import { Grid, Stack, Typography } from '@mui/material';
 import ComponentHeader from 'components/cards/ComponentHeader';
 import ComponentWrapper from 'sections/components-overview/ComponentWrapper';
 import ComponentSkeleton from 'sections/components-overview/ComponentSkeleton';
-import BasicTabs from 'sections/components-overview/tabs/BasicTabs';
+import BasicTabs from 'sections/components-overview/tabs/TabsProduct';
 import ScrollableTabs from 'sections/components-overview/tabs/ScrollableTabs';
 import IconTabs from 'sections/components-overview/tabs/IconTabs';
 import CenteredTabs from 'sections/components-overview/tabs/CenteredTabs';

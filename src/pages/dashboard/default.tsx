@@ -14,9 +14,9 @@ import inventario from 'assets/images/home/inventario.png';
 
 const DashboardDefault = () => {
   return (
-    <Grid container xs={6} rowSpacing={7} columnSpacing={4} style={{ marginTop: '10%' }} alignSelf="center" className="cell-center">
+    <Grid container xs={6} item rowSpacing={7} columnSpacing={4} style={{ marginTop: '10%' }} alignSelf="center" className="cell-center">
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="#" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/p/product-list" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={products} alt="products" style={{ width: '35%', height: 'auto' }} />
           </Box>
@@ -24,7 +24,7 @@ const DashboardDefault = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="#" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/supplier-list" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={proveedor} alt="proveedor" style={{ width: '35%', height: 'auto' }} />
           </Box>
@@ -32,7 +32,7 @@ const DashboardDefault = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="#" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/purchase" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={shoppingcart} alt="shoppingcart" style={{ width: '35%', height: 'auto' }} />
           </Box>
@@ -40,7 +40,7 @@ const DashboardDefault = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="#" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/reception" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={confirmacion} alt="confirmacion" style={{ width: '35%', height: 'auto' }} />
           </Box>
@@ -48,7 +48,7 @@ const DashboardDefault = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="#" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/maintenance/coming-soon" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={inventario} alt="inventario" style={{ width: '35%', height: 'auto' }} />
           </Box>

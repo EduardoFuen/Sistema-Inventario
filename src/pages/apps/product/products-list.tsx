@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, Fragment } from 'react';
+import { useCallback, useEffect, useMemo, Fragment, ReactNode, useState, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Loadable from 'components/Loadable';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -7,7 +8,10 @@ import {
   capitalize,
   Button,
   Chip,
+  Box,
   Stack,
+  Tab,
+  Tabs,
   Table,
   TableBody,
   TableCell,
@@ -17,7 +21,6 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
-
 // third-party
 import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
@@ -31,10 +34,13 @@ import ScrollX from 'components/ScrollX';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
-import { getProducts } from 'store/reducers/product';
 
+import { getProducts } from 'store/reducers/product';
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+
+const ReactTableFiltering = Loadable(lazy(() => import('pages/tables/react-table/filtering')));
+const WarehouseList = Loadable(lazy(() => import('../warehouse/user-list')));
 
 const productImage = require.context('assets/images/e-commerce', true);
 
@@ -47,10 +53,32 @@ interface Props {
   renderRowSubComponent: any;
 }
 
+interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
+  };
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
+    </div>
+  );
+}
 function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const [value, setValue] = useState(0);
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
 
@@ -105,71 +133,96 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
 
   const history = useNavigate();
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   const handleAddProduct = () => {
-    history(`/apps/e-commerce/add-new-product`);
+    history(`/p/add-new-product`);
   };
 
   return (
     <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-      <Stack spacing={3}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 0 }}>
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            size="small"
-          />
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
-              Agregar Producto
-            </Button>
-          </Stack>
-        </Stack>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange}>
+            <Tab label="Lista Productos" {...a11yProps(0)} />
+            {/*             <Tab label="Categorias" /> */}
+            <Tab label="Envase" {...a11yProps(2)} />
+            {/*             <Tab label="Maker" {...a11yProps(2)} /> */}
+            <Tab label="Bodegas" {...a11yProps(3)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <TableRowSelection selected={Object.keys(selectedRowIds).length} />
+          <Stack spacing={3}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 0 }}>
+              <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                size="small"
+              />
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
+                <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
+                  Agregar Producto
+                </Button>
+              </Stack>
+            </Stack>
 
-        <Table {...getTableProps()}>
-          <TableHead>
-            {headerGroups.map((headerGroup) => (
-              <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                {headerGroup.headers.map((column: any) => (
-                  <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
-                    <HeaderSort column={column} />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {page.map((row: any, i: number) => {
-              prepareRow(row);
-              const rowProps = row.getRowProps();
-
-              return (
-                <Fragment key={i}>
-                  <TableRow
-                    {...row.getRowProps()}
-                    onClick={() => {
-                      row.toggleRowSelected();
-                    }}
-                    sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                  >
-                    {row.cells.map((cell: any) => (
-                      <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+            <Table {...getTableProps()}>
+              <TableHead>
+                {headerGroups.map((headerGroup) => (
+                  <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
+                    {headerGroup.headers.map((column: any) => (
+                      <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
+                        <HeaderSort column={column} />
+                      </TableCell>
                     ))}
                   </TableRow>
-                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
-                </Fragment>
-              );
-            })}
-            <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-              <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Stack>
+                ))}
+              </TableHead>
+              <TableBody {...getTableBodyProps()}>
+                {page.map((row: any, i: number) => {
+                  prepareRow(row);
+                  const rowProps = row.getRowProps();
+
+                  return (
+                    <Fragment key={i}>
+                      <TableRow
+                        {...row.getRowProps()}
+                        onClick={() => {
+                          row.toggleRowSelected();
+                        }}
+                        sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
+                      >
+                        {row.cells.map((cell: any) => (
+                          <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                        ))}
+                      </TableRow>
+                      {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+                    </Fragment>
+                  );
+                })}
+                <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
+                  <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
+                    <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Stack>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ReactTableFiltering />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <WarehouseList />
+        </TabPanel>
+        {/*         <TabPanel value={value} index={4}></TabPanel>
+         */}
+      </Box>
     </>
   );
 }
@@ -181,13 +234,12 @@ const ProductList = () => {
   const dispatch = useDispatch();
 
   const { products } = useSelector((state) => state.product);
-
   useEffect(() => {
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns = useMemo(
+  const columnsProducts = useMemo(
     () => [
       {
         Header: '#',
@@ -317,7 +369,7 @@ const ProductList = () => {
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
-          columns={columns}
+          columns={columnsProducts}
           data={products as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}

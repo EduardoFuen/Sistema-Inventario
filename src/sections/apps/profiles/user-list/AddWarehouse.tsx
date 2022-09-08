@@ -1,17 +1,13 @@
-import { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import {
-  Box,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
   FormControl,
-  FormLabel,
   Grid,
   FormHelperText,
   InputLabel,
@@ -35,12 +31,11 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
+import { DeleteFilled } from '@ant-design/icons';
 
 // const avatarImage = require.context('assets/images/users', true);
 
@@ -71,21 +66,12 @@ export interface Props {
   onCancel: () => void;
 }
 
-const AddUser = ({ user, onCancel }: Props) => {
-  const theme = useTheme();
+const AddWarehouse = ({ user, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !user;
   console.log(user);
 
-  const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
-  const [avatar, setAvatar] = useState<string | undefined>();
   //  avatarImage(`./avatar-${isCreating && !user?.avatar ? 1 : user.avatar}.png`).default
-
-  useEffect(() => {
-    if (selectedImage) {
-      setAvatar(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
 
   const UserSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
@@ -99,7 +85,7 @@ const AddUser = ({ user, onCancel }: Props) => {
     dispatch(
       openSnackbar({
         open: true,
-        message: 'Proveedor deleted successfully.',
+        message: 'Bodega deleted successfully.',
         variant: 'alert',
         alert: {
           color: 'success'
@@ -127,7 +113,7 @@ const AddUser = ({ user, onCancel }: Props) => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Proveedor update successfully.',
+              message: 'Bodega update successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -140,7 +126,7 @@ const AddUser = ({ user, onCancel }: Props) => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Proveedor add successfully.',
+              message: 'Bodega add successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -164,54 +150,11 @@ const AddUser = ({ user, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{user ? 'Editar Proveedor' : 'Agregar Proveedor'}</DialogTitle>
+          <DialogTitle>{user ? 'Editar Bodega' : 'Agregar Bodega'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={3}>
-                <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
-                  <FormLabel
-                    htmlFor="change-avtar"
-                    sx={{
-                      position: 'relative',
-                      borderRadius: '50%',
-                      overflow: 'hidden',
-                      '&:hover .MuiBox-root': { opacity: 1 },
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
-                        width: '100%',
-                        height: '100%',
-                        opacity: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Stack spacing={0.5} alignItems="center">
-                        <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
-                        <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
-                      </Stack>
-                    </Box>
-                  </FormLabel>
-                  <TextField
-                    type="file"
-                    id="change-avtar"
-                    label="Outlined"
-                    variant="outlined"
-                    sx={{ display: 'none' }}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedImage(e.target.files?.[0])}
-                  />
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={8}>
+              <Grid item xs={12} md={12}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
@@ -228,20 +171,7 @@ const AddUser = ({ user, onCancel }: Props) => {
                   </Grid>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-email">Email</InputLabel>
-                      <TextField
-                        fullWidth
-                        id="user-email"
-                        placeholder="Enter User Email"
-                        {...getFieldProps('email')}
-                        error={Boolean(touched.email && errors.email)}
-                        helperText={touched.email && errors.email}
-                      />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-orderStatus">Estado</InputLabel>
+                      <InputLabel htmlFor="user-orderStatus">Ciudad</InputLabel>
                       <FormControl fullWidth>
                         <Select
                           id="column-hiding"
@@ -251,7 +181,7 @@ const AddUser = ({ user, onCancel }: Props) => {
                           input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                           renderValue={(selected) => {
                             if (!selected) {
-                              return <Typography variant="subtitle1">Seleccionar Estado</Typography>;
+                              return <Typography variant="subtitle1">Seleccionar Ciudad</Typography>;
                             }
 
                             return <Typography variant="subtitle2">{selected}</Typography>;
@@ -320,4 +250,4 @@ const AddUser = ({ user, onCancel }: Props) => {
   );
 };
 
-export default AddUser;
+export default AddWarehouse;
