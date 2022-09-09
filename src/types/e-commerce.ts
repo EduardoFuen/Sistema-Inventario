@@ -19,7 +19,9 @@ export type Products = {
   date?: number;
   created: Date;
   isStock?: boolean;
+  sku?: string;
   new?: number;
+  ean?: string;
 };
 
 // checkout-cart billing address

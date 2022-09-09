@@ -22,7 +22,6 @@ import {
   useMediaQuery
 } from '@mui/material';
 // third-party
-import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
@@ -242,7 +241,12 @@ const ProductList = () => {
   const columnsProducts = useMemo(
     () => [
       {
-        Header: '#',
+        Header: 'SKU',
+        accessor: 'sku',
+        className: 'cell-center'
+      },
+      {
+        Header: 'EAN',
         accessor: 'id',
         className: 'cell-center'
       },
@@ -294,10 +298,14 @@ const ProductList = () => {
         )
       },
       {
-        Header: 'Precio',
-        accessor: 'offerPrice',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        Header: 'Maker',
+        accessor: 'brand',
+        className: 'cell-right'
+      },
+      {
+        Header: 'Trademarke',
+        accessor: 'popularity',
+        className: 'cell-right'
       },
       {
         Header: 'Qty',

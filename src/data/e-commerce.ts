@@ -89,12 +89,15 @@ export const products: Products[] = [
     discount: 75,
     offerPrice: 275,
     gender: 'male',
+
     categories: ['fashion', 'watch'],
     colors: ['errorDark', 'errorMain', 'secondaryMain'],
     popularity: chance.natural(),
     date: chance.natural(),
     created: sub(new Date(), { days: 8, hours: 6, minutes: 20 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 45
   },
   {
@@ -108,6 +111,8 @@ export const products: Products[] = [
     quantity: 45,
     rating: 3.5,
     discount: 10,
+    ean: '102106',
+    sku: '102106',
     offerPrice: 81.99,
     gender: 'kids',
     categories: ['electronics', 'headphones'],
@@ -139,6 +144,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: sub(new Date(), { days: 4, hours: 9, minutes: 50 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 35
   },
   {
@@ -161,6 +168,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: sub(new Date(), { days: 7, hours: 6, minutes: 45 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 15
   },
 
@@ -184,6 +193,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: add(new Date(), { days: 6, hours: 10, minutes: 0 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 15
   },
   {
@@ -205,6 +216,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: add(new Date(), { days: 14, hours: 1, minutes: 55 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 30
   },
   {
@@ -227,6 +240,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: sub(new Date(), { days: 0, hours: 11, minutes: 10 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 20
   },
 
@@ -249,6 +264,8 @@ export const products: Products[] = [
     date: chance.natural(),
     created: sub(new Date(), { days: 0, hours: 11, minutes: 10 }),
     isStock: true,
+    sku: '102106',
+    ean: '102106',
     new: 10
   }
 ];
