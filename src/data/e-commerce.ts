@@ -48,7 +48,7 @@ export const productReviews: Reviews[] = [
 export const address: Address[] = [
   {
     id: 1,
-    name: 'Ian Carpenter',
+    name: 'Aspirina',
     destination: 'home',
     building: '1754 Ureate Path',
     street: '695 Newga View',
@@ -61,7 +61,7 @@ export const address: Address[] = [
   },
   {
     id: 2,
-    name: 'Ian Carpenter',
+    name: 'Atamel',
     destination: 'office',
     building: '1754 Ureate Path',
     street: '695 Newga View',
@@ -79,7 +79,7 @@ export const products: Products[] = [
   {
     id: 1,
     image: 'prod-11.png',
-    name: 'Apple Series 4 GPS A38 MM Space',
+    name: 'Diclofenac',
     brand: 'Apple',
     description: 'Apple Watch SE Smartwatch ',
     about:
@@ -100,7 +100,7 @@ export const products: Products[] = [
   {
     id: 2,
     image: 'prod-22.png',
-    name: 'Boat On-Ear Wireless ',
+    name: 'Dipirona ',
     brand: 'Boat',
     description: 'Mic(Bluetooth 4.2, Rockerz 450R...',
     about:
@@ -121,7 +121,7 @@ export const products: Products[] = [
   {
     id: 3,
     image: 'prod-33.png',
-    name: 'Fitbit MX30 Smart Watch',
+    name: 'Dipirona v1',
     brand: 'Fitbit',
     offer: '30%',
     description: '(MX30- waterproof) watch',
@@ -144,7 +144,7 @@ export const products: Products[] = [
   {
     id: 4,
     image: 'prod-44.png',
-    name: 'Luxury Watches Centrix Gold',
+    name: 'Alcazerse',
     brand: 'Centrix',
     offer: '30%',
     description: '7655 Couple (Refurbished)...',
@@ -163,33 +163,11 @@ export const products: Products[] = [
     isStock: true,
     new: 15
   },
-  {
-    id: 5,
-    image: 'prod-55.png',
-    name: 'Canon EOS 1500D 24.1 Digital SLR',
-    brand: 'Canon',
-    offer: '30%',
-    description: 'SLR Camera (Black) with EF S18-55...',
-    about:
-      'Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change In Aspect Ratio: Boldly crop the subject and save it with a composition that has impact. You can convert it to a 1:1 square format, and after shooting you can create a photo that will be popular on SNS.',
-    quantity: 50,
-    rating: 3.5,
-    discount: 15,
-    salePrice: 15.99,
-    offerPrice: 12.99,
-    gender: 'male',
-    categories: ['electronics', 'camera'],
-    colors: ['warningMain', 'primary200'],
-    popularity: chance.natural(),
-    date: chance.natural(),
-    created: sub(new Date(), { days: 2, hours: 9, minutes: 45 }),
-    isStock: true,
-    new: 25
-  },
+
   {
     id: 6,
     image: 'prod-66.png',
-    name: 'Apple iPhone 13 Mini ',
+    name: 'Alcohol',
     brand: 'Apple',
     offer: '30%',
     description: '13 cm (5.4-inch) Super',
@@ -211,7 +189,7 @@ export const products: Products[] = [
   {
     id: 7,
     image: 'prod-77.png',
-    name: 'Apple MacBook Pro with Iphone',
+    name: 'Acetaminofen',
     brand: 'Apple',
     description: '11th Generation Intel® Core™ i5-11320H ...',
     about:
@@ -232,7 +210,7 @@ export const products: Products[] = [
   {
     id: 8,
     image: 'prod-88.png',
-    name: 'Apple iPhone 13 Pro',
+    name: 'Ibuprofeno',
     brand: 'Apple',
     description: '(512GB ROM, MLLH3HN/A,..',
     about:
@@ -255,7 +233,7 @@ export const products: Products[] = [
   {
     id: 9,
     image: 'prod-99.png',
-    name: 'Canon EOS 1500D 24.1 Digital',
+    name: 'Ibuprofeno',
     brand: 'Kotak',
     description: '(512GB ROM, MLLH3HN/A,..',
     about:
