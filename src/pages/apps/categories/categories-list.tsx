@@ -18,7 +18,7 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
+import { getCategoryList } from 'store/reducers/category';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -152,7 +152,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
 
 // ==============================|| PROFILE - USER LIST ||============================== //
 
-const WarehouseList = () => {
+const CategoriesList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -163,10 +163,10 @@ const WarehouseList = () => {
     setAdd(!add);
     if (warehouse && !add) setWarehouse(null);
   };
-  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { categoryListOne } = useSelector((state) => state.category);
 
   useEffect(() => {
-    dispatch(getWarehouseList());
+    dispatch(getCategoryList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const columns = useMemo(
@@ -235,7 +235,7 @@ const WarehouseList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteWarehouse(row?.name));
+                    // dispatch(deleteWarehouse(row?.name));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -255,7 +255,7 @@ const WarehouseList = () => {
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={warehouseList as []}
+          data={categoryListOne as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
@@ -264,4 +264,4 @@ const WarehouseList = () => {
   );
 };
 
-export default WarehouseList;
+export default CategoriesList;

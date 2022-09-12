@@ -168,3 +168,15 @@ export interface TradeMakerStateProps {
   tradeMakerList: TradeMaker[];
   error: object | string | null;
 }
+
+// Category
+export type category = {
+  id: string | number | undefined;
+  name: string;
+  status: boolean;
+};
+
+export interface CategoryOneStateProps {
+  categoryListOne: category[];
+  error: object | string | null;
+}
