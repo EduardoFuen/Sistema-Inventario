@@ -18,8 +18,9 @@ import {
 } from '@mui/material';
 
 // third-party
-import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
+
+import { useSelector, useDispatch } from 'store';
 
 // project import
 import UserView from 'sections/apps/profiles/user-list/UserView';
@@ -28,9 +29,10 @@ import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -52,7 +54,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'businessName', desc: false };
 
   const {
     getTableProps,
@@ -178,43 +180,38 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 
 const UserListPage = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSupplierList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const data = useMemo(() => makeData(200), []);
-
-  const [user, setUser] = useState(null);
+  const [supplier, setSupplier] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
-    if (user && !add) setUser(null);
+    if (supplier && !add) setSupplier(null);
   };
+  const { supplierList } = useSelector((state) => state.supplier);
 
   const columns = useMemo(
     () => [
       {
-        title: 'Row Selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
-          <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        accessor: 'selection',
-        Cell: ({ row }: any) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />,
-        disableSortBy: true
-      },
-      {
         Header: 'NIT',
-        accessor: 'id',
+        accessor: 'nit',
         className: 'cell-center'
       },
       {
-        Header: 'Nombre',
-        accessor: 'fatherName',
+        Header: 'Razón social',
+        accessor: 'businessName',
         Cell: ({ row }: any) => {
           const { values } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`).default} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.fatherName}</Typography>
+                <Typography variant="subtitle1">{values.businessName}</Typography>
                 <Typography variant="caption" color="textSecondary">
                   {values.email}
                 </Typography>
@@ -228,28 +225,28 @@ const UserListPage = () => {
         accessor: 'email'
       },
       {
+        Header: 'Teléfono',
+        accessor: 'phone'
+      },
+      {
         Header: 'Nombre Primer Contacto',
-        accessor: 'contact',
-        // eslint-disable-next-line
-        Cell: ({ value }) => <NumberFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />
+        accessor: 'name'
       },
       {
         Header: 'Estado',
         accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Desactivado':
+            case false:
               return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case 'Activo':
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-            case 'Pendiente':
+            case true:
             default:
-              return <Chip color="info" label="Pendiente" size="small" variant="light" />;
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
           }
         }
       },
       {
-        Header: 'Actions',
+        Header: 'Actiones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
@@ -276,7 +273,7 @@ const UserListPage = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setUser(row.values);
+                    setSupplier(row.values);
                     handleAdd();
                   }}
                 >
@@ -288,6 +285,18 @@ const UserListPage = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    dispatch(deleteSupplier(row?.businessName));
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Proveedor deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -302,14 +311,14 @@ const UserListPage = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <UserView data={data[row.id]} />, [data]);
+  const renderRowSubComponent = useCallback(({ row }) => <UserView data={supplierList[row.id]} />, [supplierList]);
 
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
+          data={supplierList as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
@@ -318,7 +327,7 @@ const UserListPage = () => {
 
       {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddUser user={user} onCancel={handleAdd} />}
+        {add && <AddUser supplier={supplier} onCancel={handleAdd} />}
       </Dialog>
     </MainCard>
   );

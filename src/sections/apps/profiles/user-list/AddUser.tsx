@@ -10,16 +10,11 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
   FormLabel,
   Grid,
-  FormHelperText,
   InputLabel,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
+  Switch,
+  FormControlLabel,
   Stack,
   TextField,
   Tooltip,
@@ -37,49 +32,48 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project imports
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
+import { createSupplier, editSupplier, deleteSupplier } from 'store/reducers/supplier';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 
-// const avatarImage = require.context('assets/images/users', true);
+// const avatarImage = require.context('assets/images/suppliers', true);
 
 // constant
-const getInitialValues = (user: FormikValues | null) => {
-  const newUser = {
-    name: '',
+const getInitialValues = (supplier: FormikValues | null) => {
+  const newSupplier = {
+    nit: '',
     email: '',
+    name: '',
     location: '',
-    orderStatus: ''
+    businessName: '',
+    phone: '',
+    status: false
   };
 
-  if (user) {
-    newUser.name = user.fatherName;
-    newUser.location = user.address;
-    return _.merge({}, newUser, user);
+  if (supplier) {
+    return _.merge({}, newSupplier, supplier);
   }
 
-  return newUser;
+  return newSupplier;
 };
-
-const allStatus = ['Activo', 'Desactivado', 'Pendiente'];
 
 // ==============================|| USER ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
-  user?: any;
+  supplier?: any;
   onCancel: () => void;
 }
 
-const AddUser = ({ user, onCancel }: Props) => {
+const AddUser = ({ supplier, onCancel }: Props) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const isCreating = !user;
-  console.log(user);
+  const isCreating = !supplier;
 
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
   const [avatar, setAvatar] = useState<string | undefined>();
-  //  avatarImage(`./avatar-${isCreating && !user?.avatar ? 1 : user.avatar}.png`).default
+  //  avatarImage(`./avatar-${isCreating && !supplier?.avatar ? 1 : supplier.avatar}.png`).default
 
   useEffect(() => {
     if (selectedImage) {
@@ -89,13 +83,13 @@ const AddUser = ({ user, onCancel }: Props) => {
 
   const UserSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
-    orderStatus: Yup.string().required('Nombre es requerido'),
     email: Yup.string().max(255).required('Email es requerido').email('Email invalido'),
     location: Yup.string().max(500)
   });
 
   const deleteHandler = () => {
-    // dispatch(deleteUser(user?.id)); - delete
+    // dispatch(deleteUser(supplier?.id)); - delete
+    dispatch(deleteSupplier(supplier?.businessName));
     dispatch(
       openSnackbar({
         open: true,
@@ -111,19 +105,23 @@ const AddUser = ({ user, onCancel }: Props) => {
   };
 
   const formik = useFormik({
-    initialValues: getInitialValues(user!),
+    initialValues: getInitialValues(supplier!),
     validationSchema: UserSchema,
     onSubmit: (values, { setSubmitting }) => {
+      console.log(values);
       try {
-        // const newUser = {
-        //   name: values.name,
-        //   email: values.email,
-        //   location: values.location,
-        //   orderStatus: values.orderStatus
-        // };
+        const newSupplier = {
+          name: values.name,
+          nit: values.nit,
+          email: values.email,
+          location: values.location,
+          phone: values.phone,
+          businessName: values.businessName,
+          status: values.status
+        };
 
-        if (user) {
-          // dispatch(updateUser(user.id, newUser)); - update
+        if (supplier) {
+          dispatch(editSupplier(supplier.businessName, newSupplier));
           dispatch(
             openSnackbar({
               open: true,
@@ -136,7 +134,7 @@ const AddUser = ({ user, onCancel }: Props) => {
             })
           );
         } else {
-          // dispatch(createUser(newUser)); - add
+          dispatch(createSupplier(newSupplier));
           dispatch(
             openSnackbar({
               open: true,
@@ -158,13 +156,13 @@ const AddUser = ({ user, onCancel }: Props) => {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{user ? 'Editar Proveedor' : 'Agregar Proveedor'}</DialogTitle>
+          <DialogTitle>{supplier ? 'Editar Proveedor' : 'Agregar Proveedor'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -213,26 +211,65 @@ const AddUser = ({ user, onCancel }: Props) => {
               </Grid>
               <Grid item xs={12} md={8}>
                 <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="supplier-name">NIT</InputLabel>
                       <TextField
                         fullWidth
-                        id="user-name"
-                        placeholder="Enter User Name"
+                        id="supplier-name"
+                        placeholder="Ingresar NIT"
+                        {...getFieldProps('nit')}
+                        error={Boolean(touched.nit && errors.nit)}
+                        helperText={touched.nit && errors.nit}
+                      />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Stack spacing={1.25}>
+                      <InputLabel htmlFor="supplier-name">Razón Social</InputLabel>
+                      <TextField
+                        fullWidth
+                        id="supplier-name"
+                        placeholder="Ingresar Razón Social"
+                        {...getFieldProps('businessName')}
+                        error={Boolean(touched.businessName && errors.businessName)}
+                        helperText={touched.businessName && errors.businessName}
+                      />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Stack spacing={1.25}>
+                      <InputLabel htmlFor="supplier-name">Nombre de Contacto </InputLabel>
+                      <TextField
+                        fullWidth
+                        id="supplier-name"
+                        placeholder="Nombre de Contacto"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}
                       />
                     </Stack>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-email">Email</InputLabel>
+                      <InputLabel htmlFor="supplier-name">Teléfono </InputLabel>
                       <TextField
                         fullWidth
-                        id="user-email"
-                        placeholder="Enter User Email"
+                        id="supplier-name"
+                        placeholder="Ingresar Teléfono"
+                        {...getFieldProps('phone')}
+                        error={Boolean(touched.phone && errors.phone)}
+                        helperText={touched.phone && errors.phone}
+                      />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Stack spacing={1.25}>
+                      <InputLabel htmlFor="supplier-email">Email</InputLabel>
+                      <TextField
+                        fullWidth
+                        id="supplier-email"
+                        placeholder="Ingresar Email"
                         {...getFieldProps('email')}
                         error={Boolean(touched.email && errors.email)}
                         helperText={touched.email && errors.email}
@@ -241,42 +278,10 @@ const AddUser = ({ user, onCancel }: Props) => {
                   </Grid>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-orderStatus">Estado</InputLabel>
-                      <FormControl fullWidth>
-                        <Select
-                          id="column-hiding"
-                          displayEmpty
-                          {...getFieldProps('orderStatus')}
-                          onChange={(event: SelectChangeEvent<string>) => setFieldValue('orderStatus', event.target.value as string)}
-                          input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
-                          renderValue={(selected) => {
-                            if (!selected) {
-                              return <Typography variant="subtitle1">Seleccionar Estado</Typography>;
-                            }
-
-                            return <Typography variant="subtitle2">{selected}</Typography>;
-                          }}
-                        >
-                          {allStatus.map((column: any) => (
-                            <MenuItem key={column} value={column}>
-                              <ListItemText primary={column} />
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      {touched.orderStatus && errors.orderStatus && (
-                        <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                          {errors.orderStatus}
-                        </FormHelperText>
-                      )}
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-location">Dirección</InputLabel>
+                      <InputLabel htmlFor="supplier-location">Dirección</InputLabel>
                       <TextField
                         fullWidth
-                        id="user-location"
+                        id="supplier-location"
                         multiline
                         rows={2}
                         placeholder="Ingresar Dirección"
@@ -285,6 +290,20 @@ const AddUser = ({ user, onCancel }: Props) => {
                         helperText={touched.location && errors.location}
                       />
                     </Stack>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Stack spacing={1.25}>
+                          <FormControlLabel
+                            control={<Switch sx={{ mt: 0 }} />}
+                            label="Estado"
+                            {...getFieldProps('status')}
+                            labelPlacement="top"
+                          />
+                        </Stack>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -308,7 +327,7 @@ const AddUser = ({ user, onCancel }: Props) => {
                     Cancelar
                   </Button>
                   <Button type="submit" variant="contained" disabled={isSubmitting}>
-                    {user ? 'Edit' : 'Add'}
+                    {supplier ? 'Edit' : 'Add'}
                   </Button>
                 </Stack>
               </Grid>

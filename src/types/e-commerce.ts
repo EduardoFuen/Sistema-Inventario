@@ -180,3 +180,18 @@ export interface CategoryOneStateProps {
   categoryListOne: category[];
   error: object | string | null;
 }
+
+// Supplier
+export type supplier = {
+  id: string | number | undefined;
+  email: string;
+  nit: string;
+  location: string;
+  businessName: string;
+  phone: string;
+  status: boolean;
+};
+export interface SupplierStateProps {
+  supplierList: supplier[];
+  error: object | string | null;
+}

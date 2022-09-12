@@ -15,6 +15,7 @@ import warehouse from './warehouse';
 import maker from './maker';
 import trademaker from './trademaker';
 import category from './category';
+import supplier from './supplier';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -23,6 +24,14 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  supplier: persistReducer(
+    {
+      key: 'supplier',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    supplier
+  ),
   category: persistReducer(
     {
       key: 'category',
