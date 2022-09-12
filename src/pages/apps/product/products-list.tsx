@@ -32,6 +32,8 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 import { useDispatch, useSelector } from 'store';
 
 import { getProducts, editProduct } from 'store/reducers/product';
+import { openSnackbar } from 'store/reducers/snackbar';
+
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
@@ -309,6 +311,17 @@ const ProductList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Producto delete successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

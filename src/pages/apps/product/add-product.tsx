@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Grid, InputLabel, MenuItem, Stack, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
 
 // project import
-import { useSelector } from 'store';
+import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-
+import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -30,6 +30,7 @@ function AddNewProduct() {
   const [status, setStatus] = useState('in stock');
 
   const { makerList } = useSelector((state) => state.maker);
+  const dispatch = useDispatch();
   const { tradeMakerList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { product } = useSelector((state) => state.product);
@@ -261,7 +262,24 @@ function AddNewProduct() {
               <Button variant="outlined" color="secondary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button variant="contained" sx={{ textTransform: 'none' }}>
+              <Button
+                variant="contained"
+                sx={{ textTransform: 'none' }}
+                onClick={() => {
+                  dispatch(
+                    openSnackbar({
+                      open: true,
+                      message: 'Producto update successfully.',
+                      variant: 'alert',
+                      alert: {
+                        color: 'success'
+                      },
+                      close: false
+                    })
+                  );
+                  history(`/p/product-list`);
+                }}
+              >
                 Add new Product
               </Button>
             </Stack>
