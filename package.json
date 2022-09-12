@@ -1,6 +1,5 @@
 {
   "name": "Inventory-Farmu",
-  "homepage": "https://github.com/dguarisma.github.io/inventory",
   "version": "1.1.0",
   "private": true,
   "dependencies": {
