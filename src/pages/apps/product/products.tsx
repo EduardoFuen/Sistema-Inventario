@@ -57,7 +57,7 @@ function TabProducts() {
             <Tab label="Categorias" {...a11yProps(1)} />
             <Tab label="Envase" {...a11yProps(2)} />
             <Tab label="Maker" {...a11yProps(3)} />
-            <Tab label="Trademaker" {...a11yProps(4)} />
+            <Tab label="Trademark" {...a11yProps(4)} />
             <Tab label="Bodegas" {...a11yProps(5)} />
           </Tabs>
         </Box>

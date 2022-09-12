@@ -249,7 +249,7 @@ const ProductList = () => {
         className: 'cell-right'
       },
       {
-        Header: 'Trademarke',
+        Header: 'Trademark',
         accessor: 'popularity',
         className: 'cell-right'
       },
