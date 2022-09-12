@@ -10,6 +10,10 @@ import menu from './menu';
 import snackbar from './snackbar';
 import productReducer from './product';
 import cartReducer from './cart';
+import pack from './pack';
+import warehouse from './warehouse';
+import maker from './maker';
+import trademaker from './trademaker';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -18,6 +22,38 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  maker: persistReducer(
+    {
+      key: 'maker',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    maker
+  ),
+  trademaker: persistReducer(
+    {
+      key: 'trademaker',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    trademaker
+  ),
+  pack: persistReducer(
+    {
+      key: 'pack',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    pack
+  ),
+  warehouse: persistReducer(
+    {
+      key: 'warehouse',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    warehouse
+  ),
   cart: persistReducer(
     {
       key: 'cart',

@@ -1,41 +1,27 @@
-import { useCallback, useEffect, useMemo, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, Fragment, useState } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import {
-  capitalize,
-  Button,
-  Chip,
-  Box,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Dialog } from '@mui/material';
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import ProductView from 'sections/apps/e-commerce/product-list/ProductView';
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import AddPackList from 'sections/apps/products/pack-list/AddPackList';
+
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { getProducts } from 'store/reducers/product';
-// assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { deletePack } from 'store/reducers/pack';
+import { getPackList } from 'store/reducers/pack';
 
-const productImage = require.context('assets/images/e-commerce', true);
+// assets
+import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -43,12 +29,11 @@ interface Props {
   columns: Column[];
   data: [];
   getHeaderProps: (column: any) => void;
-  renderRowSubComponent: any;
+  handleAdd: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
 
@@ -57,9 +42,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
     allColumns,
-    visibleColumns,
     rows,
     // @ts-ignore
     page,
@@ -82,7 +65,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 5, sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 5, hiddenColumns: ['image', 'description'], sortBy: [sortBy] }
     },
     useGlobalFilter,
     useFilters,
@@ -91,19 +74,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     usePagination,
     useRowSelect
   );
-
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['id', 'image', 'description', 'categories', 'offerPrice', 'quantity', 'isStock']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
-
-  const history = useNavigate();
-
-  const handleAddProduct = () => {
-    history(`/p/add-new-product`);
-  };
 
   return (
     <>
@@ -119,8 +89,8 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
             />
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
-                Agregar Producto
+              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                Agregar Envase
               </Button>
             </Stack>
           </Stack>
@@ -140,8 +110,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
             <TableBody {...getTableBodyProps()}>
               {page.map((row: any, i: number) => {
                 prepareRow(row);
-                const rowProps = row.getRowProps();
-
                 return (
                   <Fragment key={i}>
                     <TableRow
@@ -155,7 +123,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
                         <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
                       ))}
                     </TableRow>
-                    {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
                   </Fragment>
                 );
               })}
@@ -174,125 +141,61 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
 
 // ==============================|| PRODUCT LIST - MAIN ||============================== //
 
-const ProductList = () => {
+const PackList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const [pack, setPack] = useState(null);
+  const [add, setAdd] = useState<boolean>(false);
 
-  const { products } = useSelector((state) => state.product);
+  const handleAdd = () => {
+    setAdd(!add);
+    if (pack && !add) setPack(null);
+  };
+
+  const { packList } = useSelector((state) => state.pack);
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getPackList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columnsProducts = useMemo(
     () => [
       {
-        Header: 'SKU',
-        accessor: 'sku',
-        className: 'cell-center'
-      },
-      {
-        Header: 'EAN',
-        accessor: 'id',
-        className: 'cell-center'
-      },
-      {
-        Header: 'Nombre Producto',
+        Header: 'Name',
         accessor: 'name',
-        Cell: ({ row }: any) => {
-          const { values } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar
-                variant="rounded"
-                alt={values.name}
-                color="secondary"
-                size="sm"
-                src={productImage(`./thumbs/${!values.image ? 'prod-11.png' : values.image}`).default}
-              />
-              <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {values.description}
-                </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
+        className: 'cell-center'
       },
       {
-        Header: 'Image',
-        accessor: 'image',
-        disableSortBy: true
-      },
-      {
-        Header: 'Description',
-        accessor: 'description'
-      },
-      {
-        Header: 'Categorias',
-        accessor: 'categories',
-        Cell: ({ value }: any) => (
-          <Stack direction="row" spacing={0.25}>
-            {value.map((item: any, index: number) => (
-              <Typography variant="h6" key={index}>
-                {capitalize(item)}
-                {value.length > index + 1 ? ',' : ''}
-              </Typography>
-            ))}
-          </Stack>
-        )
-      },
-      {
-        Header: 'Maker',
-        accessor: 'brand',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Trademarke',
-        accessor: 'popularity',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Qty',
-        accessor: 'quantity',
-        className: 'cell-right'
+        Header: 'Cantidad de Productos',
+        accessor: 'qty'
       },
       {
         Header: 'Estado',
-        accessor: 'isStock',
-        Cell: ({ value }: any) => (
-          <Chip color={value ? 'success' : 'error'} label={value ? 'Activo' : 'Desactivado'} size="small" variant="light" />
-        )
+        accessor: 'status',
+        Cell: ({ value }: any) => {
+          switch (value) {
+            case false:
+              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
+            case true:
+            default:
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
+          }
+        }
       },
       {
-        Header: 'Actions',
+        Header: 'Actiones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const collapseIcon = row.isExpanded ? (
-            <CloseOutlined style={{ color: theme.palette.error.main }} />
-          ) : (
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          );
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton
-                  color="secondary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    row.toggleRowExpanded();
-                  }}
-                >
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    setPack(row.values);
+                    handleAdd();
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -303,6 +206,18 @@ const ProductList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Envase deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
+                    dispatch(deletePack(row.name));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -317,20 +232,22 @@ const ProductList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <ProductView data={products[row.id]} />, [products]);
-
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columnsProducts}
-          data={products as []}
+          handleAdd={handleAdd}
+          data={packList as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
+      {/* add pack dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {add && <AddPackList pack={pack} onCancel={handleAdd} />}
+      </Dialog>
     </MainCard>
   );
 };
 
-export default ProductList;
+export default PackList;

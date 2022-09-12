@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 
 // material-ui
@@ -33,55 +35,50 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { addWarehouse, editWarehouse, deleteWarehouse } from 'store/reducers/warehouse';
+import { countrys } from 'data/country';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
-// const avatarImage = require.context('assets/images/users', true);
-
 // constant
-const getInitialValues = (user: FormikValues | null) => {
-  const newUser = {
+const getInitialValues = (warehouse: FormikValues | null) => {
+  const newWarehouse = {
     name: '',
-    email: '',
-    location: '',
-    orderStatus: ''
+    department: '',
+    city: '',
+    location: ''
   };
 
-  if (user) {
-    newUser.name = user.fatherName;
-    newUser.location = user.address;
-    return _.merge({}, newUser, user);
+  if (warehouse) {
+    newWarehouse.location = warehouse.address;
+    return _.merge({}, newWarehouse, warehouse);
   }
 
-  return newUser;
+  return newWarehouse;
 };
 
-const allStatus = ['Activo', 'Desactivado', 'Pendiente'];
-
-// ==============================|| USER ADD / EDIT / DELETE ||============================== //
+// ==============================|| WAREHOUSE ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
-  user?: any;
+  warehouse?: any;
   onCancel: () => void;
 }
 
-const AddWarehouse = ({ user, onCancel }: Props) => {
+const AddWarehouse = ({ warehouse, onCancel }: Props) => {
   const dispatch = useDispatch();
-  const isCreating = !user;
-  console.log(user);
-
-  //  avatarImage(`./avatar-${isCreating && !user?.avatar ? 1 : user.avatar}.png`).default
+  const isCreating = !warehouse;
+  const [citys, setCities] = useState([]);
 
   const UserSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
-    orderStatus: Yup.string().required('Nombre es requerido'),
-    email: Yup.string().max(255).required('Email es requerido').email('Email invalido'),
-    location: Yup.string().max(500)
+    department: Yup.string().required('Departamento es requerido'),
+    city: Yup.string().required('Ciudad es requerido'),
+    location: Yup.string().required('Dirección es requerido').max(500)
   });
 
   const deleteHandler = () => {
-    // dispatch(deleteUser(user?.id)); - delete
+    dispatch(deleteWarehouse(warehouse?.name));
     dispatch(
       openSnackbar({
         open: true,
@@ -96,20 +93,26 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
     onCancel();
   };
 
+  const changeHandler = (item: any) => {
+    setCities([]);
+    const index = countrys.findIndex((d) => d.department === item);
+    setCities(countrys[index].cities);
+  };
+
   const formik = useFormik({
-    initialValues: getInitialValues(user!),
+    initialValues: getInitialValues(warehouse!),
     validationSchema: UserSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        // const newUser = {
-        //   name: values.name,
-        //   email: values.email,
-        //   location: values.location,
-        //   orderStatus: values.orderStatus
-        // };
+        const newWarehouse = {
+          name: values.name,
+          department: values.department,
+          city: values.city,
+          location: values.location
+        };
 
-        if (user) {
-          // dispatch(updateUser(user.id, newUser)); - update
+        if (warehouse) {
+          dispatch(editWarehouse(warehouse.id, newWarehouse));
           dispatch(
             openSnackbar({
               open: true,
@@ -122,7 +125,7 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
             })
           );
         } else {
-          // dispatch(createUser(newUser)); - add
+          dispatch(addWarehouse(newWarehouse));
           dispatch(
             openSnackbar({
               open: true,
@@ -150,7 +153,7 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{user ? 'Editar Bodega' : 'Agregar Bodega'}</DialogTitle>
+          <DialogTitle>{warehouse ? 'Editar Bodega' : 'Agregar Bodega'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -158,26 +161,62 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="warehouse-name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="user-name"
-                        placeholder="Enter User Name"
+                        id="warehouse-name"
+                        placeholder="Ingresa Nombre Bodega"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}
                       />
                     </Stack>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-orderStatus">Ciudad</InputLabel>
+                      <InputLabel htmlFor="warehouse-orderStatus">Departamento</InputLabel>
                       <FormControl fullWidth>
                         <Select
                           id="column-hiding"
                           displayEmpty
-                          {...getFieldProps('orderStatus')}
-                          onChange={(event: SelectChangeEvent<string>) => setFieldValue('orderStatus', event.target.value as string)}
+                          {...getFieldProps('department')}
+                          onChange={(event: SelectChangeEvent<string>) => {
+                            changeHandler(event.target.value as string);
+                            setFieldValue('city', '');
+                            setFieldValue('department', event.target.value as string);
+                          }}
+                          input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
+                          renderValue={(selected) => {
+                            if (!selected) {
+                              return <Typography variant="subtitle1">Seleccionar Departamento</Typography>;
+                            }
+
+                            return <Typography variant="subtitle2">{selected}</Typography>;
+                          }}
+                        >
+                          {countrys.map((column: any) => (
+                            <MenuItem key={column.id} value={column.department}>
+                              <ListItemText primary={column.department} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      {touched.department && errors.department && (
+                        <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
+                          {errors.department}
+                        </FormHelperText>
+                      )}
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Stack spacing={1.25}>
+                      <InputLabel htmlFor="warehouse-orderStatus">Ciudad</InputLabel>
+                      <FormControl fullWidth>
+                        <Select
+                          id="column-hiding"
+                          displayEmpty
+                          {...getFieldProps('city')}
+                          onChange={(event: SelectChangeEvent<string>) => setFieldValue('city', event.target.value as string)}
                           input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                           renderValue={(selected) => {
                             if (!selected) {
@@ -187,26 +226,26 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
                             return <Typography variant="subtitle2">{selected}</Typography>;
                           }}
                         >
-                          {allStatus.map((column: any) => (
+                          {citys.map((column: any) => (
                             <MenuItem key={column} value={column}>
                               <ListItemText primary={column} />
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
-                      {touched.orderStatus && errors.orderStatus && (
+                      {touched.city && errors.city && (
                         <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                          {errors.orderStatus}
+                          {errors.city}
                         </FormHelperText>
                       )}
                     </Stack>
                   </Grid>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="user-location">Dirección</InputLabel>
+                      <InputLabel htmlFor="warehouse-location">Dirección</InputLabel>
                       <TextField
                         fullWidth
-                        id="user-location"
+                        id="warehouse-location"
                         multiline
                         rows={2}
                         placeholder="Ingresar Dirección"
@@ -238,7 +277,7 @@ const AddWarehouse = ({ user, onCancel }: Props) => {
                     Cancelar
                   </Button>
                   <Button type="submit" variant="contained" disabled={isSubmitting}>
-                    {user ? 'Edit' : 'Add'}
+                    {warehouse ? 'Edit' : 'Add'}
                   </Button>
                 </Stack>
               </Grid>

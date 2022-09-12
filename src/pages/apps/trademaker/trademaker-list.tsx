@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useMemo, Fragment } from 'react';
+import { useEffect, useMemo, useState, Fragment } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
 
 // third-party
-// import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import CustomerView from 'sections/apps/customer/CustomerView';
-import Avatar from 'components/@extended/Avatar';
+import AddTrademaker from 'sections/apps/products/trademaker/AddTrademaker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+
+import { useDispatch, useSelector } from 'store';
+
+import { openSnackbar } from 'store/reducers/snackbar';
+import { getTradeMakerList, deleteTradeMaker } from 'store/reducers/trademaker';
 
 // assets
-import { CloseOutlined, EyeTwoTone, DeleteTwoTone } from '@ant-design/icons';
-
-const avatarImage = require.context('assets/images/users', true);
+import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -30,23 +30,21 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
-  renderRowSubComponent: any;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'name', desc: false };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
-    visibleColumns,
+    allColumns,
     rows,
     // @ts-ignore
     page,
@@ -59,8 +57,9 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     // @ts-ignore
     preGlobalFilteredRows,
     // @ts-ignore
-    setGlobalFilter
+    setGlobalFilter,
     // @ts-ignore
+    setSortBy
   } = useTable(
     {
       columns,
@@ -77,15 +76,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     usePagination,
     useRowSelect
   );
-
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
-    } else {
-      setHiddenColumns(['avatar', 'email']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
 
   return (
     <>
@@ -105,10 +95,10 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
             size="small"
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            {/*  <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
+            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Add Customer
-            </Button> */}
+              Agregar Trademaker
+            </Button>
           </Stack>
         </Stack>
 
@@ -127,8 +117,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <TableBody {...getTableBodyProps()}>
             {page.map((row: any, i: number) => {
               prepareRow(row);
-              const rowProps = row.getRowProps();
-
               return (
                 <Fragment key={i}>
                   <TableRow
@@ -142,7 +130,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
                       <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
                     ))}
                   </TableRow>
-                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
                 </Fragment>
               );
             })}
@@ -158,76 +145,45 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 }
 
-// ==============================|| CUSTOMER - LIST VIEW ||============================== //
+// ==============================|| PROFILE - USER LIST ||============================== //
 
-const CustomerList = () => {
+const WarehouseList = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const data = useMemo(() => makeData(4), []);
-
-  /* const [customer, setCustomer] = useState(null);
-  const [add, setAdd] = useState<boolean>(false); */
+  const [tradeMaker, setTradeMaker] = useState(null);
+  const [add, setAdd] = useState<boolean>(false);
 
   const handleAdd = () => {
-    // setAdd(!add);
-    //  if (customer && !add) setCustomer(null);
+    setAdd(!add);
+    if (tradeMaker && !add) setTradeMaker(null);
   };
+  const { tradeMakerList } = useSelector((state) => state.trademaker);
 
+  useEffect(() => {
+    dispatch(getTradeMakerList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const columns = useMemo(
     () => [
       {
-        title: 'Row Selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
-          <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        accessor: 'selection',
-        Cell: ({ row }: any) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />,
-        disableSortBy: true
+        Header: 'Trademaker',
+        accessor: 'name'
       },
       {
-        Header: 'Order ID',
-        accessor: 'orderId',
-        className: 'cell-center'
-      },
-      {
-        Header: 'Proveedor',
-        accessor: 'fatherName',
-        Cell: ({ row }: any) => {
-          const { values } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`).default} />
-              <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.fatherName}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {values.email}
-                </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Fecha',
-        accessor: 'date',
-        disableSortBy: true
+        Header: 'Maker',
+        accessor: 'maker'
       },
       {
         Header: 'Estado',
         accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Refunded':
-              return <Chip color="error" label="Refunded" size="small" variant="light" />;
-            case 'Completed':
-              return <Chip color="success" label="Completed" size="small" variant="light" />;
-            case 'Cancelled':
-              return <Chip color="secondary" label="Cancelled" size="small" variant="light" />;
-            case 'Processing':
-              return <Chip color="info" label="Processing" size="small" variant="light" />;
-            case 'Delivered':
+            case false:
+              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
+            case true:
             default:
-              return <Chip color="warning" label="Delivered" size="small" variant="light" />;
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
           }
         }
       },
@@ -236,41 +192,37 @@ const CustomerList = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const collapseIcon = row.isExpanded ? (
-            <CloseOutlined style={{ color: theme.palette.error.main }} />
-          ) : (
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          );
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton
-                  color="secondary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    row.toggleRowExpanded();
-                  }}
-                >
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
-              {/*   <Tooltip title="Edit">
+              <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setCustomer(row.values);
+                    setTradeMaker(row.values);
                     handleAdd();
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
                   onClick={(e: any) => {
-                    //   e.stopPropagation();
+                    e.stopPropagation();
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Trademaker deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
+                    dispatch(deleteTradeMaker(row?.name));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -285,26 +237,23 @@ const CustomerList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
-
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
+          data={tradeMakerList as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
 
-      {/* add customer dialog */}
-      {/*  <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddCustomer customer={customer} onCancel={handleAdd} />}
-      </Dialog> */}
+      {/* add user dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {add && <AddTrademaker tradeMaker={tradeMaker} onCancel={handleAdd} />}
+      </Dialog>
     </MainCard>
   );
 };
 
-export default CustomerList;
+export default WarehouseList;

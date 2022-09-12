@@ -3,7 +3,7 @@ import { add, sub } from 'date-fns';
 import { Chance } from 'chance';
 
 // types
-import { Address, Products, Reviews } from 'types/e-commerce';
+import { Address, Products, Reviews, Packs, Warehouses, Maker, TradeMaker } from 'types/e-commerce';
 
 const chance = new Chance();
 
@@ -267,5 +267,46 @@ export const products: Products[] = [
     sku: '102106',
     ean: '102106',
     new: 10
+  }
+];
+
+// Pack list
+export const packList: Packs[] = [
+  {
+    id: 1,
+    name: 'vidrio',
+    status: false,
+    qty: 40
+  }
+];
+
+// billing address list
+export const warehouse: Warehouses[] = [
+  {
+    id: 1,
+    name: 'Bogota',
+    department: 'Bogota',
+    city: 'Seporcus',
+    location: 'Rhode Island',
+    status: false
+  }
+];
+
+// billing address list
+export const maker: Maker[] = [
+  {
+    id: 1,
+    name: 'Bogota',
+    status: false
+  }
+];
+
+// billing address list
+export const trademaker: TradeMaker[] = [
+  {
+    id: 1,
+    name: 'Test',
+    maker: 'nuevo',
+    status: false
   }
 ];

@@ -24,7 +24,7 @@ const applications: NavItemType = {
       id: 'proveedores',
       title: 'Proveedores',
       type: 'item',
-      url: '/supplier-list',
+      url: '/supplier',
       icon: icons.AppstoreOutlined
     },
     {

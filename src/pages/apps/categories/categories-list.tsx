@@ -1,37 +1,27 @@
-import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
+import { useEffect, useMemo, useState, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import {
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
 
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import UserView from 'sections/apps/profiles/user-list/UserView';
-import AddWarehouse from 'sections/apps/profiles/user-list/AddWarehouse';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import makeData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+
+import { useDispatch, useSelector } from 'store';
+
+import { openSnackbar } from 'store/reducers/snackbar';
+import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
 
 // assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -40,24 +30,21 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
-  renderRowSubComponent: any;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'name', desc: false };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
     allColumns,
-    visibleColumns,
     rows,
     // @ts-ignore
     page,
@@ -80,7 +67,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
     },
     useGlobalFilter,
     useFilters,
@@ -89,15 +76,11 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     usePagination,
     useRowSelect
   );
+  const history = useNavigate();
 
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
-    } else {
-      setHiddenColumns(['avatar', 'email']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
+  const handleAddCategory = () => {
+    history(`/p/add-category`);
+  };
 
   return (
     <>
@@ -118,8 +101,8 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Bodega
+            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddCategory}>
+              Agregar Categorias
             </Button>
           </Stack>
         </Stack>
@@ -139,8 +122,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <TableBody {...getTableBodyProps()}>
             {page.map((row: any, i: number) => {
               prepareRow(row);
-              const rowProps = row.getRowProps();
-
               return (
                 <Fragment key={i}>
                   <TableRow
@@ -154,7 +135,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
                       <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
                     ))}
                   </TableRow>
-                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
                 </Fragment>
               );
             })}
@@ -172,68 +152,51 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 
 // ==============================|| PROFILE - USER LIST ||============================== //
 
-const UserListPage = () => {
+const WarehouseList = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const data = useMemo(() => makeData(200), []);
-
-  const [user, setUser] = useState(null);
+  const [warehouse, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
-    if (user && !add) setUser(null);
+    if (warehouse && !add) setWarehouse(null);
   };
+  const { warehouseList } = useSelector((state) => state.warehouse);
 
+  useEffect(() => {
+    dispatch(getWarehouseList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const columns = useMemo(
     () => [
       {
-        title: 'Row Selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
-          <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        accessor: 'selection',
-        Cell: ({ row }: any) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />,
-        disableSortBy: true
+        Header: 'Categoria',
+        accessor: 'name',
+        className: 'cell-center'
       },
       {
-        Header: 'Bodega',
-        accessor: 'fatherName',
-        Cell: ({ row }: any) => {
-          const { values } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.fatherName}</Typography>
-              </Stack>
-            </Stack>
-          );
-        }
+        Header: 'Categoria 2',
+        accessor: 'location',
+        className: 'cell-center'
       },
       {
-        Header: 'País',
-        accessor: 'country'
-      },
-      {
-        Header: 'Ciudad',
-        accessor: 'firstName'
-      },
-      {
-        Header: 'Dirección',
-        accessor: 'address'
+        Header: 'Categoria 3',
+        accessor: 'city',
+        className: 'cell-center'
       },
       {
         Header: 'Estado',
         accessor: 'status',
+        className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Desactivado':
+            case false:
               return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case 'Activo':
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-            case 'Pendiente':
+            case true:
             default:
-              return <Chip color="info" label="Pendiente" size="small" variant="light" />;
+              return <Chip color="success" label="Activo" size="small" variant="light" />;
           }
         }
       },
@@ -242,30 +205,14 @@ const UserListPage = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const collapseIcon = row.isExpanded ? (
-            <CloseOutlined style={{ color: theme.palette.error.main }} />
-          ) : (
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          );
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton
-                  color="secondary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    row.toggleRowExpanded();
-                  }}
-                >
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setUser(row.values);
+                    setWarehouse(row.values);
                     handleAdd();
                   }}
                 >
@@ -277,6 +224,18 @@ const UserListPage = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Bodega deleted successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
+                    dispatch(deleteWarehouse(row?.name));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -291,26 +250,18 @@ const UserListPage = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <UserView data={data[row.id]} />, [data]);
-
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={data}
+          data={warehouseList as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
-
-      {/* add user dialog */}
-      <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddWarehouse user={user} onCancel={handleAdd} />}
-      </Dialog>
     </MainCard>
   );
 };
 
-export default UserListPage;
+export default WarehouseList;

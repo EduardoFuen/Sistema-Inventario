@@ -176,7 +176,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 
 // ==============================|| CUSTOMER - LIST VIEW ||============================== //
 
-const CustomerList = () => {
+const PurchaseList = () => {
   const theme = useTheme();
 
   const data = useMemo(() => makeData(200), []);
@@ -344,4 +344,4 @@ const CustomerList = () => {
   );
 };
 
-export default CustomerList;
+export default PurchaseList;

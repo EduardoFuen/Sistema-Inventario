@@ -107,3 +107,64 @@ export interface TabsProps {
   value: string | number;
   index: number;
 }
+
+// Pack
+export type Packs = {
+  id: string | number | undefined;
+  name: string;
+  status: boolean;
+  qty: number;
+};
+
+export interface PackStateProps {
+  packList: Packs[];
+  error: object | string | null;
+}
+
+// country
+
+export type Country = {
+  id: string | number | undefined;
+  department: string;
+  cities: any;
+};
+
+// Warehouse
+export type Warehouses = {
+  id: string | number | undefined;
+  name: string;
+  department: string;
+  city: string;
+  location: string;
+  status: boolean;
+};
+
+export interface WarehouseStateProps {
+  warehouseList: Warehouses[];
+  error: object | string | null;
+}
+
+// Maker
+export type Maker = {
+  id: string | number | undefined;
+  name: string;
+  status: boolean;
+};
+
+export interface MakerStateProps {
+  makerList: Maker[];
+  error: object | string | null;
+}
+
+// TradeMaker
+export type TradeMaker = {
+  id: string | number | undefined;
+  name: string;
+  maker: string;
+  status: boolean;
+};
+
+export interface TradeMakerStateProps {
+  tradeMakerList: TradeMaker[];
+  error: object | string | null;
+}
