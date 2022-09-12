@@ -17,32 +17,41 @@ function AddNewProduct() {
   const history = useNavigate();
   const statuss = [
     {
-      value: 'in stock',
-      label: 'In Stock'
+      value: 'Saludable',
+      label: 'Saludable'
     },
     {
-      value: 'out of stock',
-      label: 'Out of Stock'
+      value: 'Salud',
+      label: 'Salud'
     }
   ];
 
   const [quantity, setQuantity] = useState('one');
   const [status, setStatus] = useState('in stock');
+
   const { makerList } = useSelector((state) => state.maker);
   const { tradeMakerList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
-
+  const { product } = useSelector((state) => state.product);
+  const [productNew, setProductNew] = useState({
+    name: product?.name,
+    sku: product?.sku
+  });
   const handleQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(event.target.value);
   };
 
   const handleStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
+    setProductNew({
+      name: event.target.value,
+      sku: event.target.value
+    });
   };
-
   const handleCancel = () => {
     history(`/apps/e-commerce/product-list`);
   };
+  console.log(productNew);
 
   return (
     <>
@@ -56,15 +65,30 @@ function AddNewProduct() {
               <Grid container spacing={1} direction="row">
                 <Grid item xs={12}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Producto</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Nombre" fullWidth />
+                  <TextField
+                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                    value={productNew?.name}
+                    placeholder="Ingresa Nombre"
+                    fullWidth
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>SKU</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa SKU" fullWidth />
+                  <TextField
+                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                    value={productNew?.sku}
+                    placeholder="Ingresa SKU"
+                    fullWidth
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>EAN</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa EAN" fullWidth />
+                  <TextField
+                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                    value={productNew?.sku}
+                    placeholder="Ingresa EAN"
+                    fullWidth
+                  />
                 </Grid>
                 {/*   <Grid item xs={12}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Product Description</InputLabel>

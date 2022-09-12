@@ -23,7 +23,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import CustomerView from 'sections/apps/customer/CustomerView';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
+import AddReception from 'sections/apps/customer/AddReception';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
@@ -123,7 +123,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Orden Compra
+              Registrar Ingreso
             </Button>
           </Stack>
         </Stack>
@@ -179,7 +179,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 const ReceptionList = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
+  const data = useMemo(() => makeData(5), []);
 
   const [customer, setCustomer] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
@@ -338,7 +338,7 @@ const ReceptionList = () => {
 
       {/* add customer dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddCustomer customer={customer} onCancel={handleAdd} />}
+        {add && <AddReception customer={customer} onCancel={handleAdd} />}
       </Dialog>
     </MainCard>
   );

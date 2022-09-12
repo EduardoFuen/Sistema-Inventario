@@ -32,10 +32,14 @@ const slice = createSlice({
     getProductsSuccess(state, action) {
       state.products = action.payload;
     },
+    // EDIT PRODUCTS
+    editProductsSuccess(state, action) {
+      state.product = action.payload;
+    },
 
     // FILTER PRODUCTS
     filterProductsSuccess(state, action) {
-      state.products = action.payload;
+      state.product = action.payload;
     },
 
     // GET PRODUCT
@@ -78,14 +82,21 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
-      const response = await axios.get('/api/products/list');
-      dispatch(slice.actions.getProductsSuccess(response.data.products));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
+export function editProduct(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.editProductsSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function filterProducts(filter: ProductsFilter) {
   return async () => {
     try {

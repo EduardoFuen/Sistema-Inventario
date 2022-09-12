@@ -31,7 +31,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { getProducts } from 'store/reducers/product';
+import { getProducts, editProduct } from 'store/reducers/product';
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
@@ -177,8 +177,12 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
 const ProductList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const history = useNavigate();
 
   const { products } = useSelector((state) => state.product);
+  const handleEditProduct = () => {
+    history(`/p/add-new-product`);
+  };
   useEffect(() => {
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -293,6 +297,8 @@ const ProductList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    handleEditProduct();
+                    dispatch(editProduct(row.values));
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />

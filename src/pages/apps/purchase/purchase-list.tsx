@@ -179,7 +179,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 const PurchaseList = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
+  const data = useMemo(() => makeData(10), []);
 
   const [customer, setCustomer] = useState(null);
   const [add, setAdd] = useState<boolean>(false);

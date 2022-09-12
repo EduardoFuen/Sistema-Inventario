@@ -80,7 +80,14 @@ const reducers = combineReducers({
     },
     cartReducer
   ),
-  product: productReducer
+  product: persistReducer(
+    {
+      key: 'productReducer',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    productReducer
+  )
 });
 
 export default reducers;

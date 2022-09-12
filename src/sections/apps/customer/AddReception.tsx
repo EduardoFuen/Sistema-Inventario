@@ -22,6 +22,8 @@ import {
   Typography
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+// assets
+import { DeleteFilled } from '@ant-design/icons';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -35,13 +37,12 @@ import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { DeleteFilled } from '@ant-design/icons';
 
 // const avatarImage = require.context('assets/images/users', true);
 
 // constant
 const getInitialValues = (customer: FormikValues | null) => {
-  const newCustomer = {
+  const newRecepción = {
     name: '',
     email: '',
     location: '',
@@ -49,12 +50,12 @@ const getInitialValues = (customer: FormikValues | null) => {
   };
 
   if (customer) {
-    newCustomer.name = customer.fatherName;
-    newCustomer.location = customer.address;
-    return _.merge({}, newCustomer, customer);
+    newRecepción.name = customer.fatherName;
+    newRecepción.location = customer.address;
+    return _.merge({}, newRecepción, customer);
   }
 
-  return newCustomer;
+  return newRecepción;
 };
 
 const allStatus = ['Complicated', 'Single', 'Relationship'];
@@ -66,11 +67,10 @@ export interface Props {
   onCancel: () => void;
 }
 
-const AddCustomer = ({ customer, onCancel }: Props) => {
+const AddRecepción = ({ customer, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !customer;
-
-  const CustomerSchema = Yup.object().shape({
+  const RecepciónSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Name is required'),
     orderStatus: Yup.string().required('Name is required'),
     email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
@@ -78,11 +78,11 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
   });
 
   const deleteHandler = () => {
-    // dispatch(deleteCustomer(customer?.id)); - delete
+    // dispatch(deleteRecepción(customer?.id)); - delete
     dispatch(
       openSnackbar({
         open: true,
-        message: 'Customer deleted successfully.',
+        message: 'Recepción deleted successfully.',
         variant: 'alert',
         alert: {
           color: 'success'
@@ -95,10 +95,10 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
 
   const formik = useFormik({
     initialValues: getInitialValues(customer!),
-    validationSchema: CustomerSchema,
+    validationSchema: RecepciónSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        // const newCustomer = {
+        // const newRecepción = {
         //   name: values.name,
         //   email: values.email,
         //   location: values.location,
@@ -106,11 +106,11 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
         // };
 
         if (customer) {
-          // dispatch(updateCustomer(customer.id, newCustomer)); - update
+          // dispatch(updateRecepción(customer.id, newRecepción)); - update
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Customer update successfully.',
+              message: 'Recepción update successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -119,11 +119,11 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
             })
           );
         } else {
-          // dispatch(createCustomer(newCustomer)); - add
+          // dispatch(createRecepción(newRecepción)); - add
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Customer add successfully.',
+              message: 'Recepción add successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -147,7 +147,7 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{customer ? 'Editar Orden Compra' : 'Nueva Orden Compra'}</DialogTitle>
+          <DialogTitle>{customer ? 'Editar  Ingreso' : 'Registrar Nuevo Ingreso'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -159,7 +159,7 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
                       <TextField
                         fullWidth
                         id="customer-name"
-                        placeholder="Enter Customer Name"
+                        placeholder="Enter Recepción Name"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}
@@ -172,7 +172,7 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
                       <TextField
                         fullWidth
                         id="customer-email"
-                        placeholder="Enter Customer Email"
+                        placeholder="Enter Recepción Email"
                         {...getFieldProps('email')}
                         error={Boolean(touched.email && errors.email)}
                         helperText={touched.email && errors.email}
@@ -235,7 +235,7 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 {!isCreating && (
-                  <Tooltip title="Delete Customer" placement="top">
+                  <Tooltip title="Delete Recepción" placement="top">
                     <IconButton onClick={deleteHandler} size="large" color="error">
                       <DeleteFilled />
                     </IconButton>
@@ -260,4 +260,4 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
   );
 };
 
-export default AddCustomer;
+export default AddRecepción;
