@@ -3,7 +3,7 @@ import { add, sub } from 'date-fns';
 import { Chance } from 'chance';
 
 // types
-import { Address, Products, Reviews, Packs, Warehouses, Maker, TradeMaker } from 'types/e-commerce';
+import { Address, Products, Reviews, Packs, Warehouses, Maker, Trademark } from 'types/e-commerce';
 
 const chance = new Chance();
 
@@ -302,7 +302,7 @@ export const maker: Maker[] = [
 ];
 
 // billing address list
-export const trademaker: TradeMaker[] = [
+export const trademaker: Trademark[] = [
   {
     id: 1,
     name: 'Test',

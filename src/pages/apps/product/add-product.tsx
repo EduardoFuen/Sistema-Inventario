@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
-import { Button, Grid, InputLabel, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Button, Grid, InputLabel, MenuItem, Stack, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
 
 // project import
+import { useSelector } from 'store';
 import MainCard from 'components/MainCard';
 
 // assets
@@ -14,22 +15,6 @@ import { UploadOutlined } from '@ant-design/icons';
 
 function AddNewProduct() {
   const history = useNavigate();
-
-  const quantities = [
-    {
-      value: 'one',
-      label: '1'
-    },
-    {
-      value: 'two',
-      label: '2'
-    },
-    {
-      value: 'three',
-      label: '3'
-    }
-  ];
-
   const statuss = [
     {
       value: 'in stock',
@@ -43,6 +28,9 @@ function AddNewProduct() {
 
   const [quantity, setQuantity] = useState('one');
   const [status, setStatus] = useState('in stock');
+  const { makerList } = useSelector((state) => state.maker);
+  const { tradeMakerList } = useSelector((state) => state.trademaker);
+  const { packList } = useSelector((state) => state.pack);
 
   const handleQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(event.target.value);
@@ -92,7 +80,7 @@ function AddNewProduct() {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <Typography color="error.main">
+                <Typography color="error.main" sx={{ mt: 4, opacity: 0.5 }}>
                   *{' '}
                   <Typography component="span" color="textSecondary">
                     La resolución recomendada es 640*640 con tamaño de archivo
@@ -113,9 +101,9 @@ function AddNewProduct() {
                 <Grid item xs={6}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
                   <TextField placeholder="Select quantity" fullWidth select value={quantity} onChange={handleQuantity}>
-                    {quantities.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                    {makerList.map((option) => (
+                      <MenuItem key={option.name} value={option.name}>
+                        {option.name}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -131,11 +119,11 @@ function AddNewProduct() {
                   </TextField>
                 </Grid>
                 <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>TradeMaker</InputLabel>
+                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                   <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {statuss.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                    {tradeMakerList.map((option) => (
+                      <MenuItem key={option.name} value={option.name}>
+                        {option.name}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -176,10 +164,10 @@ function AddNewProduct() {
                 </Typography>
                 <Grid item xs={12}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
-                  <TextField placeholder="Selecconar Envase" select value={quantity} onChange={handleQuantity}>
-                    {quantities.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                  <TextField placeholder="Selecconar Envase" select value={quantity} fullWidth onChange={handleQuantity}>
+                    {packList.map((option) => (
+                      <MenuItem key={option.name} value={option.name}>
+                        {option.name}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -222,7 +210,7 @@ function AddNewProduct() {
             </MainCard>
           </Grid>
 
-      {/*     <Grid item xs={12} sm={6}>
+          {/*     <Grid item xs={12} sm={6}>
             <MainCard>
               <Grid container direction="row" spacing={2}>
                 <Typography variant="h5" component="div" sx={{ mb: 3 }}>
@@ -241,7 +229,9 @@ function AddNewProduct() {
               </Grid>
             </MainCard>
           </Grid> */}
-
+          <Grid item xs={12} sm={8}>
+            <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="Estado" labelPlacement="top" />
+          </Grid>
           <Grid item xs={12}>
             <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
               <Button variant="outlined" color="secondary" onClick={handleCancel}>

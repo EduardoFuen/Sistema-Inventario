@@ -14,7 +14,7 @@ const PackList = Loadable(lazy(() => import('../pack/pack-list')));
 const WarehouseList = Loadable(lazy(() => import('../warehouse/warehouse-list')));
 const ProductList = Loadable(lazy(() => import('./products-list')));
 const MakerList = Loadable(lazy(() => import('../maker/maker')));
-const TradeMakerList = Loadable(lazy(() => import('../trademaker/trademaker-list')));
+const TrademarkList = Loadable(lazy(() => import('../trademaker/trademaker-list')));
 const Categories = Loadable(lazy(() => import('../categories/categories-list')));
 
 // ==============================|| REACT TAB ||============================== //
@@ -74,7 +74,7 @@ function TabProducts() {
           <MakerList />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <TradeMakerList />
+          <TrademarkList />
         </TabPanel>
         <TabPanel value={value} index={5}>
           <WarehouseList />

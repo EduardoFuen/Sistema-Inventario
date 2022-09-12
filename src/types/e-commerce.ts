@@ -156,16 +156,16 @@ export interface MakerStateProps {
   error: object | string | null;
 }
 
-// TradeMaker
-export type TradeMaker = {
+// Trademark
+export type Trademark = {
   id: string | number | undefined;
   name: string;
   maker: string;
   status: boolean;
 };
 
-export interface TradeMakerStateProps {
-  tradeMakerList: TradeMaker[];
+export interface TrademarkStateProps {
+  tradeMakerList: Trademark[];
   error: object | string | null;
 }
 

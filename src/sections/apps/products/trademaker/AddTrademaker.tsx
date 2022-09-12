@@ -32,24 +32,24 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addTradeMaker, editTradeMaker, deleteTradeMaker } from 'store/reducers/trademaker';
+import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/trademaker';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // constant
 const getInitialValues = (tradeMaker: FormikValues | null) => {
-  const newTradeTradeMaker = {
+  const newTradeTrademark = {
     name: '',
     maker: '',
     status: false
   };
 
   if (tradeMaker) {
-    return _.merge({}, newTradeTradeMaker, tradeMaker);
+    return _.merge({}, newTradeTrademark, tradeMaker);
   }
 
-  return newTradeTradeMaker;
+  return newTradeTrademark;
 };
 
 // ==============================|| WAREHOUSE ADD / EDIT / DELETE ||============================== //
@@ -65,16 +65,16 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   const [maker, setMaker] = useState('');
   const { makerList } = useSelector((state) => state.maker);
 
-  const TradeMakerSchema = Yup.object().shape({
+  const TrademarkSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const deleteHandler = () => {
-    dispatch(deleteTradeMaker(tradeMaker?.name));
+    dispatch(deleteTrademark(tradeMaker?.name));
     dispatch(
       openSnackbar({
         open: true,
-        message: 'TradeMaker deleted successfully.',
+        message: 'Trademark deleted successfully.',
         variant: 'alert',
         alert: {
           color: 'success'
@@ -86,21 +86,21 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   };
   const formik = useFormik({
     initialValues: getInitialValues(tradeMaker!),
-    validationSchema: TradeMakerSchema,
+    validationSchema: TrademarkSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        const newTradeTradeMaker = {
+        const newTradeTrademark = {
           name: values.name,
           maker: maker,
           status: values.status
         };
 
         if (tradeMaker) {
-          dispatch(editTradeMaker(tradeMaker.name, newTradeTradeMaker));
+          dispatch(editTrademark(tradeMaker.name, newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'TradeMaker update successfully.',
+              message: 'Trademark update successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -109,11 +109,11 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addTradeMaker(newTradeTradeMaker));
+          dispatch(addTrademark(newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'TradeMaker add successfully.',
+              message: 'Trademark add successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -140,7 +140,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{tradeMaker ? 'Editar TradeMaker' : 'Agregar TradeMaker'}</DialogTitle>
+          <DialogTitle>{tradeMaker ? 'Editar Trademark' : 'Agregar Trademark'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -152,7 +152,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                       <TextField
                         fullWidth
                         id="tradeMaker-name"
-                        placeholder="Ingresa Nombre TradeMaker"
+                        placeholder="Ingresa Nombre Trademark"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}

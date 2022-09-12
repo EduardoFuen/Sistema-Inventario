@@ -6,11 +6,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../index';
 
 // types
-import { TradeMakerStateProps } from 'types/e-commerce';
+import { TrademarkStateProps } from 'types/e-commerce';
 
 // ----------------------------------------------------------------------
 
-const initialState: TradeMakerStateProps = {
+const initialState: TrademarkStateProps = {
   error: null,
   tradeMakerList: []
 };
@@ -25,20 +25,20 @@ const slice = createSlice({
     },
 
     // GET PACKS
-    getTradeMakerSuccess(state, action) {
+    getTrademarkSuccess(state, action) {
       state.tradeMakerList = action.payload;
     },
 
     // ADD PACK
-    addTradeMakerSuccess(state, action) {
+    addTrademarkSuccess(state, action) {
       state.tradeMakerList.push(action.payload);
     },
-    UpdateTradeMakerSuccess(state, action) {
+    UpdateTrademarkSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.tradeMakerList.findIndex((item) => item.name === name);
       state.tradeMakerList[index] = data;
     },
-    DeleteTradeMakerSuccess(state, action) {
+    DeleteTrademarkSuccess(state, action) {
       const { name } = action.payload;
       const index = state.tradeMakerList.findIndex((item) => item.name === name);
       state.tradeMakerList.splice(index, 1);
@@ -51,21 +51,21 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function addTradeMaker(data: any) {
+export function addTrademark(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addTradeMakerSuccess(data));
+      dispatch(slice.actions.addTrademarkSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function editTradeMaker(name: string, data: any) {
+export function editTrademark(name: string, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdateTradeMakerSuccess({
+        slice.actions.UpdateTrademarkSuccess({
           name,
           data
         })
@@ -76,11 +76,11 @@ export function editTradeMaker(name: string, data: any) {
   };
 }
 
-export function deleteTradeMaker(name: string) {
+export function deleteTrademark(name: string) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeleteTradeMakerSuccess({
+        slice.actions.DeleteTrademarkSuccess({
           name
         })
       );
@@ -89,7 +89,7 @@ export function deleteTradeMaker(name: string) {
     }
   };
 }
-export function getTradeMakerList() {
+export function getTrademarkList() {
   return async () => {
     try {
       localStorage.getItem('mantis-ts-trademaker');

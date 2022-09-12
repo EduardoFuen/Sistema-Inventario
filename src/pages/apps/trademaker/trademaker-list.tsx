@@ -8,7 +8,7 @@ import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, Ta
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import AddTrademaker from 'sections/apps/products/trademaker/AddTrademaker';
+import AddTrademark from 'sections/apps/products/trademaker/AddTrademaker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -18,7 +18,7 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getTradeMakerList, deleteTradeMaker } from 'store/reducers/trademaker';
+import { getTrademarkList, deleteTrademark } from 'store/reducers/trademaker';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -97,7 +97,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Trademaker
+              Agregar Trademark
             </Button>
           </Stack>
         </Stack>
@@ -151,23 +151,23 @@ const WarehouseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [tradeMaker, setTradeMaker] = useState(null);
+  const [tradeMaker, setTrademark] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
-    if (tradeMaker && !add) setTradeMaker(null);
+    if (tradeMaker && !add) setTrademark(null);
   };
   const { tradeMakerList } = useSelector((state) => state.trademaker);
 
   useEffect(() => {
-    dispatch(getTradeMakerList());
+    dispatch(getTrademarkList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const columns = useMemo(
     () => [
       {
-        Header: 'Trademaker',
+        Header: 'Trademark',
         accessor: 'name'
       },
       {
@@ -199,7 +199,7 @@ const WarehouseList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setTradeMaker(row.values);
+                    setTrademark(row.values);
                     handleAdd();
                   }}
                 >
@@ -214,7 +214,7 @@ const WarehouseList = () => {
                     dispatch(
                       openSnackbar({
                         open: true,
-                        message: 'Trademaker deleted successfully.',
+                        message: 'Trademark deleted successfully.',
                         variant: 'alert',
                         alert: {
                           color: 'success'
@@ -222,7 +222,7 @@ const WarehouseList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteTradeMaker(row?.name));
+                    dispatch(deleteTrademark(row?.name));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -250,7 +250,7 @@ const WarehouseList = () => {
 
       {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddTrademaker tradeMaker={tradeMaker} onCancel={handleAdd} />}
+        {add && <AddTrademark tradeMaker={tradeMaker} onCancel={handleAdd} />}
       </Dialog>
     </MainCard>
   );
