@@ -155,7 +155,7 @@ const AddCustomer = ({ customer, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="customer-name">Name</InputLabel>
+                      <InputLabel htmlFor="customer-name">Proveedor</InputLabel>
                       <TextField
                         fullWidth
                         id="customer-name"

@@ -41,9 +41,9 @@ const getInitialValues = (pack: FormikValues | null) => {
 
   if (pack) {
     newPack.name = pack.name;
+    newPack.status = pack.status;
     return _.merge({}, newPack, pack);
   }
-
   return newPack;
 };
 
@@ -157,7 +157,7 @@ const AddPackList = ({ pack, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={pack?.status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"

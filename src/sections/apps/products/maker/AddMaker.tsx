@@ -154,7 +154,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={maker?.status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"

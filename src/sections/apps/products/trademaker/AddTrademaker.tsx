@@ -44,8 +44,8 @@ const getInitialValues = (tradeMaker: FormikValues | null) => {
     maker: '',
     status: false
   };
-
   if (tradeMaker) {
+    newTradeTrademark.status = tradeMaker.status;
     return _.merge({}, newTradeTrademark, tradeMaker);
   }
 
@@ -64,7 +64,6 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   const isCreating = !tradeMaker;
   const [maker, setMaker] = useState('');
   const { makerList } = useSelector((state) => state.maker);
-
   const TrademarkSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido')
   });
@@ -166,7 +165,13 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
                       <InputLabel htmlFor="personal-experience">Maker</InputLabel>
-                      <Select fullWidth id="tradeMaker-maker" {...getFieldProps('maker')} value={maker} onChange={handleChange}>
+                      <Select
+                        fullWidth
+                        id="tradeMaker-maker"
+                        {...getFieldProps('maker')}
+                        value={maker || tradeMaker.maker}
+                        onChange={handleChange}
+                      >
                         {makerList.map((option) => (
                           <MenuItem key={option.name} value={option.name}>
                             {option.name}
@@ -182,7 +187,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMaker?.status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"

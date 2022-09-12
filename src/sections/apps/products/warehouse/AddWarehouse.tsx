@@ -21,7 +21,9 @@ import {
   Stack,
   TextField,
   Tooltip,
-  Typography
+  Typography,
+  FormControlLabel,
+  Switch
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
@@ -47,7 +49,8 @@ const getInitialValues = (warehouse: FormikValues | null) => {
     name: '',
     department: '',
     city: '',
-    location: ''
+    location: '',
+    status: false
   };
 
   if (warehouse) {
@@ -108,7 +111,8 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
           name: values.name,
           department: values.department,
           city: values.city,
-          location: values.location
+          location: values.location,
+          status: values.status
         };
 
         if (warehouse) {
@@ -148,7 +152,6 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
   return (
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -254,6 +257,20 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                         helperText={touched.location && errors.location}
                       />
                     </Stack>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Stack spacing={1.25}>
+                          <FormControlLabel
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={warehouse?.status} />}
+                            label="Estado"
+                            {...getFieldProps('status')}
+                            labelPlacement="top"
+                          />
+                        </Stack>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
