@@ -23,7 +23,7 @@ import {
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
+import { useSelector } from 'store';
 // third-party
 import _ from 'lodash';
 import * as Yup from 'yup';
@@ -63,6 +63,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMaker;
   const [maker, setMaker] = useState('');
+  const { makerList } = useSelector((state) => state.maker);
 
   const TradeMakerSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido')
@@ -166,11 +167,11 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                     <Stack spacing={1.25}>
                       <InputLabel htmlFor="personal-experience">Maker</InputLabel>
                       <Select fullWidth id="tradeMaker-maker" {...getFieldProps('maker')} value={maker} onChange={handleChange}>
-                        <MenuItem value="Pfizer">Pfizer</MenuItem>
-                        <MenuItem value="Bayer">Bayer</MenuItem>
-                        <MenuItem value="Bayer">Bayer</MenuItem>
-                        <MenuItem value="Merck">Merck</MenuItem>
-                        <MenuItem value="Sanofi">Sanofi</MenuItem>
+                        {makerList.map((option) => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </Stack>
                   </Grid>

@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+// import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types
@@ -92,8 +92,7 @@ export function deleteWarehouse(name: string) {
 export function getWarehouseList() {
   return async () => {
     try {
-      const response = await axios.get('/api/warehouse/list');
-      dispatch(slice.actions.getWarehouseSuccess(response.data.warehouse));
+      localStorage.getItem('mantis-ts-warehouse');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

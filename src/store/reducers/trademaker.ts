@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+// import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types
@@ -92,8 +92,7 @@ export function deleteTradeMaker(name: string) {
 export function getTradeMakerList() {
   return async () => {
     try {
-      const response = await axios.get('/api/trademaker/list');
-      dispatch(slice.actions.getTradeMakerSuccess(response.data.trademaker));
+      localStorage.getItem('mantis-ts-trademaker');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

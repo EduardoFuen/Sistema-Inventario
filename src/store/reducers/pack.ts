@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+// import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types
@@ -92,8 +92,7 @@ export function deletePack(name: string) {
 export function getPackList() {
   return async () => {
     try {
-      const response = await axios.get('/api/packList/list');
-      dispatch(slice.actions.getPackSuccess(response.data.packList));
+      localStorage.getItem('mantis-ts-pack');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

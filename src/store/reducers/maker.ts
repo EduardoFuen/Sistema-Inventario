@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+// import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types
@@ -92,8 +92,7 @@ export function deleteMaker(name: string) {
 export function getMakerList() {
   return async () => {
     try {
-      const response = await axios.get('/api/maker/list');
-      dispatch(slice.actions.getMakerSuccess(response.data.maker));
+      localStorage.getItem('mantis-ts-maker');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
