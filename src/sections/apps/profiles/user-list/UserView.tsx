@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material/styles';
 import {
   useMediaQuery,
   Grid,
-  Chip,
   Divider,
   List,
   ListItem,
@@ -19,14 +18,10 @@ import {
 import NumberFormat from 'react-number-format';
 
 // project import
-/* import Avatar from 'components/@extended/Avatar'; */
 import MainCard from 'components/MainCard';
 
 // assets
 import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
-/*  */
-/* const avatarImage = require.context('assets/images/users', true); */
-
 // ==============================|| USER - VIEW ||============================== //
 
 const UserView = ({ data }: any) => {
@@ -39,28 +34,13 @@ const UserView = ({ data }: any) => {
         <Grid container spacing={2.5} sx={{ pl: { xs: 0, sm: 5, md: 6, lg: 10, xl: 12 } }}>
           <Grid item xs={12} sm={5} md={4} lg={3}>
             <MainCard>
-              <Chip
-                label={data.status}
-                size="small"
-                color="primary"
-                sx={{
-                  position: 'absolute',
-                  right: 10,
-                  top: 10,
-                  fontSize: '0.675rem'
-                }}
-              />
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Stack spacing={2.5} alignItems="center">
-                    {/* <Avatar alt="Avatar 1" size="xl" src={avatarImage(`./avatar-${data.avatar}.png`).default} /> */}
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{data.businessName}</Typography>
                     </Stack>
                   </Stack>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
@@ -81,7 +61,7 @@ const UserView = ({ data }: any) => {
                       </ListItemIcon>
                       <ListItemSecondaryAction>
                         <Typography align="right">
-                          <NumberFormat displayType="text" mask="_" defaultValue={data.phone} />
+                          <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={data.phone} />
                         </Typography>
                       </ListItemSecondaryAction>
                     </ListItem>

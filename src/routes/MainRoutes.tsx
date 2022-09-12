@@ -18,6 +18,7 @@ const AppProductDetails = Loadable(lazy(() => import('pages/apps/product/product
 const AppProductList = Loadable(lazy(() => import('pages/apps/product/products')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
 const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-category')));
+const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/add-purchase')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -84,6 +85,10 @@ const MainRoutes = {
                 {
                   path: 'add-category',
                   element: <AppAddCategory />
+                },
+                {
+                  path: 'add-new-purchase',
+                  element: <AppAddPurchase />
                 }
               ]
             }

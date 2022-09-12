@@ -1,21 +1,8 @@
-import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
-
+import { useCallback, useMemo, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import {
-  Button,
-  Chip,
-  Dialog,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 // third-party
 import NumberFormat from 'react-number-format';
@@ -23,7 +10,6 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import CustomerView from 'sections/apps/customer/CustomerView';
-import AddCustomer from 'sections/apps/customer/AddCustomer';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
@@ -43,11 +29,10 @@ interface Props {
   columns: Column[];
   data: [];
   getHeaderProps: (column: any) => void;
-  handleAdd: () => void;
   renderRowSubComponent: any;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -59,7 +44,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
     allColumns,
     visibleColumns,
     rows,
@@ -94,15 +78,11 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     useRowSelect
   );
 
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
-    } else {
-      setHiddenColumns(['avatar', 'email']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
+  const history = useNavigate();
 
+  const handleAddPurchase = () => {
+    history(`/p/add-new-purchase`);
+  };
   return (
     <>
       <TableRowSelection selected={Object.keys(selectedRowIds).length} />
@@ -122,7 +102,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddPurchase}>
               Agregar Orden Compra
             </Button>
           </Stack>
@@ -180,13 +160,6 @@ const PurchaseList = () => {
   const theme = useTheme();
 
   const data = useMemo(() => makeData(10), []);
-
-  const [customer, setCustomer] = useState(null);
-  const [add, setAdd] = useState<boolean>(false);
-  const handleAdd = () => {
-    setAdd(!add);
-    if (customer && !add) setCustomer(null);
-  };
 
   const columns = useMemo(
     () => [
@@ -269,35 +242,17 @@ const PurchaseList = () => {
         }
       },
       {
-        Header: 'Actionse',
+        Header: 'Actiones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          /*   const collapseIcon = row.isExpanded ? (
-            <CloseOutlined style={{ color: theme.palette.error.main }} />
-          ) : (
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          ); */
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {/*   <Tooltip title="View">
-                <IconButton
-                  color="secondary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    row.toggleRowExpanded();
-                  }}
-                >
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip> */}
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setCustomer(row.values);
-                    handleAdd();
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -330,16 +285,10 @@ const PurchaseList = () => {
         <ReactTable
           columns={columns}
           data={data}
-          handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
-
-      {/* add customer dialog */}
-      <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddCustomer customer={customer} onCancel={handleAdd} />}
-      </Dialog>
     </MainCard>
   );
 };

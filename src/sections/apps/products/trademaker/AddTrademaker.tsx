@@ -143,7 +143,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={5}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
@@ -160,7 +160,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
@@ -169,7 +169,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                         fullWidth
                         id="tradeMaker-maker"
                         {...getFieldProps('maker')}
-                        value={maker || tradeMaker.maker}
+                        value={maker || tradeMaker?.maker}
                         onChange={handleChange}
                       >
                         {makerList.map((option) => (
@@ -182,7 +182,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={3}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>

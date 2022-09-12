@@ -3,21 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import {
-  capitalize,
-  Button,
-  Chip,
-  Box,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { capitalize, Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
@@ -50,7 +36,6 @@ interface Props {
 
 function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
 
@@ -59,7 +44,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    setHiddenColumns,
     allColumns,
     visibleColumns,
     rows,
@@ -93,13 +77,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     usePagination,
     useRowSelect
   );
-
-  useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['id', 'image', 'description', 'categories', 'offerPrice', 'quantity', 'isStock']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
 
   const history = useNavigate();
 

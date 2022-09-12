@@ -167,11 +167,13 @@ const PackList = () => {
       },
       {
         Header: 'Cantidad de Productos',
-        accessor: 'qty'
+        accessor: 'qty',
+        className: 'cell-center'
       },
       {
         Header: 'Estado',
         accessor: 'status',
+        className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:

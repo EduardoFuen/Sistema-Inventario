@@ -116,7 +116,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
         };
 
         if (warehouse) {
-          dispatch(editWarehouse(warehouse.id, newWarehouse));
+          dispatch(editWarehouse(warehouse.name, newWarehouse));
           dispatch(
             openSnackbar({
               open: true,

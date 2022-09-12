@@ -40,6 +40,7 @@ const getInitialValues = (maker: FormikValues | null) => {
   };
 
   if (maker) {
+    newMaker.status = maker.status;
     return _.merge({}, newMaker, maker);
   }
 
@@ -87,7 +88,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
         };
 
         if (maker) {
-          dispatch(editMaker(maker.id, newMaker));
+          dispatch(editMaker(maker.name, newMaker));
           dispatch(
             openSnackbar({
               open: true,
@@ -123,7 +124,6 @@ const AddMaker = ({ maker, onCancel }: Props) => {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-
   return (
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
