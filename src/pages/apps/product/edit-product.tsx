@@ -590,7 +590,6 @@ console.log(product);
                         options={products}
                         getOptionLabel={(option) => option.name}
                         defaultValue={[]}
-                        value={product?.substitutes}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
                           setFieldValue('substitutes', newValue === null ? '' : newValue);
