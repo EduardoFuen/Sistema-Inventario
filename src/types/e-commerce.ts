@@ -23,6 +23,21 @@ export type Products = {
   sku?: string;
   new?: number;
   ean?: string;
+  variation: string;
+  pack: string;
+  type_product: string;
+  makerUnit: string;
+  weight: string;
+  width: string;
+  packInfo: string;
+  height: string;
+  packUnit: string;
+  depth: string;
+  quantityInv: string;
+  warehouse: string;
+  substances: string;
+  keywords: string;
+  substitutes: string;
 };
 
 // checkout-cart billing address

@@ -1,5 +1,5 @@
-import { useState, useEffect, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, ChangeEvent, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -24,19 +24,22 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
+
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addProduct } from 'store/reducers/product';
+import { editProduct } from 'store/reducers/product';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| EDIT PRODUCT - MAIN ||============================== //
 
-const getInitialValues = () => {
+/* const getInitialValues = (product: FormikValues | null) => {
+  console.log(product?.name);
+  
   const newSubstance = {
-    name: '',
+    name: product?.name,
     sku: '',
     ean: '',
     price: '',
@@ -64,12 +67,14 @@ const getInitialValues = () => {
     img: '',
     status: false
   };
+
   return newSubstance;
-};
+}; */
 
 function AddNewProduct() {
   const history = useNavigate();
   const theme = useTheme();
+  const { id } = useParams();
   const statuss = [
     {
       value: 'Saludable',
@@ -81,6 +86,7 @@ function AddNewProduct() {
     }
   ];
 
+  //  const [product, setProduct] = useState({});
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
 
@@ -99,9 +105,17 @@ function AddNewProduct() {
   const { products } = useSelector((state) => state.product);
   const { todoListSubs } = useSelector((state) => state.substances);
 
+  const product = useMemo(() => {
+    if (id) {
+      return products.find((item) => item.name === id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleCancel = () => {
     history(`/p/product-list`);
   };
+console.log(product);
 
   const SubstSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
@@ -113,15 +127,43 @@ function AddNewProduct() {
   });
 
   const formik = useFormik({
-    initialValues: getInitialValues(),
+    initialValues: {
+      name: product?.name,
+      sku: product?.sku,
+      ean: product?.ean,
+      price: product?.price,
+      maker: product?.maker,
+      trademark: product?.trademark,
+      type_product: product?.type_product,
+      variation: product?.variation,
+      categoryOne: '',
+      categoryTwo: '',
+      categoryThree: '',
+      pack: product?.pack,
+      quantity: product?.quantity,
+      makerUnit: product?.makerUnit,
+      weight: product?.weight,
+      width: product?.width,
+      packInfo: product?.packInfo,
+      height: product?.height,
+      packUnit: product?.packUnit,
+      depth: product?.depth,
+      quantityInv: product?.quantityInv,
+      warehouse: product?.warehouse,
+      substances: product?.substances,
+      keywords: product?.keywords,
+      substitutes: product?.substitutes,
+      img: '',
+      status: product?.status
+    },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        dispatch(addProduct(values));
+        dispatch(editProduct(id, values));
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Producto Add successfully.',
+            message: 'Update successfully.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -236,7 +278,6 @@ function AddNewProduct() {
                           variant="outlined"
                           sx={{ display: 'none' }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            //   setFieldValue('img', e === null ? '' : e);
                             setSelectedImage(e.target.files?.[0]);
                           }}
                         />
@@ -549,6 +590,7 @@ function AddNewProduct() {
                         options={products}
                         getOptionLabel={(option) => option.name}
                         defaultValue={[]}
+                        value={product?.substitutes}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
                           setFieldValue('substitutes', newValue === null ? '' : newValue);

@@ -38,7 +38,9 @@ const slice = createSlice({
     },
     // EDIT PRODUCTS
     editProductsSuccess(state, action) {
-      state.product = action.payload;
+      const { name, data } = action.payload;
+      const index = state.products.findIndex((item) => item.name === name);
+      state.products[index] = data;
     },
     // DELETE PRODUCTS
     deleteProductSuccess(state, action) {
@@ -91,7 +93,7 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
-      /*     const response = await axios.get('/api/products/list');
+      /*         const response = await axios.get('/api/products/list');
       dispatch(slice.actions.getProductsSuccess(response.data.products)); */
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -109,10 +111,15 @@ export function addProduct(data: any) {
   };
 }
 
-export function editProduct(data: any) {
+export function editProduct(name: any, data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.editProductsSuccess(data));
+      dispatch(
+        slice.actions.editProductsSuccess({
+          name,
+          data
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

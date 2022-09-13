@@ -18,7 +18,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { getProducts, editProduct, deleteProduct } from 'store/reducers/product';
+import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
@@ -161,8 +161,8 @@ const ProductList = () => {
   const history = useNavigate();
 
   const { products } = useSelector((state) => state.product);
-  const handleEditProduct = () => {
-    history(`/p/add-new-product`);
+  const handleEditProduct = (id: any) => {
+    history(`/p/product-edit/${id}`);
   };
   useEffect(() => {
     dispatch(getProducts());
@@ -275,8 +275,7 @@ const ProductList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditProduct();
-                    dispatch(editProduct(row.values));
+                    handleEditProduct(row?.values?.name);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />

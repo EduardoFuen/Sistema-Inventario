@@ -14,9 +14,10 @@ const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
 
-const AppProductDetails = Loadable(lazy(() => import('pages/apps/product/product-details')));
+// const AppProductDetails = Loadable(lazy(() => import('pages/apps/product/product-details')));
 const AppProductList = Loadable(lazy(() => import('pages/apps/product/products')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
+const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/edit-product')));
 const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-category')));
 const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/add-purchase')));
 
@@ -71,8 +72,8 @@ const MainRoutes = {
               path: 'p',
               children: [
                 {
-                  path: 'product-details/:id',
-                  element: <AppProductDetails />
+                  path: 'product-edit/:id',
+                  element: <AppEditProduct />
                 },
                 {
                   path: 'product-list',
