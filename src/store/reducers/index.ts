@@ -16,6 +16,7 @@ import maker from './maker';
 import trademaker from './trademaker';
 import category from './category';
 import supplier from './supplier';
+import typeProduct from './typeProduct';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -31,6 +32,14 @@ const reducers = combineReducers({
       keyPrefix: 'mantis-ts-'
     },
     supplier
+  ),
+  typeProduct: persistReducer(
+    {
+      key: 'typeProduct',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    typeProduct
   ),
   category: persistReducer(
     {

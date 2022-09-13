@@ -99,7 +99,7 @@ function SubRowAsync() {
         Cell: ({ value }: any) => <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${value}.png`).default} />
       },
       {
-        Header: 'Name',
+        Header: 'Nombre',
         accessor: 'fatherName'
       },
       {

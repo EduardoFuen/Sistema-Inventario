@@ -195,3 +195,16 @@ export interface SupplierStateProps {
   supplierList: supplier[];
   error: object | string | null;
 }
+
+// Type product
+export type typeProduct = {
+  id: string | number | undefined;
+  name: string;
+  status: boolean;
+  qty: number;
+};
+
+export interface TypeProductStateProps {
+  typeProductList: typeProduct[];
+  error: object | string | null;
+}

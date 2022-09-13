@@ -18,8 +18,7 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { deletePack } from 'store/reducers/pack';
-import { getPackList } from 'store/reducers/pack';
+import { getPackList, deletePack } from 'store/reducers/pack';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -163,7 +162,7 @@ const PackList = () => {
   const columnsProducts = useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Envase',
         accessor: 'name',
         className: 'cell-center'
       },
