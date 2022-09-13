@@ -121,7 +121,6 @@ const ProductsPage = () => {
           description={product.description}
           offerPrice={product.offerPrice}
           salePrice={product.salePrice}
-          rating={product.rating}
           color={product.colors ? product.colors[0] : undefined}
           open={openFilterDrawer}
         />

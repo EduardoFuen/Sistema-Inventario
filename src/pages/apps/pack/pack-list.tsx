@@ -10,6 +10,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import Export from 'components/ExportToFile';
 import AddPackList from 'sections/apps/products/pack-list/AddPackList';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
@@ -87,6 +88,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
               setGlobalFilter={setGlobalFilter}
               size="small"
             />
+            <Export excelData={data} fileName="Envases" />
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>

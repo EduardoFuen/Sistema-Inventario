@@ -12,6 +12,8 @@ import AddTrademark from 'sections/apps/products/trademaker/AddTrademaker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import Export from 'components/ExportToFile';
+
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
@@ -94,6 +96,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
             setGlobalFilter={setGlobalFilter}
             size="small"
           />
+          <Export excelData={data} fileName="Trademark" />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>

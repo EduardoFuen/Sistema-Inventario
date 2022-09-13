@@ -15,8 +15,9 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import makeData from 'data/react-table';
+import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -100,6 +101,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
             setGlobalFilter={setGlobalFilter}
             size="small"
           />
+          <Export excelData={data} fileName="Ingresos" />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddPurchase}>
@@ -163,15 +165,6 @@ const PurchaseList = () => {
 
   const columns = useMemo(
     () => [
-      {
-        title: 'Row Selection',
-        Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
-          <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-        ),
-        accessor: 'selection',
-        Cell: ({ row }: any) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />,
-        disableSortBy: true
-      },
       {
         Header: 'Order ID',
         accessor: 'orderId',
