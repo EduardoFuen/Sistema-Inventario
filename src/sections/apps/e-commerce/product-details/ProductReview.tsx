@@ -77,7 +77,7 @@ const ProductReviews = ({ product }: { product: Products }) => {
                         /5
                       </Typography>
                     </Stack>
-                    <Typography color="textSecondary">Based on {product.offerPrice?.toFixed(0)} reviews</Typography>
+                    <Typography color="textSecondary">Based on {product.price?.toFixed(0)} reviews</Typography>
                   </Stack>
                   <Rating
                     name="simple-controlled"

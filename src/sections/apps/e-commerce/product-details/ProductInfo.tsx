@@ -96,7 +96,7 @@ const ProductInfo = ({ product }: { product: Products }) => {
       name: product.name,
       image: product.image,
       salePrice: product.salePrice,
-      offerPrice: product.offerPrice,
+      price: product.price,
       color: '',
       size: '',
       quantity: 1
@@ -252,7 +252,7 @@ const ProductInfo = ({ product }: { product: Products }) => {
               </Stack>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Typography variant="h3">${product.offerPrice}</Typography>
+              <Typography variant="h3">${product.price}</Typography>
               {product.salePrice && (
                 <Typography variant="h4" color="textSecondary" sx={{ textDecoration: 'line-through', opacity: 0.5, fontWeight: 400 }}>
                   ${product.salePrice}

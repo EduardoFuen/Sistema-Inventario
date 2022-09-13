@@ -32,11 +32,20 @@ const slice = createSlice({
     getProductsSuccess(state, action) {
       state.products = action.payload;
     },
+    // ADD PRODUCTS
+    addProductSuccess(state, action) {
+      state.products.push(action.payload);
+    },
     // EDIT PRODUCTS
     editProductsSuccess(state, action) {
       state.product = action.payload;
     },
-
+    // DELETE PRODUCTS
+    deleteProductSuccess(state, action) {
+      const { name } = action.payload;
+      const index = state.products.findIndex((item) => item.name === name);
+      state.products.splice(index, 1);
+    },
     // FILTER PRODUCTS
     filterProductsSuccess(state, action) {
       state.product = action.payload;
@@ -82,6 +91,18 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
+      /*     const response = await axios.get('/api/products/list');
+      dispatch(slice.actions.getProductsSuccess(response.data.products)); */
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addProduct(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.addProductSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -92,6 +113,20 @@ export function editProduct(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.editProductsSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteProduct(name: string) {
+  return async () => {
+    try {
+      dispatch(
+        slice.actions.deleteProductSuccess({
+          name
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

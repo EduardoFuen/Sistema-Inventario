@@ -32,7 +32,7 @@ const ProductCard = ({
   isStock,
   image,
   description,
-  offerPrice,
+  price,
   salePrice,
   rating,
   open
@@ -46,7 +46,7 @@ const ProductCard = ({
   const cart = useSelector((state) => state.cart);
 
   const addCart = () => {
-    dispatch(addProduct({ id, name, image, salePrice, offerPrice, color, size: 8, quantity: 1, description }, cart.checkout.products));
+    dispatch(addProduct({ id, name, image, salePrice, price, color, size: 8, quantity: 1, description }, cart.checkout.products));
     dispatch(
       openSnackbar({
         open: true,
@@ -142,7 +142,7 @@ const ProductCard = ({
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                   <Stack>
                     <Stack direction="row" spacing={1} alignItems="center">
-                      <Typography variant="h5">${offerPrice}</Typography>
+                      <Typography variant="h5">${price}</Typography>
                       {salePrice && (
                         <Typography variant="h6" color="textSecondary" sx={{ textDecoration: 'line-through' }}>
                           ${salePrice}

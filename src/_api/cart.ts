@@ -27,7 +27,7 @@ services.onPost('/api/cart/add').reply((config) => {
     const { product, products } = JSON.parse(config.data);
 
     newProduct = { ...product!, itemId: chance.timestamp() };
-    subtotal = newProduct?.quantity * newProduct.offerPrice;
+    subtotal = newProduct?.quantity * newProduct.price;
 
     inCartProduct = filter(products, {
       id: newProduct.id,
@@ -57,7 +57,7 @@ services.onPost('/api/cart/remove').reply((config) => {
     const { id, products } = JSON.parse(config.data);
 
     result = filter(products, { itemId: id });
-    subtotal = result[0].quantity * result[0].offerPrice;
+    subtotal = result[0].quantity * result[0].price;
 
     const newProducts = filter(products, (item) => item.itemId !== id);
 
@@ -72,12 +72,12 @@ services.onPost('/api/cart/update').reply((config) => {
     const { id, quantity, products } = JSON.parse(config.data);
 
     result = filter(products, { itemId: id });
-    subtotal = quantity! * result[0].offerPrice;
+    subtotal = quantity! * result[0].price;
     oldSubTotal = 0;
 
     latestProducts = products.map((item: ProductCardProps) => {
       if (id === item.itemId) {
-        oldSubTotal = item.quantity * (item.offerPrice || 0);
+        oldSubTotal = item.quantity * (item.price || 0);
         return { ...item, quantity: quantity! };
       }
       return item;

@@ -17,6 +17,7 @@ const MakerList = Loadable(lazy(() => import('../maker/maker')));
 const TrademarkList = Loadable(lazy(() => import('../trademaker/trademaker-list')));
 const Categories = Loadable(lazy(() => import('../categories/categories-list')));
 const TypeProduct = Loadable(lazy(() => import('../typeProduct/typeProduct-list')));
+const ActiveSubstances = Loadable(lazy(() => import('../activeSubstances/activeSubstances-list')));
 
 // ==============================|| REACT TAB ||============================== //
 
@@ -55,33 +56,37 @@ function TabProducts() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Lista Productos" {...a11yProps(0)} />
-            <Tab label="Tipo de Productos" {...a11yProps(1)} />
-            <Tab label="Categorias" {...a11yProps(2)} />
-            <Tab label="Envase" {...a11yProps(3)} />
-            <Tab label="Maker" {...a11yProps(4)} />
-            <Tab label="Trademark" {...a11yProps(5)} />
-            <Tab label="Bodegas" {...a11yProps(6)} />
+            <Tab label="Sustancias o principios activos" {...a11yProps(1)} />
+            <Tab label="Tipo de Productos" {...a11yProps(2)} />
+            <Tab label="Categorias" {...a11yProps(3)} />
+            <Tab label="Envase" {...a11yProps(4)} />
+            <Tab label="Maker" {...a11yProps(5)} />
+            <Tab label="Trademark" {...a11yProps(6)} />
+            <Tab label="Bodegas" {...a11yProps(7)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
           <ProductList />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <TypeProduct />
+          <ActiveSubstances />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <Categories />
+          <TypeProduct />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <PackList />
+          <Categories />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <MakerList />
+          <PackList />
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <TrademarkList />
+          <MakerList />
         </TabPanel>
         <TabPanel value={value} index={6}>
+          <TrademarkList />
+        </TabPanel>
+        <TabPanel value={value} index={7}>
           <WarehouseList />
         </TabPanel>
       </Box>

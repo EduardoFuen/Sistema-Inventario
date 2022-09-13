@@ -319,7 +319,7 @@ const BillingAddress = ({ checkout, onBack, billingAddressHandler, removeProduct
                         <Stack spacing={1}>
                           <Typography color="textSecondary">{row.description}</Typography>
                           <Stack direction="row" alignItems="center" spacing={3}>
-                            <Typography>${row.offerPrice}</Typography>
+                            <Typography>${row.price}</Typography>
                             <Typography color="textSecondary">{row.quantity} items</Typography>
                           </Stack>
                         </Stack>

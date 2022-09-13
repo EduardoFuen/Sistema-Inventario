@@ -1,20 +1,82 @@
-import { useState } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
-import { Button, Grid, InputLabel, MenuItem, Stack, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import {
+  Button,
+  Box,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+  FormControlLabel,
+  Switch,
+  FormLabel,
+  Avatar,
+  Autocomplete
+} from '@mui/material';
+
+// third-party
+import * as Yup from 'yup';
+import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
+//import { useSelector } from 'store';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { addProduct } from 'store/reducers/product';
+
 // assets
-import { UploadOutlined } from '@ant-design/icons';
+import { CameraOutlined } from '@ant-design/icons';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
+const getInitialValues = () => {
+  const newSubstance = {
+    name: '',
+    sku: '',
+    ean: '',
+    price: '',
+    maker: '',
+    trademark: '',
+    type_product: '',
+    variation: '',
+    categoryOne: '',
+    categoryTwo: '',
+    categoryThree: '',
+    pack: '',
+    quantity: '',
+    makerUnit: '',
+    weight: '',
+    width: '',
+    packInfo: '',
+    height: '',
+    packUnit: '',
+    depth: '',
+    quantityInv: '',
+    warehouse: '',
+    substances: '',
+    keywords: '',
+    substitutes: '',
+    img: '',
+    status: false
+  };
+
+  /*  if (product) {
+    newSubstance.name = product.name;
+    newSubstance.status = product.status;ß
+    return _.merge({}, newSubstance, product);
+  } */
+  return newSubstance;
+};
+
 function AddNewProduct() {
   const history = useNavigate();
+  const theme = useTheme();
   const statuss = [
     {
       value: 'Saludable',
@@ -26,264 +88,534 @@ function AddNewProduct() {
     }
   ];
 
-  const [quantity, setQuantity] = useState('one');
-  const [status, setStatus] = useState('in stock');
+  const [avatar, setAvatar] = useState<string | undefined>();
+  const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+
+  useEffect(() => {
+    if (selectedImage) {
+      setAvatar(URL.createObjectURL(selectedImage));
+    }
+  }, [selectedImage]);
 
   const { makerList } = useSelector((state) => state.maker);
   const dispatch = useDispatch();
   const { tradeMakerList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
-  const { product } = useSelector((state) => state.product);
-  const [productNew, setProductNew] = useState({
-    name: product?.name,
-    sku: product?.sku
-  });
-  const handleQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuantity(event.target.value);
+  const { typeProductList } = useSelector((state) => state.typeProduct);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { products } = useSelector((state) => state.product);
+  const { todoListSubs } = useSelector((state) => state.substances);
+
+  const handleCancel = () => {
+    history(`/p/product-list`);
   };
 
-  const handleStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStatus(event.target.value);
-    setProductNew({
-      name: event.target.value,
-      sku: event.target.value
-    });
-  };
-  const handleCancel = () => {
-    history(`/apps/e-commerce/product-list`);
-  };
+  const SubstSchema = Yup.object().shape({
+    name: Yup.string().max(255).required('Nombre es requerido'),
+    sku: Yup.string().max(255).required('sku es requerido'),
+    ean: Yup.string().max(255).required('ean es requerido'),
+    price: Yup.string().max(255).required('Precio es requerido'),
+    type_product: Yup.string().max(255).required('Tipo de Producto es requerido'),
+    pack: Yup.string().max(255).required('Envase es requerido')
+  });
+
+  const formik = useFormik({
+    initialValues: getInitialValues(),
+    validationSchema: SubstSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      try {
+        /*    const newSubstance = {
+          name: values.name,
+          status: values.status,
+          qty: 0
+        };
+
+        if (subst) {
+          dispatch(editSubs(subst.name, newSubstance));
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Update successfully.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
+        } else {*/
+        dispatch(addProduct(values));
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Producto Add successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+        history(`/p/product-list`);
+        setSubmitting(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   return (
     <>
       <MainCard>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <MainCard>
-              <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                Datos Basicos
-              </Typography>
-              <Grid container spacing={1} direction="row">
-                <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Producto</InputLabel>
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    value={productNew?.name}
-                    placeholder="Ingresa Nombre"
-                    fullWidth
-                  />
+        <FormikProvider value={formik}>
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <MainCard>
+                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                    Datos Basicos
+                  </Typography>
+                  <Grid container spacing={1} direction="row">
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Producto</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('name')}
+                        error={Boolean(touched.name && errors.name)}
+                        helperText={touched.name && errors.name}
+                        placeholder="Ingresar Nombre"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>SKU</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('sku')}
+                        error={Boolean(touched.sku && errors.sku)}
+                        helperText={touched.sku && errors.sku}
+                        placeholder="Ingresar SKU"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>EAN</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('ean')}
+                        error={Boolean(touched.ean && errors.ean)}
+                        helperText={touched.ean && errors.ean}
+                        placeholder="Ingresar EAN"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Precio</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        type="number"
+                        placeholder="Ingresar Precio"
+                        fullWidth
+                        {...getFieldProps('price')}
+                        error={Boolean(touched.price && errors.price)}
+                        helperText={touched.price && errors.price}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Stack alignItems="center" sx={{ mt: 1 }}>
+                        <Typography>Agregar imagen</Typography>
+                        <FormLabel
+                          htmlFor="change-avtar"
+                          sx={{
+                            position: 'relative',
+                            overflow: 'hidden',
+                            '&:hover .MuiBox-root': { opacity: 1 },
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <Avatar src={avatar} sx={{ width: 124, height: 124, border: '1px solid' }} variant="rounded" />
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
+                              width: '100%',
+                              height: '100%',
+                              opacity: 0,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <Stack spacing={0.5} alignItems="center">
+                              <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
+                              <Typography sx={{ color: 'secondary.lighter' }}>Agregar Imagen</Typography>
+                            </Stack>
+                          </Box>
+                        </FormLabel>
+                        <TextField
+                          type="file"
+                          id="change-avtar"
+                          label="Outlined"
+                          variant="outlined"
+                          sx={{ display: 'none' }}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            //   setFieldValue('img', e === null ? '' : e);
+                            setSelectedImage(e.target.files?.[0]);
+                          }}
+                        />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </MainCard>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <MainCard>
+                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                    Datos Adicionales
+                  </Typography>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
+                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('maker')}>
+                        {makerList.map((option) => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
+                      <TextField placeholder="Seleccionar Trademark" {...getFieldProps('trademark')} fullWidth select>
+                        {tradeMakerList.map((option) => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo de Producto</InputLabel>
+                      <TextField
+                        placeholder="Seleccionar Tipo Producto"
+                        {...getFieldProps('type_product')}
+                        error={Boolean(touched.type_product && errors.type_product)}
+                        helperText={touched.type_product && errors.type_product}
+                        fullWidth
+                        select
+                      >
+                        {typeProductList.map((option) => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Variación</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('variation')}
+                        placeholder="Ingresar Variación"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryOne')}>
+                        {statuss.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryTwo')}>
+                        {statuss.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
+                      <TextField placeholder="Seleccionar Categoria" {...getFieldProps('categoryThree')} fullWidth select>
+                        {statuss.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
+                </MainCard>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <MainCard>
+                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                    Datos Medidas
+                  </Typography>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
+                      <TextField
+                        placeholder="Selecconar Envase"
+                        {...getFieldProps('pack')}
+                        error={Boolean(touched.pack && errors.pack)}
+                        helperText={touched.pack && errors.pack}
+                        select
+                        fullWidth
+                      >
+                        {packList.map((option) => (
+                          <MenuItem key={option.name} value={option.name}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cantidad</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('quantity')}
+                        placeholder="Ingresar Cantidad"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker Unit</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('makerUnit')}
+                        placeholder="Ingresar Maker Unit"
+                        fullWidth
+                      />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Weight(grams)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('weight')}
+                        placeholder="Ingresar Weight(grams)"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Width(cm)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('width')}
+                        placeholder="Ingresar Width(cm)"
+                        fullWidth
+                      />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Pack</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('packInfo')}
+                        placeholder="Ingresar Pack"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Height(cm) </InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('height')}
+                        placeholder="Ingresar Height(cm)"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}> Pack Unit</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('packUnit')}
+                        placeholder="Ingresar Pack Unit"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Depth(cm)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('depth')}
+                        placeholder="Ingresar Depth(cm)"
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                </MainCard>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12}>
+                    <MainCard>
+                      <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                        Inventario
+                      </Typography>
+                      <Grid container direction="row" spacing={2}>
+                        <Grid item xs={6}>
+                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Stock</InputLabel>
+                          <TextField
+                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                            {...getFieldProps('quantityInv')}
+                            placeholder="Ingresar Stock"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
+                          <Autocomplete
+                            multiple
+                            id="warehouse-list"
+                            options={warehouseList}
+                            getOptionLabel={(option) => option.name}
+                            defaultValue={[]}
+                            filterSelectedOptions
+                            onChange={(event, newValue) => {
+                              setFieldValue('warehouse', newValue === null ? '' : newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} placeholder="Bodega" />}
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                p: 0.5
+                              },
+                              '& .MuiAutocomplete-tag': {
+                                bgcolor: 'primary.lighter',
+                                border: '1px solid',
+                                borderColor: 'primary.light',
+                                '& .MuiSvgIcon-root': {
+                                  color: 'primary.main',
+                                  '&:hover': {
+                                    color: 'primary.dark'
+                                  }
+                                }
+                              }
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </MainCard>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <MainCard>
+                      <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                        Sustancias o principios activos
+                      </Typography>
+                      <Grid container direction="row" spacing={2}>
+                        <Grid item xs={12}>
+                          <Autocomplete
+                            multiple
+                            id="substances-list"
+                            options={todoListSubs}
+                            getOptionLabel={(option) => option.name}
+                            defaultValue={[]}
+                            filterSelectedOptions
+                            onChange={(event, newValue) => {
+                              setFieldValue('substances', newValue === null ? '' : newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} placeholder="" />}
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                p: 0.5
+                              },
+                              '& .MuiAutocomplete-tag': {
+                                bgcolor: 'primary.lighter',
+                                border: '1px solid',
+                                borderColor: 'primary.light',
+                                '& .MuiSvgIcon-root': {
+                                  color: 'primary.main',
+                                  '&:hover': {
+                                    color: 'primary.dark'
+                                  }
+                                }
+                              }
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </MainCard>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>SKU</InputLabel>
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    value={productNew?.sku}
-                    placeholder="Ingresa SKU"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>EAN</InputLabel>
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    value={productNew?.sku}
-                    placeholder="Ingresa EAN"
-                    fullWidth
-                  />
-                </Grid>
-                {/*   <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Product Description</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Enter your email" fullWidth />
-                </Grid>
-                <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Category</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Enter your category" fullWidth />
-                </Grid> */}
-                <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Precio</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Precio" fullWidth />
-                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <MainCard>
+                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
+                    Datos Extras
+                  </Typography>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Keywords</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        multiline
+                        rows={3}
+                        placeholder="Ingresar Keywords del Producto"
+                        fullWidth
+                        {...getFieldProps('keywords')}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Sustitutos</InputLabel>
+                      <Autocomplete
+                        multiple
+                        id="list-product"
+                        options={products}
+                        getOptionLabel={(option) => option.name}
+                        defaultValue={[]}
+                        filterSelectedOptions
+                        onChange={(event, newValue) => {
+                          setFieldValue('substitutes', newValue === null ? '' : newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} placeholder="Producto" />}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            p: 0.5
+                          },
+                          '& .MuiAutocomplete-tag': {
+                            bgcolor: 'primary.lighter',
+                            border: '1px solid',
+                            borderColor: 'primary.light',
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                              '&:hover': {
+                                color: 'primary.dark'
+                              }
+                            }
+                          }
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </MainCard>
               </Grid>
               <Grid item xs={12}>
-                <Typography color="error.main" sx={{ mt: 4, opacity: 0.5 }}>
-                  *{' '}
-                  <Typography component="span" color="textSecondary">
-                    La resolución recomendada es 640*640 con tamaño de archivo
-                  </Typography>
-                </Typography>
-                <Button variant="outlined" color="secondary" startIcon={<UploadOutlined />} sx={{ mt: 1, textTransform: 'none' }}>
-                  Click to Upload
-                </Button>
+                <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
+                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="Estado" labelPlacement="top" {...getFieldProps('status')} />
+                  <Button variant="outlined" color="secondary" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                  <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
+                    Add new Product
+                  </Button>
+                </Stack>
               </Grid>
-            </MainCard>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <MainCard>
-              <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                Datos Adicionales
-              </Typography>
-              <Grid container direction="row" spacing={2}>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
-                  <TextField placeholder="Select quantity" fullWidth select value={quantity} onChange={handleQuantity}>
-                    {makerList.map((option) => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
-                  <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {statuss.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
-                  <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {tradeMakerList.map((option) => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
-                  <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {statuss.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Variación</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Variación" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
-                  <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {statuss.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
-            </MainCard>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <MainCard>
-              <Grid container direction="row" spacing={2}>
-                <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                  Datos Medidas
-                </Typography>
-                <Grid item xs={12}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
-                  <TextField placeholder="Selecconar Envase" select value={quantity} fullWidth onChange={handleQuantity}>
-                    {packList.map((option) => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cantidad</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Cantidad" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker Unit</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Maker Unit" fullWidth />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Weight(grams)</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Unidad" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Width(cm)</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Maker Unit" fullWidth />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Pack</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Pack" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Height(cm) </InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Maker Unit" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}> Pack Unit</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Pack Unit" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Depth(cm)</InputLabel>
-                  <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresa Maker Unit" fullWidth />
-                </Grid>
-              </Grid>
-            </MainCard>
-          </Grid>
-
-          {/*     <Grid item xs={12} sm={6}>
-            <MainCard>
-              <Grid container direction="row" spacing={2}>
-                <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                  Sustancias o principios Activo
-                </Typography>
-                <Grid item xs={6}>ß
-                  <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
-                  <TextField placeholder="Select quantity" select value={quantity} onChange={handleQuantity}>
-                    {quantities.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              </Grid>
-            </MainCard>
-          </Grid> */}
-          <Grid item xs={12} sm={8}>
-            <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="Estado" labelPlacement="top" />
-          </Grid>
-          <Grid item xs={12}>
-            <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
-              <Button variant="outlined" color="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ textTransform: 'none' }}
-                onClick={() => {
-                  dispatch(
-                    openSnackbar({
-                      open: true,
-                      message: 'Producto update successfully.',
-                      variant: 'alert',
-                      alert: {
-                        color: 'success'
-                      },
-                      close: false
-                    })
-                  );
-                  history(`/p/product-list`);
-                }}
-              >
-                Add new Product
-              </Button>
-            </Stack>
-          </Grid>
-        </Grid>
+            </Grid>
+          </Form>
+        </FormikProvider>
       </MainCard>
     </>
   );

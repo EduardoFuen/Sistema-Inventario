@@ -107,7 +107,7 @@ const ProductDetails = () => {
                         <Stack direction="row" alignItems="center">
                           Reviews{' '}
                           <Chip
-                            label={String(product.offerPrice?.toFixed(0))}
+                            label={String(product.price?.toFixed(0))}
                             size="small"
                             sx={{
                               ml: 0.5,

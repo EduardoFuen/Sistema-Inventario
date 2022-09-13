@@ -3,7 +3,7 @@ export type Products = {
   id: string | number | undefined;
   image: string;
   name: string;
-  brand: string;
+  trademark: string;
   offer?: string;
   description?: string;
   about?: string;
@@ -11,14 +11,15 @@ export type Products = {
   rating?: number;
   discount?: number;
   salePrice?: number;
-  offerPrice?: number;
+  price?: number;
   gender?: string;
   categories?: string[];
   colors?: string[];
-  popularity?: number;
+  maker?: number;
   date?: number;
   created: Date;
   isStock?: boolean;
+  status?: boolean;
   sku?: string;
   new?: number;
   ean?: string;
@@ -206,5 +207,17 @@ export type typeProduct = {
 
 export interface TypeProductStateProps {
   typeProductList: typeProduct[];
+  error: object | string | null;
+}
+
+// Active substances
+export type substances = {
+  id: string | number | undefined;
+  name: string;
+  status: boolean;
+};
+
+export interface SubstancesStateProps {
+  todoListSubs: substances[];
   error: object | string | null;
 }

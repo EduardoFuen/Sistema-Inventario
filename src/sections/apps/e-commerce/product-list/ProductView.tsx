@@ -1,6 +1,6 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Grid, Chip, Rating, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, Grid, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
 const productImage = require.context('assets/images/e-commerce', true);
 
@@ -20,27 +20,16 @@ const ProductView = ({ data }: any) => {
                 alt="product"
                 style={{ background: theme.palette.grey[200], width: '100%' }}
               />
-              <Chip
-                label={data.isStock ? 'In Stock' : 'Out of Stock'}
-                color={data.isStock ? 'success' : 'error'}
-                variant="light"
-                sx={{
-                  position: 'absolute',
-                  right: 15,
-                  top: 15
-                }}
-              />
             </Box>
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>
             <Stack spacing={1} sx={{ px: 2 }}>
               <Typography variant="h5">{data?.name}</Typography>
               <Typography color="textSecondary">{data?.about}</Typography>
-              <Rating name="read-only" value={data.rating} readOnly />
               <Box sx={{ width: '80%', pt: 2 }}>
                 <Grid container spacing={1}>
                   <Grid item xs={3}>
-                    <Typography color="textSecondary">Categories</Typography>
+                    <Typography color="textSecondary">Categoria</Typography>
                   </Grid>
                   <Grid item xs={9}>
                     <Stack direction="row" spacing={0.5}>
@@ -53,16 +42,16 @@ const ProductView = ({ data }: any) => {
                     </Stack>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography color="textSecondary">Qty</Typography>
+                    <Typography color="textSecondary">Cantidad</Typography>
                   </Grid>
                   <Grid item xs={9}>
                     <Typography variant="h6">{data?.quantity}</Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography color="textSecondary">Price</Typography>
+                    <Typography color="textSecondary">Precio</Typography>
                   </Grid>
                   <Grid item xs={9}>
-                    <Typography variant="h5">{data?.salePrice ? `$${data?.salePrice}` : `$${data?.offerPrice}`}</Typography>
+                    <Typography variant="h5">{data?.salePrice ? `$${data?.salePrice}` : `$${data?.price}`}</Typography>
                   </Grid>
                 </Grid>
               </Box>

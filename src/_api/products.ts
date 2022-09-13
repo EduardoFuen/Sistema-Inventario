@@ -19,15 +19,15 @@ services.onPost('/api/products/filter').reply((config) => {
     const { filter } = JSON.parse(config.data);
 
     if (filter.sort === 'high') {
-      products.sort((a: Products, b: Products) => Number(b.offerPrice) - Number(a.offerPrice));
+      products.sort((a: Products, b: Products) => Number(b.price) - Number(a.price));
     }
 
     if (filter.sort === 'low') {
-      products.sort((a, b) => Number(a.offerPrice) - Number(b.offerPrice));
+      products.sort((a, b) => Number(a.price) - Number(b.price));
     }
 
-    if (filter.sort === 'popularity') {
-      products.sort((a, b) => Number(b.popularity) - Number(a.popularity));
+    if (filter.sort === 'maker') {
+      products.sort((a, b) => Number(b.maker) - Number(a.maker));
     }
 
     if (filter.sort === 'discount') {
@@ -42,7 +42,7 @@ services.onPost('/api/products/filter').reply((config) => {
       let searchMatches = true;
 
       if (filter.search) {
-        const properties = ['name', 'description', 'rating', 'salePrice', 'offerPrice', 'gender'];
+        const properties = ['name', 'description', 'rating', 'salePrice', 'price', 'gender'];
         let containsQuery = false;
 
         properties.forEach((property) => {
@@ -65,7 +65,7 @@ services.onPost('/api/products/filter').reply((config) => {
         filter.colors.length > 0 ? filter.colors.some((color: string) => product.colors.some((item: string) => item === color)) : true;
 
       const minMax = filter.price ? filter.price.split('-') : '';
-      const priceMatches = filter.price ? product.offerPrice >= minMax[0] && product.offerPrice <= minMax[1] : true;
+      const priceMatches = filter.price ? product.price >= minMax[0] && product.price <= minMax[1] : true;
       const ratingMatches = filter.rating > 0 ? product.rating >= filter.rating : true;
 
       return searchMatches && genderMatches && categoriesMatches && colorsMatches && priceMatches && ratingMatches;

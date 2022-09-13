@@ -155,7 +155,7 @@ const Cart = ({ checkout, onNext, removeProduct, updateQuantity }: CartProps) =>
                                   <CurrencyFormat
                                     decimalScale={2}
                                     fixedDecimalScale
-                                    value={row.offerPrice * row.quantity}
+                                    value={row.price * row.quantity}
                                     displayType="text"
                                     thousandSeparator
                                     prefix="$"

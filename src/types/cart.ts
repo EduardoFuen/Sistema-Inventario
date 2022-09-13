@@ -25,7 +25,7 @@ export interface CartProductStateProps {
   name: string;
   image: string;
   salePrice: number;
-  offerPrice: number;
+  price: number;
   color: string;
   size: string | number;
   quantity: number;
@@ -58,7 +58,7 @@ export interface ProductCardProps extends KeyedObject {
   name: string;
   image: string;
   description?: string;
-  offerPrice?: number;
+  price?: number;
   salePrice?: number;
   rating?: number;
   open?: boolean;

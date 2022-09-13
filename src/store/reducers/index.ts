@@ -17,6 +17,7 @@ import trademaker from './trademaker';
 import category from './category';
 import supplier from './supplier';
 import typeProduct from './typeProduct';
+import activeSubst from './activeSubst';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -25,6 +26,14 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  substances: persistReducer(
+    {
+      key: 'substances',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    activeSubst
+  ),
   supplier: persistReducer(
     {
       key: 'supplier',

@@ -78,10 +78,10 @@ const ListProduct = ({ product }: { product: Products }) => {
             <Typography color="textSecondary">{product.description}</Typography>
             <Stack spacing={1}>
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography variant="h5">{product.salePrice ? `$${product.salePrice}` : `$${product.offerPrice}`}</Typography>
+                <Typography variant="h5">{product.salePrice ? `$${product.salePrice}` : `$${product.price}`}</Typography>
                 {product.salePrice && (
                   <Typography variant="h6" color="textSecondary" sx={{ textDecoration: 'line-through' }}>
-                    ${product.offerPrice}
+                    ${product.price}
                   </Typography>
                 )}
               </Stack>

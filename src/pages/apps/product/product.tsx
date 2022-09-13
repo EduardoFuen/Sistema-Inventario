@@ -115,11 +115,11 @@ const ProductsPage = () => {
           id={product.id}
           image={product.image}
           name={product.name}
-          brand={product.brand}
+          brand={product.trademark}
           offer={product.offer}
           isStock={product.isStock}
           description={product.description}
-          offerPrice={product.offerPrice}
+          price={product.price}
           salePrice={product.salePrice}
           color={product.colors ? product.colors[0] : undefined}
           open={openFilterDrawer}

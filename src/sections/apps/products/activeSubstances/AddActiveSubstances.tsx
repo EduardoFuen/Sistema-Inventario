@@ -27,38 +27,38 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addTypeProduct, editTypeProduct, deleteTypeProduct } from 'store/reducers/typeProduct';
+import { addSubs, editSubs, deleteSubs } from 'store/reducers/activeSubst';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // constant
-const getInitialValues = (product: FormikValues | null) => {
-  const newProduct = {
+const getInitialValues = (subst: FormikValues | null) => {
+  const newSubstance = {
     name: '',
     status: false
   };
 
-  if (product) {
-    newProduct.name = product.name;
-    newProduct.status = product.status;
-    return _.merge({}, newProduct, product);
+  if (subst) {
+    newSubstance.name = subst.name;
+    newSubstance.status = subst.status;
+    return _.merge({}, newSubstance, subst);
   }
-  return newProduct;
+  return newSubstance;
 };
 
-// ==============================|| TYPE PRODUCT ADD / EDIT / DELETE ||============================== //
+// ==============================|| ACTIVE SUBSTANCES ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
-  product?: any;
+  subst?: any;
   onCancel: () => void;
 }
 
-const AddPackList = ({ product, onCancel }: Props) => {
+const AddPackList = ({ subst, onCancel }: Props) => {
   const dispatch = useDispatch();
-  const isCreating = !product;
+  const isCreating = !subst;
 
-  const UserSchema = Yup.object().shape({
+  const SubstSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido')
   });
 
@@ -66,7 +66,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
     dispatch(
       openSnackbar({
         open: true,
-        message: 'Tipo de Producto deleted successfully.',
+        message: 'Deleted successfully.',
         variant: 'alert',
         alert: {
           color: 'success'
@@ -74,27 +74,27 @@ const AddPackList = ({ product, onCancel }: Props) => {
         close: false
       })
     );
-    dispatch(deleteTypeProduct(product.name));
+    dispatch(deleteSubs(subst.name));
     onCancel();
   };
 
   const formik = useFormik({
-    initialValues: getInitialValues(product!),
-    validationSchema: UserSchema,
+    initialValues: getInitialValues(subst!),
+    validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        const newProduct = {
+        const newSubstance = {
           name: values.name,
           status: values.status,
           qty: 0
         };
 
-        if (product) {
-          dispatch(editTypeProduct(product.name, newProduct));
+        if (subst) {
+          dispatch(editSubs(subst.name, newSubstance));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Tipo de Producto update successfully.',
+              message: 'Update successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -103,11 +103,11 @@ const AddPackList = ({ product, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addTypeProduct(newProduct));
+          dispatch(addSubs(newSubstance));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Tipo de Producto add successfully.',
+              message: 'Add successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -131,7 +131,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{product ? 'Editar Tipo de Producto' : 'Agregar Tipo de Producto'}</DialogTitle>
+          <DialogTitle>{subst ? 'Editar Sustancias o principios activos' : 'Agregar Sustancias o principios activos'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -139,11 +139,11 @@ const AddPackList = ({ product, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="product-name">Nombre Tipo de Producto</InputLabel>
+                      <InputLabel htmlFor="subst-name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="product-name"
-                        placeholder="Ingresar Tipo de Producto"
+                        id="subst-name"
+                        placeholder="Ingresar Nombre"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}
@@ -157,7 +157,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={product?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={subst?.status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"
@@ -173,7 +173,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 {!isCreating && (
-                  <Tooltip title="Delete User" placement="top">
+                  <Tooltip title="Delete Subst" placement="top">
                     <IconButton onClick={deleteHandler} size="large" color="error">
                       <DeleteFilled />
                     </IconButton>
@@ -186,7 +186,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
                     Cancelar
                   </Button>
                   <Button type="submit" variant="contained" disabled={isSubmitting}>
-                    {product ? 'Edit' : 'Add'}
+                    {subst ? 'Edit' : 'Add'}
                   </Button>
                 </Stack>
               </Grid>
