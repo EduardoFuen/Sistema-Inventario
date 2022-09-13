@@ -115,7 +115,6 @@ function AddNewProduct() {
   const handleCancel = () => {
     history(`/p/product-list`);
   };
-console.log(product);
 
   const SubstSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
