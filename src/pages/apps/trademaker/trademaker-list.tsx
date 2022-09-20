@@ -154,14 +154,14 @@ const WarehouseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [tradeMaker, setTrademark] = useState(null);
+  const [tradeMark, setTrademark] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
-    if (tradeMaker && !add) setTrademark(null);
+    if (tradeMark && !add) setTrademark(null);
   };
-  const { tradeMakerList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
 
   useEffect(() => {
     dispatch(getTrademarkList());
@@ -191,7 +191,7 @@ const WarehouseList = () => {
         }
       },
       {
-        Header: 'Actiones',
+        Header: 'Acciones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
@@ -245,7 +245,7 @@ const WarehouseList = () => {
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={tradeMakerList as []}
+          data={tradeMarkList as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
@@ -253,7 +253,7 @@ const WarehouseList = () => {
 
       {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddTrademark tradeMaker={tradeMaker} onCancel={handleAdd} />}
+        {add && <AddTrademark tradeMark={tradeMark} onCancel={handleAdd} />}
       </Dialog>
     </MainCard>
   );

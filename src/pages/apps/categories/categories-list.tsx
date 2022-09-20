@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, Fragment } from 'react';
+import { useEffect, useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
@@ -15,12 +15,12 @@ import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getCategoryList } from 'store/reducers/category';
+import { getCategoryList, deleteCategory } from 'store/reducers/category';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -31,15 +31,14 @@ interface Props {
   columns: Column[];
   data: [];
   getHeaderProps: (column: any) => void;
-  handleAdd: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'categoryOne', desc: false };
 
   const {
     getTableProps,
@@ -55,7 +54,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
     // @ts-ignore
     setPageSize,
     // @ts-ignore
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
+    state: { globalFilter, pageIndex, pageSize },
     // @ts-ignore
     preGlobalFilteredRows,
     // @ts-ignore
@@ -81,12 +80,11 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
   const history = useNavigate();
 
   const handleAddCategory = () => {
-    history(`/p/add-category`);
+    history(`/p/product-list/add-category`);
   };
 
   return (
     <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
       <Stack spacing={3}>
         <Stack
           direction={matchDownSM ? 'column' : 'row'}
@@ -158,15 +156,13 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
 const CategoriesList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const history = useNavigate();
 
-  const [warehouse, setWarehouse] = useState(null);
-  const [add, setAdd] = useState<boolean>(false);
-
-  const handleAdd = () => {
-    setAdd(!add);
-    if (warehouse && !add) setWarehouse(null);
+  const handleEditCategory = (id: any) => {
+    history(`/p/product-list/add-category/${id}`);
   };
-  const { categoryListOne } = useSelector((state) => state.category);
+
+  const { categoryListThree } = useSelector((state) => state.category);
 
   useEffect(() => {
     dispatch(getCategoryList());
@@ -176,17 +172,17 @@ const CategoriesList = () => {
     () => [
       {
         Header: 'Categoria',
-        accessor: 'name',
+        accessor: 'categoryOne',
         className: 'cell-center'
       },
       {
         Header: 'Categoria 2',
-        accessor: 'location',
+        accessor: 'categoryTwo',
         className: 'cell-center'
       },
       {
         Header: 'Categoria 3',
-        accessor: 'city',
+        accessor: 'categoryThree',
         className: 'cell-center'
       },
       {
@@ -204,7 +200,7 @@ const CategoriesList = () => {
         }
       },
       {
-        Header: 'Actiones',
+        Header: 'Acciones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
@@ -215,8 +211,7 @@ const CategoriesList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setWarehouse(row.values);
-                    handleAdd();
+                    handleEditCategory(row.values?.categoryThree);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -230,7 +225,7 @@ const CategoriesList = () => {
                     dispatch(
                       openSnackbar({
                         open: true,
-                        message: 'Bodega deleted successfully.',
+                        message: 'Categoria deleted successfully.',
                         variant: 'alert',
                         alert: {
                           color: 'success'
@@ -238,7 +233,7 @@ const CategoriesList = () => {
                         close: false
                       })
                     );
-                    // dispatch(deleteWarehouse(row?.name));
+                    dispatch(deleteCategory(row.values));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -252,16 +247,10 @@ const CategoriesList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable
-          columns={columns}
-          data={categoryListOne as []}
-          handleAdd={handleAdd}
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-        />
+        <ReactTable columns={columns} data={categoryListThree as []} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
       </ScrollX>
     </MainCard>
   );

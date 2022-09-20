@@ -12,7 +12,7 @@ import { TrademarkStateProps } from 'types/e-commerce';
 
 const initialState: TrademarkStateProps = {
   error: null,
-  tradeMakerList: []
+  tradeMarkList: []
 };
 
 const slice = createSlice({
@@ -26,22 +26,22 @@ const slice = createSlice({
 
     // GET PACKS
     getTrademarkSuccess(state, action) {
-      state.tradeMakerList = action.payload;
+      state.tradeMarkList = action.payload;
     },
 
     // ADD PACK
     addTrademarkSuccess(state, action) {
-      state.tradeMakerList.push(action.payload);
+      state.tradeMarkList.push(action.payload);
     },
     UpdateTrademarkSuccess(state, action) {
       const { name, data } = action.payload;
-      const index = state.tradeMakerList.findIndex((item) => item.name === name);
-      state.tradeMakerList[index] = data;
+      const index = state.tradeMarkList.findIndex((item) => item.name === name);
+      state.tradeMarkList[index] = data;
     },
     DeleteTrademarkSuccess(state, action) {
       const { name } = action.payload;
-      const index = state.tradeMakerList.findIndex((item) => item.name === name);
-      state.tradeMakerList.splice(index, 1);
+      const index = state.tradeMarkList.findIndex((item) => item.name === name);
+      state.tradeMarkList.splice(index, 1);
     }
   }
 });

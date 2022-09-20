@@ -24,21 +24,21 @@ const slice = createSlice({
       state.error = action.payload;
     },
 
-    // GET PACKS
+    // GET SUPPLIERS
     getSupplierSuccess(state, action) {
       state.supplierList = action.payload;
     },
 
-    // ADD PACK
+    // ADD SUPPLIER
     addSupplierSuccess(state, action) {
       state.supplierList.push(action.payload);
     },
-    UpdateSupplierSuccess(state, action) {
+    updateSupplierSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.supplierList.findIndex((item) => item.businessName === name);
       state.supplierList[index] = data;
     },
-    DeleteSupplierSuccess(state, action) {
+    deleteSupplierSuccess(state, action) {
       const { name } = action.payload;
       const index = state.supplierList.findIndex((item) => item.businessName === name);
       state.supplierList.splice(index, 1);
@@ -61,11 +61,11 @@ export function createSupplier(data: any) {
   };
 }
 
-export function editSupplier(name: string, data: any) {
+export function editSupplier(name: string | undefined, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdateSupplierSuccess({
+        slice.actions.updateSupplierSuccess({
           name,
           data
         })
@@ -76,11 +76,11 @@ export function editSupplier(name: string, data: any) {
   };
 }
 
-export function deleteSupplier(name: string) {
+export function deleteSupplier(name: string | undefined) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeleteSupplierSuccess({
+        slice.actions.deleteSupplierSuccess({
           name
         })
       );

@@ -106,20 +106,22 @@ const NavCollapse = ({ menu, level }: Props) => {
 
   const openMini = Boolean(anchorEl);
 
-  const navCollapse = menu.children?.map((item) => {
-    switch (item.type) {
-      case 'collapse':
-        return <NavCollapse key={item.id} menu={item} level={level + 1} />;
-      case 'item':
-        return <NavItem key={item.id} item={item} level={level + 1} />;
-      default:
-        return (
-          <Typography key={item.id} variant="h6" color="error" align="center">
-            Fix - Collapse or Item
-          </Typography>
-        );
-    }
-  });
+  const navCollapse = menu.children
+    ?.filter((item: any) => item.hide !== true)
+    .map((item: any) => {
+      switch (item.type) {
+        case 'collapse':
+          return <NavCollapse key={item.id} menu={item} level={level + 1} />;
+        case 'item':
+          return <NavItem key={item.id} item={item} level={level + 1} />;
+        default:
+          return (
+            <Typography key={item.id} variant="h6" color="error" align="center">
+              Fix - Collapse or Item
+            </Typography>
+          );
+      }
+    });
 
   const borderIcon = level === 1 ? <BorderOutlined style={{ fontSize: '1rem' }} /> : false;
   const Icon = menu.icon!;

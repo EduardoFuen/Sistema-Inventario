@@ -21,6 +21,20 @@ const applications: NavItemType = {
       icon: icons.UnorderedListOutlined
     },
     {
+      id: 'AddProduct',
+      type: 'item',
+      title: 'Agregar Producto',
+      url: '/p/product-list/add-new-product',
+      hide: true
+    },
+    {
+      id: 'AddCategory',
+      type: 'item',
+      title: 'Agregar Categorias',
+      url: '/p/product-list/add-category',
+      hide: true
+    },
+    {
       id: 'proveedores',
       title: 'Proveedores',
       type: 'item',

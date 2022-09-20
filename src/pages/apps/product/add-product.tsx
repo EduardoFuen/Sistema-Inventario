@@ -56,10 +56,9 @@ const getInitialValues = () => {
     height: '',
     packUnit: '',
     depth: '',
-    quantityInv: '',
-    warehouse: '',
     substances: '',
     keywords: '',
+    warehouse: '',
     substitutes: '',
     img: '',
     status: false
@@ -70,16 +69,6 @@ const getInitialValues = () => {
 function AddNewProduct() {
   const history = useNavigate();
   const theme = useTheme();
-  const statuss = [
-    {
-      value: 'Saludable',
-      label: 'Saludable'
-    },
-    {
-      value: 'Salud',
-      label: 'Salud'
-    }
-  ];
 
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
@@ -92,12 +81,13 @@ function AddNewProduct() {
 
   const { makerList } = useSelector((state) => state.maker);
   const dispatch = useDispatch();
-  const { tradeMakerList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
-  const { warehouseList } = useSelector((state) => state.warehouse);
   const { products } = useSelector((state) => state.product);
   const { todoListSubs } = useSelector((state) => state.substances);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   const handleCancel = () => {
     history(`/p/product-list`);
@@ -148,7 +138,7 @@ function AddNewProduct() {
               <Grid item xs={12} sm={6}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Basicos
+                    Datos Básicos
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={12}>
@@ -185,7 +175,7 @@ function AddNewProduct() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Precio</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Costo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
@@ -254,21 +244,25 @@ function AddNewProduct() {
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
                       <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('maker')}>
-                        {makerList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {makerList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                       <TextField placeholder="Seleccionar Trademark" {...getFieldProps('trademark')} fullWidth select>
-                        {tradeMakerList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {tradeMarkList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -281,12 +275,45 @@ function AddNewProduct() {
                         fullWidth
                         select
                       >
-                        {typeProductList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {typeProductList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
+                      <Autocomplete
+                        multiple
+                        id="warehouse-list"
+                        options={warehouseList.filter((item: any) => item.status === true)}
+                        getOptionLabel={(option) => option.name}
+                        defaultValue={[]}
+                        filterSelectedOptions
+                        onChange={(event, newValue) => {
+                          setFieldValue('warehouse', newValue === null ? '' : newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} placeholder="" />}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            p: 0.5
+                          },
+                          '& .MuiAutocomplete-tag': {
+                            bgcolor: 'primary.lighter',
+                            border: '1px solid',
+                            borderColor: 'primary.light',
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                              '&:hover': {
+                                color: 'primary.dark'
+                              }
+                            }
+                          }
+                        }}
+                      />
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Variación</InputLabel>
@@ -300,31 +327,37 @@ function AddNewProduct() {
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryOne')}>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListOne
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryOne} value={option.categoryOne}>
+                              {option.categoryOne}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryTwo')}>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListTwo
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryTwo} value={option.categoryTwo}>
+                              {option.categoryTwo}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" {...getFieldProps('categoryThree')} fullWidth select>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListThree
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryThree} value={option.categoryThree}>
+                              {option.categoryThree}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                   </Grid>
@@ -347,11 +380,13 @@ function AddNewProduct() {
                         select
                         fullWidth
                       >
-                        {packList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {packList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -437,55 +472,6 @@ function AddNewProduct() {
                   <Grid item xs={12}>
                     <MainCard>
                       <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Inventario
-                      </Typography>
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Stock</InputLabel>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            {...getFieldProps('quantityInv')}
-                            placeholder="Ingresar Stock"
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                          <Autocomplete
-                            multiple
-                            id="warehouse-list"
-                            options={warehouseList}
-                            getOptionLabel={(option) => option.name}
-                            defaultValue={[]}
-                            filterSelectedOptions
-                            onChange={(event, newValue) => {
-                              setFieldValue('warehouse', newValue === null ? '' : newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} placeholder="Bodega" />}
-                            sx={{
-                              '& .MuiOutlinedInput-root': {
-                                p: 0.5
-                              },
-                              '& .MuiAutocomplete-tag': {
-                                bgcolor: 'primary.lighter',
-                                border: '1px solid',
-                                borderColor: 'primary.light',
-                                '& .MuiSvgIcon-root': {
-                                  color: 'primary.main',
-                                  '&:hover': {
-                                    color: 'primary.dark'
-                                  }
-                                }
-                              }
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
-                    </MainCard>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <MainCard>
-                      <Typography variant="h5" component="div" sx={{ mb: 3 }}>
                         Sustancias o principios activos
                       </Typography>
                       <Grid container direction="row" spacing={2}>
@@ -493,7 +479,7 @@ function AddNewProduct() {
                           <Autocomplete
                             multiple
                             id="substances-list"
-                            options={todoListSubs}
+                            options={todoListSubs.filter((item: any) => item.status === true)}
                             getOptionLabel={(option) => option.name}
                             defaultValue={[]}
                             filterSelectedOptions
@@ -546,7 +532,7 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products}
+                        options={products.filter((item: any) => item.status === true)}
                         getOptionLabel={(option) => option.name}
                         defaultValue={[]}
                         filterSelectedOptions

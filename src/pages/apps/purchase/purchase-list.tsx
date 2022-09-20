@@ -17,7 +17,7 @@ import ScrollX from 'components/ScrollX';
 import makeData from 'data/react-table';
 import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -55,7 +55,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     // @ts-ignore
     setPageSize,
     // @ts-ignore
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
+    state: { globalFilter, pageIndex, pageSize },
     // @ts-ignore
     preGlobalFilteredRows,
     // @ts-ignore
@@ -69,7 +69,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
     },
     useGlobalFilter,
     useFilters,
@@ -82,11 +82,10 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
   const history = useNavigate();
 
   const handleAddPurchase = () => {
-    history(`/p/add-new-purchase`);
+    history(`/purchase/add-new-purchase`);
   };
   return (
     <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
       <Stack spacing={3}>
         <Stack
           direction={matchDownSM ? 'column' : 'row'}
@@ -166,7 +165,7 @@ const PurchaseList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Order ID',
+        Header: 'Order',
         accessor: 'orderId',
         className: 'cell-center'
       },
@@ -235,7 +234,7 @@ const PurchaseList = () => {
         }
       },
       {
-        Header: 'Actiones',
+        Header: 'Acciones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {

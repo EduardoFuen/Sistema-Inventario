@@ -12,10 +12,12 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 // render - applications
 const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase-list')));
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
-const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
 
-// const AppProductDetails = Loadable(lazy(() => import('pages/apps/product/product-details')));
-const AppProductList = Loadable(lazy(() => import('pages/apps/product/products')));
+const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
+const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/add-supplier')));
+const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/edit-supplier')));
+
+const AppProductList = Loadable(lazy(() => import('pages/apps/productMainView/products')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
 const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/edit-product')));
 const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-category')));
@@ -60,11 +62,23 @@ const MainRoutes = {
               element: <AppPurchaseList />
             },
             {
+              path: 'purchase/add-new-purchase',
+              element: <AppAddPurchase />
+            },
+            {
               path: '',
               children: [
                 {
                   path: 'supplier',
                   element: <SupplierList />
+                },
+                {
+                  path: 'add-new-supplier',
+                  element: <AppAddSupplier />
+                },
+                {
+                  path: 'supplier-edit/:id',
+                  element: <AppEditSupplier />
                 }
               ]
             },
@@ -72,7 +86,7 @@ const MainRoutes = {
               path: 'p',
               children: [
                 {
-                  path: 'product-edit/:id',
+                  path: 'product-list/product-edit/:id',
                   element: <AppEditProduct />
                 },
                 {
@@ -80,16 +94,16 @@ const MainRoutes = {
                   element: <AppProductList />
                 },
                 {
-                  path: 'add-new-product',
+                  path: 'product-list/add-new-product',
                   element: <AppAddProduct />
                 },
                 {
-                  path: 'add-category',
+                  path: 'product-list/add-category',
                   element: <AppAddCategory />
                 },
                 {
-                  path: 'add-new-purchase',
-                  element: <AppAddPurchase />
+                  path: 'product-list/add-category/:id',
+                  element: <AppAddCategory />
                 }
               ]
             }

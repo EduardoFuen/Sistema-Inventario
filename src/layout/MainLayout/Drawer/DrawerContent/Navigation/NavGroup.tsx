@@ -23,20 +23,22 @@ const NavGroup = ({ item }: Props) => {
   const menu = useSelector((state: RootStateProps) => state.menu);
   const { drawerOpen } = menu;
 
-  const navCollapse = item.children?.map((menuItem) => {
-    switch (menuItem.type) {
-      case 'collapse':
-        return <NavCollapse key={menuItem.id} menu={menuItem} level={1} />;
-      case 'item':
-        return <NavItem key={menuItem.id} item={menuItem} level={1} />;
-      default:
-        return (
-          <Typography key={menuItem.id} variant="h6" color="error" align="center">
-            Fix - Group Collapse or Items
-          </Typography>
-        );
-    }
-  });
+  const navCollapse = item.children
+    ?.filter((item: any) => item.hide !== true)
+    .map((menuItem: any) => {
+      switch (menuItem.type) {
+        case 'collapse':
+          return <NavCollapse key={menuItem.id} menu={menuItem} level={1} />;
+        case 'item':
+          return <NavItem key={menuItem.id} item={menuItem} level={1} />;
+        default:
+          return (
+            <Typography key={menuItem.id} variant="h6" color="error" align="center">
+              Fix - Group Collapse or Items
+            </Typography>
+          );
+      }
+    });
 
   return (
     <List

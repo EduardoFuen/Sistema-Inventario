@@ -12,7 +12,9 @@ import { CategoryOneStateProps } from 'types/e-commerce';
 
 const initialState: CategoryOneStateProps = {
   error: null,
-  categoryListOne: []
+  categoryListOne: [],
+  categoryListTwo: [],
+  categoryListThree: []
 };
 
 const slice = createSlice({
@@ -24,30 +26,58 @@ const slice = createSlice({
       state.error = action.payload;
     },
 
-    // GET PACKS
-    getMakerSuccess(state, action) {
-      state.categoryListOne = action.payload;
-    },
-
-    // ADD PACK
+    // ADD CATEGORY ONE
     addCategorySuccess(state, action) {
       state.categoryListOne.push(action.payload);
     },
     addCategory2Success(state, action) {
-      state.categoryListOne.push(action.payload);
+      state.categoryListTwo.push(action.payload);
     },
     addCategory3Success(state, action) {
-      state.categoryListOne.push(action.payload);
+      state.categoryListThree.push(action.payload);
     },
-    UpdateMakerSuccess(state, action) {
-      /*      const { name, data } = action.payload;
-      const index = state.makerList.findIndex((item) => item.name === name);
-      state.makerList[index] = data; */
+    updateCategorySuccess(state, action) {
+      const { type, id, data } = action.payload;
+      switch (type) {
+        case 'CategoryOne': {
+          let index2: number = state.categoryListThree.findIndex((item) => item.categoryOne === id);
+          state.categoryListThree[index2] = {
+            ...state.categoryListThree[index2],
+            categoryOne: data.categoryOne
+          };
+          let indexOne: number = state.categoryListOne.findIndex((item) => item.categoryOne === id);
+          state.categoryListOne[indexOne] = data;
+          break;
+        }
+        case 'CategoryTwo': {
+          let index2: number = state.categoryListThree.findIndex((item) => item.categoryTwo === id);
+          state.categoryListThree[index2] = {
+            ...state.categoryListThree[index2],
+            categoryTwo: data.categoryTwo
+          };
+          let index: number = state.categoryListTwo.findIndex((item) => item.categoryTwo === id);
+          state.categoryListTwo[index] = data;
+          break;
+        }
+        default:
+          let index: number = state.categoryListThree.findIndex((item) => item.categoryThree === id);
+          state.categoryListThree[index] = data;
+      }
     },
-    DeleteMakerSuccess(state, action) {
-      /*    const { name } = action.payload;
-      const index = state.makerList.findIndex((item) => item.name === name);
-      state.makerList.splice(index, 1); */
+    deleteCategorySuccess(state, action) {
+      const { row } = action.payload;
+      if (row.categoryOne) {
+        const index = state.categoryListOne.findIndex((item) => item.categoryOne === row.categoryOne);
+        state.categoryListOne.splice(index, 1);
+      }
+      if (row.categoryTwo) {
+        const index = state.categoryListTwo.findIndex((item) => item.categoryTwo === row.categoryTwo);
+        state.categoryListTwo.splice(index, 1);
+      }
+      if (row.categoryThree) {
+        const index = state.categoryListThree.findIndex((item) => item.categoryThree === row.categoryThree);
+        state.categoryListThree.splice(index, 1);
+      }
     }
   }
 });
@@ -85,12 +115,13 @@ export function addCategory3(data: any) {
   };
 }
 
-export function editMaker(name: string, data: any) {
+export function editCategory(type: string, id: string, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdateMakerSuccess({
-          name,
+        slice.actions.updateCategorySuccess({
+          type,
+          id,
           data
         })
       );
@@ -100,12 +131,12 @@ export function editMaker(name: string, data: any) {
   };
 }
 
-export function deleteMaker(name: string) {
+export function deleteCategory(row: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeleteMakerSuccess({
-          name
+        slice.actions.deleteCategorySuccess({
+          row
         })
       );
     } catch (error) {

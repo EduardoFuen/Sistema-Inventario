@@ -189,7 +189,7 @@ const MakersList = () => {
         }
       },
       {
-        Header: 'Actiones',
+        Header: 'Acciones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {

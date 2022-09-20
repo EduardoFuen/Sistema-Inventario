@@ -37,6 +37,7 @@ interface Props {
 
 function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
   const theme = useTheme();
+  const history = useNavigate();
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
 
@@ -79,10 +80,8 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     useRowSelect
   );
 
-  const history = useNavigate();
-
   const handleAddProduct = () => {
-    history(`/p/add-new-product`);
+    history(`/p/product-list/add-new-product`);
   };
 
   return (
@@ -162,7 +161,7 @@ const ProductList = () => {
 
   const { products } = useSelector((state) => state.product);
   const handleEditProduct = (id: any) => {
-    history(`/p/product-edit/${id}`);
+    history(`/p/product-list/product-edit/${id}`);
   };
   useEffect(() => {
     dispatch(getProducts());
@@ -248,7 +247,7 @@ const ProductList = () => {
         }
       },
       {
-        Header: 'Actiones',
+        Header: 'Acciones',
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {

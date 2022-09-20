@@ -13,7 +13,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
-function AddNewProduct() {
+function AddPurchase() {
   const history = useNavigate();
   const statuss = [
     {
@@ -31,7 +31,7 @@ function AddNewProduct() {
 
   const { makerList } = useSelector((state) => state.maker);
   const dispatch = useDispatch();
-  const { tradeMakerList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { product } = useSelector((state) => state.product);
   const [productNew, setProductNew] = useState({
@@ -60,7 +60,7 @@ function AddNewProduct() {
           <Grid item xs={12} sm={6}>
             <MainCard>
               <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                Datos Basicos
+                Datos Básicos
               </Typography>
               <Grid container spacing={1} direction="row">
                 <Grid item xs={12}>
@@ -145,7 +145,7 @@ function AddNewProduct() {
                 <Grid item xs={6}>
                   <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                   <TextField placeholder="Select status" fullWidth select value={status} onChange={handleStatus}>
-                    {tradeMakerList.map((option) => (
+                    {tradeMarkList.map((option) => (
                       <MenuItem key={option.name} value={option.name}>
                         {option.name}
                       </MenuItem>
@@ -289,4 +289,4 @@ function AddNewProduct() {
   );
 }
 
-export default AddNewProduct;
+export default AddPurchase;

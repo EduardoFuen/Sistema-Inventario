@@ -6,6 +6,9 @@ export type Products = {
   trademark: string;
   offer?: string;
   description?: string;
+  categoryOne?: string;
+  categoryThree?: string;
+  categoryTwo?: string;
   about?: string;
   quantity?: number;
   rating?: number;
@@ -181,19 +184,33 @@ export type Trademark = {
 };
 
 export interface TrademarkStateProps {
-  tradeMakerList: Trademark[];
+  tradeMarkList: Trademark[];
   error: object | string | null;
 }
 
 // Category
-export type category = {
+export type categoryOne = {
   id: string | number | undefined;
-  name: string;
+  categoryOne: string;
+  status: boolean;
+};
+export type categoryTwo = {
+  id: string | number | undefined;
+  categoryTwo: string;
   status: boolean;
 };
 
+export type categoryThree = {
+  id: string | number | undefined;
+  categoryThree: string;
+  categoryTwo: string;
+  categoryOne: string;
+  status: boolean;
+};
 export interface CategoryOneStateProps {
-  categoryListOne: category[];
+  categoryListOne: categoryOne[];
+  categoryListTwo: categoryTwo[];
+  categoryListThree: categoryThree[];
   error: object | string | null;
 }
 

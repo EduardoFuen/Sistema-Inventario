@@ -54,7 +54,7 @@ export interface Props {
   onCancel: () => void;
 }
 
-const AddPackList = ({ subst, onCancel }: Props) => {
+const AddActiveSubstances = ({ subst, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !subst;
 
@@ -198,4 +198,4 @@ const AddPackList = ({ subst, onCancel }: Props) => {
   );
 };
 
-export default AddPackList;
+export default AddActiveSubstances;

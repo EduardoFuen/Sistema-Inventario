@@ -35,58 +35,11 @@ import { CameraOutlined } from '@ant-design/icons';
 
 // ==============================|| EDIT PRODUCT - MAIN ||============================== //
 
-/* const getInitialValues = (product: FormikValues | null) => {
-  console.log(product?.name);
-  
-  const newSubstance = {
-    name: product?.name,
-    sku: '',
-    ean: '',
-    price: '',
-    maker: '',
-    trademark: '',
-    type_product: '',
-    variation: '',
-    categoryOne: '',
-    categoryTwo: '',
-    categoryThree: '',
-    pack: '',
-    quantity: '',
-    makerUnit: '',
-    weight: '',
-    width: '',
-    packInfo: '',
-    height: '',
-    packUnit: '',
-    depth: '',
-    quantityInv: '',
-    warehouse: '',
-    substances: '',
-    keywords: '',
-    substitutes: '',
-    img: '',
-    status: false
-  };
-
-  return newSubstance;
-}; */
-
-function AddNewProduct() {
+function UpdateProduct() {
   const history = useNavigate();
   const theme = useTheme();
   const { id } = useParams();
-  const statuss = [
-    {
-      value: 'Saludable',
-      label: 'Saludable'
-    },
-    {
-      value: 'Salud',
-      label: 'Salud'
-    }
-  ];
 
-  //  const [product, setProduct] = useState({});
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
 
@@ -98,12 +51,13 @@ function AddNewProduct() {
 
   const { makerList } = useSelector((state) => state.maker);
   const dispatch = useDispatch();
-  const { tradeMakerList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
-  const { warehouseList } = useSelector((state) => state.warehouse);
   const { products } = useSelector((state) => state.product);
   const { todoListSubs } = useSelector((state) => state.substances);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   const product = useMemo(() => {
     if (id) {
@@ -124,7 +78,6 @@ function AddNewProduct() {
     type_product: Yup.string().max(255).required('Tipo de Producto es requerido'),
     pack: Yup.string().max(255).required('Envase es requerido')
   });
-
   const formik = useFormik({
     initialValues: {
       name: product?.name,
@@ -135,9 +88,9 @@ function AddNewProduct() {
       trademark: product?.trademark,
       type_product: product?.type_product,
       variation: product?.variation,
-      categoryOne: '',
-      categoryTwo: '',
-      categoryThree: '',
+      categoryOne: product?.categoryOne,
+      categoryTwo: product?.categoryTwo,
+      categoryThree: product?.categoryThree,
       pack: product?.pack,
       quantity: product?.quantity,
       makerUnit: product?.makerUnit,
@@ -147,11 +100,10 @@ function AddNewProduct() {
       height: product?.height,
       packUnit: product?.packUnit,
       depth: product?.depth,
-      quantityInv: product?.quantityInv,
-      warehouse: product?.warehouse,
       substances: product?.substances,
       keywords: product?.keywords,
       substitutes: product?.substitutes,
+      warehouse: product?.warehouse,
       img: '',
       status: product?.status
     },
@@ -177,9 +129,7 @@ function AddNewProduct() {
       }
     }
   });
-
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
   return (
     <>
       <MainCard>
@@ -189,7 +139,7 @@ function AddNewProduct() {
               <Grid item xs={12} sm={6}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Basicos
+                    Datos Básicos
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={12}>
@@ -226,7 +176,7 @@ function AddNewProduct() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Precio</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Costo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
@@ -294,21 +244,25 @@ function AddNewProduct() {
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
                       <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('maker')}>
-                        {makerList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {makerList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                       <TextField placeholder="Seleccionar Trademark" {...getFieldProps('trademark')} fullWidth select>
-                        {tradeMakerList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {tradeMarkList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -321,12 +275,45 @@ function AddNewProduct() {
                         fullWidth
                         select
                       >
-                        {typeProductList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {typeProductList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
+                      <Autocomplete
+                        multiple
+                        id="warehouse-list"
+                        options={warehouseList.filter((item: any) => item.status === true)}
+                        getOptionLabel={(option) => option.name}
+                        defaultValue={[...(product?.warehouse || '')] as []}
+                        filterSelectedOptions
+                        onChange={(event, newValue) => {
+                          setFieldValue('warehouse', newValue === null ? '' : newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} placeholder="" />}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            p: 0.5
+                          },
+                          '& .MuiAutocomplete-tag': {
+                            bgcolor: 'primary.lighter',
+                            border: '1px solid',
+                            borderColor: 'primary.light',
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                              '&:hover': {
+                                color: 'primary.dark'
+                              }
+                            }
+                          }
+                        }}
+                      />
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Variación</InputLabel>
@@ -340,31 +327,37 @@ function AddNewProduct() {
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryOne')}>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListOne
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryOne} value={option.categoryOne}>
+                              {option.categoryOne}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryTwo')}>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListTwo
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryTwo} value={option.categoryTwo}>
+                              {option.categoryTwo}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" {...getFieldProps('categoryThree')} fullWidth select>
-                        {statuss.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
+                        {categoryListThree
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.categoryThree} value={option.categoryThree}>
+                              {option.categoryThree}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                   </Grid>
@@ -387,11 +380,13 @@ function AddNewProduct() {
                         select
                         fullWidth
                       >
-                        {packList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {packList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -477,55 +472,6 @@ function AddNewProduct() {
                   <Grid item xs={12}>
                     <MainCard>
                       <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Inventario
-                      </Typography>
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Stock</InputLabel>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            {...getFieldProps('quantityInv')}
-                            placeholder="Ingresar Stock"
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                          <Autocomplete
-                            multiple
-                            id="warehouse-list"
-                            options={warehouseList}
-                            getOptionLabel={(option) => option.name}
-                            defaultValue={[]}
-                            filterSelectedOptions
-                            onChange={(event, newValue) => {
-                              setFieldValue('warehouse', newValue === null ? '' : newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} placeholder="Bodega" />}
-                            sx={{
-                              '& .MuiOutlinedInput-root': {
-                                p: 0.5
-                              },
-                              '& .MuiAutocomplete-tag': {
-                                bgcolor: 'primary.lighter',
-                                border: '1px solid',
-                                borderColor: 'primary.light',
-                                '& .MuiSvgIcon-root': {
-                                  color: 'primary.main',
-                                  '&:hover': {
-                                    color: 'primary.dark'
-                                  }
-                                }
-                              }
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
-                    </MainCard>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <MainCard>
-                      <Typography variant="h5" component="div" sx={{ mb: 3 }}>
                         Sustancias o principios activos
                       </Typography>
                       <Grid container direction="row" spacing={2}>
@@ -533,9 +479,9 @@ function AddNewProduct() {
                           <Autocomplete
                             multiple
                             id="substances-list"
-                            options={todoListSubs}
+                            options={todoListSubs.filter((item: any) => item.status === true)}
                             getOptionLabel={(option) => option.name}
-                            defaultValue={[]}
+                            defaultValue={[...(product?.substances || '')] as []}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
                               setFieldValue('substances', newValue === null ? '' : newValue);
@@ -586,9 +532,9 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products}
-                        getOptionLabel={(option) => option.name}
-                        defaultValue={[]}
+                        options={products.filter((item: any) => item.status === true)}
+                        getOptionLabel={(option) => option?.name}
+                        defaultValue={[...(product?.substitutes || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
                           setFieldValue('substitutes', newValue === null ? '' : newValue);
@@ -617,12 +563,17 @@ function AddNewProduct() {
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
-                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="Estado" labelPlacement="top" {...getFieldProps('status')} />
+                  <FormControlLabel
+                    control={<Switch sx={{ mt: 0 }} defaultChecked={product?.status} />}
+                    label="Estado"
+                    {...getFieldProps('status')}
+                    labelPlacement="top"
+                  />
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Add new Product
+                    Update Product
                   </Button>
                 </Stack>
               </Grid>
@@ -634,4 +585,4 @@ function AddNewProduct() {
   );
 }
 
-export default AddNewProduct;
+export default UpdateProduct;

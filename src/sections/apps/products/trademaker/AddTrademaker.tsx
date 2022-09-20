@@ -38,15 +38,15 @@ import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/tra
 import { DeleteFilled } from '@ant-design/icons';
 
 // constant
-const getInitialValues = (tradeMaker: FormikValues | null) => {
+const getInitialValues = (tradeMark: FormikValues | null) => {
   const newTradeTrademark = {
     name: '',
     maker: '',
     status: false
   };
-  if (tradeMaker) {
-    newTradeTrademark.status = tradeMaker.status;
-    return _.merge({}, newTradeTrademark, tradeMaker);
+  if (tradeMark) {
+    newTradeTrademark.status = tradeMark.status;
+    return _.merge({}, newTradeTrademark, tradeMark);
   }
 
   return newTradeTrademark;
@@ -55,13 +55,13 @@ const getInitialValues = (tradeMaker: FormikValues | null) => {
 // ==============================|| WAREHOUSE ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
-  tradeMaker?: any;
+  tradeMark?: any;
   onCancel: () => void;
 }
 
-const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
+const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
-  const isCreating = !tradeMaker;
+  const isCreating = !tradeMark;
   const [maker, setMaker] = useState('');
   const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
@@ -69,7 +69,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   });
 
   const deleteHandler = () => {
-    dispatch(deleteTrademark(tradeMaker?.name));
+    dispatch(deleteTrademark(tradeMark?.name));
     dispatch(
       openSnackbar({
         open: true,
@@ -84,7 +84,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
     onCancel();
   };
   const formik = useFormik({
-    initialValues: getInitialValues(tradeMaker!),
+    initialValues: getInitialValues(tradeMark!),
     validationSchema: TrademarkSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
@@ -94,8 +94,8 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
           status: values.status
         };
 
-        if (tradeMaker) {
-          dispatch(editTrademark(tradeMaker.name, newTradeTrademark));
+        if (tradeMark) {
+          dispatch(editTrademark(tradeMark.name, newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
@@ -139,7 +139,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{tradeMaker ? 'Editar Trademark' : 'Agregar Trademark'}</DialogTitle>
+          <DialogTitle>{tradeMark ? 'Editar Trademark' : 'Agregar Trademark'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -147,10 +147,10 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="tradeMaker-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="tradeMark-name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="tradeMaker-name"
+                        id="tradeMark-name"
                         placeholder="Ingresa Nombre Trademark"
                         {...getFieldProps('name')}
                         error={Boolean(touched.name && errors.name)}
@@ -167,16 +167,18 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                       <InputLabel htmlFor="personal-experience">Maker</InputLabel>
                       <Select
                         fullWidth
-                        id="tradeMaker-maker"
+                        id="tradeMark-maker"
                         {...getFieldProps('maker')}
-                        value={maker || tradeMaker?.maker}
+                        value={maker || tradeMark?.maker}
                         onChange={handleChange}
                       >
-                        {makerList.map((option) => (
-                          <MenuItem key={option.name} value={option.name}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
+                        {makerList
+                          .filter((item: any) => item.status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.name} value={option.name}>
+                              {option.name}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </Stack>
                   </Grid>
@@ -187,7 +189,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMaker?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMark?.status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"
@@ -216,7 +218,7 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
                     Cancelar
                   </Button>
                   <Button type="submit" variant="contained" disabled={isSubmitting}>
-                    {tradeMaker ? 'Edit' : 'Add'}
+                    {tradeMark ? 'Edit' : 'Add'}
                   </Button>
                 </Stack>
               </Grid>
@@ -228,4 +230,4 @@ const AddTradetradeMaker = ({ tradeMaker, onCancel }: Props) => {
   );
 };
 
-export default AddTradetradeMaker;
+export default AddTrademark;
