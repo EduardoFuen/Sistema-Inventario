@@ -18,6 +18,7 @@ import category from './category';
 import supplier from './supplier';
 import typeProduct from './typeProduct';
 import activeSubst from './activeSubst';
+import purchase from './purcharse';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -26,6 +27,14 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  purchase: persistReducer(
+    {
+      key: 'purchase',
+      storage,
+      keyPrefix: 'mantis-ts-'
+    },
+    purchase
+  ),
   substances: persistReducer(
     {
       key: 'substances',

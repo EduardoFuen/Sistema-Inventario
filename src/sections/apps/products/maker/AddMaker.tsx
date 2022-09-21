@@ -47,7 +47,7 @@ const getInitialValues = (maker: FormikValues | null) => {
   return newMaker;
 };
 
-// ==============================|| WAREHOUSE ADD / EDIT / DELETE ||============================== //
+// ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
   maker?: any;

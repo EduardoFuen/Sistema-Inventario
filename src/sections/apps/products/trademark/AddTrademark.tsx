@@ -52,7 +52,7 @@ const getInitialValues = (tradeMark: FormikValues | null) => {
   return newTradeTrademark;
 };
 
-// ==============================|| WAREHOUSE ADD / EDIT / DELETE ||============================== //
+// ==============================|| TRADEMARK ADD / EDIT / DELETE ||============================== //
 
 export interface Props {
   tradeMark?: any;

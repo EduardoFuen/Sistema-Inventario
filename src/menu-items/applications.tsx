@@ -42,6 +42,13 @@ const applications: NavItemType = {
       icon: icons.AppstoreOutlined
     },
     {
+      id: 'addPurchase',
+      type: 'item',
+      title: 'Generar nueva orden de Compras',
+      url: '/purchase/add-new-purchase',
+      hide: true
+    },
+    {
       id: 'Compras',
       title: 'Compras',
       type: 'item',

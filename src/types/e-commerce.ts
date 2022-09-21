@@ -253,3 +253,25 @@ export interface SubstancesStateProps {
   todoListSubs: substances[];
   error: object | string | null;
 }
+
+// Active substances
+export type purchase = {
+  id: string | number | undefined;
+  nc: string | number | undefined;
+  supplier?: any;
+  date?: string;
+  dateP?: string;
+  note?: string;
+  warehouses?: string;
+  discount?: string;
+  subtotal: number;
+  iva: number;
+  total: number;
+  status: boolean;
+  products: any;
+};
+export interface PurchaseStateProps {
+  detailsPurchase: any[];
+  listPurchase: purchase[];
+  error: object | string | null;
+}

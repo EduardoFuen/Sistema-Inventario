@@ -8,7 +8,7 @@ import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, Ta
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import AddTrademark from 'sections/apps/products/trademaker/AddTrademaker';
+import AddTrademark from 'sections/apps/products/trademark/AddTrademark';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';

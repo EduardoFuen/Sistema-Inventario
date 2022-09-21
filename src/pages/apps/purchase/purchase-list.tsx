@@ -1,4 +1,4 @@
-import { useCallback, useMemo, Fragment } from 'react';
+import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -9,20 +9,19 @@ import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import CustomerView from 'sections/apps/customer/CustomerView';
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import makeData from 'data/react-table';
+import { useSelector, useDispatch } from 'store';
+
 import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
+import { deletePurchase } from 'store/reducers/purcharse';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-
-const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -30,15 +29,14 @@ interface Props {
   columns: Column[];
   data: [];
   getHeaderProps: (column: any) => void;
-  renderRowSubComponent: any;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
+function ReactTable({ columns, data, getHeaderProps }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'nc', desc: false };
 
   const {
     getTableProps,
@@ -46,7 +44,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     headerGroups,
     prepareRow,
     allColumns,
-    visibleColumns,
     rows,
     // @ts-ignore
     page,
@@ -124,8 +121,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
           <TableBody {...getTableBodyProps()}>
             {page.map((row: any, i: number) => {
               prepareRow(row);
-              const rowProps = row.getRowProps();
-
               return (
                 <Fragment key={i}>
                   <TableRow
@@ -139,7 +134,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
                       <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
                     ))}
                   </TableRow>
-                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
                 </Fragment>
               );
             })}
@@ -155,43 +149,46 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
   );
 }
 
-// ==============================|| CUSTOMER - LIST VIEW ||============================== //
+// ==============================|| PURCHASE - LIST VIEW ||============================== //
 
 const PurchaseList = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const data = useMemo(() => makeData(10), []);
+  const { listPurchase } = useSelector((state) => state.purchase);
 
   const columns = useMemo(
     () => [
       {
         Header: 'Order',
-        accessor: 'orderId',
+        accessor: 'nc',
         className: 'cell-center'
       },
       {
         Header: 'Proveedor',
-        accessor: 'fatherName',
+        accessor: 'supplier',
         Cell: ({ row }: any) => {
           const { values } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`).default} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.fatherName}</Typography>
+                <Typography variant="subtitle1">{values?.supplier?.businessName}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {values.email}
+                  {values?.supplier?.nit}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  {values?.supplier?.email}
                 </Typography>
               </Stack>
             </Stack>
           );
         }
       },
-      {
+   /*    {
         Header: 'Fecha',
         accessor: 'date',
         disableSortBy: true
-      },
+      }, */
       {
         Header: 'Bodega',
         accessor: 'warehouse'
@@ -216,7 +213,7 @@ const PurchaseList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'orderStatus',
+        accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
             case 'Refunded':
@@ -255,6 +252,18 @@ const PurchaseList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    dispatch(deletePurchase(row?.values?.nc));
+                    dispatch(
+                      openSnackbar({
+                        open: true,
+                        message: 'Orden Delete successfully.',
+                        variant: 'alert',
+                        alert: {
+                          color: 'success'
+                        },
+                        close: false
+                      })
+                    );
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -269,17 +278,10 @@ const PurchaseList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
-
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable
-          columns={columns}
-          data={data}
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
-        />
+        <ReactTable columns={columns} data={listPurchase as []} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
       </ScrollX>
     </MainCard>
   );
