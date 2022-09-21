@@ -206,6 +206,7 @@ const DetailsPurchase = () => {
         }
       }
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
   const { detailsPurchase } = useSelector((state) => state.purchase);
@@ -234,10 +235,8 @@ const DetailsPurchase = () => {
 
   useEffect(() => {
     setSkipPageReset(false);
+    window.localStorage.setItem('productsDetails', JSON.stringify(data));
   }, [data]);
-
-console.log(data);
-
   return (
     <MainCard content={false}>
       <ScrollX>

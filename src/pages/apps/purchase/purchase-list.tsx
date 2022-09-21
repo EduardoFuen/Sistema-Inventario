@@ -184,11 +184,11 @@ const PurchaseList = () => {
           );
         }
       },
-   /*    {
-        Header: 'Fecha',
-        accessor: 'date',
-        disableSortBy: true
-      }, */
+      /*    {
+           Header: 'Fecha',
+           accessor: 'date',
+           disableSortBy: true
+         }, */
       {
         Header: 'Bodega',
         accessor: 'warehouse'
@@ -201,7 +201,7 @@ const PurchaseList = () => {
       },
       {
         Header: 'IVA',
-        accessor: 'iva',
+        accessor: 'tax',
         className: 'cell-right',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
       },
@@ -277,7 +277,6 @@ const PurchaseList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-
   return (
     <MainCard content={false}>
       <ScrollX>

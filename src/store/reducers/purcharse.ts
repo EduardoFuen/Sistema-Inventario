@@ -38,28 +38,25 @@ const slice = createSlice({
       const { name } = action.payload;
       const index = state.detailsPurchase.findIndex((item) => item.name === name);
       state.detailsPurchase.splice(index, 1);
+      const product = JSON.parse(window.localStorage.getItem('productsDetails')!);
+      const idx = product?.findIndex((item: any) => item.name === name);
+      product.splice(idx, 1);
+      window.localStorage.setItem('productsDetails', JSON.stringify(product));
     },
     resetDetailsPurchaseSuccess(state) {
       state.detailsPurchase = [];
+      window.localStorage.setItem('productsDetails', JSON.stringify(state.detailsPurchase));
     },
     addPurchaseSuccess(state, action) {
-      /* let iva: number;
-       let total: number;
-       */
-      const subtotal: number = action.payload.products.reduce((next: any, item: any) => {
-        const { price } = item;
-        return next + price;
-      }, {});
-
-      const cart = action.payload.products.reduce(
-        (acc = {}, item = {}) => {
-          console.log(item);
-          // const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
-          // const itemTotalTax = parseFloat((itemTotal * taxRate).toFixed(2));
-
-          // We'll modify acc here...
+      const products = JSON.parse(window.localStorage.getItem('productsDetails')!);
+      const resumen = products.reduce(
+        (acc: any = {}, item: any) => {
+          const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
+          const itemTotalTax = parseFloat((itemTotal * item.iva).toFixed(2));
+          acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
+          acc.tax = parseFloat((acc.tax + itemTotalTax).toFixed(2));
+          acc.total = parseFloat((acc.total + itemTotal + itemTotalTax).toFixed(2));
           return acc;
-          // return (acc.subtotal = itemTotal);
         },
         {
           subtotal: 0,
@@ -68,15 +65,13 @@ const slice = createSlice({
         }
       );
 
-      console.log(cart);
-      console.log(subtotal);
-
-      let data = {
-        ...action.payload
+      state.detailsPurchase = [];
+      const data = {
+        ...action.payload,
+        ...resumen
       };
-      console.log(data);
-      // state.detailsPurchase = [];
-      // state.listPurchase.push(action.payload);
+      state.listPurchase.push(data);
+      window.localStorage.setItem('productsDetails', JSON.stringify(state.detailsPurchase));
     },
     updatePurchaseSuccess(state, action) {
       const { name, data } = action.payload;
