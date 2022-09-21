@@ -21,7 +21,8 @@ import { deletePurchase } from 'store/reducers/purcharse';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+// import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -237,7 +238,7 @@ const PurchaseList = () => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="Edit">
+              {/*   <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
@@ -246,7 +247,7 @@ const PurchaseList = () => {
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="Delete">
                 <IconButton
                   color="error"

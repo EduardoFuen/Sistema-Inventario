@@ -52,7 +52,7 @@ const slice = createSlice({
       const resumen = products.reduce(
         (acc: any = {}, item: any) => {
           const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
-          const itemTotalTax = parseFloat((itemTotal * item.iva).toFixed(2));
+          const itemTotalTax = parseFloat(item.iva || 0);
           acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
           acc.tax = parseFloat((acc.tax + itemTotalTax).toFixed(2));
           acc.total = parseFloat((acc.total + itemTotal + itemTotalTax).toFixed(2));
