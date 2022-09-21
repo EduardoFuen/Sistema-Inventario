@@ -67,7 +67,7 @@ const applications: NavItemType = {
       id: 'inventario',
       title: 'Inventario',
       type: 'item',
-      url: '/maintenance/coming-soon',
+      url: '/inventario',
       icon: icons.ShoppingCartOutlined
     }
   ]

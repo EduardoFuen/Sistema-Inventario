@@ -11,7 +11,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 
 // render - applications
 const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase-list')));
-const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
+// const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
 const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/add-supplier')));
@@ -55,7 +55,11 @@ const MainRoutes = {
           children: [
             {
               path: 'reception',
-              element: <AppReceptionList />
+              element: <MaintenanceError500 />
+            },
+            {
+              path: 'inventario',
+              element: <MaintenanceError500 />
             },
             {
               path: 'purchase',
