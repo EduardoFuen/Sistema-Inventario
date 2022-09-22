@@ -9,7 +9,6 @@ import calendar from './calendar';
 import menu from './menu';
 import snackbar from './snackbar';
 import productReducer from './product';
-import cartReducer from './cart';
 import pack from './pack';
 import warehouse from './warehouse';
 import maker from './maker';
@@ -107,14 +106,6 @@ const reducers = combineReducers({
       keyPrefix: 'farmu-'
     },
     warehouse
-  ),
-  cart: persistReducer(
-    {
-      key: 'cart',
-      storage,
-      keyPrefix: 'farmu-'
-    },
-    cartReducer
   ),
   product: persistReducer(
     {

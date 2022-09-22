@@ -8,7 +8,7 @@ import { Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, Table
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
-import ProductView from 'sections/apps/e-commerce/product-list/ProductView';
+import ProductView from './ProductView';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';

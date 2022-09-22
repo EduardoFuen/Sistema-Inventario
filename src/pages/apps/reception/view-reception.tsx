@@ -19,7 +19,7 @@ import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import AddSelectProduct from './selectProducts';
 import DetailsReception from './detailsProduct';
 
-// ==============================|| ADD NEW RECEPTION - MAIN ||============================== //
+// ==============================|| ADD VIEW RECEPTION - MAIN ||============================== //
 
 const getInitialValues = (recep: FormikValues | null) => {
   const newSubstance = {
@@ -261,7 +261,7 @@ function AddReception() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                <DetailsReception products={reception?.products} />
+                <DetailsReception products={reception?.products} handleAdd={handleAdd} />
               </Grid>
               <Grid item xs={12}>
                 {detailsPurchase && detailsPurchase.length > 0 && (
@@ -279,7 +279,7 @@ function AddReception() {
                   </Button>
 
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Confirmar Compra
+                    Confirmar/Cerrar Recepción
                   </Button>
                 </Stack>
               </Grid>
@@ -288,7 +288,7 @@ function AddReception() {
         </FormikProvider>
       </MainCard>
       {/* add user dialog */}
-      <Dialog maxWidth="lg" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+      <Dialog maxWidth="md" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddSelectProduct onCancel={handleAdd} />}
       </Dialog>
     </>

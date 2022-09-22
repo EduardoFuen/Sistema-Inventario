@@ -17,7 +17,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useMediaQuery
+  InputLabel,
+  TextField
 } from '@mui/material';
 
 // third-party
@@ -27,11 +28,11 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
+import { renderFilterTypes } from 'utils/react-table';
 import { useSelector, useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
-import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, IndeterminateCheckbox, TablePagination } from 'components/third-party/ReactTable';
 
 const productImage = require.context('assets/images/e-commerce', true);
 
@@ -46,7 +47,6 @@ interface Props {
 
 function ReactTable({ columns, data, getHeaderProps, handleSelect }: Props) {
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
@@ -56,7 +56,6 @@ function ReactTable({ columns, data, getHeaderProps, handleSelect }: Props) {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    allColumns,
     rows,
     // @ts-ignore
     page,
@@ -65,13 +64,7 @@ function ReactTable({ columns, data, getHeaderProps, handleSelect }: Props) {
     // @ts-ignore
     setPageSize,
     // @ts-ignore
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
-    // @ts-ignore
-    preGlobalFilteredRows,
-    // @ts-ignore
-    setGlobalFilter,
-    // @ts-ignore
-    setSortBy
+    state: { pageIndex, pageSize }
   } = useTable(
     {
       columns,
@@ -91,26 +84,7 @@ function ReactTable({ columns, data, getHeaderProps, handleSelect }: Props) {
 
   return (
     <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
       <Stack spacing={3}>
-        <Stack
-          direction={matchDownSM ? 'column' : 'row'}
-          spacing={1}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ p: 3, pb: 0 }}
-        >
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            size="small"
-          />
-          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-          </Stack>
-        </Stack>
-
         <Table {...getTableProps()}>
           <TableHead>
             {headerGroups.map((headerGroup) => (
@@ -155,7 +129,7 @@ function ReactTable({ columns, data, getHeaderProps, handleSelect }: Props) {
   );
 }
 
-// ==============================|| SELECT - LIST VIEW ||============================== //
+// ==============================|| SELECT PRODUCT - LIST VIEW ||============================== //
 
 export interface PropsSelect {
   onCancel: () => void;
@@ -256,7 +230,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
     <ScrollX>
       <Grid container alignItems="center">
         <Grid item xs={4} alignSelf="center">
-          <DialogTitle>Listado de productos</DialogTitle>
+          <DialogTitle>Recepción de productos</DialogTitle>
         </Grid>
         <Grid item xs={8} justifyContent="end">
           <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ pr: 1 }}>
@@ -288,6 +262,22 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
       </Grid>
       <MainCard content={false}>
         <DialogContent sx={{ p: 2.5 }}>
+          <Grid container direction="row" spacing={2}>
+            <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ p: 3 }}>
+              <Grid item xs={4}>
+                <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Faltantes</InputLabel>
+                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Devolución</InputLabel>
+                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+              </Grid>
+              <Grid item xs={4}>
+                <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Motivo Devolución</InputLabel>
+                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+              </Grid>
+            </Stack>
+          </Grid>
           <ReactTable
             columns={columns}
             data={products as []}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Table, TableBody, TableCell, TableHead, TableRow, Stack, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Stack, Typography, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // third-party
@@ -10,8 +10,13 @@ import { useTable, useFilters, Column } from 'react-table';
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import IconButton from 'components/@extended/IconButton';
+
 /* import { deleteItemsPurchase } from 'store/reducers/purcharse';
 import { openSnackbar } from 'store/reducers/snackbar'; */
+
+// assets
+import { EditTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -61,16 +66,30 @@ function ReactTable({ columns, data }: Props) {
 
 interface PropsProduct {
   products: [];
+  handleAdd: () => void;
 }
 
-const DetailsPurchase = ({ products }: PropsProduct) => {
+const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
   const theme = useTheme();
 
   const columns = useMemo(
     () => [
       {
         Header: 'SKU',
-        accessor: 'sku'
+        accessor: 'sku',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{original.name}</Typography>
+                <Typography variant="caption" color="textSecondary">
+                  EAN: {original?.ean}
+                </Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Producto',
@@ -81,9 +100,6 @@ const DetailsPurchase = ({ products }: PropsProduct) => {
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography variant="subtitle1">{original.name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  SKU: {original?.sku}
-                </Typography>
                 <Typography variant="caption" color="textSecondary">
                   EAN: {original?.ean}
                 </Typography>
@@ -144,13 +160,33 @@ const DetailsPurchase = ({ products }: PropsProduct) => {
             </Stack>
           );
         }
+      },
+      {
+        Header: 'Acciones',
+        className: 'cell-center',
+        disableSortBy: true,
+        Cell: ({ row }: any) => {
+          return (
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+              <Tooltip title="Ingresar">
+                <IconButton
+                  color="primary"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleAdd();
+                  }}
+                >
+                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          );
+        }
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-  console.log(products);
-
   const [data, setData] = useState<any>(products);
   useEffect(() => {
     setData(products);
