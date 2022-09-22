@@ -180,7 +180,7 @@ function UpdateProduct() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
-                        placeholder="Ingresar Precio"
+                        placeholder="Ingresar Costo"
                         fullWidth
                         {...getFieldProps('price')}
                         error={Boolean(touched.price && errors.price)}
@@ -565,7 +565,7 @@ function UpdateProduct() {
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <FormControlLabel
                     control={<Switch sx={{ mt: 0 }} defaultChecked={product?.status} />}
-                    label="Estado"
+                    label=""
                     {...getFieldProps('status')}
                     labelPlacement="top"
                   />

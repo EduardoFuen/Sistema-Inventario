@@ -258,20 +258,6 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                       />
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} md={3}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <Stack spacing={1.25}>
-                          <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={warehouse?.status} />}
-                            label="Estado"
-                            {...getFieldProps('status')}
-                            labelPlacement="top"
-                          />
-                        </Stack>
-                      </Grid>
-                    </Grid>
-                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -290,6 +276,12 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
               </Grid>
               <Grid item>
                 <Stack direction="row" spacing={2} alignItems="center">
+                  <FormControlLabel
+                    control={<Switch sx={{ mt: 0 }} defaultChecked={warehouse?.status} />}
+                    label=""
+                    {...getFieldProps('status')}
+                    labelPlacement="top"
+                  />
                   <Button color="error" onClick={onCancel}>
                     Cancelar
                   </Button>

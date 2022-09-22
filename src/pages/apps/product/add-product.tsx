@@ -179,7 +179,7 @@ function AddNewProduct() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
-                        placeholder="Ingresar Precio"
+                        placeholder="Ingresar Costo"
                         fullWidth
                         {...getFieldProps('price')}
                         error={Boolean(touched.price && errors.price)}
@@ -563,7 +563,7 @@ function AddNewProduct() {
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
-                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="Estado" labelPlacement="top" {...getFieldProps('status')} />
+                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="top" {...getFieldProps('status')} />
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>

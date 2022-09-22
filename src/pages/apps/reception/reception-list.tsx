@@ -267,9 +267,9 @@ const PurchaseList = () => {
   const history = useNavigate();
 
   const handleAddPurchase = () => {
-    history(`/purchase/add-new-purchase`);
+    history(`/reception`);
   };
-  const { listPurchase } = useSelector((state) => state.reception);
+  const { listPurchase } = useSelector((state) => state.purchase);
   const columns = useMemo(
     () => [
       {
@@ -362,11 +362,12 @@ const PurchaseList = () => {
                 }
               </PDFDownloadLink>
 
-              <Tooltip title="Edit">
+              <Tooltip title="Ingresar">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    console.log(e);
                     handleAddPurchase();
                   }}
                 >

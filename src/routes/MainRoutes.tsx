@@ -12,6 +12,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 // render - applications
 const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase-list')));
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
+const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/view-reception')));
 const AppInventoryList = Loadable(lazy(() => import('pages/apps/inventory/inventory-list')));
 
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
@@ -57,6 +58,10 @@ const MainRoutes = {
             {
               path: 'reception',
               element: <AppReceptionList />
+            },
+            {
+              path: 'reception/view-reception',
+              element: <AppReceptionView />
             },
             {
               path: 'inventario',
