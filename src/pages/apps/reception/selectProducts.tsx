@@ -266,15 +266,25 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
             <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ p: 3 }}>
               <Grid item xs={4}>
                 <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Faltantes</InputLabel>
-                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+                <TextField
+                  sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                  type="number"
+                  placeholder="Ingresar Cantidad Faltantes"
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={4}>
                 <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Devolución</InputLabel>
-                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+                <TextField
+                  sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                  type="number"
+                  placeholder="Ingresar Cantidad Devolución"
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={4}>
                 <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Motivo Devolución</InputLabel>
-                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Keywords del Producto" fullWidth />
+                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Motivo Devolución" fullWidth />
               </Grid>
             </Stack>
           </Grid>
