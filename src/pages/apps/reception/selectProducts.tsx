@@ -294,9 +294,8 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
                   select
                 >
                   <MenuItem value="Mal Estado">Mal Estado</MenuItem>
-                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
-                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
-                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
+                  <MenuItem value="Fecha Corta">Fecha Corta</MenuItem>
+                  <MenuItem value="Excedente">Excedente</MenuItem>
                 </TextField>
               </Grid>
             </Stack>
