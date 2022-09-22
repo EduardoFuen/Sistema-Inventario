@@ -18,7 +18,8 @@ import {
   TableRow,
   Typography,
   InputLabel,
-  TextField
+  TextField,
+  MenuItem
 } from '@mui/material';
 
 // third-party
@@ -284,7 +285,19 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
               </Grid>
               <Grid item xs={4}>
                 <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Motivo Devolución</InputLabel>
-                <TextField sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }} placeholder="Ingresar Motivo Devolución" fullWidth />
+                <TextField
+                  placeholder="Seleccionar Tipo Producto"
+                  /*    {...getFieldProps('type_product')}
+                        error={Boolean(touched.type_product && errors.type_product)}
+                        helperText={touched.type_product && errors.type_product} */
+                  fullWidth
+                  select
+                >
+                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
+                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
+                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
+                  <MenuItem value="Mal Estado">Mal Estado</MenuItem>
+                </TextField>
               </Grid>
             </Stack>
           </Grid>
