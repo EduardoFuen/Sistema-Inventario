@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState, ChangeEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Tooltip, IconButton, Typography } from '@mui/material';
-import { DeleteTwoTone } from '@ant-design/icons';
+import { Table, TableBody, TableCell, TableHead, TableRow, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // third-party
@@ -11,60 +10,22 @@ import { useTable, useFilters, Column } from 'react-table';
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { deleteItemsPurchase } from 'store/reducers/purcharse';
-import { openSnackbar } from 'store/reducers/snackbar';
-
-import { useDispatch, useSelector } from 'store';
-
-// ==============================|| REACT TABLE - EDITABLE CELL ||============================== //
-
-const DetailsPurchaseCell = ({ value: initialValue, row: { index }, column: { id }, updateMyData }: any) => {
-  const [value, setValue] = useState(initialValue);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target?.value);
-  };
-
-  const onBlur = () => {
-    updateMyData(index, id, value);
-  };
-
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  return (
-    <TextField
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      sx={{ '& .MuiOutlinedInput-input': { py: 0.75, px: 1 }, '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
-    />
-  );
-};
-
-const defaultColumn = {
-  Cell: DetailsPurchaseCell
-};
+/* import { deleteItemsPurchase } from 'store/reducers/purcharse';
+import { openSnackbar } from 'store/reducers/snackbar'; */
 
 // ==============================|| REACT TABLE ||============================== //
 
 interface Props {
   columns: Column[];
   data: [];
-  updateMyData: (rowIndex: number, columnId: any, value: any) => void;
-  skipPageReset: boolean;
 }
 
-function ReactTable({ columns, data, updateMyData, skipPageReset }: Props) {
+function ReactTable({ columns, data }: Props) {
   const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } = useTable(
     {
       columns,
-      data,
-      defaultColumn,
+      data
       // @ts-ignore
-      autoResetPage: !skipPageReset,
-      updateMyData
     },
     useFilters
   );
@@ -98,9 +59,12 @@ function ReactTable({ columns, data, updateMyData, skipPageReset }: Props) {
 
 // ==============================|| REACT TABLE - EDITABLE ||============================== //
 
-const DetailsPurchase = () => {
+interface PropsProduct {
+  products: [];
+}
+
+const DetailsPurchase = ({ products }: PropsProduct) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
 
   const columns = useMemo(
     () => [
@@ -176,75 +140,25 @@ const DetailsPurchase = () => {
             </Stack>
           );
         }
-      },
-      {
-        Header: 'Acciones',
-        className: 'cell-center',
-        disableSortBy: true,
-        Cell: ({ row }: any) => {
-          return (
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={() => {
-                    dispatch(deleteItemsPurchase(row.values?.name));
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Producto Delete successfully',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                  }}
-                >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          );
-        }
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-  const { detailsPurchase } = useSelector((state) => state.purchase);
+  console.log(products);
 
-  const [data, setData] = useState<any>(detailsPurchase);
-  const [skipPageReset, setSkipPageReset] = useState(false);
+  const [data, setData] = useState<any>(products);
   useEffect(() => {
-    setData(detailsPurchase);
-  }, [detailsPurchase]);
-  const updateMyData = (rowIndex: number, columnId: any, value: any) => {
-    // We also turn on the flag to not reset the page
-    setSkipPageReset(true);
-    setData((old: []) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            // @ts-ignore
-            ...old[rowIndex],
-            [columnId]: value
-          };
-        }
-        return row;
-      })
-    );
-  };
+    setData(products);
+  }, [products]);
 
   useEffect(() => {
-    setSkipPageReset(false);
     window.localStorage.setItem('productsDetails', JSON.stringify(data));
   }, [data]);
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={data} updateMyData={updateMyData} skipPageReset={skipPageReset} />
+        <ReactTable columns={columns} data={data} />
       </ScrollX>
     </MainCard>
   );

@@ -60,7 +60,7 @@ const MainRoutes = {
               element: <AppReceptionList />
             },
             {
-              path: 'reception/view-reception',
+              path: 'reception/view-reception/:id',
               element: <AppReceptionView />
             },
             {

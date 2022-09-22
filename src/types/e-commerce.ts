@@ -270,6 +270,7 @@ export type purchase = {
   total: number;
   status: string;
   products: any;
+  reception: any;
 };
 
 export interface PurchaseStateProps {

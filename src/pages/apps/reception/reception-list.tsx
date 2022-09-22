@@ -23,7 +23,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 // assets
-import { EditTwoTone, FilePdfOutlined } from '@ant-design/icons';
+import { EyeTwoTone, FilePdfOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -143,7 +143,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
   );
 }
 
-// ==============================|| PURCHASE - LIST VIEW ||============================== //
+// ==============================|| RECEPTION - LIST VIEW ||============================== //
 
 // Create styles
 const styles = StyleSheet.create({
@@ -262,12 +262,12 @@ const MyDocument = ({ data }: any) => {
   );
 };
 
-const PurchaseList = () => {
+const ReceptionList = () => {
   const theme = useTheme();
   const history = useNavigate();
 
-  const handleAddPurchase = () => {
-    history(`/reception`);
+  const handleViewReception = (id: any) => {
+    history(`/reception/view-reception/${id}`);
   };
   const { listPurchase } = useSelector((state) => state.purchase);
   const columns = useMemo(
@@ -367,11 +367,10 @@ const PurchaseList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    console.log(e);
-                    handleAddPurchase();
+                    handleViewReception(row.values.nc);
                   }}
                 >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                  <EyeTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
             </Stack>
@@ -391,4 +390,4 @@ const PurchaseList = () => {
   );
 };
 
-export default PurchaseList;
+export default ReceptionList;
