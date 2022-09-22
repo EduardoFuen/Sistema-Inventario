@@ -69,6 +69,10 @@ const DetailsPurchase = ({ products }: PropsProduct) => {
   const columns = useMemo(
     () => [
       {
+        Header: 'SKU',
+        accessor: 'sku'
+      },
+      {
         Header: 'Producto',
         accessor: 'name',
         Cell: ({ row }: any) => {
