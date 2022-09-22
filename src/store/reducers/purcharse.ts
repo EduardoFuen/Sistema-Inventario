@@ -65,11 +65,12 @@ const slice = createSlice({
         }
       );
 
-      state.detailsPurchase = [];
       const data = {
         ...action.payload,
-        ...resumen
+        ...resumen,
+        products
       };
+      state.detailsPurchase = [];
       state.listPurchase.push(data);
       window.localStorage.setItem('productsDetails', JSON.stringify(state.detailsPurchase));
     },
@@ -81,7 +82,8 @@ const slice = createSlice({
     deletePurchaseSuccess(state, action) {
       const { nc } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      state.listPurchase.splice(index, 1);
+      // state.listPurchase.splice(index, 1);
+      state.listPurchase[index].status = 'Cancelled';
     }
   }
 });

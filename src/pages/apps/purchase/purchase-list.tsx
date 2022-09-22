@@ -1,5 +1,9 @@
 import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+// import PSPDFKit from "./PSPDFKit";
+
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 import { Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, useMediaQuery } from '@mui/material';
@@ -21,8 +25,7 @@ import { deletePurchase } from 'store/reducers/purcharse';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-// import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import { PlusOutlined, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, FilePdfOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -98,7 +101,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
             setGlobalFilter={setGlobalFilter}
             size="small"
           />
-          <Export excelData={data} fileName="Ingresos" />
+          <Export excelData={data} fileName="Purchase" />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddPurchase}>
@@ -152,12 +155,128 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
+// Create styles
+const styles = StyleSheet.create({
+  body: {
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35
+  },
+  title: {
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  author: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 8
+  },
+  summary: {
+    fontSize: 12,
+    textAlign: 'right',
+    marginBottom: 8,
+    fontWeight: 600
+  },
+  subtitle: {
+    fontSize: 12,
+    margin: 12,
+    fontWeight: 600
+  },
+  text: {
+    margin: 12,
+    fontSize: 14,
+    textAlign: 'justify'
+  },
+  image: {
+    marginVertical: 15,
+    marginHorizontal: 100
+  },
+  header: {
+    fontSize: 12,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'grey'
+  },
+  pageNumber: {
+    position: 'absolute',
+    fontSize: 12,
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: 'center'
+  },
+  page: {
+    flexDirection: 'column'
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  section: {
+    fontSize: 12,
+
+    margin: 5,
+    padding: 5,
+    flexGrow: 1
+  }
+});
+// Create Document Component
+const MyDocument = ({ data }: any) => {
+  return (
+    <Document>
+      <Page style={styles.body}>
+        <Text style={styles.header} fixed>
+          Fecha {data?.create_order} # Order {data?.nc}
+        </Text>
+        <Text style={styles.title}>{data?.supplier.businessName}</Text>
+        <Text style={styles.author}>NIT: {data?.supplier.nit}</Text>
+        <Text style={styles.author}>Email: {data?.supplier.email}</Text>
+        <Text style={styles.author}>Teléfono: {data?.supplier.phone}</Text>
+
+        <Text style={styles.subtitle}>Detalles de Compra</Text>
+        <View style={styles.row}>
+          <View style={styles.section}>
+            <Text>Producto</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Precio Base</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Cantidad</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Subtotal</Text>
+          </View>
+        </View>
+        {data?.products.map((item: any, index: number) => (
+          <View style={styles.row} key={index}>
+            <View style={styles.section}>
+              <Text>{item?.name}</Text>
+              <Text>SKU{item?.sku}</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>{item?.price}</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>{item?.qty}</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>{item?.qty * item?.price}</Text>
+            </View>
+          </View>
+        ))}
+        <Text style={styles.summary}>Subtotal: {data?.subtotal}</Text>
+        {data?.tax !== '' && <Text style={styles.summary}>iva: {data?.tax}</Text>}
+        <Text style={styles.summary}>Total: {data?.total}</Text>
+      </Page>
+    </Document>
+  );
+};
+
 const PurchaseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const { listPurchase } = useSelector((state) => state.purchase);
-
   const columns = useMemo(
     () => [
       {
@@ -185,11 +304,11 @@ const PurchaseList = () => {
           );
         }
       },
-      /*    {
-           Header: 'Fecha',
-           accessor: 'date',
-           disableSortBy: true
-         }, */
+      {
+        Header: 'Fecha OC',
+        accessor: 'create_order',
+        disableSortBy: true
+      },
       {
         Header: 'Bodega',
         accessor: 'warehouse'
@@ -218,16 +337,16 @@ const PurchaseList = () => {
         Cell: ({ value }: any) => {
           switch (value) {
             case 'Refunded':
-              return <Chip color="error" label="Refunded" size="small" variant="light" />;
+              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 'Completed':
               return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 'Cancelled':
-              return <Chip color="secondary" label="Cancelled" size="small" variant="light" />;
+              return <Chip color="secondary" label="Closed" size="small" variant="light" />;
             case 'Processing':
               return <Chip color="info" label="Processing" size="small" variant="light" />;
             case 'Delivered':
             default:
-              return <Chip color="warning" label="Delivered" size="small" variant="light" />;
+              return <Chip color="warning" label="New" size="small" variant="light" />;
           }
         }
       },
@@ -238,38 +357,53 @@ const PurchaseList = () => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {/*   <Tooltip title="Edit">
+              <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="purchase.pdf">
+                {({ blob, url, loading, error }) =>
+                  loading ? (
+                    'Loading document...'
+                  ) : (
+                    <IconButton color="primary">
+                      <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
+                    </IconButton>
+                  )
+                }
+              </PDFDownloadLink>
+
+              <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
+                    console.log(e);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
-              </Tooltip> */}
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    dispatch(deletePurchase(row?.values?.nc));
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Orden Delete successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                  }}
-                >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                </IconButton>
               </Tooltip>
+              {row.values.status !== 'Cancelled' && (
+                <Tooltip title="Cancelar">
+                  <IconButton
+                    color="error"
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      dispatch(deletePurchase(row?.values?.nc));
+                      dispatch(
+                        openSnackbar({
+                          open: true,
+                          message: 'Orden Cancelada successfully.',
+                          variant: 'alert',
+                          alert: {
+                            color: 'success'
+                          },
+                          close: false
+                        })
+                      );
+                    }}
+                  >
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           );
         }

@@ -197,6 +197,7 @@ export type categoryOne = {
 export type categoryTwo = {
   id: string | number | undefined;
   categoryTwo: string;
+  categoryOne: string;
   status: boolean;
 };
 
@@ -267,7 +268,7 @@ export type purchase = {
   subtotal: number;
   iva: number;
   total: number;
-  status: boolean;
+  status: string;
   products: any;
 };
 export interface PurchaseStateProps {

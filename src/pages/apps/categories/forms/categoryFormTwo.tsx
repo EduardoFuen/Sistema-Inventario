@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 // material-ui
-import { Button, Grid, InputLabel, Stack, TextField, Typography, FormControlLabel, Switch } from '@mui/material';
+import { Button, Grid, InputLabel, Stack, TextField, Typography, FormControlLabel, Switch, MenuItem } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
@@ -25,8 +25,7 @@ function AddCategoryTwo(category: any) {
   const handleCancel = () => {
     history(`/p/product-list`);
   };
-  const { categoryListTwo } = useSelector((state) => state.category);
-
+  const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
   const items = useMemo(() => {
     if (category) {
       const { categoryTwo } = category;
@@ -35,13 +34,15 @@ function AddCategoryTwo(category: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const SubstSchema = Yup.object().shape({
+    categoryOne: Yup.string().max(255).required('Categoria dos requerida'),
     categoryTwo: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const formik = useFormik({
     initialValues: {
       categoryTwo: items?.categoryTwo || '',
-      status: items?.status || false
+      status: items?.status || false,
+      categoryOne: items?.categoryOne || ''
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -97,6 +98,27 @@ function AddCategoryTwo(category: any) {
                         Categoria 2
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
+                          <InputLabel>Categoria 1</InputLabel>
+                        </Grid>
+                        <Grid item xs={12} sm={8}>
+                          <TextField
+                            placeholder="Categoria 1"
+                            fullWidth
+                            select
+                            {...getFieldProps('categoryOne')}
+                            error={Boolean(touched.categoryOne && errors.categoryOne)}
+                            helperText={touched.categoryOne && errors.categoryOne}
+                          >
+                            {categoryListOne
+                              .filter((item: any) => item.status === true)
+                              .map((option: any) => (
+                                <MenuItem key={option.categoryOne} value={option.categoryOne}>
+                                  {option.categoryOne}
+                                </MenuItem>
+                              ))}
+                          </TextField>
+                        </Grid>
                         <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
                           <InputLabel> Nombre de Categoria 2</InputLabel>
                         </Grid>

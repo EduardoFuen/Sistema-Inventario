@@ -321,7 +321,7 @@ function UpdateSuplier() {
                     Cancelar
                   </Button>
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Agregar Proveedor
+                    Actualizar
                   </Button>
                 </Stack>
               </Grid>

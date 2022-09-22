@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chance } from 'chance';
+import { format } from 'date-fns';
 
 // material-ui
 import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
@@ -79,6 +80,7 @@ function AddPurchase() {
 
           const newValue = {
             nc: chance.zip(),
+            create_order: format(new Date(), 'dd-MM-yyyy'),
             products: detailsPurchase,
             ...values
           };
@@ -94,7 +96,7 @@ function AddPurchase() {
               close: false
             })
           );
-          //  history(`/purchase`);
+          history(`/purchase`);
         }
         setSubmitting(false);
       } catch (error) {

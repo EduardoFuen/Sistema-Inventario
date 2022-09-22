@@ -125,6 +125,18 @@ const DetailsPurchase = () => {
         }
       },
       {
+        Header: 'Cantidad',
+        accessor: 'qty'
+      },
+      {
+        Header: 'Precio base',
+        accessor: 'price'
+      },
+      {
+        Header: 'IVA',
+        accessor: 'iva'
+      },
+      {
         Header: 'Descuento Negociado',
         accessor: 'discount'
       },
@@ -133,16 +145,8 @@ const DetailsPurchase = () => {
         accessor: 'additionalDiscount'
       },
       {
-        Header: 'Cantidad',
-        accessor: 'qty'
-      },
-      {
-        Header: 'Costo de compra',
-        accessor: 'price'
-      },
-      {
-        Header: 'IVA',
-        accessor: 'iva'
+        Header: 'Bonificación',
+        accessor: 'bonus'
       },
       {
         Header: 'Subtotal',
