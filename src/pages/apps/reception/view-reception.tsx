@@ -236,10 +236,8 @@ function AddReception() {
                         disabled
                       />
                     </Grid>
-                    <Grid item xs={2} alignSelf="center">
-                      <InputLabel sx={{ mb: 1, opacity: 0.5, textAlign: 'center' }}>
-                        Fecha Vencimiento <br /> Factura
-                      </InputLabel>
+                    <Grid item xs={3} alignSelf="center">
+                      <InputLabel sx={{ mb: 1, opacity: 0.5, textAlign: 'center' }}>Fecha Vencimiento Factura</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('create_order')}
@@ -247,7 +245,7 @@ function AddReception() {
                         disabled
                       />
                     </Grid>
-                    <Grid item xs={3} alignSelf="center">
+                    <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Numero de Factura</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
