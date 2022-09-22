@@ -24,8 +24,8 @@ export type Products = {
   isStock?: boolean;
   status?: boolean;
   sku?: string;
-  new?: number;
   ean?: string;
+  new?: number;
   variation: string;
   pack: string;
   type_product: string;
@@ -255,7 +255,7 @@ export interface SubstancesStateProps {
   error: object | string | null;
 }
 
-// Active substances
+// Active purchase
 export type purchase = {
   id: string | number | undefined;
   nc: string | number | undefined;
@@ -271,8 +271,33 @@ export type purchase = {
   status: string;
   products: any;
 };
+
 export interface PurchaseStateProps {
   detailsPurchase: any[];
   listPurchase: purchase[];
+  error: object | string | null;
+}
+
+// Active purchase
+export type inventory = {
+  id: string | number | undefined;
+  date?: string;
+  sku?: string;
+  ean?: string;
+  nameProduct: string;
+  initialInvCosto?: number;
+  initialInvUnd?: number;
+  purchaseInvCosto?: number;
+  purchaseInvUnd?: number;
+  availableInvCosto?: number;
+  availableInvUnd?: number;
+  salesInvCosto?: number;
+  salesInvUnd?: number;
+  endInvCosto?: number;
+  endInvUnd?: number;
+};
+
+export interface InventoryStateProps {
+  listInventory: inventory[];
   error: object | string | null;
 }

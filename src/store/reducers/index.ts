@@ -19,6 +19,8 @@ import supplier from './supplier';
 import typeProduct from './typeProduct';
 import activeSubst from './activeSubst';
 import purchase from './purcharse';
+import inventory from './inventory';
+import reception from './reception';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -27,11 +29,27 @@ const reducers = combineReducers({
   calendar,
   menu,
   snackbar,
+  reception: persistReducer(
+    {
+      key: 'reception',
+      storage,
+      keyPrefix: 'farmu-'
+    },
+    reception
+  ),
+  inventory: persistReducer(
+    {
+      key: 'inventory',
+      storage,
+      keyPrefix: 'farmu-'
+    },
+    inventory
+  ),
   purchase: persistReducer(
     {
       key: 'purchase',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     purchase
   ),
@@ -39,7 +57,7 @@ const reducers = combineReducers({
     {
       key: 'substances',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     activeSubst
   ),
@@ -47,7 +65,7 @@ const reducers = combineReducers({
     {
       key: 'supplier',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     supplier
   ),
@@ -55,7 +73,7 @@ const reducers = combineReducers({
     {
       key: 'typeProduct',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     typeProduct
   ),
@@ -63,7 +81,7 @@ const reducers = combineReducers({
     {
       key: 'category',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     category
   ),
@@ -71,7 +89,7 @@ const reducers = combineReducers({
     {
       key: 'maker',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     maker
   ),
@@ -79,7 +97,7 @@ const reducers = combineReducers({
     {
       key: 'trademaker',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     trademaker
   ),
@@ -87,7 +105,7 @@ const reducers = combineReducers({
     {
       key: 'pack',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     pack
   ),
@@ -95,7 +113,7 @@ const reducers = combineReducers({
     {
       key: 'warehouse',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     warehouse
   ),
@@ -103,7 +121,7 @@ const reducers = combineReducers({
     {
       key: 'cart',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     cartReducer
   ),
@@ -111,7 +129,7 @@ const reducers = combineReducers({
     {
       key: 'productReducer',
       storage,
-      keyPrefix: 'mantis-ts-'
+      keyPrefix: 'farmu-'
     },
     productReducer
   )
