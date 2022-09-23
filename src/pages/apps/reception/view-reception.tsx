@@ -2,7 +2,8 @@ import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Chance } from 'chance';
-
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material-ui
 import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
 
@@ -42,7 +43,11 @@ function AddReception() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
+  const [value, setValue] = useState<Date | null>();
 
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
   const handleAdd = () => {
     setAdd(!add);
   };
@@ -238,12 +243,24 @@ function AddReception() {
                     </Grid>
                     <Grid item xs={3} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5, textAlign: 'center' }}>Fecha Vencimiento Factura</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
-                        fullWidth
-                        disabled
-                      />
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                          label=""
+                          /*  name="dateExpiration" */
+                          inputFormat="MM/dd/yyyy"
+                          /*    {...getFieldProps('date')} */
+                          value={value}
+                          onChange={(value: any) => {
+                            handleChange(value);
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                        {/*  {touched.date && errors.date && (
+                          <FormHelperText error id="personal-supplier-helper">
+                            {errors.date}
+                          </FormHelperText>
+                        )} */}
+                      </LocalizationProvider>
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Numero de Factura</InputLabel>

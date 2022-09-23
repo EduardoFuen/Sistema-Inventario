@@ -156,7 +156,6 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         onChange={(e) => handleInputChange(e, i)}
-                        type="number"
                         placeholder="Ingresar Lote"
                         fullWidth
                         name="lot"
