@@ -167,11 +167,6 @@ const PackList = () => {
         className: 'cell-center'
       },
       {
-        Header: 'Cantidad de Productos',
-        accessor: 'qty',
-        className: 'cell-center'
-      },
-      {
         Header: 'Estado',
         accessor: 'status',
         className: 'cell-center',

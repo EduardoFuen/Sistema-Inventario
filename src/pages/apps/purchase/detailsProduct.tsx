@@ -38,7 +38,7 @@ const DetailsPurchaseCell = ({ value: initialValue, row: { index }, column: { id
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      sx={{ '& .MuiOutlinedInput-input': { py: 0.75, px: 1 }, '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
+      sx={{ '& .MuiOutlinedInput-input': { py: 0.75, px: 1 }, '& .MuiOutlinedInput-notchedOutline': { border: '1px solid' } }}
     />
   );
 };
