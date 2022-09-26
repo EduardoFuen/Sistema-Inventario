@@ -347,6 +347,8 @@ const PurchaseList = () => {
               return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 'Cancelled':
               return <Chip color="secondary" label="Closed" size="small" variant="light" />;
+            case 'Send':
+              return <Chip color="info" label="Send" size="small" variant="light" />;
             case 'Processing':
               return <Chip color="info" label="Processing" size="small" variant="light" />;
             case 'Delivered':

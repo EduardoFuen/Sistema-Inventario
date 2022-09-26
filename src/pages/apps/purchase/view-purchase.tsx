@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Chance } from 'chance';
 import { addDays, format } from 'date-fns';
 // material-ui
 import {
@@ -31,7 +30,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
+import { addPurchase, sendPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import { SendOutlined } from '@ant-design/icons';
 
 import AddSelectProduct from './selectProducts';
@@ -58,6 +57,7 @@ function ViewPurchase() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
+  const [send, setSend] = useState<boolean>(false);
   const { id } = useParams();
   const handleAdd = () => {
     setAdd(!add);
@@ -65,7 +65,7 @@ function ViewPurchase() {
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
-  const { detailsPurchase } = useSelector((state) => state.purchase);
+  // const { detailsPurchase } = useSelector((state) => state.purchase);
   const { listPurchase } = useSelector((state) => state.purchase);
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
@@ -108,7 +108,7 @@ function ViewPurchase() {
 
   const SubstSchema = Yup.object().shape({
     numberinvoice: Yup.string().max(255).required('Numero de Factura es requerido'),
-    dateinvoice: Yup.object().required('Fecha de Vencimiento es requerido')
+    dateinvoice: Yup.date().required('Fecha de Vencimiento es requerido')
   });
 
   const formik = useFormik({
@@ -116,12 +116,28 @@ function ViewPurchase() {
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        if (detailsPurchase.length > 0) {
-          const chance = new Chance();
-
+        if (send) {
           const newValue = {
-            nc: chance.zip(),
-            products: detailsPurchase,
+            dateR: format(new Date(), 'dd-MM-yyyy'),
+            products: orderPurchase?.products,
+            ...values,
+            status: 'Send'
+          };
+          dispatch(sendPurchase(id, newValue));
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Orden Creada successfully.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
+        } else {
+          const newValue = {
+            products: orderPurchase?.products,
             ...values
           };
           dispatch(addPurchase(newValue));
@@ -136,8 +152,8 @@ function ViewPurchase() {
               close: false
             })
           );
-          history(`/purchase`);
         }
+        history(`/purchase`);
         setSubmitting(false);
       } catch (error) {
         console.error(error);
@@ -398,11 +414,11 @@ function ViewPurchase() {
                     Cancel
                   </Button>
                   <Button
+                    type="submit"
                     variant="contained"
                     startIcon={<SendOutlined />}
-                    onClick={() => {
-                      console.log('hoal');
-                    }}
+                    disabled={isSubmitting}
+                    onClick={() => setSend(true)}
                   >
                     Enviar
                   </Button>
