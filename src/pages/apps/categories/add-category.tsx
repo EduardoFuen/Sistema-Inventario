@@ -13,12 +13,18 @@ import { useSelector } from 'store';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 function AddNewCategories() {
-  const { id } = useParams();
-  const { categoryListThree } = useSelector((state) => state.category);
+  const { id, index } = useParams();
+  const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
 
   const category = useMemo(() => {
-    if (id) {
+    if (id && index === '2') {
       return categoryListThree.find((item) => item?.categoryThree.trim() === id);
+    }
+    if (id && index === '1') {
+      return categoryListTwo.find((item) => item?.categoryTwo.trim() === id);
+    }
+    if (id && index === '0') {
+      return categoryListOne.find((item) => item?.categoryOne.trim() === id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -31,10 +37,10 @@ function AddNewCategories() {
             <CategoryOne categoryOne={category?.categoryOne} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CategoryTwo categoryTwo={category?.categoryTwo} />
+            <CategoryTwo categoryTwo={category} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CategoryThree categoryThree={category?.categoryThree} />
+            <CategoryThree categoryThree={category} />
           </Grid>
         </Grid>
       </MainCard>

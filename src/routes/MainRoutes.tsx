@@ -112,7 +112,7 @@ const MainRoutes = {
                   element: <AppAddCategory />
                 },
                 {
-                  path: 'product-list/add-category/:id',
+                  path: 'product-list/add-category/:id/:index',
                   element: <AppAddCategory />
                 }
               ]

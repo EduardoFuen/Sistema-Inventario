@@ -438,7 +438,7 @@ export const SortingSelect = ({ sortBy, setSortBy, allColumns }: any) => {
 
           return (
             <Typography variant="subtitle2">
-              Ordenar ({typeof selectedColumn.Header === 'string' ? selectedColumn.Header : selectedColumn?.title})
+              Ordenar ({typeof selectedColumn?.Header === 'string' ? selectedColumn?.Header : selectedColumn?.title})
             </Typography>
           );
         }}

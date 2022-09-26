@@ -1,9 +1,23 @@
-import { useEffect, useMemo, Fragment } from 'react';
+import { useEffect, useMemo, Fragment, useState, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
+import {
+  Button,
+  Chip,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  useMediaQuery,
+  Box,
+  Tab,
+  Tabs
+} from '@mui/material';
 
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
@@ -26,7 +40,28 @@ import { getCategoryList, deleteCategory } from 'store/reducers/category';
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
+interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
 
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
+  };
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
+    </div>
+  );
+}
 interface Props {
   columns: Column[];
   data: [];
@@ -158,8 +193,35 @@ const CategoriesList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  const handleEditCategory = (id: any) => {
-    history(`/p/product-list/add-category/${id}`);
+  const handleEditCategory = (id: any, index: any) => {
+    history(`/p/product-list/add-category/${id}/${index}`);
+  };
+  const [value, setValue] = useState(0);
+  const [columnsValue, setColumnsValue] = useState<any>({
+    Header: 'Categoria',
+    accessor: 'categoryOne',
+    className: 'cell-center'
+  });
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    let columnOne = {
+      Header: 'Categoria',
+      accessor: 'categoryOne',
+      className: 'cell-center'
+    };
+    let columnTwo = {
+      Header: 'Categoria 2',
+      accessor: 'categoryTwo',
+      className: 'cell-center'
+    };
+
+    if (newValue === 0) {
+      setColumnsValue(columnOne);
+    }
+    if (newValue === 1) {
+      setColumnsValue(columnTwo);
+    }
+    setValue(newValue);
   };
 
   const { categoryListThree } = useSelector((state) => state.category);
@@ -168,89 +230,132 @@ const CategoriesList = () => {
     dispatch(getCategoryList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Categoria',
-        accessor: 'categoryOne',
-        className: 'cell-center'
-      },
-      {
-        Header: 'Categoria 2',
-        accessor: 'categoryTwo',
-        className: 'cell-center'
-      },
-      {
-        Header: 'Categoria 3',
-        accessor: 'categoryThree',
-        className: 'cell-center'
-      },
-      {
-        Header: 'Estado',
-        accessor: 'status',
-        className: 'cell-center',
-        Cell: ({ value }: any) => {
-          switch (value) {
-            case false:
-              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case true:
-            default:
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-          }
-        }
-      },
-      {
-        Header: 'Acciones',
-        className: 'cell-center',
-        disableSortBy: true,
-        Cell: ({ row }: any) => {
-          return (
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="Edit">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleEditCategory(row.values?.categoryThree);
-                  }}
-                >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Categoria deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                    dispatch(deleteCategory(row.values));
-                  }}
-                >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          );
+
+  const columns = () => [
+    value !== 2 && columnsValue,
+
+    value === 2 && {
+      Header: 'Categoria',
+      accessor: 'categoryOne',
+      className: 'cell-center'
+    },
+    value === 2 && {
+      Header: 'Categoria 2',
+      accessor: 'categoryTwo',
+      className: 'cell-center'
+    },
+    value === 2 && {
+      Header: 'Categoria 3',
+      accessor: 'categoryThree',
+      className: 'cell-center'
+    },
+    {
+      Header: 'Estado',
+      accessor: 'status',
+      className: 'cell-center',
+      Cell: ({ value }: any) => {
+        switch (value) {
+          case false:
+            return <Chip color="error" label="Desactivado" size="small" variant="light" />;
+          case true:
+          default:
+            return <Chip color="success" label="Activo" size="small" variant="light" />;
         }
       }
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    {
+      Header: 'Acciones',
+      className: 'cell-center',
+      disableSortBy: true,
+      Cell: ({ row }: any) => {
+        return (
+          <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+            <Tooltip title="Edit">
+              <IconButton
+                color="primary"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  let category: string;
+                  switch (value) {
+                    case 0:
+                      category = row.values?.categoryOne;
+                      break;
+                    case 1:
+                      category = row.values?.categoryTwo;
+                      break;
+
+                    default:
+                      category = row.values?.categoryThree;
+                      break;
+                  }
+                  handleEditCategory(category, value);
+                }}
+              >
+                <EditTwoTone twoToneColor={theme.palette.primary.main} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton
+                color="error"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  dispatch(
+                    openSnackbar({
+                      open: true,
+                      message: 'Categoria deleted successfully.',
+                      variant: 'alert',
+                      alert: {
+                        color: 'success'
+                      },
+                      close: false
+                    })
+                  );
+                  dispatch(deleteCategory(row.values));
+                }}
+              >
+                <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        );
+      }
+    }
+  ];
+  /*     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
-  );
+  ); */
+
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={categoryListThree as []} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange}>
+            <Tab label="Categoria" {...a11yProps(0)} />
+            <Tab label="Categoria 2" {...a11yProps(1)} />
+            <Tab label="Categoria 3" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <ReactTable
+            columns={columns().filter((item) => item !== false)}
+            data={categoryListThree as []}
+            getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ReactTable
+            columns={columns().filter((item) => item !== false)}
+            data={categoryListThree as []}
+            getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <ReactTable
+            columns={columns().filter((item) => item !== false)}
+            data={categoryListThree as []}
+            getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          />
+        </TabPanel>
       </ScrollX>
     </MainCard>
   );
