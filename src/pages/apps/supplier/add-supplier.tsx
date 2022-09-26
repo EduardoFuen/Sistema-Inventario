@@ -191,6 +191,7 @@ function AddSupplier() {
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             {...getFieldProps('leadTimeBog')}
                             type="number"
+                            InputProps={{ inputProps: { min: 0 } }}
                             error={Boolean(touched.leadTimeBog && errors.leadTimeBog)}
                             helperText={touched.leadTimeBog && errors.leadTimeBog}
                             placeholder="Ingresar Lead Time Bogota"
@@ -202,6 +203,7 @@ function AddSupplier() {
                           <TextField
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             type="number"
+                            InputProps={{ inputProps: { min: 0 } }}
                             placeholder="Ingresar Lead Time Barranquilla"
                             fullWidth
                             {...getFieldProps('leadTimeBaq')}
@@ -249,6 +251,7 @@ function AddSupplier() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
+                        InputProps={{ inputProps: { min: 0 } }}
                         placeholder="Ingresar cupo"
                         fullWidth
                         {...getFieldProps('cupo')}

@@ -90,6 +90,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
                 <TextField
                   sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                   type="number"
+                  InputProps={{ inputProps: { min: 0 } }}
                   placeholder="Ingresar Cantidad Faltantes"
                   fullWidth
                   name="cantidad"
@@ -100,6 +101,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
                 <TextField
                   sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                   type="number"
+                  InputProps={{ inputProps: { min: 0 } }}
                   placeholder="Ingresar Cantidad Devolución"
                   fullWidth
                 />
@@ -145,6 +147,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
+                        InputProps={{ inputProps: { min: 0 } }}
                         placeholder="Ingresar Cantidad"
                         fullWidth
                         name="qty"

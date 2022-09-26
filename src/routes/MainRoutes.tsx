@@ -11,6 +11,9 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 
 // render - applications
 const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase-list')));
+const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/add-purchase')));
+const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/view-purchase')));
+
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/view-reception')));
 const AppInventoryList = Loadable(lazy(() => import('pages/apps/inventory/inventory-list')));
@@ -23,7 +26,6 @@ const AppProductList = Loadable(lazy(() => import('pages/apps/productMainView/pr
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
 const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/edit-product')));
 const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-category')));
-const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/add-purchase')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -74,6 +76,10 @@ const MainRoutes = {
             {
               path: 'purchase/add-new-purchase',
               element: <AppAddPurchase />
+            },
+            {
+              path: 'purchase/view-purchase/:id',
+              element: <AppViewPurchase />
             },
             {
               path: '',

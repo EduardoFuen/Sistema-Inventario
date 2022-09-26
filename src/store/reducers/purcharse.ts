@@ -38,17 +38,22 @@ const slice = createSlice({
       const { name } = action.payload;
       const index = state.detailsPurchase.findIndex((item) => item.name === name);
       state.detailsPurchase.splice(index, 1);
-      const product = JSON.parse(window.localStorage.getItem('productsDetails')!);
+      const product = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
       const idx = product?.findIndex((item: any) => item.name === name);
       product.splice(idx, 1);
-      window.localStorage.setItem('productsDetails', JSON.stringify(product));
+      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(product));
+    },
+    updateDetailsPurchaseSuccess(state, action) {
+      const { data } = action.payload;
+      /*    const index = state.detailsPurchase.findIndex((item) => item.name === id); */
+      state.detailsPurchase = data;
     },
     resetDetailsPurchaseSuccess(state) {
       state.detailsPurchase = [];
-      window.localStorage.setItem('productsDetails', JSON.stringify(state.detailsPurchase));
+      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
     addPurchaseSuccess(state, action) {
-      const products = JSON.parse(window.localStorage.getItem('productsDetails')!);
+      const products = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
       const resumen = products.reduce(
         (acc: any = {}, item: any) => {
           const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
@@ -72,7 +77,7 @@ const slice = createSlice({
       };
       state.detailsPurchase = [];
       state.listPurchase.push(data);
-      window.localStorage.setItem('productsDetails', JSON.stringify(state.detailsPurchase));
+      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
     updatePurchaseSuccess(state, action) {
       const { name, data } = action.payload;
@@ -98,6 +103,15 @@ export function addItemsPurchase(data: any) {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option.values);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function updateItemsPurchase(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateDetailsPurchaseSuccess({ data }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

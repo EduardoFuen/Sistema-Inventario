@@ -193,7 +193,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
   }, [products]);
 
   useEffect(() => {
-    window.localStorage.setItem('productsDetails', JSON.stringify(data));
+    window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data));
   }, [data]);
   return (
     <MainCard content={false}>

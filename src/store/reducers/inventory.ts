@@ -34,7 +34,7 @@ const slice = createSlice({
     deleteDetailsInventorySuccess(state, action) {},
     resetDetailsInventorySuccess(state) {},
     addInventorySuccess(state, action) {
-      const products = JSON.parse(window.localStorage.getItem('productsDetails')!);
+      const products = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
       const resumen = products.reduce(
         (acc: any = {}, item: any) => {
           const itemTotal = parseFloat((item.price * item.qty).toFixed(2));

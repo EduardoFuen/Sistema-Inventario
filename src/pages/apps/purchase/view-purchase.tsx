@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 
 // material-ui
 import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party
 import * as Yup from 'yup';
@@ -23,6 +25,8 @@ import DetailsPurchase from './detailsProduct';
 
 const getInitialValues = () => {
   const newSubstance = {
+    priceP: '',
+    dateP: '',
     note: '',
     date: '',
     discount: '',
@@ -32,7 +36,7 @@ const getInitialValues = () => {
   return newSubstance;
 };
 
-function AddPurchase() {
+function ViewPurchase() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
@@ -50,9 +54,20 @@ function AddPurchase() {
     history(`/purchase`);
   };
 
+  const [value, setValue] = useState<Date | null>();
+  const [valueP, setValueP] = useState<Date | null>();
+
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
+
+  const handleChangeP = (newValue: Date | null) => {
+    setValueP(newValue);
+  };
   const SubstSchema = Yup.object().shape({
     warehouse: Yup.string().max(255).required('Bodega es requerido'),
-    supplier: Yup.object().required('Proveedor es requerido')
+    supplier: Yup.object().required('Proveedor es requerido'),
+    date: Yup.date().required('Fecha Estimada es requerido')
   });
 
   const formik = useFormik({
@@ -91,26 +106,6 @@ function AddPurchase() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
-  const resumen = detailsPurchase.reduce(
-    (acc: any = {}, item: any) => {
-      console.log(item.tax);
-
-      const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
-      const tax = parseFloat(item.tax || 0);
-      acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-      acc.discount = parseFloat((acc.discount * acc.subtotal).toFixed(2));
-      acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-      acc.total = parseFloat((acc.total + itemTotal + tax).toFixed(2));
-      return acc;
-    },
-    {
-      subtotal: 0,
-      tax: 0,
-      discount: 0,
-      total: 0
-    }
-  );
 
   return (
     <>
@@ -185,6 +180,27 @@ function AddPurchase() {
                         fullWidth
                       />
                     </Grid>
+                    <Grid item xs={3}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega</InputLabel>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                          label=""
+                          inputFormat="MM/dd/yyyy"
+                          {...getFieldProps('date')}
+                          value={value}
+                          onChange={(value: any) => {
+                            handleChange(value);
+                            setFieldValue('date', value === null ? '' : value);
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                        {touched.date && errors.date && (
+                          <FormHelperText error id="personal-supplier-helper">
+                            {errors.date}
+                          </FormHelperText>
+                        )}
+                      </LocalizationProvider>
+                    </Grid>
                   </Grid>
                   <Grid
                     container
@@ -214,7 +230,22 @@ function AddPurchase() {
                         fullWidth
                       />
                     </Grid>
-
+                    <Grid item xs={3} alignSelf="center">
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pronto Pago</InputLabel>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                          label=""
+                          inputFormat="MM/dd/yyyy"
+                          {...getFieldProps('dateP')}
+                          value={valueP}
+                          onChange={(value: any) => {
+                            handleChangeP(value);
+                            setFieldValue('dateP', value === null ? '' : value);
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
@@ -249,24 +280,6 @@ function AddPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {/*  {detailsPurchase && detailsPurchase.length > 0 && ( */}
-                <MainCard>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                    <Typography variant="subtitle1">Subtotal: $ {resumen.subtotal}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">Descuento: $ {resumen.discount}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">IVA: $ {resumen.tax}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">Total: $ {resumen.total}</Typography>
-                  </Stack>
-                </MainCard>
-                {/*     )} */}
-              </Grid>
-              <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
@@ -289,4 +302,4 @@ function AddPurchase() {
   );
 }
 
-export default AddPurchase;
+export default ViewPurchase;
