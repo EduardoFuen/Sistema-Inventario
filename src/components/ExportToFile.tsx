@@ -16,7 +16,6 @@ const Export: React.FC<Props> = ({ excelData, fileName }) => {
   const exportToCSV = (excelData: Object[], fileName: string) => {
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: fileType });
 

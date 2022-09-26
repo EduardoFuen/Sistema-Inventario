@@ -74,7 +74,6 @@ function UpdateProduct() {
     name: Yup.string().max(255).required('Nombre es requerido'),
     sku: Yup.string().max(255).required('sku es requerido'),
     ean: Yup.string().max(255).required('ean es requerido'),
-    price: Yup.string().max(255).required('Precio es requerido'),
     type_product: Yup.string().max(255).required('Tipo de Producto es requerido'),
     pack: Yup.string().max(255).required('Envase es requerido')
   });
@@ -173,18 +172,6 @@ function UpdateProduct() {
                         helperText={touched.ean && errors.ean}
                         placeholder="Ingresar EAN"
                         fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Costo</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        type="number"
-                        placeholder="Ingresar Costo"
-                        fullWidth
-                        {...getFieldProps('price')}
-                        error={Boolean(touched.price && errors.price)}
-                        helperText={touched.price && errors.price}
                       />
                     </Grid>
                     <Grid item xs={6}>
