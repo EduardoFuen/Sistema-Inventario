@@ -95,7 +95,6 @@ function AddPurchase() {
 
   const resumen = detailsPurchase.reduce(
     (acc: any = {}, item: any) => {
-      console.log(item);
       if (item?.subtotal && item?.total) {
         const itemTotal = item?.subtotal || 0;
         const tax = parseFloat(item?.tax || 0);

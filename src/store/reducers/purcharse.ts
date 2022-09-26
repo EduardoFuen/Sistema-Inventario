@@ -53,14 +53,13 @@ const slice = createSlice({
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
     addPurchaseSuccess(state, action) {
-      const products = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
-      const resumen = products.reduce(
+      const resumen = action.payload?.products.reduce(
         (acc: any = {}, item: any) => {
-          const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
-          const itemTotalTax = parseFloat(item.iva || 0);
+          const itemTotal = item?.subtotal || 0;
+          const tax = parseFloat(item?.tax || 0);
           acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-          acc.tax = parseFloat((acc.tax + itemTotalTax).toFixed(2));
-          acc.total = parseFloat((acc.total + itemTotal + itemTotalTax).toFixed(2));
+          acc.tax = parseFloat((acc.tax + tax).toFixed(2));
+          acc.total = parseFloat((acc.total + item?.total).toFixed(2));
           return acc;
         },
         {
@@ -72,8 +71,7 @@ const slice = createSlice({
 
       const data = {
         ...action.payload,
-        ...resumen,
-        products
+        ...resumen
       };
       state.detailsPurchase = [];
       state.listPurchase.push(data);
@@ -87,8 +85,8 @@ const slice = createSlice({
     deletePurchaseSuccess(state, action) {
       const { nc } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      // state.listPurchase.splice(index, 1);
-      state.listPurchase[index].status = 'Cancelled';
+      state.listPurchase.splice(index, 1);
+      //  state.listPurchase[index].status = 'Cancelled';
     }
   }
 });

@@ -25,7 +25,7 @@ import { deletePurchase } from 'store/reducers/purcharse';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { PlusOutlined, DeleteTwoTone, FilePdfOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteTwoTone, FilePdfOutlined, EditTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -276,6 +276,12 @@ const PurchaseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const history = useNavigate();
+
+  const handleViewPurchase = (id: any) => {
+    history(`/purchase/view-purchase/${id}`);
+  };
+
   const { listPurchase } = useSelector((state) => state.purchase);
   const columns = useMemo(
     () => [
@@ -367,18 +373,17 @@ const PurchaseList = () => {
                   )
                 }
               </PDFDownloadLink>
-
-              {/*   <Tooltip title="Edit">
+              <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    console.log(e);ß
+                    handleViewPurchase(row?.values?.nc);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
               {row.values.status !== 'Cancelled' && (
                 <Tooltip title="Cancelar">
                   <IconButton
