@@ -24,10 +24,10 @@ import DetailsPurchase from './detailsProduct';
 const getInitialValues = () => {
   const newSubstance = {
     note: '',
-    date: '',
     discount: '',
     supplier: '',
-    warehouse: ''
+    warehouse: '',
+    paymentdiscount: ''
   };
   return newSubstance;
 };
@@ -36,6 +36,7 @@ function AddPurchase() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
+  const [discount, setDiscount] = useState<any>();
 
   const handleAdd = () => {
     setAdd(!add);
@@ -94,14 +95,15 @@ function AddPurchase() {
 
   const resumen = detailsPurchase.reduce(
     (acc: any = {}, item: any) => {
-      console.log(item.tax);
-
-      const itemTotal = parseFloat((item.price * item.qty).toFixed(2));
-      const tax = parseFloat(item.tax || 0);
-      acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-      acc.discount = parseFloat((acc.discount * acc.subtotal).toFixed(2));
-      acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-      acc.total = parseFloat((acc.total + itemTotal + tax).toFixed(2));
+      console.log(item);
+      if (item?.subtotal && item?.total) {
+        const itemTotal = item?.subtotal || 0;
+        const tax = parseFloat(item?.tax || 0);
+        acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
+        acc.tax = parseFloat((acc.tax + tax).toFixed(2));
+        acc.total = parseFloat((acc.total + item?.total || 0).toFixed(2));
+        return acc;
+      }
       return acc;
     },
     {
@@ -183,6 +185,10 @@ function AddPurchase() {
                         {...getFieldProps('discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
+                        onChange={(e) => {
+                          setDiscount(e.target.value);
+                          setFieldValue('discount', e.target.value);
+                        }}
                       />
                     </Grid>
                   </Grid>
@@ -209,7 +215,7 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('priceP')}
+                        {...getFieldProps('paymentdiscount')}
                         placeholder="Descuento pronto Pago %"
                         fullWidth
                       />
@@ -249,31 +255,32 @@ function AddPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {/*  {detailsPurchase && detailsPurchase.length > 0 && ( */}
-                <MainCard>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                    <Typography variant="subtitle1">Subtotal: $ {resumen.subtotal}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">Descuento: $ {resumen.discount}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">IVA: $ {resumen.tax}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                    <Typography variant="subtitle1">Total: $ {resumen.total}</Typography>
-                  </Stack>
-                </MainCard>
-                {/*     )} */}
+                {detailsPurchase && detailsPurchase.length > 0 && (
+                  <MainCard>
+                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
+                      <Typography variant="subtitle1">Subtotal: $ {resumen.subtotal || 0}</Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                      <Typography variant="subtitle1">
+                        Descuento: $ {resumen.subtotal - (resumen.subtotal * ((100 - discount) / 100) || 0)}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                      <Typography variant="subtitle1">IVA: $ {resumen.tax || 0}</Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                      <Typography variant="subtitle1">Total: $ {resumen.total || 0}</Typography>
+                    </Stack>
+                  </MainCard>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
-
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Confirmar Compra
+                    Guardar Comprar
                   </Button>
                 </Stack>
               </Grid>
