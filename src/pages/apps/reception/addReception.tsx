@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -38,56 +38,17 @@ export interface PropsSelect {
   onCancel: () => void;
 }
 
-const getInitialValues = () => {
-  const newSubstance = {
-    missingQuantity: '',
-    returnQuantity: '',
-    reasonReturn: ''
-  };
-  return newSubstance;
-};
-
 const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const { detailsReption } = useSelector((state) => state.purchase);
   const [inputList, setInputList] = useState([{}]);
-  const [value, setValue] = useState<Date | null>();
+  /*  const [value, setValue] = useState<Date | null>();
 
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
   };
-
-  /* 
-  useEffect(() => {
-    let newData = data.map((item: any) => ({
-      qty: '',
-      lot: '',
-      dateExpiration: '',
-      ...item
-    }));
-    setInputList(newData);
-    window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
-  }, [data]); */
-
-  // handle input change
-  const handleInputChange = (e: any, index: number) => {
-    /*   const list = [...inputList];
-    if (e.target) {
-      const { name, value } = e.target;
-      if (name === 'qty') {
-        list[index]['qty'] = value;
-      }
-      if (name === 'lot') {
-        list[index]['lot'] = value;
-      }
-
-      setInputList(list);
-    } else {
-      list[index]['dateExpiration'] = e;
-    } */
-  };
-
+ */
   // handle click event of the Remove button
   const handleRemoveClick = (index: number) => {
     const list = [...inputList];
@@ -99,9 +60,14 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   const handleAddClick = () => {
     setInputList([...inputList, { qty: '', lot: '', dateExpiration: '' }]);
   };
+  const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
 
   const formik = useFormik({
-    initialValues: getInitialValues(),
+    initialValues: {
+      missingQuantity: dataNew?.missingQuantity || '',
+      returnQuantity: dataNew?.returnQuantity || '',
+      reasonReturn: dataNew?.reasonReturn || ''
+    },
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newValue = {
@@ -130,8 +96,36 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   });
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
-  /*  const data = detailsReption && detailsReption.length > 0 ? detailsReption?.products : inputList; */
-  console.log(detailsReption);
+
+  const data = dataNew?.products.length > 0 ? dataNew?.products : inputList;
+
+  useEffect(() => {
+    let newData = data.map((item: any) => ({
+      qty: '',
+      lot: '',
+      dateExpiration: '',
+      ...item
+    }));
+    setInputList(newData);
+  }, [data]);
+
+  // handle input change
+  const handleInputChange = (e: any, index: number) => {
+    const list: any = [...inputList];
+    if (e.target) {
+      const { name, value } = e.target;
+      if (name === 'qty') {
+        list[index]['qty'] = value;
+      }
+      if (name === 'lot') {
+        list[index]['lot'] = value;
+      }
+
+      setInputList(list);
+    } else {
+      list[index]['dateExpiration'] = e;
+    }
+  };
 
   return (
     <ScrollX>
@@ -186,7 +180,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                     </Button>
                     <Divider />
                   </Stack>
-                  {inputList.map((x, i) => {
+                  {inputList.map((x: any, i: number) => {
                     return (
                       <Grid
                         container
@@ -206,6 +200,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                             placeholder="Ingresar Cantidad"
                             fullWidth
                             name="qty"
+                            value={x.qty}
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
@@ -217,6 +212,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                             placeholder="Ingresar Lote"
                             fullWidth
                             name="lot"
+                            value={x.lot}
                           />
                         </Grid>
                         <Grid item xs={4}>
@@ -225,9 +221,8 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                             <DesktopDatePicker
                               label=""
                               inputFormat="MM/dd/yyyy"
-                              value={value}
+                              value={x.dateExpiration}
                               onChange={(value: any) => {
-                                handleChange(value);
                                 handleInputChange(value, i);
                               }}
                               renderInput={(params) => <TextField {...params} />}
