@@ -85,8 +85,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
       try {
         const newSubstance = {
           name: values.name,
-          status: values.status,
-          qty: 0
+          status: values.status
         };
 
         if (subst) {

@@ -23,6 +23,8 @@ export type Products = {
   created: Date;
   isStock?: boolean;
   status?: boolean;
+  is_taxed?: boolean;
+  tax: number;
   sku?: string;
   ean?: string;
   new?: number;
@@ -36,7 +38,6 @@ export type Products = {
   height: string;
   packUnit: string;
   depth: string;
-  quantityInv: string;
   warehouse: string;
   substances: string;
   keywords: string;
@@ -235,7 +236,6 @@ export type typeProduct = {
   id: string | number | undefined;
   name: string;
   status: boolean;
-  qty: number;
 };
 
 export interface TypeProductStateProps {

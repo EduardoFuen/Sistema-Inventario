@@ -84,6 +84,48 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
     history(`/p/product-list/add-new-product`);
   };
 
+  const newDataExport = data.map((item: any) => {
+    let substances: string = '';
+    let substitutes: string = '';
+    let warehouse: string = '';
+
+    if (item?.substances) {
+      substances = item.substances.map((e: any) => e.name).join();
+    }
+    if (item?.substitutes) {
+      substitutes = item?.substitutes.map((e: any) => e.name).join();
+    }
+    if (item?.warehouse) {
+      warehouse = item?.warehouse.map((e: any) => e.name).join();
+    }
+    return {
+      name: item.name,
+      sku: item.sku,
+      ean: item.ean,
+      categoryOne: item.categoryOne,
+      categoryThree: item.categoryThree,
+      categoryTwo: item.categoryTwo,
+      depth: item.depth,
+      height: item.height,
+      img: item.img,
+      keywords: item.keywords,
+      maker: item.maker,
+      makerUnit: item.makerUnit,
+      pack: item.pack,
+      packInfo: item.packUnit,
+      packUnit: item.packUnit,
+      trademark: item.trademark,
+      'type product': item.type_product,
+      variation: item.variation,
+      weight: item.weight,
+      width: item.width,
+      warehouse,
+      substances,
+      substitutes,
+      status: item.status
+    };
+  });
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
@@ -96,7 +138,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
               setGlobalFilter={setGlobalFilter}
               size="small"
             />
-            <Export excelData={data} fileName="Productos" />
+            <Export excelData={newDataExport} fileName="Productos" />
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
@@ -204,20 +246,6 @@ const ProductList = () => {
           );
         }
       },
-      /* {
-        Header: 'Categorias',
-        accessor: 'categories',
-        Cell: ({ value }: any) => (
-          <Stack direction="row" spacing={0.25}>
-            {value.map((item: any, index: number) => (ß
-              <Typography variant="h6" key={index}>
-                {capitalize(item)}
-                {value.length > index + 1 ? ',' : ''}
-              </Typography>
-            ))}
-          </Stack>
-        )
-      }, */
       {
         Header: 'Maker',
         accessor: 'maker',
@@ -226,11 +254,6 @@ const ProductList = () => {
       {
         Header: 'Trademark',
         accessor: 'trademark',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Qty',
-        accessor: 'quantity',
         className: 'cell-right'
       },
       {

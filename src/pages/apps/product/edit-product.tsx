@@ -42,6 +42,7 @@ function UpdateProduct() {
 
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+  const [istaxed, setIsTaxed] = useState<boolean>();
 
   useEffect(() => {
     if (selectedImage) {
@@ -82,7 +83,6 @@ function UpdateProduct() {
       name: product?.name,
       sku: product?.sku,
       ean: product?.ean,
-      price: product?.price,
       maker: product?.maker,
       trademark: product?.trademark,
       type_product: product?.type_product,
@@ -104,10 +104,14 @@ function UpdateProduct() {
       substitutes: product?.substitutes,
       warehouse: product?.warehouse,
       img: '',
-      status: product?.status
+      status: product?.status,
+      tax: product?.tax,
+      is_taxed: product?.is_taxed
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
+      console.log(values);
+
       try {
         dispatch(editProduct(id, values));
         dispatch(
@@ -129,6 +133,7 @@ function UpdateProduct() {
     }
   });
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+
   return (
     <>
       <MainCard>
@@ -174,6 +179,36 @@ function UpdateProduct() {
                         fullWidth
                       />
                     </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mt: 2, opacity: 0.5 }}> Es gravado</InputLabel>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            sx={{ mt: 0 }}
+                            onChange={() => {
+                              setIsTaxed(!istaxed);
+                              setFieldValue('is_taxed', !istaxed);
+                            }}
+                            defaultChecked={product?.is_taxed}
+                          />
+                        }
+                        label=""
+                        labelPlacement="top"
+                        {...getFieldProps('is_taxed')}
+                      />
+                    </Grid>
+                    {istaxed ||
+                      (product?.is_taxed && (
+                        <Grid item xs={6}>
+                          <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
+                          <TextField
+                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                            {...getFieldProps('tax')}
+                            placeholder="Ingresar IVA"
+                            fullWidth
+                          />
+                        </Grid>
+                      ))}
                     <Grid item xs={6}>
                       <Stack alignItems="center" sx={{ mt: 1 }}>
                         <Typography>Agregar imagen</Typography>

@@ -60,6 +60,8 @@ const getInitialValues = () => {
     warehouse: '',
     substitutes: '',
     img: '',
+    tax: '',
+    is_taxed: false,
     status: false
   };
   return newSubstance;
@@ -70,6 +72,7 @@ function AddNewProduct() {
   const theme = useTheme();
 
   const [avatar, setAvatar] = useState<string | undefined>();
+  const [istaxed, setIsTaxed] = useState<boolean>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
 
   useEffect(() => {
@@ -172,6 +175,34 @@ function AddNewProduct() {
                         fullWidth
                       />
                     </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mt: 2, opacity: 0.5 }}> Es gravado</InputLabel>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            sx={{ mt: 0 }}
+                            onChange={() => {
+                              setIsTaxed(!istaxed);
+                              setFieldValue('is_taxed', istaxed);
+                            }}
+                          />
+                        }
+                        label=""
+                        labelPlacement="top"
+                        {...getFieldProps('is_taxed')}
+                      />
+                    </Grid>
+                    {istaxed && (
+                      <Grid item xs={6}>
+                        <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
+                        <TextField
+                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                          {...getFieldProps('tax')}
+                          placeholder="Ingresar IVA"
+                          fullWidth
+                        />
+                      </Grid>
+                    )}
                     <Grid item xs={6}>
                       <Stack alignItems="center" sx={{ mt: 1 }}>
                         <Typography>Agregar imagen</Typography>

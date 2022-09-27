@@ -48,7 +48,7 @@ const DashboardDefault = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="/maintenance/coming-soon" variant="caption" color="textPrimary">
+        <Link component={RouterLink} to="/inventario" variant="caption" color="textPrimary">
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={inventario} alt="inventario" style={{ width: '35%', height: 'auto' }} />
           </Box>

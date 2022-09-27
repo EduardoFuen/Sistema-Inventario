@@ -85,8 +85,7 @@ const AddPackList = ({ pack, onCancel }: Props) => {
       try {
         const newPack = {
           name: values.name,
-          status: values.status,
-          qty: 0
+          status: values.status
         };
 
         if (pack) {
