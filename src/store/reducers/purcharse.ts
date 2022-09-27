@@ -13,7 +13,8 @@ import { PurchaseStateProps } from 'types/e-commerce';
 const initialState: PurchaseStateProps = {
   error: null,
   detailsPurchase: [],
-  listPurchase: []
+  listPurchase: [],
+  detailsReption: []
 };
 
 const slice = createSlice({
@@ -115,6 +116,9 @@ const slice = createSlice({
         ...resumen
       };
       state.listPurchase[index] = NewData;
+    },
+    addReceptionSuccess(state, action) {
+      state.detailsReption = action.payload;
     }
   }
 });
@@ -227,6 +231,15 @@ export function getPurchaseList() {
   return async () => {
     try {
       localStorage.getItem('mantis-ts-pack');
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function addReception(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.addReceptionSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

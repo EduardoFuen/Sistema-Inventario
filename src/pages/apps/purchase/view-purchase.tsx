@@ -18,11 +18,7 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-/* import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-// third-party
-import * as Yup from 'yup'; */
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project import
@@ -45,8 +41,6 @@ const getInitialValues = (order: FormikValues | null) => {
     supplier: order?.supplier,
     warehouse: order?.warehouse,
     paymentdiscount: order?.paymentdiscount,
-    /*    numberinvoice: '',
-    dateinvoice: '', */
     paymentdate: format(addDays(new Date(), order?.supplier.daysPayment), 'dd-MM-yyyy'),
     estimatedDeliveryDate: format(addDays(new Date(), order?.supplier.leadTimeBog), 'dd-MM-yyyy')
   };
@@ -74,12 +68,6 @@ function ViewPurchase() {
     history(`/purchase`);
   };
 
-  /*  const [value, setValue] = useState<Date | null>();
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
- */
   const orderPurchase = useMemo(() => {
     if (id) {
       return listPurchase.find((item) => item.nc === id);
@@ -112,14 +100,8 @@ function ViewPurchase() {
     }
   );
 
-  /*   const SubstSchema = Yup.object().shape({
-    numberinvoice: Yup.string().max(255).required('Numero de Factura es requerido'),
-    dateinvoice: Yup.date().required('Fecha de Vencimiento es requerido')
-  }); */
-
   const formik = useFormik({
     initialValues: getInitialValues(orderPurchase!),
-    // validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
         if (send) {
@@ -253,16 +235,6 @@ function ViewPurchase() {
                         disabled
                       />
                     </Grid>
-                    {/*      <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden Recibo </InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('estimatedDeliveryDate')}
-                        placeholder=""
-                        fullWidth
-                        disabled
-                      />
-                    </Grid> */}
                   </Grid>
                   <Grid
                     container
@@ -303,42 +275,6 @@ function ViewPurchase() {
                         disabled
                       />
                     </Grid>
-                    {/* <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
-                        Fecha Vencimiento <br /> Factura
-                      </InputLabel>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DesktopDatePicker
-                          label=""
-                          inputFormat="MM/dd/yyyy"
-                          {...getFieldProps('dateinvoice')}
-                          value={value}
-                          onChange={(value: any) => {
-                            handleChange(value);
-                            setFieldValue('dateinvoice', value === null ? '' : value);
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                        {touched.dateinvoice && errors.dateinvoice && (
-                          <FormHelperText error id="personal-supplier-helper">
-                            {errors.dateinvoice}
-                          </FormHelperText>
-                        )}
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
-                        Número de <br /> Factura
-                      </InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('numberinvoice')}
-                        placeholder="# Factura"
-                        fullWidth
-                        error={Boolean(touched.numberinvoice && errors.numberinvoice)}
-                        helperText={touched.numberinvoice && errors.numberinvoice}
-                      />
-                    </Grid> */}
                   </Grid>
                   {orderPurchase?.status === 'New' && (
                     <Grid item xs={12} alignSelf="center">

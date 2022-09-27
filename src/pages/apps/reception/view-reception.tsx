@@ -17,7 +17,7 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 
-import AddSelectProduct from './selectProducts';
+import AddSelectProduct from './addReception';
 import DetailsReception from './detailsProduct';
 
 // ==============================|| ADD VIEW RECEPTION - MAIN ||============================== //

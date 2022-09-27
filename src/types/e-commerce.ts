@@ -276,6 +276,7 @@ export type purchase = {
 export interface PurchaseStateProps {
   detailsPurchase: any[];
   listPurchase: purchase[];
+  detailsReption: any[];
   error: object | string | null;
 }
 
