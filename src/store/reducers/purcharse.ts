@@ -52,6 +52,9 @@ const slice = createSlice({
       state.detailsPurchase = [];
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
+    editDetailsPurchaseSuccess(state, action) {
+      state.detailsPurchase = action.payload;
+    },
     addPurchaseSuccess(state, action) {
       const resumen = action.payload?.products.reduce(
         (acc: any = {}, item: any) => {
@@ -126,6 +129,15 @@ export function addItemsPurchase(data: any) {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option.values);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function editItemsPurchase(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.editDetailsPurchaseSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

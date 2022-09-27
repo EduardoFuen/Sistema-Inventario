@@ -26,14 +26,15 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 import { useDispatch, useSelector } from 'store';
 
-const DetailsPurchase = () => {
+const DetailsPurchase = ({ product }: any) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [inputList, setInputList] = useState<any>([{}]);
   const { detailsPurchase } = useSelector((state) => state.purchase);
 
+  const data = product && product?.length > 0 ? product : detailsPurchase;
   useEffect(() => {
-    let newData = detailsPurchase.map((item) => ({
+    let newData = data.map((item: any) => ({
       qty: '',
       price: '',
       tax: '',
@@ -46,7 +47,7 @@ const DetailsPurchase = () => {
     }));
     setInputList(newData);
     window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
-  }, [detailsPurchase]);
+  }, [data]);
 
   const handleInputChange = (e: any, index: number) => {
     const list = [...inputList];

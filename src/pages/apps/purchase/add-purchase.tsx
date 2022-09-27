@@ -68,6 +68,7 @@ function AddPurchase() {
             nc: chance.zip(),
             create_order: format(new Date(), 'dd-MM-yyyy'),
             products: detailsPurchase,
+            status: 'New',
             ...values
           };
           dispatch(addPurchase(newValue));
@@ -82,7 +83,7 @@ function AddPurchase() {
               close: false
             })
           );
-          history(`/purchase`);
+          history(`/purchase/view-purchase/${newValue.nc}`);
         }
         setSubmitting(false);
       } catch (error) {
@@ -97,7 +98,7 @@ function AddPurchase() {
     (acc: any = {}, item: any) => {
       if (item?.subtotal && item?.total) {
         const itemTotal = item?.subtotal || 0;
-        const tax = parseFloat(item?.tax || 0);
+        const tax = (itemTotal * item?.tax) / 100 || 0;
         acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
         acc.tax = parseFloat((acc.tax + tax).toFixed(2));
         acc.total = parseFloat((acc.total + item?.total || 0).toFixed(2));

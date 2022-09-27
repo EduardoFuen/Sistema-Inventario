@@ -41,7 +41,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'nc', desc: false };
+  const sortBy = { id: 'nc', desc: true };
 
   const {
     getTableProps,
@@ -346,17 +346,15 @@ const PurchaseList = () => {
         accessor: 'status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Refunded':
-              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
+            case 'Partial':
+              return <Chip color="warning" label="Partial" size="small" variant="light" />;
             case 'Completed':
               return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 'Cancelled':
               return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 'Send':
               return <Chip color="info" label="Send" size="small" variant="light" />;
-            case 'Processing':
-              return <Chip color="info" label="Processing" size="small" variant="light" />;
-            case 'Delivered':
+            case 'New':
             default:
               return <Chip color="warning" label="New" size="small" variant="light" />;
           }
@@ -385,7 +383,7 @@ const PurchaseList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleViewPurchase(row?.values?.nc);
+                    if (row?.values?.nc) handleViewPurchase(row?.values?.nc);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
