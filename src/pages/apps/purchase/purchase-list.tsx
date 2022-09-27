@@ -1,7 +1,7 @@
 import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 // import PSPDFKit from "./PSPDFKit";
 
 // material-ui
@@ -26,6 +26,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { PlusOutlined, DeleteTwoTone, FilePdfOutlined, EditTwoTone } from '@ant-design/icons';
+import Farmu from 'assets/images/home/logoAzulFarmu.png';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -188,8 +189,8 @@ const styles = StyleSheet.create({
     textAlign: 'justify'
   },
   image: {
-    marginVertical: 15,
-    marginHorizontal: 100
+    textAlign: 'center',
+    width: 90
   },
   header: {
     fontSize: 12,
@@ -213,7 +214,6 @@ const styles = StyleSheet.create({
   },
   section: {
     fontSize: 12,
-
     margin: 5,
     padding: 5,
     flexGrow: 1
@@ -224,8 +224,12 @@ const MyDocument = ({ data }: any) => {
   return (
     <Document>
       <Page style={styles.body}>
+        <Image src={Farmu} style={styles.image} />
         <Text style={styles.header} fixed>
           Fecha {data?.create_order} # Order {data?.nc}
+        </Text>
+        <Text style={styles.header} fixed>
+          Bodega {data?.warehouse}
         </Text>
         <Text style={styles.title}>{data?.supplier.businessName}</Text>
         <Text style={styles.author}>NIT: {data?.supplier.nit}</Text>
@@ -283,6 +287,7 @@ const PurchaseList = () => {
   };
 
   const { listPurchase } = useSelector((state) => state.purchase);
+
   const columns = useMemo(
     () => [
       {
@@ -346,7 +351,7 @@ const PurchaseList = () => {
             case 'Completed':
               return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 'Cancelled':
-              return <Chip color="secondary" label="Closed" size="small" variant="light" />;
+              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 'Send':
               return <Chip color="info" label="Send" size="small" variant="light" />;
             case 'Processing':
