@@ -327,25 +327,25 @@ const PurchaseList = () => {
       {
         Header: 'Subtotal',
         accessor: 'subtotal',
-        className: 'cell-right',
+        className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
-        Header: 'Descuento',
-        accessor: 'discountOrder',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} prefix="%" displayType="text" />
+        Header: 'Total Descuento',
+        accessor: 'discount',
+        className: 'cell-center',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'IVA',
         accessor: 'tax',
-        className: 'cell-right',
+        className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Total',
         accessor: 'total',
-        className: 'cell-right',
+        className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
