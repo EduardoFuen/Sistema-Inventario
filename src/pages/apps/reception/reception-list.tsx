@@ -1,7 +1,7 @@
 import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+// import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 // import PSPDFKit from "./PSPDFKit";
 
 // material-ui
@@ -23,7 +23,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 // assets
-import { EyeTwoTone, FilePdfOutlined } from '@ant-design/icons';
+import { EyeTwoTone /* , FilePdfOutlined  */ } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -144,7 +144,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 }
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
-
+/* 
 // Create styles
 const styles = StyleSheet.create({
   body: {
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   section: {
     fontSize: 12,
-
+    width: 110,
     margin: 5,
     padding: 5,
     flexGrow: 1
@@ -217,12 +217,15 @@ const MyDocument = ({ data }: any) => {
         <Text style={styles.header} fixed>
           Fecha {data?.create_order} # Order {data?.nc}
         </Text>
+        <Text style={styles.header} fixed>
+          Bodega {data?.warehouse}
+        </Text>
         <Text style={styles.title}>{data?.supplier.businessName}</Text>
         <Text style={styles.author}>NIT: {data?.supplier.nit}</Text>
         <Text style={styles.author}>Email: {data?.supplier.email}</Text>
         <Text style={styles.author}>Teléfono: {data?.supplier.phone}</Text>
 
-        <Text style={styles.subtitle}>Detalles de Compra</Text>
+        <Text style={styles.subtitle}>Detalles de Recepción</Text>
         <View style={styles.row}>
           <View style={styles.section}>
             <Text>Producto</Text>
@@ -261,7 +264,7 @@ const MyDocument = ({ data }: any) => {
     </Document>
   );
 };
-
+ */
 const ReceptionList = () => {
   const theme = useTheme();
   const history = useNavigate();
@@ -350,7 +353,7 @@ const ReceptionList = () => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="purchase.pdf">
+              {/*      <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="reception.pdf">
                 {({ blob, url, loading, error }) =>
                   loading ? (
                     'Loading document...'
@@ -360,7 +363,7 @@ const ReceptionList = () => {
                     </IconButton>
                   )
                 }
-              </PDFDownloadLink>
+              </PDFDownloadLink> */}
 
               <Tooltip title="Ingresar">
                 <IconButton

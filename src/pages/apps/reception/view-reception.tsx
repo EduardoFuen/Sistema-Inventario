@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
-import { Chance } from 'chance';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material-ui
@@ -15,7 +14,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
+import { resetItemsPurchase, confirmationReception } from 'store/reducers/purcharse';
 
 import AddSelectProduct from './addReception';
 import DetailsReception from './detailsProduct';
@@ -58,7 +57,7 @@ function AddReception() {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { listPurchase } = useSelector((state) => state.purchase);
-
+  const { detailsReption } = useSelector((state) => state.purchase);
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
   const reception = useMemo(() => {
@@ -81,13 +80,12 @@ function AddReception() {
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        const chance = new Chance();
-
         const newValue = {
-          nc: chance.zip(),
-          ...values
+          ...reception,
+          ...values,
+          products: detailsReption
         };
-        dispatch(addPurchase(newValue));
+        dispatch(confirmationReception(id, newValue));
         dispatch(
           openSnackbar({
             open: true,

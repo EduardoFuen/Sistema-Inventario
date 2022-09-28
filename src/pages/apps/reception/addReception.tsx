@@ -44,7 +44,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   const { detailsReption } = useSelector((state) => state.purchase);
   const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
 
-  const [inputList, setInputList] = useState([{ qty: '', lot: '', dateExpiration: '' }]);
+  const [inputList, setInputList] = useState([{ qtyrequested: '', lot: '', dateExpiration: '' }]);
   const [value, setValue] = useState<Date | null>();
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
@@ -52,7 +52,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
 
   useEffect(() => {
     let newData = dataNew?.products.map((item: any) => ({
-      qty: '',
+      qtyrequested: '',
       lot: '',
       dateExpiration: '',
       ...item
@@ -70,7 +70,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
 
   // handle click event of the Add button
   const handleAddClick = () => {
-    setInputList([...inputList, { qty: '', lot: '', dateExpiration: '' }]);
+    setInputList([...inputList, { qtyrequested: '', lot: '', dateExpiration: '' }]);
   };
 
   const formik = useFormik({
@@ -113,8 +113,8 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
     const list: any = [...inputList];
     if (e.target) {
       const { name, value } = e.target;
-      if (name === 'qty') {
-        list[index]['qty'] = value;
+      if (name === 'qtyrequested') {
+        list[index]['qtyrequested'] = value;
       }
       if (name === 'lot') {
         list[index]['lot'] = value;
@@ -198,8 +198,8 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                             InputProps={{ inputProps: { min: 0 } }}
                             placeholder="Ingresar Cantidad"
                             fullWidth
-                            name="qty"
-                            value={x.qty}
+                            name="qtyrequested"
+                            value={x.qtyrequested}
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>

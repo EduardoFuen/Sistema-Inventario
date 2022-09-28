@@ -98,6 +98,14 @@ const slice = createSlice({
     },
     addReceptionSuccess(state, action) {
       state.detailsReption = action.payload;
+    },
+    confirmationReceptionSuccess(state, action) {
+      const { nc, data } = action.payload;
+      const index = state.listPurchase.findIndex((item) => item.nc === nc);
+      // let summaryOrder = summary(data?.products, data?.discountOrder);
+      state.listPurchase[index] = data;
+
+      // state.detailsReption = action.payload;
     }
   }
 });
@@ -219,6 +227,16 @@ export function addReception(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.addReceptionSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function confirmationReception(nc: any, data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.confirmationReceptionSuccess({ nc, data }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
