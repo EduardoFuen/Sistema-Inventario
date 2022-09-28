@@ -42,13 +42,25 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const { detailsReption } = useSelector((state) => state.purchase);
-  const [inputList, setInputList] = useState([{}]);
-  /*  const [value, setValue] = useState<Date | null>();
+  const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
 
+  const [inputList, setInputList] = useState([{ qty: '', lot: '', dateExpiration: '' }]);
+  const [value, setValue] = useState<Date | null>();
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
   };
- */
+
+  useEffect(() => {
+    let newData = dataNew?.products.map((item: any) => ({
+      qty: '',
+      lot: '',
+      dateExpiration: '',
+      ...item
+    }));
+    setInputList(newData);
+    window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
+  }, [dataNew, detailsReption]);
+
   // handle click event of the Remove button
   const handleRemoveClick = (index: number) => {
     const list = [...inputList];
@@ -60,7 +72,6 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   const handleAddClick = () => {
     setInputList([...inputList, { qty: '', lot: '', dateExpiration: '' }]);
   };
-  const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
 
   const formik = useFormik({
     initialValues: {
@@ -96,18 +107,6 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   });
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
-
-  const data = dataNew?.products.length > 0 ? dataNew?.products : inputList;
-
-  useEffect(() => {
-    let newData = data.map((item: any) => ({
-      qty: '',
-      lot: '',
-      dateExpiration: '',
-      ...item
-    }));
-    setInputList(newData);
-  }, [data]);
 
   // handle input change
   const handleInputChange = (e: any, index: number) => {
@@ -221,9 +220,10 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                             <DesktopDatePicker
                               label=""
                               inputFormat="MM/dd/yyyy"
-                              value={x.dateExpiration}
+                              value={value || x.dateExpiration}
                               onChange={(value: any) => {
                                 handleInputChange(value, i);
+                                handleChange(value);
                               }}
                               renderInput={(params) => <TextField {...params} />}
                             />
@@ -232,7 +232,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
                         <Grid item xs={2} alignItems="end" alignSelf="center">
                           <Tooltip title="Delete">
                             <IconButton
-                              disabled={inputList.length <= 1}
+                              /*   disabled={inputList?.length <= 1} */
                               color="secondary"
                               onClick={(e: any) => {
                                 e.stopPropagation();

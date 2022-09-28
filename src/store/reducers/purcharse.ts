@@ -77,31 +77,22 @@ const slice = createSlice({
     deletePurchaseSuccess(state, action) {
       const { nc } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      //  state.listPurchase.splice(index, 1);
-      state.listPurchase[index].status = 'Cancelled';
+      state.listPurchase[index] = {
+        ...state.listPurchase[index],
+        nc,
+        status: 'Cancelled'
+      };
     },
     sendPurchaseSuccess(state, action) {
       const { nc, data } = action.payload;
-      const resumen = data?.products.reduce(
-        (acc: any = {}, item: any) => {
-          const itemTotal = item?.subtotal || 0;
-          const tax = parseFloat(item?.tax || 0);
-          acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-          acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-          acc.total = parseFloat((acc.total + item?.total).toFixed(2));
-          return acc;
-        },
-        {
-          subtotal: 0,
-          tax: 0,
-          total: 0
-        }
-      );
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
+      let summaryOrder = summary(data?.products, data?.discountOrder);
+      state.listPurchase[index] = { ...data, ...summaryOrder };
       const NewData = {
-        ...state.listPurchase[index],
         ...data,
-        ...resumen
+        ...state.listPurchase[index],
+        ...summaryOrder,
+        nc
       };
       state.listPurchase[index] = NewData;
     },

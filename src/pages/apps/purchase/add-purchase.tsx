@@ -71,7 +71,6 @@ function AddPurchase() {
             products: detailsPurchase,
             status: 'New'
           };
-          console.log(newValue);
 
           dispatch(addPurchase(newValue));
           dispatch(

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import { addDays, format } from 'date-fns';
 import { Chance } from 'chance';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -28,12 +28,14 @@ const getInitialValues = (recep: FormikValues | null) => {
     dateP: '',
     note: '',
     date: '',
-    create_order: recep?.date,
+    create_order: recep?.create_order,
     discount: recep?.discount,
     supplier: recep?.supplier,
     warehouse: recep?.warehouse,
     nFactura: '',
-    dateFact: ''
+    dateFact: '',
+    dateLeadTimeBog: format(addDays(new Date(), recep?.supplier.leadTimeBog), 'dd-MM-yyyy'),
+    dateLeadTimeBaq: format(addDays(new Date(), recep?.supplier.leadTimeBaq), 'dd-MM-yyyy')
   };
   return newSubstance;
 };
@@ -119,7 +121,7 @@ function AddReception() {
                     Detalles de la compra
                   </Typography>
                   <Grid container spacing={1} direction="row">
-                    <Grid item xs={2}>
+                    <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
@@ -154,7 +156,7 @@ function AddReception() {
                         </FormHelperText>
                       )}
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                       <TextField placeholder="Seleccionar Bodega" fullWidth disabled select {...getFieldProps('warehouse')}>
                         {warehouseList
@@ -166,7 +168,7 @@ function AddReception() {
                           ))}
                       </TextField>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         disabled
@@ -176,7 +178,7 @@ function AddReception() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
@@ -186,10 +188,24 @@ function AddReception() {
                       />
                     </Grid>
                     <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
+                        Fecha Estimada para <br /> Bodega Bogota
+                      </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
+                        {...getFieldProps('dateLeadTimeBog')}
+                        fullWidth
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
+                        Fecha Estimada para <br />
+                        Bodega Barranquilla
+                      </InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('dateLeadTimeBaq')}
                         fullWidth
                         disabled
                       />
@@ -276,7 +292,7 @@ function AddReception() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                <DetailsReception products={reception?.products} handleAdd={handleAdd} />
+                <DetailsReception products={reception?.products} handleAdd={handleAdd} status={reception?.status || ''} />
               </Grid>
               <Grid item xs={12}>
                 {detailsPurchase && detailsPurchase.length > 0 && (
@@ -292,10 +308,11 @@ function AddReception() {
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
-
-                  <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Confirmar/Cerrar Recepción
-                  </Button>
+                  {reception?.status === 'Send' && (
+                    <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
+                      Confirmar/Cerrar Recepción
+                    </Button>
+                  )}
                 </Stack>
               </Grid>
             </Grid>

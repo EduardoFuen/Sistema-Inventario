@@ -38,7 +38,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'nc', desc: false };
+  const sortBy = { id: 'nc', desc: true };
 
   const {
     getTableProps,

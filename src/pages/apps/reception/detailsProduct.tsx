@@ -67,9 +67,10 @@ function ReactTable({ columns, data }: Props) {
 interface PropsProduct {
   products: [];
   handleAdd: () => void;
+  status: string;
 }
 
-const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
+const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
   const theme = useTheme();
 
   const columns = useMemo(
@@ -168,17 +169,19 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="Ingresar">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleAdd();
-                  }}
-                >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                </IconButton>
-              </Tooltip>
+              {status === 'Send' && (
+                <Tooltip title="Ingresar">
+                  <IconButton
+                    color="primary"
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      handleAdd();
+                    }}
+                  >
+                    <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           );
         }

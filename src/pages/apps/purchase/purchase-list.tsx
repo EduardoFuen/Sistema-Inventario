@@ -270,7 +270,8 @@ const MyDocument = ({ data }: any) => {
           </View>
         ))}
         <Text style={styles.summary}>Subtotal: {data?.subtotal}</Text>
-        {data?.tax !== '' && <Text style={styles.summary}>iva: {data?.tax}</Text>}
+        {data?.tax !== '' && <Text style={styles.summary}>IVA: {data?.tax}</Text>}
+        {data?.discount !== '' && <Text style={styles.summary}>Descuento: {data?.discount}</Text>}
         <Text style={styles.summary}>Total: {data?.total}</Text>
       </Page>
     </Document>
@@ -288,7 +289,6 @@ const PurchaseList = () => {
   };
 
   const { listPurchase } = useSelector((state) => state.purchase);
-
   const columns = useMemo(
     () => [
       {
