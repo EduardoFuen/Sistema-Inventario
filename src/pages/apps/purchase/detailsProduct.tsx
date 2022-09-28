@@ -33,6 +33,7 @@ const DetailsPurchase = ({ product }: any) => {
   const { detailsPurchase } = useSelector((state) => state.purchase);
 
   const data = product && product?.length > 0 ? product : detailsPurchase;
+
   useEffect(() => {
     let newData = data.map((item: any) => ({
       qty: '',
@@ -119,6 +120,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar Cantidad"
                     fullWidth
                     name="qty"
+                    value={x.qty}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -130,6 +132,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar Precio Base"
                     fullWidth
                     name="price"
+                    value={x.price}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -141,6 +144,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar IVA"
                     fullWidth
                     name="tax"
+                    value={x.tax}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -152,6 +156,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar Descuento Negociado"
                     fullWidth
                     name="Negotiateddiscount"
+                    value={x.Negotiateddiscount}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -163,6 +168,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar Descuento Adicional"
                     fullWidth
                     name="Additionaldiscount"
+                    value={x.Additionaldiscount}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -173,6 +179,7 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Bonificación"
                     fullWidth
+                    value={x.bonus}
                     name="bonus"
                     onChange={(e) => handleInputChange(e, i)}
                   />

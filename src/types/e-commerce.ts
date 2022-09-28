@@ -264,7 +264,7 @@ export type purchase = {
   dateP?: string;
   note?: string;
   warehouses?: string;
-  discount?: string;
+  discountOrder?: number;
   subtotal: number;
   iva: number;
   total: number;

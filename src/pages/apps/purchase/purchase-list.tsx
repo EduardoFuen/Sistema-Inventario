@@ -216,7 +216,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     margin: 5,
     padding: 5,
-    flexGrow: 1
+    flexGrow: 1,
+    width: 110
   }
 });
 // Create Document Component
@@ -327,19 +328,25 @@ const PurchaseList = () => {
         Header: 'Subtotal',
         accessor: 'subtotal',
         className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
+      },
+      {
+        Header: 'Descuento',
+        accessor: 'discountOrder',
+        className: 'cell-right',
+        Cell: ({ value }: any) => <NumberFormat value={value} prefix="%" displayType="text" />
       },
       {
         Header: 'IVA',
         accessor: 'tax',
         className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Total',
         accessor: 'total',
         className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Estado',
@@ -370,7 +377,7 @@ const PurchaseList = () => {
               <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="purchase.pdf">
                 {({ blob, url, loading, error }) =>
                   loading ? (
-                    'Loading document...'
+                    '...'
                   ) : (
                     <IconButton color="primary">
                       <FilePdfOutlined twoToneColor={theme.palette.primary.main} />

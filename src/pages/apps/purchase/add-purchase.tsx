@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
-// project import
 import summary from 'utils/calculation';
 
 import AddSelectProduct from './selectProducts';
@@ -26,7 +25,7 @@ import DetailsPurchase from './detailsProduct';
 const getInitialValues = () => {
   const newSubstance = {
     note: '',
-    discount: '',
+    discountOrder: '',
     supplier: '',
     warehouse: '',
     paymentdiscount: ''
@@ -65,14 +64,15 @@ function AddPurchase() {
       try {
         if (detailsPurchase.length > 0) {
           const chance = new Chance();
-
           const newValue = {
+            ...values,
             nc: chance.zip(),
             create_order: format(new Date(), 'dd-MM-yyyy'),
             products: detailsPurchase,
-            status: 'New',
-            ...values
+            status: 'New'
           };
+          console.log(newValue);
+
           dispatch(addPurchase(newValue));
           dispatch(
             openSnackbar({
@@ -96,7 +96,8 @@ function AddPurchase() {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
-  const data = useMemo(() => summary(detailsPurchase, discount), [detailsPurchase, discount]);
+  const data = useMemo(() => summary(detailsPurchase, discount || 0), [detailsPurchase, discount]);
+
   return (
     <>
       <MainCard>
@@ -165,12 +166,12 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('discount')}
+                        {...getFieldProps('discountOrder')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
                         onChange={(e) => {
                           setDiscount(e.target.value);
-                          setFieldValue('discount', e.target.value);
+                          setFieldValue('discountOrder', e.target.value);
                         }}
                       />
                     </Grid>
@@ -243,12 +244,16 @@ function AddPurchase() {
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
                       <Typography variant="subtitle1">Subtotal: $ {data.subtotal || 0}</Typography>
                     </Stack>
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">IVA: $ {data.tax || 0}</Typography>
-                    </Stack>
+                    {data.discount !== 0 && (
+                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                        <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
+                      </Stack>
+                    )}
+                    {data.tax !== 0 && (
+                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                        <Typography variant="subtitle1">IVA: $ {data.tax || 0}</Typography>
+                      </Stack>
+                    )}
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
                       <Typography variant="subtitle1">Total: $ {data.total || 0}</Typography>
                     </Stack>

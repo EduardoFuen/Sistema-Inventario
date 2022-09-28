@@ -25,9 +25,10 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase } from 'store/reducers/purcharse';
+import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase } from 'store/reducers/purcharse';
 import { SendOutlined } from '@ant-design/icons';
 import DetailsPurchase from './detailsProduct';
+import summary from 'utils/calculation';
 
 import AddSelectProduct from './selectProducts';
 
@@ -37,7 +38,7 @@ const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     note: order?.note,
     create_order: order?.create_order,
-    discount: order?.discount,
+    discountOrder: order?.discountOrder,
     supplier: order?.supplier,
     warehouse: order?.warehouse,
     paymentdiscount: order?.paymentdiscount,
@@ -53,6 +54,7 @@ function ViewPurchase() {
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
   const [send, setSend] = useState<boolean>(false);
+  const [data, setData] = useState<any>();
   const { id } = useParams();
   const handleAdd = () => {
     setAdd(!add);
@@ -79,27 +81,6 @@ function ViewPurchase() {
     dispatch(editItemsPurchase(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const resumen = orderPurchase?.products.reduce(
-    (acc: any = {}, item: any) => {
-      if (item?.subtotal && item?.total) {
-        const itemTotal = item?.subtotal || 0;
-        const tax = parseFloat(item?.tax || 0);
-        acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-        acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-        acc.total = parseFloat((acc.total + item?.total || 0).toFixed(2));
-        return acc;
-      }
-      return acc;
-    },
-    {
-      subtotal: 0,
-      tax: 0,
-      discount: 0,
-      total: 0
-    }
-  );
-
   const formik = useFormik({
     initialValues: getInitialValues(orderPurchase!),
     onSubmit: (values, { setSubmitting }) => {
@@ -107,15 +88,15 @@ function ViewPurchase() {
         if (send) {
           const newValue = {
             dateR: format(new Date(), 'dd-MM-yyyy'),
-            products: orderPurchase?.products,
             ...values,
-            status: 'Send'
+            status: 'Send',
+            products: orderPurchase?.products
           };
           dispatch(sendPurchase(id, newValue));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Orden Creada successfully.',
+              message: 'Orden Enviada successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -125,14 +106,15 @@ function ViewPurchase() {
           );
         } else {
           const newValue = {
-            products: orderPurchase?.products,
-            ...values
+            ...values,
+            ...orderPurchase,
+            products: detailsPurchase
           };
-          dispatch(addPurchase(newValue));
+          dispatch(editPurchase(id, newValue));
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Orden Creada successfully.',
+              message: 'Orden Actualizada successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -148,6 +130,10 @@ function ViewPurchase() {
       }
     }
   });
+  useEffect(() => {
+    const items = summary(detailsPurchase, orderPurchase?.discountOrder || 0);
+    setData(items);
+  }, [detailsPurchase, orderPurchase]);
 
   const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
@@ -209,7 +195,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('discount')}
+                        {...getFieldProps('discountOrder')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
                         disabled
@@ -348,18 +334,20 @@ function ViewPurchase() {
                 {orderPurchase?.products && orderPurchase?.products.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {resumen.subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data?.subtotal || 0}</Typography>
                     </Stack>
+                    {data?.discount !== 0 && (
+                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                        <Typography variant="subtitle1">Descuento: $ {data?.discount || 0}</Typography>
+                      </Stack>
+                    )}
+                    {data?.tax !== 0 && (
+                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                        <Typography variant="subtitle1">IVA: $ {data?.tax || 0}</Typography>
+                      </Stack>
+                    )}
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">
-                        Descuento: $ {resumen.subtotal - (resumen.subtotal * ((100 - Number(orderPurchase?.discount || 0)) / 100) || 0)}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">IVA: $ {resumen.tax || 0}</Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {resumen.total || 0}</Typography>
+                      <Typography variant="subtitle1">Total: $ {data?.total || 0}</Typography>
                     </Stack>
                   </MainCard>
                 )}

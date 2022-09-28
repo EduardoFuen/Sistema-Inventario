@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // project imports
 // import axios from 'utils/axios';
 import { dispatch } from '../index';
+import summary from 'utils/calculation';
 
 // types
 import { PurchaseStateProps } from 'types/e-commerce';
@@ -39,6 +40,7 @@ const slice = createSlice({
       const { name } = action.payload;
       const index = state.detailsPurchase.findIndex((item) => item.name === name);
       state.detailsPurchase.splice(index, 1);
+
       const product = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
       const idx = product?.findIndex((item: any) => item.name === name);
       product.splice(idx, 1);
@@ -57,25 +59,10 @@ const slice = createSlice({
       state.detailsPurchase = action.payload;
     },
     addPurchaseSuccess(state, action) {
-      const resumen = action.payload?.products.reduce(
-        (acc: any = {}, item: any) => {
-          const itemTotal = item?.subtotal || 0;
-          const tax = parseFloat(item?.tax || 0);
-          acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-          acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-          acc.total = parseFloat((acc.total + item?.total).toFixed(2));
-          return acc;
-        },
-        {
-          subtotal: 0,
-          tax: 0,
-          total: 0
-        }
-      );
-
+      let summaryOrder = summary(action.payload?.products, action.payload?.discountOrder);
       const data = {
         ...action.payload,
-        ...resumen
+        ...summaryOrder
       };
       state.detailsPurchase = [];
       state.listPurchase.push(data);
@@ -84,7 +71,8 @@ const slice = createSlice({
     updatePurchaseSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === name);
-      state.listPurchase[index] = data;
+      let summaryOrder = summary(data?.products, data?.discountOrder);
+      state.listPurchase[index] = { ...data, ...summaryOrder };
     },
     deletePurchaseSuccess(state, action) {
       const { nc } = action.payload;
@@ -184,7 +172,7 @@ export function addPurchase(data: any) {
   };
 }
 
-export function editPurchase(name: string, data: any) {
+export function editPurchase(name: string | undefined, data: any) {
   return async () => {
     try {
       dispatch(
