@@ -15,6 +15,8 @@ import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
+// project import
+import summary from 'utils/calculation';
 
 import AddSelectProduct from './selectProducts';
 import DetailsPurchase from './detailsProduct';
@@ -94,26 +96,7 @@ function AddPurchase() {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
-  const resumen = detailsPurchase.reduce(
-    (acc: any = {}, item: any) => {
-      if (item?.subtotal && item?.total) {
-        const itemTotal = item?.subtotal || 0;
-        const tax = (item?.price * item?.qty * item?.tax) / 100 || 0;
-        acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
-        acc.tax = parseFloat((acc.tax + tax).toFixed(2));
-        acc.total = parseFloat((acc.total + item?.total * ((100 - discount) / 100) || 0).toFixed(2));
-        return acc;
-      }
-      return acc;
-    },
-    {
-      subtotal: 0,
-      tax: 0,
-      discount: 0,
-      total: 0
-    }
-  );
-
+  const data = useMemo(() => summary(detailsPurchase, discount), [detailsPurchase, discount]);
   return (
     <>
       <MainCard>
@@ -258,18 +241,16 @@ function AddPurchase() {
                 {detailsPurchase && detailsPurchase.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {resumen.subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data.subtotal || 0}</Typography>
                     </Stack>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">
-                        Descuento: $ {resumen.subtotal - (resumen.subtotal * ((100 - discount) / 100) || 0)}
-                      </Typography>
+                      <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
                     </Stack>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">IVA: $ {resumen.tax || 0}</Typography>
+                      <Typography variant="subtitle1">IVA: $ {data.tax || 0}</Typography>
                     </Stack>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {resumen.total || 0}</Typography>
+                      <Typography variant="subtitle1">Total: $ {data.total || 0}</Typography>
                     </Stack>
                   </MainCard>
                 )}
