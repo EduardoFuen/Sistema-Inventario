@@ -275,6 +275,7 @@ export type purchase = {
   products: any;
   reception: any;
   detailsReption: any;
+  orderStatus: string;
 };
 
 export interface PurchaseStateProps {

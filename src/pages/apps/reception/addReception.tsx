@@ -55,24 +55,20 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
   };
 
   useEffect(() => {
-    console.log(reception?.detailsReption);
-    if (reception && reception?.detailsReption && reception?.detailsReption.length > 0) {
-      const index = listPurchase.findIndex((item) => item.nc === reception.nc);
-      if (listPurchase[index]) {
-        let data = listPurchase[index].detailsReption
-          .filter((item: any) => item.name === product.name)
-          .map((item: any) => ({
-            qtyrequested: '',
-            lot: '',
-            dateExpiration: '',
-            ...item
-          }));
-        if (data.length > 0) {
-          setInputList(data);
-        }
+    const index = listPurchase.findIndex((item) => item.nc === reception.nc);
+    if (listPurchase[index] && listPurchase[index].detailsReption && listPurchase[index].detailsReption.length > 0) {
+      let data = listPurchase[index].detailsReption
+        .filter((e: any) => e !== undefined && e !== null && e !== '' && e.name === product?.name)
+        .map((item: any) => ({
+          qtyrequested: '',
+          lot: '',
+          dateExpiration: '',
+          ...item
+        }));
+      if (data.length > 0) {
+        setInputList(data);
+        window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data));
       }
-
-      /*   //  window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data)); */
     }
   }, [reception, product, listPurchase]);
 
@@ -101,8 +97,6 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
           ...reception,
           detailsReption: inputList
         };
-        console.log(newValue);
-
         dispatch(addReception(newValue));
         dispatch(
           openSnackbar({

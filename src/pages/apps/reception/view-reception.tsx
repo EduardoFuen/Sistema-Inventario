@@ -58,7 +58,6 @@ function AddReception() {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { listPurchase } = useSelector((state) => state.purchase);
-  const { detailsReption } = useSelector((state) => state.purchase);
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
   const reception = useMemo(() => {
@@ -83,8 +82,7 @@ function AddReception() {
       try {
         const newValue = {
           ...reception,
-          ...values,
-          products: detailsReption
+          ...values
         };
         dispatch(confirmationReception(id, newValue));
         dispatch(

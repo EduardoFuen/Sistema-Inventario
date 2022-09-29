@@ -329,9 +329,11 @@ const ReceptionList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'status',
-        Cell: ({ value }: any) => {
-          switch (value) {
+        accessor: 'orderStatus',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          let status = original.orderStatus ? original.orderStatus : original.status;
+          switch (status) {
             case 'Partial':
               return <Chip color="warning" label="Partial" size="small" variant="light" />;
             case 'Completed':

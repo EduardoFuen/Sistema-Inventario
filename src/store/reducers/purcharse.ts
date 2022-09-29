@@ -98,18 +98,36 @@ const slice = createSlice({
     },
     addReceptionSuccess(state, action) {
       const index = state.listPurchase.findIndex((item) => item.nc === action.payload.nc);
+      let data = action.payload.detailsReption.concat(state.listPurchase[index].detailsReption);
+      data = data.filter((item: any, index: number) => {
+        return data.indexOf(item) === index;
+      });
+      const uniqueIds: any = [];
+
+      const unique = data.filter((element: any) => {
+        const isDuplicate = uniqueIds.includes(element?.lot);
+
+        if (!isDuplicate) {
+          uniqueIds.push(element?.lot);
+
+          return true;
+        }
+
+        return false;
+      });
+
       state.listPurchase[index] = {
         ...action.payload,
-        detailsReption: [...state.listPurchase[index].detailsReption, ...action.payload.detailsReption]
+        detailsReption: unique
       };
 
-      state.detailsReption = action.payload.products;
+      state.detailsReption = data;
     },
     confirmationReceptionSuccess(state, action) {
       const { nc, data } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
       // let summaryOrder = summary(data?.products, data?.discountOrder);
-      state.listPurchase[index] = data;
+      state.listPurchase[index] = { ...data, orderStatus: 'Partial' };
       // state.detailsReption = action.payload;
     }
   }
