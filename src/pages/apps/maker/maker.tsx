@@ -16,7 +16,6 @@ import Export from 'components/ExportToFile';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
-
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -78,7 +77,6 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
     usePagination,
     useRowSelect
   );
-
   return (
     <>
       <TableRowSelection selected={Object.keys(selectedRowIds).length} />

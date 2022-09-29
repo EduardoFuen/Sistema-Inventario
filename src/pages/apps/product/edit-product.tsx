@@ -74,9 +74,9 @@ function UpdateProduct() {
   const SubstSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Nombre es requerido'),
     sku: Yup.string().max(255).required('sku es requerido'),
-    ean: Yup.string().max(255).required('ean es requerido'),
+    ean: Yup.string().max(255).required('ean es requerido') /* ,
     type_product: Yup.string().max(255).required('Tipo de Producto es requerido'),
-    pack: Yup.string().max(255).required('Envase es requerido')
+    pack: Yup.string().max(255).required('Envase es requerido') */
   });
   const formik = useFormik({
     initialValues: {

@@ -243,9 +243,14 @@ function AddPurchase() {
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
                       <Typography variant="subtitle1">Subtotal: $ {data.subtotal || 0}</Typography>
                     </Stack>
-                    {data.discount !== 0 && (
+                    {data.discount !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
                         <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
+                      </Stack>
+                    )}
+                    {data.subtotalDiscount !== 0 && (
+                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.subtotalDiscount || 0}</Typography>
                       </Stack>
                     )}
                     {data.tax !== 0 && (

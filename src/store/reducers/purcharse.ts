@@ -104,7 +104,6 @@ const slice = createSlice({
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
       // let summaryOrder = summary(data?.products, data?.discountOrder);
       state.listPurchase[index] = data;
-
       // state.detailsReption = action.payload;
     }
   }

@@ -51,15 +51,17 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
   };
 
   useEffect(() => {
-    let newData = dataNew?.products.map((item: any) => ({
-      qtyrequested: '',
-      lot: '',
-      dateExpiration: '',
-      ...item
-    }));
-    setInputList(newData);
-    window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
-  }, [dataNew, detailsReption]);
+    if (dataNew && dataNew?.products && dataNew?.products.length > 0) {
+      let data = dataNew?.products.map((item: any) => ({
+        qtyrequested: '',
+        lot: '',
+        dateExpiration: '',
+        ...item
+      }));
+      setInputList(data);
+      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data));
+    }
+  }, [dataNew]);
 
   // handle click event of the Remove button
   const handleRemoveClick = (index: number) => {
