@@ -16,6 +16,9 @@ export type Products = {
   salePrice?: number;
   price?: number;
   gender?: string;
+  lot?: string;
+  dateExpiration?: string;
+  qtyrequested?: number;
   categories?: string[];
   colors?: string[];
   maker?: number;
@@ -271,6 +274,7 @@ export type purchase = {
   status: string;
   products: any;
   reception: any;
+  detailsReption: any;
 };
 
 export interface PurchaseStateProps {

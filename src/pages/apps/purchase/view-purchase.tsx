@@ -331,10 +331,10 @@ function ViewPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {orderPurchase?.products && orderPurchase?.products.length > 0 && (
+                {data && orderPurchase?.products && orderPurchase?.products.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data.subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data?.subtotal || 0}</Typography>
                     </Stack>
                     {data.discount !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>

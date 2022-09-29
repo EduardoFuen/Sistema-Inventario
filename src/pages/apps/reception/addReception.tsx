@@ -28,7 +28,7 @@ import ScrollX from 'components/ScrollX';
 import { useDispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addReception } from 'store/reducers/purcharse';
-
+import { Products } from 'types/e-commerce';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
@@ -36,32 +36,44 @@ import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
 export interface PropsSelect {
   onCancel: () => void;
+  reception: any;
+  product: Products;
 }
 
-const AddReceptionLot = ({ onCancel }: PropsSelect) => {
+const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
+
   const { detailsReption } = useSelector((state) => state.purchase);
+  const { listPurchase } = useSelector((state) => state.purchase);
   const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
 
-  const [inputList, setInputList] = useState([{ qtyrequested: '', lot: '', dateExpiration: '' }]);
+  const [inputList, setInputList] = useState([{ qtyrequested: '', lot: '', dateExpiration: '', ...product }]);
   const [value, setValue] = useState<Date | null>();
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    if (dataNew && dataNew?.products && dataNew?.products.length > 0) {
-      let data = dataNew?.products.map((item: any) => ({
-        qtyrequested: '',
-        lot: '',
-        dateExpiration: '',
-        ...item
-      }));
-      setInputList(data);
-      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data));
+    if (reception && reception?.detailsReption && reception?.detailsReption.length > 0) {
+      const index = listPurchase.findIndex((item) => item.nc === reception.nc);
+      if (listPurchase[index]) {
+        let data = listPurchase[index].detailsReption
+          .filter((item: any) => item.name === product.name)
+          .map((item: any) => ({
+            qtyrequested: '',
+            lot: '',
+            dateExpiration: '',
+            ...item
+          }));
+        if (data.length > 0) {
+          setInputList(data);
+        }
+      }
+
+      /*   //  window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data)); */
     }
-  }, [dataNew]);
+  }, [reception, product, listPurchase]);
 
   // handle click event of the Remove button
   const handleRemoveClick = (index: number) => {
@@ -72,7 +84,7 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
 
   // handle click event of the Add button
   const handleAddClick = () => {
-    setInputList([...inputList, { qtyrequested: '', lot: '', dateExpiration: '' }]);
+    setInputList([...inputList, { qtyrequested: '', lot: '', dateExpiration: '', ...product }]);
   };
 
   const formik = useFormik({
@@ -84,14 +96,17 @@ const AddReceptionLot = ({ onCancel }: PropsSelect) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newValue = {
-          products: inputList,
-          ...values
+          ...values,
+          ...reception,
+          detailsReption: inputList
         };
+        console.log(newValue);
+
         dispatch(addReception(newValue));
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Orden Creada successfully.',
+            message: 'Recepción confirmada',
             variant: 'alert',
             alert: {
               color: 'success'

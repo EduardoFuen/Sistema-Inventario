@@ -66,7 +66,7 @@ function ReactTable({ columns, data }: Props) {
 
 interface PropsProduct {
   products: [];
-  handleAdd: () => void;
+  handleAdd: (item: any) => void;
   status: string;
 }
 
@@ -175,7 +175,7 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
                     color="primary"
                     onClick={(e: any) => {
                       e.stopPropagation();
-                      handleAdd();
+                      handleAdd(row.values);
                     }}
                   >
                     <EditTwoTone twoToneColor={theme.palette.primary.main} />

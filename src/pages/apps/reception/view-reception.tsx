@@ -16,7 +16,7 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { resetItemsPurchase, confirmationReception } from 'store/reducers/purcharse';
 
-import AddSelectProduct from './addReception';
+import AddReceptionModal from './addReception';
 import DetailsReception from './detailsProduct';
 
 // ==============================|| ADD VIEW RECEPTION - MAIN ||============================== //
@@ -44,6 +44,7 @@ function AddReception() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
+  const [product, setProduct] = useState<any>();
   const [value, setValue] = useState<Date | null>();
 
   const handleChange = (newValue: Date | null) => {
@@ -290,7 +291,14 @@ function AddReception() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                <DetailsReception products={reception?.products} handleAdd={handleAdd} status={reception?.status || ''} />
+                <DetailsReception
+                  products={reception?.products}
+                  handleAdd={(item: any) => {
+                    setProduct(item);
+                    handleAdd();
+                  }}
+                  status={reception?.status || ''}
+                />
               </Grid>
               <Grid item xs={12}>
                 {detailsPurchase && detailsPurchase.length > 0 && (
@@ -317,9 +325,9 @@ function AddReception() {
           </Form>
         </FormikProvider>
       </MainCard>
-      {/* add user dialog */}
+      {/* add lot dialog */}
       <Dialog maxWidth="md" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddSelectProduct onCancel={handleAdd} />}
+        {add && <AddReceptionModal onCancel={handleAdd} reception={reception} product={product} />}
       </Dialog>
     </>
   );
