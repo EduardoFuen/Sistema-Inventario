@@ -55,6 +55,7 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
   };
 
   useEffect(() => {
+    console.log(reception?.detailsReption);
     if (reception && reception?.detailsReption && reception?.detailsReption.length > 0) {
       const index = listPurchase.findIndex((item) => item.nc === reception.nc);
       if (listPurchase[index]) {

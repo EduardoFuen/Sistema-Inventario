@@ -99,8 +99,10 @@ const slice = createSlice({
     addReceptionSuccess(state, action) {
       const index = state.listPurchase.findIndex((item) => item.nc === action.payload.nc);
       state.listPurchase[index] = {
-        ...action.payload
+        ...action.payload,
+        detailsReption: [...state.listPurchase[index].detailsReption, ...action.payload.detailsReption]
       };
+
       state.detailsReption = action.payload.products;
     },
     confirmationReceptionSuccess(state, action) {
