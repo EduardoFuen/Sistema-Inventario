@@ -1,7 +1,7 @@
 // material-ui
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Button, Stack } from '@mui/material';
-
+// import * as XLSX from 'xlsx';
 // third-party
 import { useDropzone } from 'react-dropzone';
 
@@ -27,12 +27,7 @@ const DropzoneWrapper = styled('div')(({ theme }) => ({
 // ==============================|| UPLOAD - SINGLE FILE ||============================== //
 
 const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadProps) => {
-  const theme = useTheme();
-
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
-    accept: {
-      'image/*': []
-    },
     multiple: false,
     onDrop: (acceptedFiles: CustomFile[]) => {
       setFieldValue(
@@ -45,28 +40,6 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
       );
     }
   });
-
-  const thumbs =
-    file &&
-    file.map((item: CustomFile) => (
-      <img
-        key={item.name}
-        alt={item.name}
-        src={item.preview}
-        style={{
-          top: 8,
-          left: 8,
-          borderRadius: 2,
-          position: 'absolute',
-          width: 'calc(100% - 16px)',
-          height: 'calc(100% - 16px)',
-          background: theme.palette.background.paper
-        }}
-        onLoad={() => {
-          URL.revokeObjectURL(item.preview!);
-        }}
-      />
-    ));
 
   const onRemove = () => {
     setFieldValue('files', null);
@@ -90,7 +63,6 @@ const SingleFileUpload = ({ error, file, setFieldValue, sx, ...other }: UploadPr
       >
         <input {...getInputProps()} />
         <PlaceholderContent />
-        {thumbs}
       </DropzoneWrapper>
 
       {fileRejections.length > 0 && <RejectionFiles fileRejections={fileRejections} />}

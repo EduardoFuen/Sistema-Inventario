@@ -1,14 +1,28 @@
 import { useEffect, useMemo, useState, Fragment } from 'react';
-
+/* import { ReactSpreadsheetImport } from 'react-spreadsheet-import'; */
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
+import {
+  Button,
+  Chip,
+  Dialog,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  useMediaQuery
+  // TextField
+} from '@mui/material';
 
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
 import AddMaker from 'sections/apps/products/maker/AddMaker';
+import ImportMarker from 'sections/apps/products/maker/ImportMarker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -22,7 +36,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { getMakerList, deleteMaker } from 'store/reducers/maker';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -31,9 +45,10 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -95,6 +110,9 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
             size="small"
           />
           <Export excelData={data} fileName="Makers" />
+          <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+            Importar
+          </Button>
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
@@ -154,10 +172,15 @@ const MakersList = () => {
 
   const [maker, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
+  const [addImport, setaddImport] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
     if (maker && !add) setWarehouse(null);
+  };
+
+  const handleImport = () => {
+    setaddImport(!addImport);
   };
   const { makerList } = useSelector((state) => state.maker);
 
@@ -243,13 +266,19 @@ const MakersList = () => {
           columns={columns}
           data={makerList as []}
           handleAdd={handleAdd}
+          handleImport={handleImport}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>
-
+      {/* <TextField id="outlined-uncontrolled" label="Uncontrolled" defaultValue="foo" type="file" />
+       */}
       {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddMaker maker={maker} onCancel={handleAdd} />}
+      </Dialog>
+      {/* add import dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <ImportMarker onCancel={handleImport} />}
       </Dialog>
     </MainCard>
   );
