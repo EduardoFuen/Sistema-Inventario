@@ -33,7 +33,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
-const productImage = require.context('assets/images/e-commerce', true);
+// const productImage = require.context('assets/images/e-commerce', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -202,13 +202,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
           const { values } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar
-                variant="rounded"
-                alt={values.name}
-                color="secondary"
-                size="sm"
-                src={productImage(`./thumbs/${!values.image ? 'prod-11.png' : values.image}`).default}
-              />
+              <Avatar variant="rounded" alt={values.name} color="secondary" size="sm" src="" />
               <Stack spacing={0}>
                 <Typography variant="subtitle1">{values.name}</Typography>
                 <Typography variant="caption" color="textSecondary">

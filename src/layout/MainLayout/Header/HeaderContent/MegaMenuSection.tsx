@@ -28,8 +28,6 @@ import { drawerWidth } from 'config';
 
 // assets
 import { ArrowRightOutlined } from '@ant-design/icons';
-import backgroundVector from 'assets/images/mega-menu/back.svg';
-import imageChart from 'assets/images/mega-menu/chart.svg';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // ==============================|| HEADER CONTENT - MEGA MENU SECTION ||============================== //
@@ -87,9 +85,11 @@ const MegaMenuSection = () => {
                     <Grid
                       item
                       md={4}
-                      sx={{
-                        background: `url(${backgroundVector}), linear-gradient(183.77deg, ${theme.palette.primary.main} 11.46%, ${theme.palette.primary[700]} 100.33%)`
-                      }}
+                      sx={
+                        {
+                          //  background: `url(${backgroundVector}), linear-gradient(183.77deg, ${theme.palette.primary.main} 11.46%, ${theme.palette.primary[700]} 100.33%)`
+                        }
+                      }
                     >
                       <Box sx={{ p: 4.5, pb: 3 }}>
                         <Stack sx={{ color: 'background.paper' }}>
@@ -117,7 +117,7 @@ const MegaMenuSection = () => {
                                 View All
                               </Button>
                             </AnimateButton>
-                            <CardMedia component="img" src={imageChart} alt="Chart" sx={{ mr: -2.5, mb: -2.5, width: 124 }} />
+                            <CardMedia component="img" src="" alt="Chart" sx={{ mr: -2.5, mb: -2.5, width: 124 }} />
                           </Stack>
                         </Stack>
                       </Box>

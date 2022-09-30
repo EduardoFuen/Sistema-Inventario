@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
-import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
+// import UploadSingleFile from 'components/third-party/dropzone/SingleFile';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -137,7 +137,7 @@ const ImportMarker = ({ maker, onCancel }: Props) => {
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
                           <Stack spacing={1.5} alignItems="center">
-                            <UploadSingleFile setFieldValue={setFieldValue} file={values.files} error={touched.files && !!errors.files} />
+                            {/*  <UploadSingleFile setFieldValue={setFieldValue} file={values.files} error={touched.files && !!errors.files} /> */}
                             {touched.files && errors.files && (
                               <FormHelperText error id="standard-weight-helper-text-password-login">
                                 {errors.files}

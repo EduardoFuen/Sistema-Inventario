@@ -9,7 +9,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import ProductView from './ProductView';
-import Avatar from 'components/@extended/Avatar';
+/* import Avatar from 'components/@extended/Avatar'; */
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -23,8 +23,6 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-
-const productImage = require.context('assets/images/e-commerce', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -229,13 +227,13 @@ const ProductList = () => {
           const { values } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar
+              {/*   <Avatar
                 variant="rounded"
                 alt={values.name}
                 color="secondary"
                 size="sm"
                 src={productImage(`./thumbs/${!values.image ? 'prod-11.png' : values.image}`).default}
-              />
+              /> */}
               <Stack spacing={0}>
                 <Typography variant="subtitle1">{values.name}</Typography>
                 <Typography variant="caption" color="textSecondary">
