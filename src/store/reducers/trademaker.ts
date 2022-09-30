@@ -28,7 +28,9 @@ const slice = createSlice({
     getTrademarkSuccess(state, action) {
       state.tradeMarkList = action.payload;
     },
-
+    ExcelSuccess(state, action) {
+      state.tradeMarkList = [...state.tradeMarkList, ...action.payload];
+    },
     // ADD PACK
     addTrademarkSuccess(state, action) {
       state.tradeMarkList.push(action.payload);
@@ -61,6 +63,15 @@ export function addTrademark(data: any) {
   };
 }
 
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editTrademark(name: string, data: any) {
   return async () => {
     try {

@@ -12,6 +12,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
 import AddPackList from 'sections/apps/products/pack-list/AddPackList';
+import Import from 'sections/apps/products/pack-list/ImportPackList';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
@@ -21,7 +22,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { getPackList, deletePack } from 'store/reducers/pack';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -30,9 +31,10 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
@@ -88,6 +90,9 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
               size="small"
             />
             <Export excelData={data} fileName="Envases" />
+            <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+              Importar
+            </Button>
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
@@ -147,7 +152,11 @@ const PackList = () => {
   const dispatch = useDispatch();
   const [pack, setPack] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
+  const [addImport, setActiveImport] = useState<boolean>(false);
 
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
   const handleAdd = () => {
     setAdd(!add);
     if (pack && !add) setPack(null);
@@ -236,6 +245,7 @@ const PackList = () => {
         <ReactTable
           columns={columnsProducts}
           handleAdd={handleAdd}
+          handleImport={handleImport}
           data={packList as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
@@ -243,6 +253,10 @@ const PackList = () => {
       {/* add pack dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddPackList pack={pack} onCancel={handleAdd} />}
+      </Dialog>
+      {/* add import dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
       </Dialog>
     </MainCard>
   );

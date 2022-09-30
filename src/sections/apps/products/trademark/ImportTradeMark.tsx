@@ -6,7 +6,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addMakerExcel } from 'store/reducers/maker';
+import { addExcel } from 'store/reducers/trademaker';
+
 import ImportToFile from 'components/ImportToFile';
 
 // ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
@@ -15,7 +16,7 @@ export interface Props {
   onCancel: () => void;
 }
 
-const ImportPack = ({ onCancel }: Props) => {
+const ImportTradeMark = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
@@ -23,13 +24,14 @@ const ImportPack = ({ onCancel }: Props) => {
     try {
       const newData = data.map((item: any) => ({
         name: item?.name,
+        maker: item?.maker,
         status: item?.status
       }));
-      dispatch(addMakerExcel(newData));
+      dispatch(addExcel(newData));
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Maker add successfully.',
+          message: 'TradeMark add successfully.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -74,4 +76,4 @@ const ImportPack = ({ onCancel }: Props) => {
   );
 };
 
-export default ImportPack;
+export default ImportTradeMark;

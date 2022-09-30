@@ -28,7 +28,9 @@ const slice = createSlice({
     getWarehouseSuccess(state, action) {
       state.warehouseList = action.payload;
     },
-
+    ExcelSuccess(state, action) {
+      state.warehouseList = [...state.warehouseList, ...action.payload];
+    },
     // ADD PACK
     addWarehouseSuccess(state, action) {
       state.warehouseList.push(action.payload);
@@ -60,7 +62,15 @@ export function addWarehouse(data: any) {
     }
   };
 }
-
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editWarehouse(name: string, data: any) {
   return async () => {
     try {

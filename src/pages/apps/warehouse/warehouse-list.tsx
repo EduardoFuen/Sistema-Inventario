@@ -9,6 +9,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import AddWarehouse from 'sections/apps/products/warehouse/AddWarehouse';
+import Import from 'sections/apps/products/warehouse/ImportWarehouse';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -23,7 +24,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -32,9 +33,10 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -97,6 +99,9 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
             size="small"
           />
           <Export excelData={data} fileName="Bodegas" />
+          <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+            Importar
+          </Button>
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
@@ -156,6 +161,11 @@ const WarehouseList = () => {
 
   const [warehouse, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
+  const [addImport, setActiveImport] = useState<boolean>(false);
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
 
   const handleAdd = () => {
     setAdd(!add);
@@ -253,6 +263,7 @@ const WarehouseList = () => {
       <ScrollX>
         <ReactTable
           columns={columns}
+          handleImport={handleImport}
           data={warehouseList as []}
           handleAdd={handleAdd}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
@@ -262,6 +273,10 @@ const WarehouseList = () => {
       {/* add user dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddWarehouse warehouse={warehouse} onCancel={handleAdd} />}
+      </Dialog>
+      {/* add import dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
       </Dialog>
     </MainCard>
   );

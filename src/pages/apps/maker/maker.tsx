@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, Fragment } from 'react';
-/* import { ReactSpreadsheetImport } from 'react-spreadsheet-import'; */
+
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 import {
@@ -53,7 +53,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'name', desc: true };
 
   const {
     getTableProps,
@@ -164,7 +164,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: 
   );
 }
 
-// ==============================|| PROFILE - USER LIST ||============================== //
+// ==============================|| MAKER - MAKER LIST ||============================== //
 
 const MakersList = () => {
   const theme = useTheme();
@@ -172,7 +172,7 @@ const MakersList = () => {
 
   const [maker, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
-  const [addImport, setaddImport] = useState<boolean>(false);
+  const [addImport, setActiveImport] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
@@ -180,7 +180,7 @@ const MakersList = () => {
   };
 
   const handleImport = () => {
-    setaddImport(!addImport);
+    setActiveImport(!addImport);
   };
   const { makerList } = useSelector((state) => state.maker);
 

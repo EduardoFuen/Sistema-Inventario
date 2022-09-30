@@ -28,7 +28,9 @@ const slice = createSlice({
     getPackSuccess(state, action) {
       state.packList = action.payload;
     },
-
+    ExcelSuccess(state, action) {
+      state.packList = [...state.packList, ...action.payload];
+    },
     // ADD PACK
     addPackSuccess(state, action) {
       state.packList.push(action.payload);
@@ -60,7 +62,15 @@ export function addPack(data: any) {
     }
   };
 }
-
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editPack(name: string, data: any) {
   return async () => {
     try {
