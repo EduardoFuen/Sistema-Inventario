@@ -28,7 +28,9 @@ const slice = createSlice({
     getSupplierSuccess(state, action) {
       state.supplierList = action.payload;
     },
-
+    ExcelSuccess(state, action) {
+      state.supplierList = [...state.supplierList, ...action.payload];
+    },
     // ADD SUPPLIER
     addSupplierSuccess(state, action) {
       state.supplierList.push(action.payload);
@@ -55,6 +57,15 @@ export function createSupplier(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.addSupplierSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
