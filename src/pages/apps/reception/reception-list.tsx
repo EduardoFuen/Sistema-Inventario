@@ -1,7 +1,7 @@
 import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 // import PSPDFKit from "./PSPDFKit";
 
 // material-ui
@@ -23,7 +23,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 // assets
-import { EyeTwoTone /* , FilePdfOutlined  */ } from '@ant-design/icons';
+import { EyeTwoTone, FilePdfOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -144,7 +144,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 }
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
-/* 
+
 // Create styles
 const styles = StyleSheet.create({
   body: {
@@ -264,7 +264,7 @@ const MyDocument = ({ data }: any) => {
     </Document>
   );
 };
- */
+
 const ReceptionList = () => {
   const theme = useTheme();
   const history = useNavigate();
@@ -312,20 +312,26 @@ const ReceptionList = () => {
       {
         Header: 'Subtotal',
         accessor: 'subtotal',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        className: 'cell-center',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
+      },
+      {
+        Header: 'Total Descuento',
+        accessor: 'discount',
+        className: 'cell-center',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'IVA',
         accessor: 'tax',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        className: 'cell-center',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Total',
         accessor: 'total',
-        className: 'cell-right',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" />
+        className: 'cell-center',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Estado',
@@ -355,7 +361,7 @@ const ReceptionList = () => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {/*      <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="reception.pdf">
+              <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="reception.pdf">
                 {({ blob, url, loading, error }) =>
                   loading ? (
                     'Loading document...'
@@ -365,7 +371,7 @@ const ReceptionList = () => {
                     </IconButton>
                   )
                 }
-              </PDFDownloadLink> */}
+              </PDFDownloadLink>
 
               <Tooltip title="Ingresar">
                 <IconButton

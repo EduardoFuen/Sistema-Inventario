@@ -119,15 +119,15 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
       },
       {
         Header: 'IVA',
-        accessor: 'iva'
+        accessor: 'tax'
       },
       {
         Header: 'Descuento Negociado',
-        accessor: 'discount'
+        accessor: 'Negotiateddiscount'
       },
       {
         Header: 'Descuento Adicional',
-        accessor: 'additionalDiscount'
+        accessor: 'Additionaldiscount'
       },
       {
         Header: 'Bonificación',
@@ -135,32 +135,11 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
       },
       {
         Header: 'Subtotal',
-        accessor: 'subtotal',
-        Cell: ({ row }: any) => {
-          const { original } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                {original?.qty && original?.price ? <Typography variant="subtitle1">{original?.qty * original?.price}</Typography> : 0}
-              </Stack>
-            </Stack>
-          );
-        }
+        accessor: 'subtotal'
       },
       {
         Header: 'Total',
-        accessor: 'total',
-        Cell: ({ row }: any) => {
-          const { original } = row;
-          let subtotal = original?.qty * original?.price || 0;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                {subtotal ? <Typography variant="subtitle1">{subtotal + (subtotal * original?.iva || 0) / 100}</Typography> : 0}
-              </Stack>
-            </Stack>
-          );
-        }
+        accessor: 'total'
       },
       {
         Header: 'Acciones',
