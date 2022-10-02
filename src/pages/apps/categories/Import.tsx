@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addExcel } from 'store/reducers/pack';
+import { addExcel } from 'store/reducers/category';
 
 import ImportToFile from 'components/ImportToFile';
 
@@ -18,21 +18,43 @@ export interface Props {
 }
 
 const ImportPack = ({ onCancel, value }: Props) => {
-  console.log(value);
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => ({
-        name: item?.name,
-        status: item?.status
-      }));
-      dispatch(addExcel(newData));
+      let newData: any;
+
+      switch (value) {
+        case 0:
+          newData = data.map((item: any) => ({
+            categoryOne: item?.name,
+            status: item?.status
+          }));
+          break;
+        case 1:
+          newData = data.map((item: any) => ({
+            categoryTwo: item?.name,
+            categoryOne: item?.category1,
+            status: item?.status
+          }));
+          break;
+
+        default:
+          newData = data.map((item: any) => ({
+            categoryThree: item?.name,
+            categoryOne: item?.category1,
+            categoryTwo: item?.category2,
+            status: item?.status
+          }));
+          break;
+      }
+
+      dispatch(addExcel(newData, value));
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Envase add successfully.',
+          message: 'Categoria add successfully.',
           variant: 'alert',
           alert: {
             color: 'success'

@@ -36,6 +36,21 @@ const slice = createSlice({
     addCategory3Success(state, action) {
       state.categoryListThree.push(action.payload);
     },
+    ExcelSuccess(state, action) {
+      const { index, data } = action.payload;
+      switch (index) {
+        case 0:
+          state.categoryListOne = [...state.categoryListOne, ...data];
+          break;
+        case 1:
+          state.categoryListTwo = [...state.categoryListTwo, ...data];
+          break;
+        default:
+          state.categoryListThree = [...state.categoryListThree, ...data];
+          break;
+      }
+      /* state.packList = [...state.packList, ...action.payload]; */
+    },
     updateCategorySuccess(state, action) {
       const { type, id, data } = action.payload;
       switch (type) {
@@ -105,6 +120,7 @@ export function addCategory2(data: any) {
     }
   };
 }
+
 export function addCategory3(data: any) {
   return async () => {
     try {
@@ -114,7 +130,20 @@ export function addCategory3(data: any) {
     }
   };
 }
-
+export function addExcel(data: any, index: number) {
+  return async () => {
+    try {
+      dispatch(
+        slice.actions.ExcelSuccess({
+          index,
+          data
+        })
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editCategory(type: string, id: string, data: any) {
   return async () => {
     try {

@@ -36,12 +36,12 @@ const slice = createSlice({
     addMakerExcelSuccess(state, action) {
       state.makerList = [...state.makerList, ...action.payload];
     },
-    UpdateMakerSuccess(state, action) {
+    updateMakerSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.makerList.findIndex((item) => item.name === name);
       state.makerList[index] = data;
     },
-    DeleteMakerSuccess(state, action) {
+    deleteMakerSuccess(state, action) {
       const { name } = action.payload;
       const index = state.makerList.findIndex((item) => item.name === name);
       state.makerList.splice(index, 1);
@@ -76,7 +76,7 @@ export function editMaker(name: string, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdateMakerSuccess({
+        slice.actions.updateMakerSuccess({
           name,
           data
         })
@@ -91,7 +91,7 @@ export function deleteMaker(name: string) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeleteMakerSuccess({
+        slice.actions.deleteMakerSuccess({
           name
         })
       );

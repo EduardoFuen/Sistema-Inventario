@@ -236,7 +236,7 @@ const CategoriesList = () => {
     setValue(newValue);
   };
 
-  const { categoryListThree } = useSelector((state) => state.category);
+  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   useEffect(() => {
     dispatch(getCategoryList());
@@ -347,7 +347,7 @@ const CategoriesList = () => {
         <TabPanel value={value} index={0}>
           <ReactTable
             columns={columns().filter((item) => item !== false)}
-            data={categoryListThree as []}
+            data={categoryListOne as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
           />
@@ -355,7 +355,7 @@ const CategoriesList = () => {
         <TabPanel value={value} index={1}>
           <ReactTable
             columns={columns().filter((item) => item !== false)}
-            data={categoryListThree as []}
+            data={categoryListTwo as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
           />
