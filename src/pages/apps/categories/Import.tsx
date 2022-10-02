@@ -14,9 +14,11 @@ import ImportToFile from 'components/ImportToFile';
 
 export interface Props {
   onCancel: () => void;
+  value: number;
 }
 
-const ImportPack = ({ onCancel }: Props) => {
+const ImportPack = ({ onCancel, value }: Props) => {
+  console.log(value);
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 

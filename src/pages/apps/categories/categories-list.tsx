@@ -16,7 +16,8 @@ import {
   useMediaQuery,
   Box,
   Tab,
-  Tabs
+  Tabs,
+  Dialog
 } from '@mui/material';
 
 // third-party
@@ -27,7 +28,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
-// import Import from './Import';
+import Import from './Import';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
@@ -368,6 +369,10 @@ const CategoriesList = () => {
           />
         </TabPanel>
       </ScrollX>
+      {/* add import dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} value={value} />}
+      </Dialog>
     </MainCard>
   );
 };
