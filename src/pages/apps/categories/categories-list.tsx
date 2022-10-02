@@ -27,7 +27,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
-
+// import Import from './Import';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
@@ -37,7 +37,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { getCategoryList, deleteCategory } from 'store/reducers/category';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 interface TabPanelProps {
@@ -66,9 +66,10 @@ interface Props {
   columns: Column[];
   data: [];
   getHeaderProps: (column: any) => void;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleImport }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -135,6 +136,9 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
             size="small"
           />
           <Export excelData={data} fileName="Categories" />
+          <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+            Importar
+          </Button>
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddCategory}>
@@ -197,6 +201,13 @@ const CategoriesList = () => {
     history(`/p/product-list/add-category/${id}/${index}`);
   };
   const [value, setValue] = useState(0);
+
+  const [addImport, setActiveImport] = useState<boolean>(false);
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
+
   const [columnsValue, setColumnsValue] = useState<any>({
     Header: 'Categoria',
     accessor: 'categoryOne',
@@ -321,9 +332,6 @@ const CategoriesList = () => {
       }
     }
   ];
-  /*     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [theme]
-  ); */
 
   return (
     <MainCard content={false}>
@@ -340,6 +348,7 @@ const CategoriesList = () => {
             columns={columns().filter((item) => item !== false)}
             data={categoryListThree as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
+            handleImport={handleImport}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -347,6 +356,7 @@ const CategoriesList = () => {
             columns={columns().filter((item) => item !== false)}
             data={categoryListThree as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
+            handleImport={handleImport}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -354,6 +364,7 @@ const CategoriesList = () => {
             columns={columns().filter((item) => item !== false)}
             data={categoryListThree as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
+            handleImport={handleImport}
           />
         </TabPanel>
       </ScrollX>
