@@ -6,17 +6,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addExcel } from 'store/reducers/pack';
+import { addExcel } from 'store/reducers/typeProduct';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
+// ==============================|| TYPE PRODUCT IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;
 }
 
-const ImportMarker = ({ onCancel }: Props) => {
+const Import = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
@@ -30,7 +30,7 @@ const ImportMarker = ({ onCancel }: Props) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Envase add successfully.',
+          message: 'Tipo de Producto Importado.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -75,4 +75,4 @@ const ImportMarker = ({ onCancel }: Props) => {
   );
 };
 
-export default ImportMarker;
+export default Import;

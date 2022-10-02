@@ -9,7 +9,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import AddTrademark from 'sections/apps/products/trademark/AddTrademark';
-import ImportTradeMark from 'sections/apps/products/trademark/ImportTradeMark';
+import Import from 'sections/apps/products/trademark/ImportTradeMark';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -268,7 +268,7 @@ const TradeMarkList = () => {
       </Dialog>
       {/* add import dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {addImport && <ImportTradeMark onCancel={handleImport} />}
+        {addImport && <Import onCancel={handleImport} />}
       </Dialog>
     </MainCard>
   );

@@ -12,6 +12,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
 import AddActiveSustances from 'sections/apps/products/activeSubstances/AddActiveSubstances';
+import Import from 'sections/apps/products/activeSubstances/ImportActiveSubstances';
 
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
@@ -21,7 +22,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { getSubsList, deleteSubs } from 'store/reducers/activeSubst';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -30,9 +31,10 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   handleAdd: () => void;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
+function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const sortBy = { id: 'name', desc: false };
@@ -88,6 +90,9 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
               size="small"
             />
             <Export excelData={data} fileName="SustanciasANDactivos" />
+            <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+              Importar
+            </Button>
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
@@ -140,17 +145,22 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd }: Props) {
   );
 }
 
-// ==============================|| PRODUCT LIST - MAIN ||============================== //
+// ==============================|| ACTIVE-SUBSTANCES LIST - MAIN ||============================== //
 
-const PackList = () => {
+const ActiveSubstancesList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [subst, setSubst] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
+  const [addImport, setActiveImport] = useState<boolean>(false);
 
   const handleAdd = () => {
     setAdd(!add);
     if (subst && !add) setSubst(null);
+  };
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
   };
 
   const { todoListSubs } = useSelector((state) => state.substances);
@@ -237,6 +247,7 @@ const PackList = () => {
           columns={columnsProducts}
           handleAdd={handleAdd}
           data={todoListSubs as []}
+          handleImport={handleImport}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>
@@ -244,8 +255,12 @@ const PackList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddActiveSustances subst={subst} onCancel={handleAdd} />}
       </Dialog>
+      {/* add import dialog */}
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
+      </Dialog>
     </MainCard>
   );
 };
 
-export default PackList;
+export default ActiveSubstancesList;

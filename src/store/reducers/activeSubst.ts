@@ -32,6 +32,9 @@ const slice = createSlice({
     addSubsSuccess(state, action) {
       state.todoListSubs.push(action.payload);
     },
+    ExcelSuccess(state, action) {
+      state.todoListSubs = [...state.todoListSubs, ...action.payload];
+    },
     updateSubsSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.todoListSubs.findIndex((item) => item.name === name);
@@ -74,7 +77,15 @@ export function editSubs(name: string, data: any) {
     }
   };
 }
-
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function deleteSubs(name: string) {
   return async () => {
     try {

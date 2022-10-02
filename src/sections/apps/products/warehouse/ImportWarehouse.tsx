@@ -10,7 +10,7 @@ import { addExcel } from 'store/reducers/warehouse';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
+// ==============================|| WAREHOUSE IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;

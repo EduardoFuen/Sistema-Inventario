@@ -10,7 +10,7 @@ import { addExcel } from 'store/reducers/trademaker';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
+// ==============================|| TRADEMARK IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;

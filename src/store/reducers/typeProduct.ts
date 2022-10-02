@@ -33,12 +33,15 @@ const slice = createSlice({
     addTypeProductSuccess(state, action) {
       state.typeProductList.push(action.payload);
     },
-    UpdateTypeProductSuccess(state, action) {
+    ExcelSuccess(state, action) {
+      state.typeProductList = [...state.typeProductList, ...action.payload];
+    },
+    updateTypeProductSuccess(state, action) {
       const { name, data } = action.payload;
       const index = state.typeProductList.findIndex((item) => item.name === name);
       state.typeProductList[index] = data;
     },
-    DeleteTypeProductSuccess(state, action) {
+    deleteTypeProductSuccess(state, action) {
       const { name } = action.payload;
       const index = state.typeProductList.findIndex((item) => item.name === name);
       state.typeProductList.splice(index, 1);
@@ -60,12 +63,20 @@ export function addTypeProduct(data: any) {
     }
   };
 }
-
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editTypeProduct(name: string, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdateTypeProductSuccess({
+        slice.actions.updateTypeProductSuccess({
           name,
           data
         })
@@ -80,7 +91,7 @@ export function deleteTypeProduct(name: string) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeleteTypeProductSuccess({
+        slice.actions.deleteTypeProductSuccess({
           name
         })
       );

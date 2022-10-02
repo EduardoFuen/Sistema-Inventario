@@ -10,13 +10,13 @@ import { addExcel } from 'store/reducers/pack';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| MAKER ADD / EDIT / DELETE ||============================== //
+// ==============================|| PACK IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;
 }
 
-const ImportMarker = ({ onCancel }: Props) => {
+const ImportPack = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
@@ -75,4 +75,4 @@ const ImportMarker = ({ onCancel }: Props) => {
   );
 };
 
-export default ImportMarker;
+export default ImportPack;

@@ -6,16 +6,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addMakerExcel } from 'store/reducers/maker';
+import { addExcel } from 'store/reducers/activeSubst';
+
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| MAKER IMPORT||============================== //
+// ==============================|| ACTIVE/SUBSTANCES IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;
 }
 
-const ImportMarker = ({ onCancel }: Props) => {
+const ImportActiveSubstances = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
@@ -25,11 +26,11 @@ const ImportMarker = ({ onCancel }: Props) => {
         name: item?.name,
         status: item?.status
       }));
-      dispatch(addMakerExcel(newData));
+      dispatch(addExcel(newData));
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Maker add successfully.',
+          message: 'Sustancias successfully.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -74,4 +75,4 @@ const ImportMarker = ({ onCancel }: Props) => {
   );
 };
 
-export default ImportMarker;
+export default ImportActiveSubstances;
