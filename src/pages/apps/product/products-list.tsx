@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, Fragment } from 'react';
+import { useCallback, useEffect, useMemo, Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, Dialog } from '@mui/material';
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
@@ -14,6 +14,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Export from 'components/ExportToFile';
+import Import from './Import';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
@@ -22,7 +23,7 @@ import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -31,9 +32,10 @@ interface Props {
   data: [];
   getHeaderProps: (column: any) => void;
   renderRowSubComponent: any;
+  handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Props) {
+function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleImport }: Props) {
   const theme = useTheme();
   const history = useNavigate();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -137,6 +139,9 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent }: Pr
               size="small"
             />
             <Export excelData={newDataExport} fileName="Productos" />
+            <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
+              Importar
+            </Button>
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddProduct}>
@@ -198,6 +203,11 @@ const ProductList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [addImport, setActiveImport] = useState<boolean>(false);
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
 
   const { products } = useSelector((state) => state.product);
   const handleEditProduct = (id: any) => {
@@ -342,8 +352,12 @@ const ProductList = () => {
           data={products as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
+          handleImport={handleImport}
         />
       </ScrollX>
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
+      </Dialog>
     </MainCard>
   );
 };

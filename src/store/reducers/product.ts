@@ -36,6 +36,9 @@ const slice = createSlice({
     addProductSuccess(state, action) {
       state.products.push(action.payload);
     },
+    ExcelSuccess(state, action) {
+      state.products = [...state.products, ...action.payload];
+    },
     // EDIT PRODUCTS
     editProductsSuccess(state, action) {
       const { name, data } = action.payload;
@@ -110,7 +113,15 @@ export function addProduct(data: any) {
     }
   };
 }
-
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.ExcelSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function editProduct(name: any, data: any) {
   return async () => {
     try {
