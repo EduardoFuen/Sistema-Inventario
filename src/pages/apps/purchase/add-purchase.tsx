@@ -114,7 +114,7 @@ function AddPurchase() {
                       <Autocomplete
                         id="supplier-list"
                         options={supplierList.filter((item: any) => item.status === true)}
-                        getOptionLabel={(option) => option.businessName}
+                        getOptionLabel={(option) => option.BusinessName}
                         onChange={(event, newValue) => {
                           setFieldValue('supplier', newValue === null ? '' : newValue);
                         }}

@@ -35,13 +35,13 @@ import { DeleteFilled } from '@ant-design/icons';
 // constant
 const getInitialValues = (product: FormikValues | null) => {
   const newProduct = {
-    name: '',
-    status: false
+    Name: '',
+    Status: false
   };
 
   if (product) {
-    newProduct.name = product.name;
-    newProduct.status = product.status;
+    newProduct.Name = product.Name;
+    newProduct.Status = product.Status;
     return _.merge({}, newProduct, product);
   }
   return newProduct;
@@ -59,7 +59,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
   const isCreating = !product;
 
   const UserSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const deleteHandler = () => {
@@ -74,7 +74,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
         close: false
       })
     );
-    dispatch(deleteTypeProduct(product.name));
+    dispatch(deleteTypeProduct(product.ID));
     onCancel();
   };
 
@@ -84,12 +84,12 @@ const AddPackList = ({ product, onCancel }: Props) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newProduct = {
-          name: values.name,
-          status: values.status
+          Name: values.Name,
+          Status: values.Status
         };
 
         if (product) {
-          dispatch(editTypeProduct(product.name, newProduct));
+          dispatch(editTypeProduct(product.Name, newProduct));
           dispatch(
             openSnackbar({
               open: true,
@@ -138,14 +138,14 @@ const AddPackList = ({ product, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="product-name">Nombre Tipo de Producto</InputLabel>
+                      <InputLabel htmlFor="product-Name">Nombre Tipo de Producto</InputLabel>
                       <TextField
                         fullWidth
-                        id="product-name"
+                        id="product-Name"
                         placeholder="Ingresar Tipo de Producto"
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                       />
                     </Stack>
                   </Grid>
@@ -156,9 +156,9 @@ const AddPackList = ({ product, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={product?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={product?.Status} value={product?.Status} />}
                         label="Estado"
-                        {...getFieldProps('status')}
+                        {...getFieldProps('Status')}
                         labelPlacement="top"
                       />
                     </Stack>

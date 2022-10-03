@@ -39,7 +39,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const theme = useTheme();
   const history = useNavigate();
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'Name', desc: true };
 
   const {
     getTableProps,
@@ -305,7 +305,7 @@ const ProductList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditProduct(row?.values?.name);
+                    handleEditProduct(row?.values?.ID);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />

@@ -496,8 +496,8 @@ function AddNewProduct() {
                           <Autocomplete
                             multiple
                             id="substances-list"
-                            options={todoListSubs.filter((item: any) => item.status === true)}
-                            getOptionLabel={(option) => option.name}
+                            options={todoListSubs.filter((item: any) => item.Status === true)}
+                            getOptionLabel={(option) => option.Name}
                             defaultValue={[]}
                             filterSelectedOptions
                             onChange={(event, newValue) => {

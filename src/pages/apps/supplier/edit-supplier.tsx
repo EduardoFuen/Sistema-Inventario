@@ -57,7 +57,7 @@ function UpdateSuplier() {
 
   const supplier = useMemo(() => {
     if (id) {
-      return supplierList.find((item) => item.businessName === id);
+      return supplierList.find((item) => item.ID === Number(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -80,7 +80,7 @@ function UpdateSuplier() {
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        dispatch(editSupplier(id, values));
+        dispatch(editSupplier(Number(id), values));
         dispatch(
           openSnackbar({
             open: true,
@@ -294,7 +294,7 @@ function UpdateSuplier() {
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <FormControlLabel
-                    control={<Switch sx={{ mt: 0 }} defaultChecked={supplier?.status} />}
+                    control={<Switch sx={{ mt: 0 }} defaultChecked={supplier?.Status} />}
                     label=""
                     labelPlacement="top"
                     {...getFieldProps('status')}
@@ -303,7 +303,7 @@ function UpdateSuplier() {
                     variant="outlined"
                     color="error"
                     onClick={() => {
-                      dispatch(deleteSupplier(supplier?.businessName));
+                      dispatch(deleteSupplier(1));
                       history(`/supplier`);
                       dispatch(
                         openSnackbar({

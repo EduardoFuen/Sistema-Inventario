@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { MakerStateProps } from 'types/e-commerce';
@@ -52,7 +53,9 @@ export function getMakerList() {
   return async () => {
     try {
       const response = await axios.get(`${HOST}/maker`);
-      dispatch(maker.actions.getMakerSuccess(response.data));
+      if (response.data instanceof Array) {
+        dispatch(maker.actions.getMakerSuccess(response.data));
+      }
     } catch (error) {
       dispatch(maker.actions.hasError(error));
     }
@@ -85,6 +88,17 @@ export function deleteMaker(id: number) {
     try {
       const response = await axios.delete(`${HOST}/maker`, { data: { ID: id } });
       if (response) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Maker Importados successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
         dispatch(getMakerList());
       }
     } catch (error) {
@@ -95,7 +109,19 @@ export function deleteMaker(id: number) {
 export function addMakerExcel(data: any) {
   return async () => {
     try {
-      dispatch(maker.actions.addMakerexcelSuccess(data));
+      const response = await axios.post(`${HOST}/maker`, data);
+      dispatch(maker.actions.addMakerexcelSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Maker Importados successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(maker.actions.hasError(error));
     }

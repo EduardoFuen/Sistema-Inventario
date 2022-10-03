@@ -212,7 +212,7 @@ const TradeMarkList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setTrademark(row.values);
+                    setTrademark(row.original);
                     handleAdd();
                   }}
                 >
@@ -235,7 +235,7 @@ const TradeMarkList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteTrademark(row?.name));
+                    dispatch(deleteTrademark(row?.original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

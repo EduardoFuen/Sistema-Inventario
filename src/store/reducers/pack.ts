@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -28,22 +29,16 @@ const slice = createSlice({
     getPackSuccess(state, action) {
       state.packList = action.payload;
     },
-    excelSuccess(state, action) {
-      state.packList = [...state.packList, ...action.payload];
-    },
     // ADD PACK
     addPackSuccess(state, action) {
       state.packList.push(action.payload);
     },
     updatePackSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.packList.findIndex((item) => item?.ID === name);
-      state.packList[index] = data;
+      const index = state.packList.findIndex((item) => item?.ID === action.payload?.ID);
+      state.packList[index] = action.payload;
     },
-    deletePackSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.packList.findIndex((item) => item?.ID === name);
-      state.packList.splice(index, 1);
+    excelSuccess(state, action) {
+      state.packList = [...state.packList, ...action.payload];
     }
   }
 });
@@ -52,57 +47,58 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+export function getPackList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/packs`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getPackSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
 export function addPack(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addPackSuccess(data));
+      const response = await axios.get(`${HOST}/packs`, { ...data });
+      dispatch(slice.actions.addPackSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-export function addExcel(data: any) {
+export function editPack(id: number, data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.excelSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function editPack(name: string, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.updatePackSuccess({
-          name,
-          data
-        })
-      );
+      const response = await axios.put(`${HOST}/packs`, { ID: id, ...data });
+      dispatch(slice.actions.updatePackSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function deletePack(name: string) {
+export function deletePack(id: number) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.deletePackSuccess({
-          name
-        })
-      );
+      const response = await axios.delete(`${HOST}/packs`, { data: { ID: id } });
+      if (response) {
+        dispatch(getPackList());
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-export function getPackList() {
+
+export function addExcel(data: any) {
   return async () => {
     try {
-      localStorage.getItem('mantis-ts-pack');
+      const response = await axios.post(`${HOST}/packs`, data);
+      dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

@@ -35,13 +35,13 @@ import { DeleteFilled } from '@ant-design/icons';
 // constant
 const getInitialValues = (subst: FormikValues | null) => {
   const newSubstance = {
-    name: '',
-    status: false
+    Name: '',
+    Status: false
   };
 
   if (subst) {
-    newSubstance.name = subst.name;
-    newSubstance.status = subst.status;
+    newSubstance.Name = subst.Name;
+    newSubstance.Status = subst.Status;
     return _.merge({}, newSubstance, subst);
   }
   return newSubstance;
@@ -59,7 +59,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
   const isCreating = !subst;
 
   const SubstSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const deleteHandler = () => {
@@ -74,7 +74,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
         close: false
       })
     );
-    dispatch(deleteSubs(subst.name));
+    dispatch(deleteSubs(subst.ID));
     onCancel();
   };
 
@@ -84,12 +84,12 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newSubstance = {
-          name: values.name,
-          status: values.status
+          Name: values.Name,
+          Status: values.Status
         };
 
         if (subst) {
-          dispatch(editSubs(subst.name, newSubstance));
+          dispatch(editSubs(subst.ID, newSubstance));
           dispatch(
             openSnackbar({
               open: true,
@@ -138,14 +138,14 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="subst-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="subst-Name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="subst-name"
+                        id="subst-Name"
                         placeholder="Ingresar Nombre"
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                       />
                     </Stack>
                   </Grid>
@@ -156,9 +156,9 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={subst?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={subst?.Status} value={subst?.Status} />}
                         label="Estado"
-                        {...getFieldProps('status')}
+                        {...getFieldProps('Status')}
                         labelPlacement="top"
                       />
                     </Stack>

@@ -1,18 +1,12 @@
 // project imports
 import services from 'utils/mockAdapter';
-import { products, packList, warehouse, maker, trademaker } from 'data/e-commerce';
+import { products } from 'data/e-commerce';
 
 // types
 import { KeyedObject } from 'types/cart';
 import { Products } from 'types/e-commerce';
 
 // ==============================|| MOCK SERVICES ||============================== //
-
-services.onGet('/api/packList/list').reply(200, { packList });
-services.onGet('/api/warehouse/list').reply(200, { warehouse });
-services.onGet('/api/products/list').reply(200, { products });
-services.onGet('/api/maker/list').reply(200, { maker });
-services.onGet('/api/trademaker/list').reply(200, { trademaker });
 
 services.onPost('/api/products/filter').reply((config) => {
   try {
@@ -86,7 +80,7 @@ services.onPost('/api/product/details').reply((config) => {
     if (id === 'default') {
       [results] = products;
     } else {
-      [results] = products?.filter((product) => product.id === Number(id));
+      // [results] = products?.filter((product) => product.id === Number(id));
     }
 
     return [200, results];
@@ -98,9 +92,7 @@ services.onPost('/api/product/details').reply((config) => {
 
 services.onPost('/api/product/related').reply((config) => {
   try {
-    const { id } = JSON.parse(config.data);
-
-    const results = products.filter((product) => product.id !== Number(id));
+    const results = '';
 
     return [200, results];
   } catch (err) {

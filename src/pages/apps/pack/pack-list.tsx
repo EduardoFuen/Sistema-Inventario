@@ -171,13 +171,18 @@ const PackList = () => {
   const columnsProducts = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'Envase',
-        accessor: 'name',
+        accessor: 'Name',
         className: 'cell-center'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
@@ -201,7 +206,7 @@ const PackList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setPack(row.values);
+                    setPack(row.original);
                     handleAdd();
                   }}
                 >
@@ -224,7 +229,7 @@ const PackList = () => {
                         close: false
                       })
                     );
-                    dispatch(deletePack(row.name));
+                    dispatch(deletePack(row?.original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

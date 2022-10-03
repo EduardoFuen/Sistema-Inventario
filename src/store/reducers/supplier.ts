@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -37,13 +38,8 @@ const slice = createSlice({
     },
     updateSupplierSuccess(state, action) {
       const { name, data } = action.payload;
-      const index = state.supplierList.findIndex((item) => item.businessName === name);
+      const index = state.supplierList.findIndex((item) => item.BusinessName === name);
       state.supplierList[index] = data;
-    },
-    deleteSupplierSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.supplierList.findIndex((item) => item.businessName === name);
-      state.supplierList.splice(index, 1);
     }
   }
 });
@@ -52,11 +48,47 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+export function getSupplierList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/bodegas`);
+      if (response.data instanceof Array) {
+        //  dispatch(slice.actions.getSupplierSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
 export function createSupplier(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addSupplierSuccess(data));
+      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      dispatch(slice.actions.addSupplierSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function editSupplier(id: number, data: any) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      dispatch(slice.actions.updateSupplierSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteSupplier(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      if (response) {
+        dispatch(getSupplierList());
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -65,45 +97,8 @@ export function createSupplier(data: any) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.excelSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function editSupplier(name: string | undefined, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.updateSupplierSuccess({
-          name,
-          data
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function deleteSupplier(name: string | undefined) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.deleteSupplierSuccess({
-          name
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function getSupplierList() {
-  return async () => {
-    try {
-      localStorage.getItem('mantis-ts-supplier');
+      const response = await axios.post(`${HOST}/bodegas`, data);
+      dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

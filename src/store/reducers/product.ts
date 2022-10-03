@@ -2,11 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
-import { Address, DefaultRootStateProps, ProductsFilter } from 'types/e-commerce';
+import { DefaultRootStateProps, ProductsFilter } from 'types/e-commerce';
 
 // ----------------------------------------------------------------------
 
@@ -36,9 +37,6 @@ const slice = createSlice({
     addProductSuccess(state, action) {
       state.products.push(action.payload);
     },
-    excelSuccess(state, action) {
-      state.products = [...state.products, ...action.payload];
-    },
     // EDIT PRODUCTS
     editProductsSuccess(state, action) {
       const { name, data } = action.payload;
@@ -50,6 +48,9 @@ const slice = createSlice({
       const { name } = action.payload;
       const index = state.products.findIndex((item) => item.name === name);
       state.products.splice(index, 1);
+    },
+    excelSuccess(state, action) {
+      state.products = [...state.products, ...action.payload];
     },
     // FILTER PRODUCTS
     filterProductsSuccess(state, action) {
@@ -96,8 +97,10 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
-      /*         const response = await axios.get('/api/products/list');
-      dispatch(slice.actions.getProductsSuccess(response.data.products)); */
+      const response = await axios.get(`${HOST}/bodegas`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getProductsSuccess(response.data));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -107,7 +110,30 @@ export function getProducts() {
 export function addProduct(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addProductSuccess(data));
+      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      dispatch(slice.actions.addProductSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function editProduct(id: number, data: any) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      dispatch(slice.actions.editProductsSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function deleteProduct(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      if (response) {
+        dispatch(getProducts());
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -122,34 +148,9 @@ export function addExcel(data: any) {
     }
   };
 }
-export function editProduct(name: any, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.editProductsSuccess({
-          name,
-          data
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
 
-export function deleteProduct(name: string) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.deleteProductSuccess({
-          name
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
+// CRUD SHOPIFY
+
 export function filterProducts(filter: ProductsFilter) {
   return async () => {
     try {
@@ -188,39 +189,6 @@ export function getProductReviews() {
     try {
       const response = await axios.get('/api/review/list');
       dispatch(slice.actions.getProductReviewsSuccess(response.data.productReviews));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function getAddresses() {
-  return async () => {
-    try {
-      const response = await axios.get('/api/address/list');
-      dispatch(slice.actions.getAddressesSuccess(response.data.address));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function addAddress(address: Address) {
-  return async () => {
-    try {
-      const response = await axios.post('/api/address/new', address);
-      dispatch(slice.actions.addAddressSuccess(response.data.address));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function editAddress(address: Address) {
-  return async () => {
-    try {
-      const response = await axios.post('/api/address/edit', address);
-      dispatch(slice.actions.editAddressSuccess(response.data.address));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

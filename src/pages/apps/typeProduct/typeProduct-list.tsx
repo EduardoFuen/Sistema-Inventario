@@ -202,7 +202,7 @@ const PackList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setProduct(row.values);
+                    setProduct(row.orginal);
                     handleAdd();
                   }}
                 >
@@ -225,7 +225,7 @@ const PackList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteTypeProduct(row.name));
+                    dispatch(deleteTypeProduct(row?.original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

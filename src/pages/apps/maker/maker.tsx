@@ -32,7 +32,6 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getMakerList, deleteMaker } from 'store/reducers/maker';
 
 // assets
@@ -226,7 +225,7 @@ const MakersList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setWarehouse(row.values);
+                    setWarehouse(row.original);
                     handleAdd();
                   }}
                 >
@@ -238,18 +237,7 @@ const MakersList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Maker deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                    dispatch(deleteMaker(row?.values?.ID));
+                    dispatch(deleteMaker(row?.original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

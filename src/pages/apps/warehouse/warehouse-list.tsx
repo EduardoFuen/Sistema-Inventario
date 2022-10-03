@@ -171,13 +171,12 @@ const WarehouseList = () => {
     setAdd(!add);
     if (warehouse && !add) setWarehouse(null);
   };
-  const { warehouseList } = useSelector((state) => state.warehouse);
 
   useEffect(() => {
     dispatch(getWarehouseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const { warehouseList } = useSelector((state) => state.warehouse);
   const columns = useMemo(
     () => [
       {

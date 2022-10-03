@@ -37,7 +37,7 @@ interface Props {
 function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'Name', desc: true };
 
   const {
     getTableProps,
@@ -172,13 +172,18 @@ const ActiveSubstancesList = () => {
   const columnsProducts = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'Nombre',
-        accessor: 'name',
+        accessor: 'Name',
         className: 'cell-center'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
@@ -202,7 +207,7 @@ const ActiveSubstancesList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setSubst(row.values);
+                    setSubst(row.original);
                     handleAdd();
                   }}
                 >
@@ -225,7 +230,7 @@ const ActiveSubstancesList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteSubs(row.name));
+                    dispatch(deleteSubs(row.original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

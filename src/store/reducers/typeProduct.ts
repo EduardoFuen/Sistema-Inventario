@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -37,14 +38,8 @@ const slice = createSlice({
       state.typeProductList = [...state.typeProductList, ...action.payload];
     },
     updateTypeProductSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.typeProductList.findIndex((item) => item.name === name);
-      state.typeProductList[index] = data;
-    },
-    deleteTypeProductSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.typeProductList.findIndex((item) => item.name === name);
-      state.typeProductList.splice(index, 1);
+      const index = state.typeProductList.findIndex((item) => item.ID === action.payload?.ID);
+      state.typeProductList[index] = action.payload;
     }
   }
 });
@@ -53,11 +48,47 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+export function getTypeProductList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/bodegas`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getTypeProductSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
 export function addTypeProduct(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addTypeProductSuccess(data));
+      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      dispatch(slice.actions.addTypeProductSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function editTypeProduct(id: number, data: any) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      dispatch(slice.actions.updateTypeProductSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteTypeProduct(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      if (response) {
+        dispatch(getTypeProductList());
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -66,44 +97,8 @@ export function addTypeProduct(data: any) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.excelSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function editTypeProduct(name: string, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.updateTypeProductSuccess({
-          name,
-          data
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function deleteTypeProduct(name: string) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.deleteTypeProductSuccess({
-          name
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function getTypeProductList() {
-  return async () => {
-    try {
-      localStorage.getItem('mantis-ts-typeProduct');
+      const response = await axios.post(`${HOST}/bodegas`, data);
+      dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

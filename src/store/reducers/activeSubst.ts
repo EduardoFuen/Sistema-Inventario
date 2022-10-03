@@ -2,6 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -32,18 +34,13 @@ const slice = createSlice({
     addSubsSuccess(state, action) {
       state.todoListSubs.push(action.payload);
     },
-    excelSuccess(state, action) {
-      state.todoListSubs = [...state.todoListSubs, ...action.payload];
-    },
     updateSubsSuccess(state, action) {
       const { name, data } = action.payload;
-      const index = state.todoListSubs.findIndex((item) => item.name === name);
+      const index = state.todoListSubs.findIndex((item) => item.ID === name);
       state.todoListSubs[index] = data;
     },
-    deleteSubsSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.todoListSubs.findIndex((item) => item.name === name);
-      state.todoListSubs.splice(index, 1);
+    excelSuccess(state, action) {
+      state.todoListSubs = [...state.todoListSubs, ...action.payload];
     }
   }
 });
@@ -52,26 +49,47 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
-
-export function addSubs(data: any) {
+export function getSubsList() {
   return async () => {
     try {
-      dispatch(slice.actions.addSubsSuccess(data));
+      const response = await axios.get(`${HOST}/bodegas`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getSubsSuccess(response.data));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function editSubs(name: string, data: any) {
+export function addSubs(data: any) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.updateSubsSuccess({
-          name,
-          data
-        })
-      );
+      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      dispatch(slice.actions.addSubsSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function editSubs(id: number, data: any) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      dispatch(slice.actions.updateSubsSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function deleteSubs(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      if (response) {
+        dispatch(getSubsList());
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -81,28 +99,6 @@ export function addExcel(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.excelSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function deleteSubs(name: string) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.deleteSubsSuccess({
-          name
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function getSubsList() {
-  return async () => {
-    try {
-      localStorage.getItem('mantis-ts-substances');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

@@ -110,10 +110,8 @@ function UpdateProduct() {
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
-      console.log(values);
-
       try {
-        dispatch(editProduct(id, values));
+        dispatch(editProduct(Number(id), values));
         dispatch(
           openSnackbar({
             open: true,
@@ -502,7 +500,7 @@ function UpdateProduct() {
                             multiple
                             id="substances-list"
                             options={todoListSubs.filter((item: any) => item.status === true)}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={(option) => option.Name}
                             defaultValue={[...(product?.substances || '')] as []}
                             filterSelectedOptions
                             onChange={(event, newValue) => {

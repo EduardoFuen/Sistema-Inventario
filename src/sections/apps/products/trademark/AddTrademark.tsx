@@ -41,12 +41,12 @@ import { DeleteFilled } from '@ant-design/icons';
 const getInitialValues = (tradeMark: FormikValues | null) => {
   const newTradeTrademark = {
     Name: '',
-    Makerid: '',
+    MakerID: '',
     Status: false
   };
   if (tradeMark) {
     newTradeTrademark.Status = tradeMark.Status;
-    newTradeTrademark.Makerid = tradeMark.Makerid;
+    newTradeTrademark.MakerID = tradeMark.MakerID;
     return _.merge({}, newTradeTrademark, tradeMark);
   }
 
@@ -63,7 +63,7 @@ export interface Props {
 const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMark;
-  const [Makerid, setMaker] = useState('');
+  const [MakerID, setMaker] = useState('');
   const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido')
@@ -92,9 +92,8 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
         const newTradeTrademark = {
           Name: values.Name,
           Status: values.Status,
-          Makerid
+          MakerID
         };
-
         if (tradeMark) {
           dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
           dispatch(
@@ -169,14 +168,14 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                       <Select
                         fullWidth
                         id="tradeMark-maker"
-                        {...getFieldProps('Makerid')}
-                        value={Makerid || tradeMark?.Makerid}
+                        {...getFieldProps('MakerID')}
+                        value={MakerID || tradeMark?.MakerID}
                         onChange={handleChange}
                       >
                         {makerList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}

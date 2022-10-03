@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-import axios from 'utils/axios';
+import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
 
@@ -51,7 +51,9 @@ export function getTrademarkList() {
   return async () => {
     try {
       const response = await axios.get(`${HOST}/trademark`);
-      dispatch(tradeMark.actions.getTrademarkSuccess(response.data));
+      if (response.data instanceof Array) {
+        dispatch(tradeMark.actions.getTrademarkSuccess(response.data));
+      }
     } catch (error) {
       dispatch(tradeMark.actions.hasError(error));
     }
@@ -93,7 +95,8 @@ export function deleteTrademark(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(tradeMark.actions.excelSuccess(data));
+      const response = await axios.post(`${HOST}/trademark`, data);
+      dispatch(tradeMark.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(tradeMark.actions.hasError(error));
     }

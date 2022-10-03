@@ -1,6 +1,6 @@
 // product shop list
 export type Products = {
-  id: string | number | undefined;
+  ID: string | number | undefined;
   image: string;
   name: string;
   trademark: string;
@@ -157,7 +157,7 @@ export interface MakerStateProps {
 export type Trademark = {
   ID: string | number | undefined;
   Name: string;
-  Makerid: number;
+  MakerID: number;
   Status: boolean;
 };
 
@@ -195,13 +195,13 @@ export interface CategoryOneStateProps {
 
 // Supplier
 export type supplier = {
-  id: string | number | undefined;
-  email: string;
-  nit: string;
-  location: string;
-  businessName: string;
-  phone: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Email: string;
+  Nit: string;
+  Location: string;
+  BusinessName: string;
+  Phone: string;
+  Status: boolean;
 };
 export interface SupplierStateProps {
   supplierList: supplier[];
@@ -210,9 +210,9 @@ export interface SupplierStateProps {
 
 // Type product
 export type typeProduct = {
-  id: string | number | undefined;
-  name: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  Status: boolean;
 };
 
 export interface TypeProductStateProps {
@@ -222,9 +222,9 @@ export interface TypeProductStateProps {
 
 // Active substances
 export type substances = {
-  id: string | number | undefined;
-  name: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  Status: boolean;
 };
 
 export interface SubstancesStateProps {

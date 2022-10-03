@@ -24,7 +24,6 @@ const wareHouse = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET PACKS
     getWarehouseSuccess(state, action) {
       state.warehouseList = action.payload;
@@ -51,7 +50,9 @@ export function getWarehouseList() {
   return async () => {
     try {
       const response = await axios.get(`${HOST}/bodegas`);
-      dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
+      if (response.data instanceof Array) {
+        dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
+      }
     } catch (error) {
       dispatch(wareHouse.actions.hasError(error));
     }
@@ -96,7 +97,8 @@ export function deleteWarehouse(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(wareHouse.actions.excelSuccess(data));
+      const response = await axios.post(`${HOST}/bodegas`, data);
+      dispatch(wareHouse.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(wareHouse.actions.hasError(error));
     }

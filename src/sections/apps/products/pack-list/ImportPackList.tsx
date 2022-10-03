@@ -23,8 +23,8 @@ const ImportPack = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        name: item?.name,
-        status: item?.status
+        Name: item?.name,
+        Status: item?.status
       }));
       dispatch(addExcel(newData));
       dispatch(
