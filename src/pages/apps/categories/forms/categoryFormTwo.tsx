@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -18,36 +16,29 @@ import { useSelector } from 'store';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
-function AddCategoryTwo(category: any) {
+function AddCategoryTwo({ categoryTwo: category }: any) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
   const handleCancel = () => {
     history(`/p/product-list`);
   };
-  const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
-  const items = useMemo(() => {
-    if (category) {
-      const { categoryTwo } = category;
-      return categoryListTwo.find((item) => item?.categoryTwo === categoryTwo);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { categoryListOne } = useSelector((state) => state.category);
   const SubstSchema = Yup.object().shape({
     categoryOne: Yup.string().max(255).required('Categoria dos requerida'),
-    categoryTwo: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const formik = useFormik({
     initialValues: {
-      categoryTwo: items?.categoryTwo || '',
-      status: items?.status || false,
-      categoryOne: items?.categoryOne || ''
+      Name: category?.Name || '',
+      Status: category?.status || false,
+      categoryOne: category?.CategoryOneID || ''
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.categoryTwo) {
+        if (category?.Name) {
           dispatch(
             openSnackbar({
               open: true,
@@ -59,7 +50,7 @@ function AddCategoryTwo(category: any) {
               close: false
             })
           );
-          dispatch(editCategory('CategoryTwo', category?.categoryTwo, values));
+          dispatch(editCategory('Name', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -111,10 +102,10 @@ function AddCategoryTwo(category: any) {
                             helperText={touched.categoryOne && errors.categoryOne}
                           >
                             {categoryListOne
-                              .filter((item: any) => item.status === true)
+                              .filter((item: any) => item.Status === true)
                               .map((option: any) => (
-                                <MenuItem key={option.categoryOne} value={option.categoryOne}>
-                                  {option.categoryOne}
+                                <MenuItem key={option.Name} value={option.ID}>
+                                  {option.Name}
                                 </MenuItem>
                               ))}
                           </TextField>
@@ -127,9 +118,9 @@ function AddCategoryTwo(category: any) {
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             placeholder="Ingresar Nombre Categoria"
                             fullWidth
-                            {...getFieldProps('categoryTwo')}
-                            error={Boolean(touched.categoryTwo && errors.categoryTwo)}
-                            helperText={touched.categoryTwo && errors.categoryTwo}
+                            {...getFieldProps('Name')}
+                            error={Boolean(touched.Name && errors.Name)}
+                            helperText={touched.Name && errors.Name}
                           />
                         </Grid>
                         <Grid item xs={12} sm={3} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
@@ -137,7 +128,7 @@ function AddCategoryTwo(category: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={items?.status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
                             label=""
                             labelPlacement="top"
                             {...getFieldProps('status')}

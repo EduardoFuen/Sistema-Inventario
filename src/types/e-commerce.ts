@@ -168,23 +168,23 @@ export interface TrademarkStateProps {
 
 // Category
 export type categoryOne = {
-  id: string | number | undefined;
-  categoryOne: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  Status: boolean;
 };
 export type categoryTwo = {
-  id: string | number | undefined;
-  categoryTwo: string;
-  categoryOne: string;
+  ID: string | number | undefined;
+  Name: string;
+  CategoryOneID: string;
   status: boolean;
 };
 
 export type categoryThree = {
-  id: string | number | undefined;
-  categoryThree: string;
-  categoryTwo: string;
-  categoryOne: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  CategoryOneID: number;
+  CategoryTwoID: number;
+  Status: boolean;
 };
 export interface CategoryOneStateProps {
   categoryListOne: categoryOne[];

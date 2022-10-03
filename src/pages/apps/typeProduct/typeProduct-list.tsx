@@ -37,7 +37,7 @@ interface Props {
 function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'Name', desc: true };
 
   const {
     getTableProps,
@@ -172,13 +172,18 @@ const PackList = () => {
   const columnsProducts = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'Tipo de Producto',
-        accessor: 'name',
+        accessor: 'Name',
         className: 'cell-center'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
@@ -202,7 +207,7 @@ const PackList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setProduct(row.orginal);
+                    setProduct(row.original);
                     handleAdd();
                   }}
                 >
@@ -217,7 +222,7 @@ const PackList = () => {
                     dispatch(
                       openSnackbar({
                         open: true,
-                        message: 'Envase deleted successfully.',
+                        message: 'Tipo de Producto deleted successfully.',
                         variant: 'alert',
                         alert: {
                           color: 'success'

@@ -63,7 +63,7 @@ export function getPackList() {
 export function addPack(data: any) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/packs`, { ...data });
+      const response = await axios.post(`${HOST}/packs`, { ...data });
       dispatch(slice.actions.addPackSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

@@ -5,7 +5,6 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addExcel } from 'store/reducers/activeSubst';
 
 import ImportToFile from 'components/ImportToFile';
@@ -23,22 +22,10 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        name: item?.name,
-        status: item?.status
+        Name: item?.name,
+        Status: item?.status
       }));
       dispatch(addExcel(newData));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Sustancias successfully.',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-
       onCancel();
     } catch (error) {
       console.error(error);

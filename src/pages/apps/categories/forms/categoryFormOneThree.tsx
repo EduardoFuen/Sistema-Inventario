@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -17,41 +16,32 @@ import { useSelector } from 'store';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
-function AddCategoryThree(category: any) {
+function AddCategoryThree({ categoryThree: category }: any) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
-  const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
-
-  const items = useMemo(() => {
-    if (category) {
-      const { categoryThree } = category;
-      return categoryListThree.find((item) => item?.categoryThree === categoryThree);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
   const handleCancel = () => {
     history(`/p/product-list`);
   };
 
   const SubstSchema = Yup.object().shape({
-    categoryOne: Yup.string().max(255).required('Categoria 1 es requerido'),
-    categoryTwo: Yup.string().max(255).required('Categoria 2 es requerido'),
-    categoryThree: Yup.string().max(255).required('Nombre es requerido')
+    CategoryOneID: Yup.string().max(255).required('Categoria 1 es requerido'),
+    CategoryTwoID: Yup.string().max(255).required('Categoria 2 es requerido'),
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const formik = useFormik({
     initialValues: {
-      categoryThree: items?.categoryThree || '',
-      categoryOne: items?.categoryOne || '',
-      categoryTwo: items?.categoryTwo || '',
-      status: items?.status || false
+      Name: category?.Name || '',
+      CategoryOneID: category?.CategoryOneID || '',
+      CategoryTwoID: category?.CategoryTwoID || '',
+      Status: category?.Status || false
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.categoryThree) {
+        if (category?.Name) {
           dispatch(
             openSnackbar({
               open: true,
@@ -63,7 +53,7 @@ function AddCategoryThree(category: any) {
               close: false
             })
           );
-          dispatch(editCategory('CategoryThree', category?.categoryThree, values));
+          dispatch(editCategory('Name', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -110,9 +100,9 @@ function AddCategoryThree(category: any) {
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             placeholder="Ingresar Nombre Categoria"
                             fullWidth
-                            {...getFieldProps('categoryThree')}
-                            error={Boolean(touched.categoryThree && errors.categoryThree)}
-                            helperText={touched.categoryThree && errors.categoryThree}
+                            {...getFieldProps('Name')}
+                            error={Boolean(touched.Name && errors.Name)}
+                            helperText={touched.Name && errors.Name}
                           />
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
@@ -123,15 +113,15 @@ function AddCategoryThree(category: any) {
                             placeholder="Categoria 1"
                             fullWidth
                             select
-                            {...getFieldProps('categoryOne')}
-                            error={Boolean(touched.categoryOne && errors.categoryOne)}
-                            helperText={touched.categoryOne && errors.categoryOne}
+                            {...getFieldProps('CategoryOneID')}
+                            error={Boolean(touched.CategoryOneID && errors.CategoryOneID)}
+                            helperText={touched.CategoryOneID && errors.CategoryOneID}
                           >
                             {categoryListOne
-                              .filter((item: any) => item.status === true)
+                              .filter((item: any) => item.Status === true)
                               .map((option: any) => (
-                                <MenuItem key={option.categoryOne} value={option.categoryOne}>
-                                  {option.categoryOne}
+                                <MenuItem key={option.Name} value={option.ID}>
+                                  {option.Name}
                                 </MenuItem>
                               ))}
                           </TextField>
@@ -144,15 +134,15 @@ function AddCategoryThree(category: any) {
                             placeholder="Categoria 2"
                             fullWidth
                             select
-                            {...getFieldProps('categoryTwo')}
-                            error={Boolean(touched.categoryTwo && errors.categoryTwo)}
-                            helperText={touched.categoryTwo && errors.categoryTwo}
+                            {...getFieldProps('CategoryTwoID')}
+                            error={Boolean(touched.CategoryTwoID && errors.CategoryTwoID)}
+                            helperText={touched.CategoryTwoID && errors.CategoryTwoID}
                           >
                             {categoryListTwo
-                              .filter((item: any) => item.status === true)
+                              .filter((item: any) => item.Status === true)
                               .map((option: any) => (
-                                <MenuItem key={option.categoryTwo} value={option.categoryTwo}>
-                                  {option.categoryTwo}
+                                <MenuItem key={option.Name} value={option.ID}>
+                                  {option.Name}
                                 </MenuItem>
                               ))}
                           </TextField>
@@ -162,7 +152,7 @@ function AddCategoryThree(category: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={items?.status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
                             label=""
                             labelPlacement="top"
                             {...getFieldProps('status')}

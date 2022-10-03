@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { SubstancesStateProps } from 'types/e-commerce';
@@ -35,9 +36,8 @@ const slice = createSlice({
       state.todoListSubs.push(action.payload);
     },
     updateSubsSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.todoListSubs.findIndex((item) => item.ID === name);
-      state.todoListSubs[index] = data;
+      const index = state.todoListSubs.findIndex((item) => item.ID === action.payload?.ID);
+      state.todoListSubs[index] = action.payload;
     },
     excelSuccess(state, action) {
       state.todoListSubs = [...state.todoListSubs, ...action.payload];
@@ -52,7 +52,7 @@ export default slice.reducer;
 export function getSubsList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/bodegas`);
+      const response = await axios.get(`${HOST}/sustancias`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSubsSuccess(response.data));
       }
@@ -65,7 +65,7 @@ export function getSubsList() {
 export function addSubs(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      const response = await axios.post(`${HOST}/sustancias`, { ...data });
       dispatch(slice.actions.addSubsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -76,7 +76,7 @@ export function addSubs(data: any) {
 export function editSubs(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/sustancias`, { ID: id, ...data });
       dispatch(slice.actions.updateSubsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -86,7 +86,7 @@ export function editSubs(id: number, data: any) {
 export function deleteSubs(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/sustancias`, { data: { ID: id } });
       if (response) {
         dispatch(getSubsList());
       }
@@ -98,7 +98,19 @@ export function deleteSubs(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.excelSuccess(data));
+      const response = await axios.post(`${HOST}/tipodeproducto`, data);
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Importado Sustancias.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

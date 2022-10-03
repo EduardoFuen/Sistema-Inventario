@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { TypeProductStateProps } from 'types/e-commerce';
@@ -51,7 +52,7 @@ export default slice.reducer;
 export function getTypeProductList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/bodegas`);
+      const response = await axios.get(`${HOST}/tipodeproducto`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getTypeProductSuccess(response.data));
       }
@@ -64,7 +65,7 @@ export function getTypeProductList() {
 export function addTypeProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      const response = await axios.post(`${HOST}/tipodeproducto`, { ...data });
       dispatch(slice.actions.addTypeProductSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -74,7 +75,7 @@ export function addTypeProduct(data: any) {
 export function editTypeProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/tipodeproducto`, { ID: id, ...data });
       dispatch(slice.actions.updateTypeProductSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -85,7 +86,7 @@ export function editTypeProduct(id: number, data: any) {
 export function deleteTypeProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/tipodeproducto`, { data: { ID: id } });
       if (response) {
         dispatch(getTypeProductList());
       }
@@ -97,7 +98,18 @@ export function deleteTypeProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, data);
+      const response = await axios.post(`${HOST}/tipodeproducto`, data);
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Tipo de Producto Importado.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
       dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

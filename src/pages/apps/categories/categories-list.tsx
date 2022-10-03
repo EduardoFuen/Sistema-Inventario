@@ -35,7 +35,7 @@ import { HeaderSort, SortingSelect, TablePagination } from 'components/third-par
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getCategoryList, deleteCategory } from 'store/reducers/category';
+import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
@@ -75,7 +75,7 @@ function ReactTable({ columns, data, getHeaderProps, handleImport }: Props) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'categoryOne', desc: false };
+  const sortBy = { id: 'Name', desc: true };
 
   const {
     getTableProps,
@@ -211,19 +211,19 @@ const CategoriesList = () => {
 
   const [columnsValue, setColumnsValue] = useState<any>({
     Header: 'Categoria',
-    accessor: 'categoryOne',
+    accessor: 'Name',
     className: 'cell-center'
   });
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     let columnOne = {
       Header: 'Categoria',
-      accessor: 'categoryOne',
+      accessor: 'Name',
       className: 'cell-center'
     };
     let columnTwo = {
       Header: 'Categoria 2',
-      accessor: 'categoryTwo',
+      accessor: 'Name',
       className: 'cell-center'
     };
 
@@ -239,31 +239,32 @@ const CategoriesList = () => {
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   useEffect(() => {
-    dispatch(getCategoryList());
+    dispatch(getCategoryListOne());
+    dispatch(getCategoryListTwo());
+    dispatch(getCategoryListThree());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const columns = () => [
     value !== 2 && columnsValue,
 
     value === 2 && {
       Header: 'Categoria',
-      accessor: 'categoryOne',
+      accessor: 'CategoryOneID',
       className: 'cell-center'
     },
     value === 2 && {
       Header: 'Categoria 2',
-      accessor: 'categoryTwo',
+      accessor: 'CategoryTwoID',
       className: 'cell-center'
     },
     value === 2 && {
       Header: 'Categoria 3',
-      accessor: 'categoryThree',
+      accessor: 'Name',
       className: 'cell-center'
     },
     {
       Header: 'Estado',
-      accessor: 'status',
+      accessor: 'Status',
       className: 'cell-center',
       Cell: ({ value }: any) => {
         switch (value) {
@@ -290,14 +291,14 @@ const CategoriesList = () => {
                   let category: string;
                   switch (value) {
                     case 0:
-                      category = row.values?.categoryOne;
+                      category = row.original?.ID;
                       break;
                     case 1:
-                      category = row.values?.categoryTwo;
+                      category = row.original?.ID;
                       break;
 
                     default:
-                      category = row.values?.categoryThree;
+                      category = row.original?.ID;
                       break;
                   }
                   handleEditCategory(category, value);

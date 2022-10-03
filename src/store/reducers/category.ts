@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -25,7 +26,16 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
+    // GET CATEGORY ONE
+    getCategoryOneSuccess(state, action) {
+      state.categoryListOne = action.payload;
+    },
+    getCategoryTwoSuccess(state, action) {
+      state.categoryListTwo = action.payload;
+    },
+    getCategoryThreeSuccess(state, action) {
+      state.categoryListThree = action.payload;
+    },
     // ADD CATEGORY ONE
     addCategorySuccess(state, action) {
       state.categoryListOne.push(action.payload);
@@ -35,6 +45,39 @@ const slice = createSlice({
     },
     addCategory3Success(state, action) {
       state.categoryListThree.push(action.payload);
+    },
+    updateCategorySuccess(state, action) {
+      const { type, id, data } = action.payload;
+      switch (type) {
+        case 'CategoryOne': {
+          let index: number = state.categoryListOne.findIndex((item) => item.ID === id);
+          state.categoryListOne[index] = data;
+          break;
+        }
+        case 'CategoryTwo': {
+          let index: number = state.categoryListTwo.findIndex((item) => item.ID === id);
+          state.categoryListTwo[index] = data;
+          break;
+        }
+        default:
+          let index: number = state.categoryListThree.findIndex((item) => item.ID === id);
+          state.categoryListThree[index] = data;
+      }
+    },
+    deleteCategorySuccess(state, action) {
+      const { row } = action.payload;
+      if (row.categoryOne) {
+        const index = state.categoryListOne.findIndex((item) => item.ID === row.categoryOne);
+        state.categoryListOne.splice(index, 1);
+      }
+      if (row.categoryTwo) {
+        const index = state.categoryListTwo.findIndex((item) => item.ID === row.categoryTwo);
+        state.categoryListTwo.splice(index, 1);
+      }
+      if (row.categoryThree) {
+        const index = state.categoryListThree.findIndex((item) => item.ID === row.categoryThree);
+        state.categoryListThree.splice(index, 1);
+      }
     },
     excelSuccess(state, action) {
       const { index, data } = action.payload;
@@ -49,50 +92,6 @@ const slice = createSlice({
           state.categoryListThree = [...state.categoryListThree, ...data];
           break;
       }
-      /* state.packList = [...state.packList, ...action.payload]; */
-    },
-    updateCategorySuccess(state, action) {
-      const { type, id, data } = action.payload;
-      switch (type) {
-        case 'CategoryOne': {
-          let index2: number = state.categoryListThree.findIndex((item) => item.categoryOne === id);
-          state.categoryListThree[index2] = {
-            ...state.categoryListThree[index2],
-            categoryOne: data.categoryOne
-          };
-          let indexOne: number = state.categoryListOne.findIndex((item) => item.categoryOne === id);
-          state.categoryListOne[indexOne] = data;
-          break;
-        }
-        case 'CategoryTwo': {
-          let index2: number = state.categoryListThree.findIndex((item) => item.categoryTwo === id);
-          state.categoryListThree[index2] = {
-            ...state.categoryListThree[index2],
-            categoryTwo: data.categoryTwo
-          };
-          let index: number = state.categoryListTwo.findIndex((item) => item.categoryTwo === id);
-          state.categoryListTwo[index] = data;
-          break;
-        }
-        default:
-          let index: number = state.categoryListThree.findIndex((item) => item.categoryThree === id);
-          state.categoryListThree[index] = data;
-      }
-    },
-    deleteCategorySuccess(state, action) {
-      const { row } = action.payload;
-      if (row.categoryOne) {
-        const index = state.categoryListOne.findIndex((item) => item.categoryOne === row.categoryOne);
-        state.categoryListOne.splice(index, 1);
-      }
-      if (row.categoryTwo) {
-        const index = state.categoryListTwo.findIndex((item) => item.categoryTwo === row.categoryTwo);
-        state.categoryListTwo.splice(index, 1);
-      }
-      if (row.categoryThree) {
-        const index = state.categoryListThree.findIndex((item) => item.categoryThree === row.categoryThree);
-        state.categoryListThree.splice(index, 1);
-      }
     }
   }
 });
@@ -101,7 +100,53 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+export function getCategoryListOne() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/categorias/one`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getCategoryOneSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function addCategoryOne(data: any) {
+  return async () => {
+    try {
+      const response = await axios.post(`${HOST}/categorias/one`, { ...data });
+      dispatch(slice.actions.addCategorySuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
+export function getCategoryListTwo() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/categorias/two`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getCategoryTwoSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function getCategoryListThree() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/categorias/three`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getCategoryThreeSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function addCategory(data: any) {
   return async () => {
     try {
@@ -130,30 +175,43 @@ export function addCategory3(data: any) {
     }
   };
 }
-export function addExcel(data: any, index: number) {
+
+export function editCategory(type: string, id: number, data: any) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.excelSuccess({
-          index,
-          data
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function editCategory(type: string, id: string, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.updateCategorySuccess({
-          type,
-          id,
-          data
-        })
-      );
+      switch (type) {
+        case 'CategoryOne': {
+          const response = await axios.put(`${HOST}/categorias/one`, { ID: id, ...data });
+          dispatch(
+            slice.actions.updateCategorySuccess({
+              type,
+              id,
+              data: response.data
+            })
+          );
+          break;
+        }
+        case 'CategoryTwo': {
+          const response = await axios.put(`${HOST}/categorias/two`, { ID: id, ...data });
+          dispatch(
+            slice.actions.updateCategorySuccess({
+              type,
+              id,
+              data: response.data
+            })
+          );
+          break;
+        }
+        default:
+          const response = await axios.put(`${HOST}/categorias/three`, { ID: id, ...data });
+          dispatch(
+            slice.actions.updateCategorySuccess({
+              type,
+              id,
+              data: response.data
+            })
+          );
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -173,10 +231,15 @@ export function deleteCategory(row: any) {
     }
   };
 }
-export function getCategoryList() {
+export function addExcel(data: any, index: number) {
   return async () => {
     try {
-      localStorage.getItem('mantis-ts-category');
+      dispatch(
+        slice.actions.excelSuccess({
+          index,
+          data
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

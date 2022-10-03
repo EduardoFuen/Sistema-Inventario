@@ -89,7 +89,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
         };
 
         if (product) {
-          dispatch(editTypeProduct(product.Name, newProduct));
+          dispatch(editTypeProduct(product.ID, newProduct));
           dispatch(
             openSnackbar({
               open: true,

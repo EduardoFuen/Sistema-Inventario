@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -13,12 +11,11 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addCategory, editCategory } from 'store/reducers/category';
-import { useSelector } from 'store';
+import { addCategoryOne, editCategory } from 'store/reducers/category';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
-function AddCategoryOne(category: any) {
+function AddCategoryOne({ categoryOne: category }: any) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,27 +24,18 @@ function AddCategoryOne(category: any) {
   };
 
   const SubstSchema = Yup.object().shape({
-    categoryOne: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
-  const { categoryListOne } = useSelector((state) => state.category);
-
-  const items = useMemo(() => {
-    if (category) {
-      const { categoryOne } = category;
-      return categoryListOne.find((item) => item?.categoryOne === categoryOne);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const formik = useFormik({
     initialValues: {
-      categoryOne: items?.categoryOne || '',
-      status: items?.status || false
+      Name: category?.Name || '',
+      Status: category?.Status || false
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.categoryOne) {
+        if (category?.Name) {
           dispatch(
             openSnackbar({
               open: true,
@@ -59,7 +47,7 @@ function AddCategoryOne(category: any) {
               close: false
             })
           );
-          dispatch(editCategory('CategoryOne', category?.categoryOne, values));
+          dispatch(editCategory('CategoryOne', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -72,7 +60,7 @@ function AddCategoryOne(category: any) {
               close: false
             })
           );
-          dispatch(addCategory(values));
+          dispatch(addCategoryOne(values));
           resetForm();
         }
         setSubmitting(false);
@@ -106,9 +94,9 @@ function AddCategoryOne(category: any) {
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             placeholder="Ingresar Nombre Categoria"
                             fullWidth
-                            {...getFieldProps('categoryOne')}
-                            error={Boolean(touched.categoryOne && errors.categoryOne)}
-                            helperText={touched.categoryOne && errors.categoryOne}
+                            {...getFieldProps('Name')}
+                            error={Boolean(touched.Name && errors.Name)}
+                            helperText={touched.Name && errors.Name}
                           />
                         </Grid>
                         <Grid item xs={12} sm={3} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
@@ -116,10 +104,10 @@ function AddCategoryOne(category: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={items?.status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
                             label=""
                             labelPlacement="top"
-                            {...getFieldProps('status')}
+                            {...getFieldProps('Status')}
                           />
                         </Grid>
                       </Grid>
