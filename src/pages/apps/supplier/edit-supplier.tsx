@@ -29,21 +29,20 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
 
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
-
 const getInitialValues = (supplier: FormikValues | null) => {
   const newSubstance = {
-    name: supplier?.name,
-    phone: supplier?.phone,
-    businessName: supplier?.businessName,
-    email: supplier?.email,
-    nit: supplier?.nit,
-    leadTimeBog: supplier?.leadTimeBog,
-    paymenTerm: supplier?.paymenTerm,
-    leadTimeBaq: supplier?.leadTimeBaq,
-    discount: supplier?.discount,
-    daysPayment: supplier?.daysPayment,
-    cupo: supplier?.cupo,
-    status: supplier?.status
+    NameContact: supplier?.NameContact,
+    PhoneContact: supplier?.PhoneContact,
+    BusinessName: supplier?.BusinessName,
+    EmailContact: supplier?.EmailContact,
+    Nit: supplier?.Nit,
+    LeadTimeBog: supplier?.LeadTimeBog,
+    PaymenTerm: supplier?.PaymenTerm,
+    LeadTimeBaq: supplier?.LeadTimeBaq,
+    Discount: supplier?.Discount,
+    DaysPayment: supplier?.DaysPayment,
+    Cupo: supplier?.Cupo,
+    Status: supplier?.Status
   };
   return newSubstance;
 };
@@ -67,12 +66,12 @@ function UpdateSuplier() {
   };
 
   const SubstSchema = Yup.object().shape({
-    businessName: Yup.string().max(255).required('Razón social es requerido'),
-    nit: Yup.string().max(255).required('NIT es requerido'),
-    name: Yup.string().max(255).required('Nombre de Contacto es requerido'),
-    email: Yup.string().max(255).required('Email es requerido'),
-    phone: Yup.string().max(255).required('Teléfono es requerido'),
-    paymenTerm: Yup.string().max(255).required('Plazo de pago es requerido')
+    BusinessName: Yup.string().max(255).required('Razón social es requerido'),
+    Nit: Yup.string().max(255).required('NIT es requerido'),
+    NameContact: Yup.string().max(255).required('Nombre de Contacto es requerido'),
+    EmailContact: Yup.string().max(255).required('Email es requerido'),
+    PhoneContact: Yup.string().max(255).required('Teléfono es requerido'),
+    PaymenTerm: Yup.string().max(255).required('Plazo de pago es requerido')
   });
 
   const formik = useFormik({
@@ -118,9 +117,9 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Razón Social</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('businessName')}
-                        error={Boolean(touched.businessName && errors.businessName)}
-                        helperText={touched.businessName && errors.businessName}
+                        {...getFieldProps('BusinessName')}
+                        error={Boolean(touched.BusinessName && errors.BusinessName)}
+                        helperText={touched.BusinessName && errors.BusinessName}
                         placeholder="Ingresar Razón Social"
                         fullWidth
                       />
@@ -129,9 +128,9 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>NIT</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('nit')}
-                        error={Boolean(touched.nit && errors.nit)}
-                        helperText={touched.nit && errors.nit}
+                        {...getFieldProps('Nit')}
+                        error={Boolean(touched.Nit && errors.Nit)}
+                        helperText={touched.Nit && errors.Nit}
                         placeholder="Ingresar NIT"
                         fullWidth
                       />
@@ -150,9 +149,9 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre de Contacto</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('NameContact')}
+                        error={Boolean(touched.NameContact && errors.NameContact)}
+                        helperText={touched.NameContact && errors.NameContact}
                         placeholder="Ingresar Nombre de Contacto"
                         fullWidth
                       />
@@ -161,9 +160,9 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Teléfono</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('phone')}
-                        error={Boolean(touched.phone && errors.phone)}
-                        helperText={touched.phone && errors.phone}
+                        {...getFieldProps('PhoneContact')}
+                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
+                        helperText={touched.PhoneContact && errors.PhoneContact}
                         placeholder="Ingresar Teléfono"
                         fullWidth
                       />
@@ -175,9 +174,9 @@ function UpdateSuplier() {
                         type="email"
                         placeholder="Ingresar Email"
                         fullWidth
-                        {...getFieldProps('email')}
-                        error={Boolean(touched.email && errors.email)}
-                        helperText={touched.email && errors.email}
+                        {...getFieldProps('EmailContact')}
+                        error={Boolean(touched.EmailContact && errors.EmailContact)}
+                        helperText={touched.EmailContact && errors.EmailContact}
                       />
                     </Grid>
                   </Grid>
@@ -196,11 +195,11 @@ function UpdateSuplier() {
                           <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Lead Time Bogota</InputLabel>
                           <TextField
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            {...getFieldProps('leadTimeBog')}
+                            {...getFieldProps('LeadTimeBog')}
                             type="number"
                             InputProps={{ inputProps: { min: 0 } }}
-                            error={Boolean(touched.leadTimeBog && errors.leadTimeBog)}
-                            helperText={touched.leadTimeBog && errors.leadTimeBog}
+                            error={Boolean(touched.LeadTimeBog && errors.LeadTimeBog)}
+                            helperText={touched.LeadTimeBog && errors.LeadTimeBog}
                             placeholder="Ingresar Lead Time Bogota"
                             fullWidth
                           />
@@ -213,9 +212,9 @@ function UpdateSuplier() {
                             InputProps={{ inputProps: { min: 0 } }}
                             placeholder="Ingresar Lead Time Barranquilla"
                             fullWidth
-                            {...getFieldProps('leadTimeBaq')}
-                            error={Boolean(touched.leadTimeBaq && errors.leadTimeBaq)}
-                            helperText={touched.leadTimeBaq && errors.leadTimeBaq}
+                            {...getFieldProps('LeadTimeBaq')}
+                            error={Boolean(touched.LeadTimeBog && errors.LeadTimeBog)}
+                            helperText={touched.LeadTimeBog && errors.LeadTimeBog}
                           />
                         </Grid>
                       </Grid>
@@ -233,25 +232,24 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Plazo de pago</InputLabel>
                       <Select
                         fullWidth
-                        {...getFieldProps('paymenTerm')}
+                        {...getFieldProps('PaymenTerm')}
                         inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.paymenTerm && errors.paymenTerm)}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
                       >
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Seleccionar Plazo de pago
                         </MenuItem>
                         <MenuItem value="Pago inmediato">Pago inmediato</MenuItem>
-                        <MenuItem value="1 Día">1 Día</MenuItem>
-                        <MenuItem value="2 Días">2 Días</MenuItem>
-                        <MenuItem value="3 Días">3 Días</MenuItem>
-                        <MenuItem value="3 Días">3 Días</MenuItem>
-                        <MenuItem value="15 Días">15 Días</MenuItem>
-                        <MenuItem value="21 Días">21 Días</MenuItem>
-                        <MenuItem value="30 Días">30 Días</MenuItem>
-                        <MenuItem value="45 Días">45 Días</MenuItem>
-                        <MenuItem value="2 Meses">2 Meses</MenuItem>
+                        <MenuItem value="Pago inmediato 1">1 Día</MenuItem>
+                        <MenuItem value="Pago inmediato 2">2 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 3">3 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 5">15 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 21">21 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 30">30 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 45">45 Días</MenuItem>
+                        <MenuItem value="Pago inmediato 2 Meses">2 Meses</MenuItem>
                       </Select>
-                      {touched.paymenTerm && <FormHelperText error>{formik.errors.paymenTerm} </FormHelperText>}
+                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cupo</InputLabel>
@@ -259,11 +257,11 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         type="number"
                         InputProps={{ inputProps: { min: 0 } }}
-                        placeholder="Ingresar cupo"
+                        placeholder="Ingresar Cupo"
                         fullWidth
-                        {...getFieldProps('cupo')}
-                        error={Boolean(touched.cupo && errors.cupo)}
-                        helperText={touched.cupo && errors.cupo}
+                        {...getFieldProps('Cupo')}
+                        error={Boolean(touched.Cupo && errors.Cupo)}
+                        helperText={touched.Cupo && errors.Cupo}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -272,9 +270,9 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         placeholder="Ingresar Días pronto pago"
                         fullWidth
-                        {...getFieldProps('daysPayment')}
-                        error={Boolean(touched.daysPayment && errors.daysPayment)}
-                        helperText={touched.daysPayment && errors.daysPayment}
+                        {...getFieldProps('DaysPayment')}
+                        error={Boolean(touched.DaysPayment && errors.DaysPayment)}
+                        helperText={touched.DaysPayment && errors.DaysPayment}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -283,9 +281,9 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         placeholder="Ingresar Descuento pronto pago %"
                         fullWidth
-                        {...getFieldProps('discount')}
-                        error={Boolean(touched.discount && errors.discount)}
-                        helperText={touched.discount && errors.discount}
+                        {...getFieldProps('Discount')}
+                        error={Boolean(touched.Discount && errors.Discount)}
+                        helperText={touched.Discount && errors.Discount}
                       />
                     </Grid>
                   </Grid>
@@ -294,16 +292,16 @@ function UpdateSuplier() {
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <FormControlLabel
-                    control={<Switch sx={{ mt: 0 }} defaultChecked={supplier?.Status} />}
+                    control={<Switch sx={{ mt: 0 }} defaultChecked={supplier?.Status} value={supplier?.Status} />}
                     label=""
                     labelPlacement="top"
-                    {...getFieldProps('status')}
+                    {...getFieldProps('Status')}
                   />
                   <Button
                     variant="outlined"
                     color="error"
                     onClick={() => {
-                      dispatch(deleteSupplier(1));
+                      dispatch(deleteSupplier(Number(id)));
                       history(`/supplier`);
                       dispatch(
                         openSnackbar({

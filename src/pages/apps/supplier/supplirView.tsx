@@ -39,7 +39,7 @@ const UserView = ({ data }: any) => {
                 <Grid item xs={12}>
                   <Stack spacing={2.5} alignItems="center">
                     <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">{capitalize(data.businessName)}</Typography>
+                      <Typography variant="h5">{capitalize(data?.BusinessName)}</Typography>
                       <Typography variant="h6" color="secondary">
                         {data.nit}
                       </Typography>
@@ -56,7 +56,7 @@ const UserView = ({ data }: any) => {
                         <MailOutlined />
                       </ListItemIcon>
                       <ListItemSecondaryAction>
-                        <Typography align="right">{data.email}</Typography>
+                        <Typography align="right">{data?.EmailContact}</Typography>
                       </ListItemSecondaryAction>
                     </ListItem>
                     <ListItem>
@@ -65,7 +65,7 @@ const UserView = ({ data }: any) => {
                       </ListItemIcon>
                       <ListItemSecondaryAction>
                         <Typography align="right">
-                          <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={data.phone} />
+                          <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={data?.PhoneContact} />
                         </Typography>
                       </ListItemSecondaryAction>
                     </ListItem>
@@ -83,7 +83,7 @@ const UserView = ({ data }: any) => {
                       <Grid item xs={12} md={6}>
                         <Stack spacing={0.5}>
                           <Typography color="secondary">Datos de Contacto</Typography>
-                          <Typography>Nombre {capitalize(data.name)}</Typography>
+                          <Typography>Nombre {capitalize(data?.NameContact)}</Typography>
                         </Stack>
                       </Grid>
                     </Grid>
@@ -95,7 +95,7 @@ const UserView = ({ data }: any) => {
                           <Typography color="secondary" align="center">
                             Lead Time Bogota
                           </Typography>
-                          <Typography align="center">{data.leadTimeBog}</Typography>
+                          <Typography align="center">{data?.LeadTimeBog}</Typography>
                         </Stack>
                       </Grid>
                       <Grid item xs={12} md={6}>
@@ -103,30 +103,30 @@ const UserView = ({ data }: any) => {
                           <Typography color="secondary" align="center">
                             Lead Time Barraquilla
                           </Typography>
-                          <Typography align="center">{data.leadTimeBaq}</Typography>
+                          <Typography align="center">{data?.LeadTimeBaq}</Typography>
                         </Stack>
                       </Grid>
                     </Grid>
                   </ListItem>
                   <ListItem divider={!matchDownMD}>
                     <Grid container spacing={3}>
-                      {data.paymenTerm && (
+                      {data.PaymenTerm && (
                         <Grid item xs={12} md={6}>
                           <Stack spacing={0.5}>
                             <Typography color="secondary" align="center">
                               Plazo de pagos
                             </Typography>
-                            <Typography align="center">{data.paymenTerm}</Typography>
+                            <Typography align="center">{data?.PaymenTerm}</Typography>
                           </Stack>
                         </Grid>
                       )}
-                      {data.daysPayment && (
+                      {data.DaysPayment && (
                         <Grid item xs={12} md={6}>
                           <Stack spacing={0.5}>
                             <Typography color="secondary" align="center">
                               Días pronto pago
                             </Typography>
-                            <Typography align="center">{data.daysPayment}</Typography>
+                            <Typography align="center">{data?.DaysPayment}</Typography>
                           </Stack>
                         </Grid>
                       )}

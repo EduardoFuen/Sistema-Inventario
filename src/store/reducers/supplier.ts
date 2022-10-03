@@ -37,9 +37,8 @@ const slice = createSlice({
       state.supplierList.push(action.payload);
     },
     updateSupplierSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.supplierList.findIndex((item) => item.BusinessName === name);
-      state.supplierList[index] = data;
+      const index = state.supplierList.findIndex((item) => item.ID === action.payload?.ID);
+      state.supplierList[index] = action.payload;
     }
   }
 });
@@ -51,9 +50,9 @@ export default slice.reducer;
 export function getSupplierList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/bodegas`);
+      const response = await axios.get(`${HOST}/proveedores`);
       if (response.data instanceof Array) {
-        //  dispatch(slice.actions.getSupplierSuccess(response.data));
+        dispatch(slice.actions.getSupplierSuccess(response.data));
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -64,7 +63,7 @@ export function getSupplierList() {
 export function createSupplier(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      const response = await axios.post(`${HOST}/proveedores`, { ...data });
       dispatch(slice.actions.addSupplierSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -74,7 +73,7 @@ export function createSupplier(data: any) {
 export function editSupplier(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/proveedores`, { ID: id, ...data });
       dispatch(slice.actions.updateSupplierSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -85,7 +84,7 @@ export function editSupplier(id: number, data: any) {
 export function deleteSupplier(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/proveedores`, { data: { ID: id } });
       if (response) {
         dispatch(getSupplierList());
       }
@@ -97,7 +96,7 @@ export function deleteSupplier(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, data);
+      const response = await axios.post(`${HOST}/proveedores`, data);
       dispatch(slice.actions.excelSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

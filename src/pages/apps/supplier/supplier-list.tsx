@@ -59,7 +59,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'businessName', desc: false };
+  const sortBy = { id: 'BusinessName', desc: true };
 
   const {
     getTableProps,
@@ -205,12 +205,12 @@ const SupplierListPage = () => {
     () => [
       {
         Header: 'NIT',
-        accessor: 'nit',
+        accessor: 'Nit',
         className: 'cell-center'
       },
       {
         Header: 'Razón social',
-        accessor: 'businessName',
+        accessor: 'BusinessName',
         className: 'cell-center',
         Cell: ({ value }: any) => (
           <Typography variant="h6" key={value}>
@@ -221,22 +221,22 @@ const SupplierListPage = () => {
       {
         Header: 'Email',
         className: 'cell-center',
-        accessor: 'email'
+        accessor: 'EmailContact'
       },
       {
         Header: 'Teléfono',
         className: 'cell-center',
-        accessor: 'phone',
+        accessor: 'PhoneContact',
         Cell: ({ value }) => <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={value} />
       },
       {
         Header: 'Nombre Contacto',
         className: 'cell-center',
-        accessor: 'name'
+        accessor: 'NameContact'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:
@@ -275,7 +275,7 @@ const SupplierListPage = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditSupplier(row?.values?.businessName);
+                    handleEditSupplier(row?.original?.ID);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -286,7 +286,7 @@ const SupplierListPage = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(deleteSupplier(row?.businessName));
+                    dispatch(deleteSupplier(row?.original?.ID));
                     dispatch(
                       openSnackbar({
                         open: true,

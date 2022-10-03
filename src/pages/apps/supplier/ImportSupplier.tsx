@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addExcel } from 'store/reducers/pack';
+import { addExcel } from 'store/reducers/supplier';
 
 import ImportToFile from 'components/ImportToFile';
 
@@ -23,20 +23,18 @@ const ImporSupplier = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        id: item?.id,
-        email: item?.email,
-        nit: item?.nit,
-        location: item?.location,
-        businessName: item?.businessName,
-        phone: item?.phone,
-        status: item?.status,
-        leadTimeBog: item?.leadTimeBog,
-        paymenTerm: item?.paymenTerm,
+        EmailContact: item?.email,
+        Nit: item?.nit,
+        BusinessName: item?.businessName,
+        PhoneContact: item?.phone,
+        Status: item?.status,
+        LeadTimeBog: item?.leadTimeBog,
+        LeadTimeBaq: item?.paymenTerm,
         leadTimeBaq: item?.leadTimeBaq,
-        discount: item?.discount,
-        daysPayment: item?.daysPayment,
-        cupo: item?.cupo,
-        name: item?.name
+        Discount: item?.discount,
+        DaysPayment: item?.daysPayment,
+        Cupo: item?.cupo,
+        NameContact: item?.name
       }));
       dispatch(addExcel(newData));
       dispatch(
