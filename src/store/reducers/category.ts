@@ -36,7 +36,7 @@ const slice = createSlice({
     addCategory3Success(state, action) {
       state.categoryListThree.push(action.payload);
     },
-    ExcelSuccess(state, action) {
+    excelSuccess(state, action) {
       const { index, data } = action.payload;
       switch (index) {
         case 0:
@@ -134,7 +134,7 @@ export function addExcel(data: any, index: number) {
   return async () => {
     try {
       dispatch(
-        slice.actions.ExcelSuccess({
+        slice.actions.excelSuccess({
           index,
           data
         })

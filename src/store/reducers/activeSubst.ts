@@ -32,7 +32,7 @@ const slice = createSlice({
     addSubsSuccess(state, action) {
       state.todoListSubs.push(action.payload);
     },
-    ExcelSuccess(state, action) {
+    excelSuccess(state, action) {
       state.todoListSubs = [...state.todoListSubs, ...action.payload];
     },
     updateSubsSuccess(state, action) {
@@ -80,7 +80,7 @@ export function editSubs(name: string, data: any) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.ExcelSuccess(data));
+      dispatch(slice.actions.excelSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

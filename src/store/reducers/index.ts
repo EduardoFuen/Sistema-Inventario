@@ -4,15 +4,13 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 // project import
-import chat from './chat';
-import calendar from './calendar';
 import menu from './menu';
 import snackbar from './snackbar';
 import productReducer from './product';
 import pack from './pack';
 import warehouse from './warehouse';
 import maker from './maker';
-import trademaker from './trademaker';
+import trademaker from './trademark';
 import category from './category';
 import supplier from './supplier';
 import typeProduct from './typeProduct';
@@ -23,8 +21,6 @@ import inventory from './inventory';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
-  chat,
-  calendar,
   menu,
   snackbar,
   inventory: persistReducer(

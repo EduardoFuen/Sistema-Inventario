@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -15,7 +16,7 @@ const initialState: WarehouseStateProps = {
   warehouseList: []
 };
 
-const slice = createSlice({
+const wareHouse = createSlice({
   name: 'warehouse',
   initialState,
   reducers: {
@@ -28,83 +29,76 @@ const slice = createSlice({
     getWarehouseSuccess(state, action) {
       state.warehouseList = action.payload;
     },
-    ExcelSuccess(state, action) {
+    excelSuccess(state, action) {
       state.warehouseList = [...state.warehouseList, ...action.payload];
     },
     // ADD PACK
     addWarehouseSuccess(state, action) {
       state.warehouseList.push(action.payload);
     },
-    UpdateWarehouseSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.warehouseList.findIndex((item) => item.name === name);
-      state.warehouseList[index] = data;
-    },
-    DeleteWarehouseSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.warehouseList.findIndex((item) => item.name === name);
-      state.warehouseList.splice(index, 1);
+    updateWarehouseSuccess(state, action) {
+      const index = state.warehouseList.findIndex((item) => item?.ID === action.payload?.ID);
+      state.warehouseList[index] = action.payload;
     }
   }
 });
 
 // Reducer
-export default slice.reducer;
+export default wareHouse.reducer;
 
 // ----------------------------------------------------------------------
+export function getWarehouseList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/bodegas`);
+      dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
+    } catch (error) {
+      dispatch(wareHouse.actions.hasError(error));
+    }
+  };
+}
 
 export function addWarehouse(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addWarehouseSuccess(data));
+      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function addExcel(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.ExcelSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function editWarehouse(name: string, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.UpdateWarehouseSuccess({
-          name,
-          data
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(wareHouse.actions.hasError(error));
     }
   };
 }
 
-export function deleteWarehouse(name: string) {
+export function editWarehouse(id: number, data: any) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.DeleteWarehouseSuccess({
-          name
-        })
-      );
+      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      dispatch(wareHouse.actions.updateWarehouseSuccess(response.data));
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(wareHouse.actions.hasError(error));
     }
   };
 }
-export function getWarehouseList() {
+
+export function deleteWarehouse(id: number) {
   return async () => {
     try {
-      localStorage.getItem('mantis-ts-warehouse');
+      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      if (response) {
+        dispatch(getWarehouseList());
+      }
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(wareHouse.actions.hasError(error));
+    }
+  };
+}
+
+export function addExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(wareHouse.actions.excelSuccess(data));
+    } catch (error) {
+      dispatch(wareHouse.actions.hasError(error));
     }
   };
 }

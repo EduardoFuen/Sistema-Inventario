@@ -21,7 +21,7 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 import { useDispatch, useSelector } from 'store';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getTrademarkList, deleteTrademark } from 'store/reducers/trademaker';
+import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
@@ -181,7 +181,7 @@ const TradeMarkList = () => {
     () => [
       {
         Header: 'Trademark',
-        accessor: 'name'
+        accessor: 'Name'
       },
       {
         Header: 'Maker',
@@ -189,7 +189,7 @@ const TradeMarkList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:

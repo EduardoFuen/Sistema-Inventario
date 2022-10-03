@@ -307,7 +307,7 @@ function AddNewProduct() {
                         multiple
                         id="warehouse-list"
                         options={warehouseList.filter((item: any) => item.status === true)}
-                        getOptionLabel={(option) => option.name}
+                        getOptionLabel={(option) => option.Name}
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {

@@ -177,27 +177,28 @@ const WarehouseList = () => {
     dispatch(getWarehouseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const columns = useMemo(
     () => [
       {
         Header: 'Bodega',
-        accessor: 'name'
+        accessor: 'Name'
       },
       {
         Header: 'Dirección',
-        accessor: 'location'
+        accessor: 'Location'
       },
       {
         Header: 'Ciudad',
-        accessor: 'city'
+        accessor: 'City'
       },
       {
         Header: 'Departamento',
-        accessor: 'department'
+        accessor: 'Department'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:
@@ -213,6 +214,7 @@ const WarehouseList = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const { original } = row;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -220,7 +222,7 @@ const WarehouseList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setWarehouse(row.values);
+                    setWarehouse(original);
                     handleAdd();
                   }}
                 >
@@ -243,7 +245,7 @@ const WarehouseList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteWarehouse(row?.name));
+                    dispatch(deleteWarehouse(original?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

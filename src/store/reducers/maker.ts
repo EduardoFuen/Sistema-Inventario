@@ -34,7 +34,7 @@ const maker = createSlice({
     addMakerSuccess(state, action) {
       state.makerList.push(action.payload);
     },
-    addMakerExcelSuccess(state, action) {
+    addMakerexcelSuccess(state, action) {
       state.makerList = [...state.makerList, ...action.payload];
     },
     updateMakerSuccess(state, action) {
@@ -69,15 +69,6 @@ export function addMaker(data: any) {
     }
   };
 }
-export function addMakerExcel(data: any) {
-  return async () => {
-    try {
-      dispatch(maker.actions.addMakerExcelSuccess(data));
-    } catch (error) {
-      dispatch(maker.actions.hasError(error));
-    }
-  };
-}
 export function editMaker(id: number, data: any) {
   return async () => {
     try {
@@ -96,6 +87,15 @@ export function deleteMaker(id: number) {
       if (response) {
         dispatch(getMakerList());
       }
+    } catch (error) {
+      dispatch(maker.actions.hasError(error));
+    }
+  };
+}
+export function addMakerExcel(data: any) {
+  return async () => {
+    try {
+      dispatch(maker.actions.addMakerexcelSuccess(data));
     } catch (error) {
       dispatch(maker.actions.hasError(error));
     }

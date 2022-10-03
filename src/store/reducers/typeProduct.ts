@@ -33,7 +33,7 @@ const slice = createSlice({
     addTypeProductSuccess(state, action) {
       state.typeProductList.push(action.payload);
     },
-    ExcelSuccess(state, action) {
+    excelSuccess(state, action) {
       state.typeProductList = [...state.typeProductList, ...action.payload];
     },
     updateTypeProductSuccess(state, action) {
@@ -66,7 +66,7 @@ export function addTypeProduct(data: any) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.ExcelSuccess(data));
+      dispatch(slice.actions.excelSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

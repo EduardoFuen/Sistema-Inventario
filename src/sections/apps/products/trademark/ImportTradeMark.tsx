@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addExcel } from 'store/reducers/trademaker';
+import { addExcel } from 'store/reducers/trademark';
 
 import ImportToFile from 'components/ImportToFile';
 

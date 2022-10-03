@@ -78,36 +78,13 @@ export const address: Address[] = [
 export const products: Products[] = [];
 
 // Pack list
-export const packList: Packs[] = [
-  {
-    id: 1,
-    name: 'vidrio',
-    status: false,
-    qty: 40
-  }
-];
+export const packList: Packs[] = [];
 
 // billing address list
-export const warehouse: Warehouses[] = [
-  {
-    id: 1,
-    name: 'Bogota',
-    department: 'Bogota',
-    city: 'Seporcus',
-    location: 'Rhode Island',
-    status: false
-  }
-];
+export const warehouse: Warehouses[] = [];
 
 // billing address list
 export const maker: Maker[] = [];
 
 // billing address list
-export const trademaker: Trademark[] = [
-  {
-    id: 1,
-    name: 'Test',
-    maker: 'nuevo',
-    status: false
-  }
-];
+export const trademaker: Trademark[] = [];

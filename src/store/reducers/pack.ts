@@ -28,21 +28,21 @@ const slice = createSlice({
     getPackSuccess(state, action) {
       state.packList = action.payload;
     },
-    ExcelSuccess(state, action) {
+    excelSuccess(state, action) {
       state.packList = [...state.packList, ...action.payload];
     },
     // ADD PACK
     addPackSuccess(state, action) {
       state.packList.push(action.payload);
     },
-    UpdatePackSuccess(state, action) {
+    updatePackSuccess(state, action) {
       const { name, data } = action.payload;
-      const index = state.packList.findIndex((item) => item.name === name);
+      const index = state.packList.findIndex((item) => item?.ID === name);
       state.packList[index] = data;
     },
-    DeletePackSuccess(state, action) {
+    deletePackSuccess(state, action) {
       const { name } = action.payload;
-      const index = state.packList.findIndex((item) => item.name === name);
+      const index = state.packList.findIndex((item) => item?.ID === name);
       state.packList.splice(index, 1);
     }
   }
@@ -65,7 +65,7 @@ export function addPack(data: any) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.ExcelSuccess(data));
+      dispatch(slice.actions.excelSuccess(data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -75,7 +75,7 @@ export function editPack(name: string, data: any) {
   return async () => {
     try {
       dispatch(
-        slice.actions.UpdatePackSuccess({
+        slice.actions.updatePackSuccess({
           name,
           data
         })
@@ -90,7 +90,7 @@ export function deletePack(name: string) {
   return async () => {
     try {
       dispatch(
-        slice.actions.DeletePackSuccess({
+        slice.actions.deletePackSuccess({
           name
         })
       );

@@ -32,7 +32,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/trademaker';
+import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/trademark';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
@@ -40,12 +40,13 @@ import { DeleteFilled } from '@ant-design/icons';
 // constant
 const getInitialValues = (tradeMark: FormikValues | null) => {
   const newTradeTrademark = {
-    name: '',
-    maker: '',
-    status: false
+    Name: '',
+    Makerid: '',
+    Status: false
   };
   if (tradeMark) {
-    newTradeTrademark.status = tradeMark.status;
+    newTradeTrademark.Status = tradeMark.Status;
+    newTradeTrademark.Makerid = tradeMark.Makerid;
     return _.merge({}, newTradeTrademark, tradeMark);
   }
 
@@ -62,14 +63,14 @@ export interface Props {
 const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMark;
-  const [maker, setMaker] = useState('');
+  const [Makerid, setMaker] = useState('');
   const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const deleteHandler = () => {
-    dispatch(deleteTrademark(tradeMark?.name));
+    dispatch(deleteTrademark(tradeMark?.ID));
     dispatch(
       openSnackbar({
         open: true,
@@ -89,13 +90,13 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newTradeTrademark = {
-          name: values.name,
-          maker: maker,
-          status: values.status
+          Name: values.Name,
+          Status: values.Status,
+          Makerid
         };
 
         if (tradeMark) {
-          dispatch(editTrademark(tradeMark.name, newTradeTrademark));
+          dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
@@ -147,14 +148,14 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="tradeMark-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="tradeMark-Name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="tradeMark-name"
+                        id="tradeMark-Name"
                         placeholder="Ingresa Nombre Trademark"
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                       />
                     </Stack>
                   </Grid>
@@ -168,15 +169,15 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                       <Select
                         fullWidth
                         id="tradeMark-maker"
-                        {...getFieldProps('maker')}
-                        value={maker || tradeMark?.maker}
+                        {...getFieldProps('Makerid')}
+                        value={Makerid || tradeMark?.Makerid}
                         onChange={handleChange}
                       >
                         {makerList
                           .filter((item: any) => item.status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.Name} value={option.Name}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </Select>
@@ -189,7 +190,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMark?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMark?.Status} value={tradeMark?.Status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"

@@ -46,15 +46,16 @@ import { DeleteFilled } from '@ant-design/icons';
 // constant
 const getInitialValues = (warehouse: FormikValues | null) => {
   const newWarehouse = {
-    name: '',
-    department: '',
-    city: '',
-    location: '',
-    status: false
+    Name: '',
+    Department: '',
+    City: '',
+    Location: '',
+    Status: false
   };
 
   if (warehouse) {
-    newWarehouse.location = warehouse.address;
+    newWarehouse.Location = warehouse.address;
+    newWarehouse.Status = warehouse.Status;
     return _.merge({}, newWarehouse, warehouse);
   }
 
@@ -74,14 +75,14 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
   const [citys, setCities] = useState([]);
 
   const UserSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido'),
-    department: Yup.string().required('Departamento es requerido'),
-    city: Yup.string().required('Ciudad es requerido'),
-    location: Yup.string().required('Dirección es requerido').max(500)
+    Name: Yup.string().max(255).required('Nombre es requerido'),
+    Department: Yup.string().required('Departamento es requerido'),
+    City: Yup.string().required('Ciudad es requerido'),
+    Location: Yup.string().required('Dirección es requerido').max(500)
   });
 
   const deleteHandler = () => {
-    dispatch(deleteWarehouse(warehouse?.name));
+    dispatch(deleteWarehouse(warehouse?.ID));
     dispatch(
       openSnackbar({
         open: true,
@@ -108,15 +109,14 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newWarehouse = {
-          name: values.name,
-          department: values.department,
-          city: values.city,
-          location: values.location,
-          status: values.status
+          Name: values.Name,
+          Department: values.Department,
+          City: values.City,
+          Location: values.Location,
+          Status: values.Status
         };
-
         if (warehouse) {
-          dispatch(editWarehouse(warehouse.name, newWarehouse));
+          dispatch(editWarehouse(warehouse?.ID, newWarehouse));
           dispatch(
             openSnackbar({
               open: true,
@@ -169,9 +169,9 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                         fullWidth
                         id="warehouse-name"
                         placeholder="Ingresa Nombre Bodega"
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                       />
                     </Stack>
                   </Grid>
@@ -182,11 +182,11 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                         <Select
                           id="column-hiding"
                           displayEmpty
-                          {...getFieldProps('department')}
+                          {...getFieldProps('Department')}
                           onChange={(event: SelectChangeEvent<string>) => {
                             changeHandler(event.target.value as string);
-                            setFieldValue('city', '');
-                            setFieldValue('department', event.target.value as string);
+                            setFieldValue('City', '');
+                            setFieldValue('Department', event.target.value as string);
                           }}
                           input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                           renderValue={(selected) => {
@@ -204,9 +204,9 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                           ))}
                         </Select>
                       </FormControl>
-                      {touched.department && errors.department && (
+                      {touched.Department && errors.Department && (
                         <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                          {errors.department}
+                          {errors.Department}
                         </FormHelperText>
                       )}
                     </Stack>
@@ -218,8 +218,8 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                         <Select
                           id="column-hiding"
                           displayEmpty
-                          {...getFieldProps('city')}
-                          onChange={(event: SelectChangeEvent<string>) => setFieldValue('city', event.target.value as string)}
+                          {...getFieldProps('City')}
+                          onChange={(event: SelectChangeEvent<string>) => setFieldValue('City', event.target.value as string)}
                           input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                           renderValue={(selected) => {
                             if (!selected) {
@@ -236,9 +236,9 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                           ))}
                         </Select>
                       </FormControl>
-                      {touched.city && errors.city && (
+                      {touched.City && errors.City && (
                         <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
-                          {errors.city}
+                          {errors.City}
                         </FormHelperText>
                       )}
                     </Stack>
@@ -252,9 +252,9 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                         multiline
                         rows={2}
                         placeholder="Ingresar Dirección"
-                        {...getFieldProps('location')}
-                        error={Boolean(touched.location && errors.location)}
-                        helperText={touched.location && errors.location}
+                        {...getFieldProps('Location')}
+                        error={Boolean(touched.Location && errors.Location)}
+                        helperText={touched.Location && errors.Location}
                       />
                     </Stack>
                   </Grid>
@@ -277,9 +277,9 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
               <Grid item>
                 <Stack direction="row" spacing={2} alignItems="center">
                   <FormControlLabel
-                    control={<Switch sx={{ mt: 0 }} defaultChecked={warehouse?.status} />}
+                    control={<Switch sx={{ mt: 0 }} defaultChecked={warehouse?.Status} value={warehouse?.Status} />}
                     label=""
-                    {...getFieldProps('status')}
+                    {...getFieldProps('Status')}
                     labelPlacement="top"
                   />
                   <Button color="error" onClick={onCancel}>

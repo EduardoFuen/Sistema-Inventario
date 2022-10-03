@@ -87,31 +87,6 @@ export type ProductsFilter = {
   rating: number;
 };
 
-// product shop filter - sort options
-export type SortOptionsProps = {
-  value: string;
-  label: string;
-};
-
-// product shop filter - colors options
-export type ColorsOptionsProps = {
-  label: string;
-  value: string;
-  bg: string;
-};
-
-export type PaymentOptionsProps = {
-  id: number;
-  value: string;
-  title: string;
-  caption: string;
-  image?: string;
-  size: {
-    width: number;
-    height: number;
-  };
-};
-
 export interface ProductStateProps {
   products: Products[];
   product: Products | null;
@@ -133,10 +108,9 @@ export interface TabsProps {
 
 // Pack
 export type Packs = {
-  id: string | number | undefined;
-  name: string;
-  status: boolean;
-  qty: number;
+  ID: string | number | undefined;
+  Name: string;
+  Status: boolean;
 };
 
 export interface PackStateProps {
@@ -154,12 +128,12 @@ export type Country = {
 
 // Warehouse
 export type Warehouses = {
-  id: string | number | undefined;
-  name: string;
-  department: string;
-  city: string;
-  location: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  Department: string;
+  City: string;
+  Location: string;
+  Status: boolean;
 };
 
 export interface WarehouseStateProps {
@@ -181,10 +155,10 @@ export interface MakerStateProps {
 
 // Trademark
 export type Trademark = {
-  id: string | number | undefined;
-  name: string;
-  maker: string;
-  status: boolean;
+  ID: string | number | undefined;
+  Name: string;
+  Makerid: number;
+  Status: boolean;
 };
 
 export interface TrademarkStateProps {
