@@ -169,7 +169,7 @@ export interface WarehouseStateProps {
 
 // Maker
 export type Maker = {
-  id: string | number | undefined;
+  ID: string | number | undefined;
   name: string;
   status: boolean;
 };

@@ -191,13 +191,18 @@ const MakersList = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'Maker',
-        accessor: 'name',
+        accessor: 'Name',
         className: 'cell-center'
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         className: 'cell-center',
         Cell: ({ value }: any) => {
           switch (value) {
@@ -244,7 +249,7 @@ const MakersList = () => {
                         close: false
                       })
                     );
-                    dispatch(deleteMaker(row?.name));
+                    dispatch(deleteMaker(row?.values?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

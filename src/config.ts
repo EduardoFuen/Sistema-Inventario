@@ -46,3 +46,5 @@ const config: DefaultConfigProps = {
 };
 
 export default config;
+
+export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';

@@ -35,12 +35,12 @@ import { DeleteFilled } from '@ant-design/icons';
 // constant
 const getInitialValues = (maker: FormikValues | null) => {
   const newMaker = {
-    name: '',
+    Name: '',
     status: false
   };
 
   if (maker) {
-    newMaker.status = maker.status;
+    newMaker.status = maker?.Status;
     return _.merge({}, newMaker, maker);
   }
 
@@ -59,11 +59,11 @@ const AddMaker = ({ maker, onCancel }: Props) => {
   const isCreating = !maker;
 
   const MakerSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido')
+    Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
   const deleteHandler = () => {
-    dispatch(deleteMaker(maker?.name));
+    dispatch(deleteMaker(maker?.ID));
     dispatch(
       openSnackbar({
         open: true,
@@ -83,12 +83,12 @@ const AddMaker = ({ maker, onCancel }: Props) => {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const newMaker = {
-          name: values.name,
-          status: values.status
+          Name: values.Name,
+          Status: values.status
         };
 
         if (maker) {
-          dispatch(editMaker(maker.name, newMaker));
+          dispatch(editMaker(maker.ID, newMaker));
           dispatch(
             openSnackbar({
               open: true,
@@ -136,14 +136,14 @@ const AddMaker = ({ maker, onCancel }: Props) => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
-                      <InputLabel htmlFor="maker-name">Nombre</InputLabel>
+                      <InputLabel htmlFor="maker-Name">Nombre</InputLabel>
                       <TextField
                         fullWidth
-                        id="maker-name"
+                        id="maker-Name"
                         placeholder="Ingresa Nombre Maker"
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                       />
                     </Stack>
                   </Grid>
@@ -154,7 +154,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
                   <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <FormControlLabel
-                        control={<Switch sx={{ mt: 0 }} defaultChecked={maker?.status} />}
+                        control={<Switch sx={{ mt: 0 }} defaultChecked={maker?.Status} value={maker?.Status} />}
                         label="Estado"
                         {...getFieldProps('status')}
                         labelPlacement="top"

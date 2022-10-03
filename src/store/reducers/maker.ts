@@ -2,7 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 
 // types
@@ -15,7 +16,7 @@ const initialState: MakerStateProps = {
   makerList: []
 };
 
-const slice = createSlice({
+const maker = createSlice({
   name: 'maker',
   initialState,
   reducers: {
@@ -37,75 +38,66 @@ const slice = createSlice({
       state.makerList = [...state.makerList, ...action.payload];
     },
     updateMakerSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.makerList.findIndex((item) => item.name === name);
-      state.makerList[index] = data;
-    },
-    deleteMakerSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.makerList.findIndex((item) => item.name === name);
-      state.makerList.splice(index, 1);
+      const index = state.makerList.findIndex((item) => item.ID === action.payload?.ID);
+      state.makerList[index] = action.payload;
     }
   }
 });
 
 // Reducer
-export default slice.reducer;
+export default maker.reducer;
 
 // ----------------------------------------------------------------------
+export function getMakerList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/maker`);
+      dispatch(maker.actions.getMakerSuccess(response.data));
+    } catch (error) {
+      dispatch(maker.actions.hasError(error));
+    }
+  };
+}
 
 export function addMaker(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addMakerSuccess(data));
+      const response = await axios.post(`${HOST}/maker`, { ...data });
+      dispatch(maker.actions.addMakerSuccess(response.data));
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(maker.actions.hasError(error));
     }
   };
 }
 export function addMakerExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addMakerExcelSuccess(data));
+      dispatch(maker.actions.addMakerExcelSuccess(data));
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(maker.actions.hasError(error));
     }
   };
 }
-export function editMaker(name: string, data: any) {
+export function editMaker(id: number, data: any) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.updateMakerSuccess({
-          name,
-          data
-        })
-      );
+      const response = await axios.put(`${HOST}/maker`, { ID: id, ...data });
+      dispatch(maker.actions.updateMakerSuccess(response.data));
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(maker.actions.hasError(error));
     }
   };
 }
 
-export function deleteMaker(name: string) {
+export function deleteMaker(id: number) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.deleteMakerSuccess({
-          name
-        })
-      );
+      const response = await axios.delete(`${HOST}/maker`, { data: { ID: id } });
+      if (response) {
+        dispatch(getMakerList());
+      }
     } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function getMakerList() {
-  return async () => {
-    try {
-      localStorage.getItem('mantis-ts-maker');
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
+      dispatch(maker.actions.hasError(error));
     }
   };
 }

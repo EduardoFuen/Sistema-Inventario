@@ -100,13 +100,7 @@ export const warehouse: Warehouses[] = [
 ];
 
 // billing address list
-export const maker: Maker[] = [
-  {
-    id: 1,
-    name: 'Bogota',
-    status: false
-  }
-];
+export const maker: Maker[] = [];
 
 // billing address list
 export const trademaker: Trademark[] = [
