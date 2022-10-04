@@ -210,19 +210,19 @@ const CategoriesList = () => {
   };
 
   const [columnsValue, setColumnsValue] = useState<any>({
-    Header: 'Categoria',
+    Header: 'Grupo',
     accessor: 'Name',
     className: 'cell-center'
   });
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     let columnOne = {
-      Header: 'Categoria',
+      Header: 'Grupo',
       accessor: 'Name',
       className: 'cell-center'
     };
     let columnTwo = {
-      Header: 'Categoria 2',
+      Header: 'Categoria 1',
       accessor: 'Name',
       className: 'cell-center'
     };
@@ -248,17 +248,17 @@ const CategoriesList = () => {
     value !== 2 && columnsValue,
 
     value === 2 && {
-      Header: 'Categoria',
+      Header: 'Grupo',
       accessor: 'CategoryOneID',
       className: 'cell-center'
     },
     value === 2 && {
-      Header: 'Categoria 2',
+      Header: 'Categoria 1',
       accessor: 'CategoryTwoID',
       className: 'cell-center'
     },
     value === 2 && {
-      Header: 'Categoria 3',
+      Header: 'Categoria 2',
       accessor: 'Name',
       className: 'cell-center'
     },

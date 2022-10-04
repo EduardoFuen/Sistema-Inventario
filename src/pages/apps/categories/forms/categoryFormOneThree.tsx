@@ -89,7 +89,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                   <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>
                       <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Categoria 3
+                        Categoria 2
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
@@ -127,7 +127,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                           </TextField>
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Categoria 2</InputLabel>
+                          <InputLabel>Categoria 1</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={8}>
                           <TextField
