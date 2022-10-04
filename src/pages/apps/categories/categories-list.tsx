@@ -340,9 +340,9 @@ const CategoriesList = () => {
       <ScrollX>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
-            <Tab label="Categoria" {...a11yProps(0)} />
-            <Tab label="Categoria 2" {...a11yProps(1)} />
-            <Tab label="Categoria 3" {...a11yProps(2)} />
+            <Tab label="Grupo" {...a11yProps(0)} />
+            <Tab label="Categoria 1" {...a11yProps(1)} />
+            <Tab label="Categoria 2" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>

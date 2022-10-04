@@ -97,7 +97,8 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/bodegas`);
+      const response = await axios.get(`${HOST}/productos`);
+      console.log(response);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getProductsSuccess(response.data));
       }
@@ -110,7 +111,7 @@ export function getProducts() {
 export function addProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      const response = await axios.post(`${HOST}/productos`, { ...data });
       dispatch(slice.actions.addProductSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -120,7 +121,7 @@ export function addProduct(data: any) {
 export function editProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/productos`, { ID: id, ...data });
       dispatch(slice.actions.editProductsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -130,7 +131,7 @@ export function editProduct(id: number, data: any) {
 export function deleteProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id } });
       if (response) {
         dispatch(getProducts());
       }

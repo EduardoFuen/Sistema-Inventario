@@ -36,33 +36,33 @@ import { CameraOutlined } from '@ant-design/icons';
 
 const getInitialValues = () => {
   const newSubstance = {
-    name: '',
-    sku: '',
-    ean: '',
-    maker: '',
-    trademark: '',
-    type_product: '',
-    variation: '',
-    categoryOne: '',
-    categoryTwo: '',
-    categoryThree: '',
-    pack: '',
-    quantity: '',
-    makerUnit: '',
-    weight: '',
-    width: '',
-    packInfo: '',
-    height: '',
-    packUnit: '',
-    depth: '',
-    substances: '',
-    keywords: '',
-    warehouse: '',
-    substitutes: '',
-    img: '',
-    tax: '',
-    is_taxed: false,
-    status: false
+    Name: '',
+    SKU: '',
+    Ean: '',
+    MakerID: '',
+    TrademarkID: '',
+    TypesProductID: '',
+    Variation: '',
+    CategoryOneID: '',
+    CategoryTwoID: '',
+    CategoryThreeID: '',
+    PackID: '',
+    Quantity: '',
+    MakerUnit: '',
+    Weight: '',
+    Width: '',
+    PackInfo: '',
+    Height: '',
+    PackUnit: '',
+    Depth: '',
+    SubstancesIDS: '',
+    Keywords: '',
+    WarehouseIDS: '',
+    SubstitutesIDS: '',
+    Img: '',
+    Tax: '',
+    IsTaxed: false,
+    Status: false
   };
   return newSubstance;
 };
@@ -96,11 +96,9 @@ function AddNewProduct() {
   };
 
   const SubstSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Nombre es requerido'),
-    sku: Yup.string().max(255).required('sku es requerido'),
-    ean: Yup.string().max(255).required('ean es requerido') /* ,
-    type_product: Yup.string().max(255).required('Tipo de Producto es requerido'),
-    pack: Yup.string().max(255).required('Envase es requerido') */
+    Name: Yup.string().max(255).required('Nombre es requerido'),
+    SKU: Yup.string().max(255).required('sku es requerido'),
+    Ean: Yup.string().max(255).required('ean es requerido')
   });
 
   const formik = useFormik({
@@ -146,9 +144,9 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Producto</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('name')}
-                        error={Boolean(touched.name && errors.name)}
-                        helperText={touched.name && errors.name}
+                        {...getFieldProps('Name')}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name}
                         placeholder="Ingresar Nombre"
                         fullWidth
                       />
@@ -157,9 +155,9 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>SKU</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('sku')}
-                        error={Boolean(touched.sku && errors.sku)}
-                        helperText={touched.sku && errors.sku}
+                        {...getFieldProps('SKU')}
+                        error={Boolean(touched.SKU && errors.SKU)}
+                        helperText={touched.SKU && errors.SKU}
                         placeholder="Ingresar SKU"
                         fullWidth
                       />
@@ -168,9 +166,9 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>EAN</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('ean')}
-                        error={Boolean(touched.ean && errors.ean)}
-                        helperText={touched.ean && errors.ean}
+                        {...getFieldProps('Ean')}
+                        error={Boolean(touched.Ean && errors.Ean)}
+                        helperText={touched.Ean && errors.Ean}
                         placeholder="Ingresar EAN"
                         fullWidth
                       />
@@ -183,13 +181,13 @@ function AddNewProduct() {
                             sx={{ mt: 0 }}
                             onChange={() => {
                               setIsTaxed(!istaxed);
-                              setFieldValue('is_taxed', istaxed);
+                              setFieldValue('IsTaxed', istaxed);
                             }}
                           />
                         }
                         label=""
                         labelPlacement="top"
-                        {...getFieldProps('is_taxed')}
+                        {...getFieldProps('IsTaxed')}
                       />
                     </Grid>
                     {istaxed && (
@@ -197,7 +195,7 @@ function AddNewProduct() {
                         <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
                         <TextField
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('tax')}
+                          {...getFieldProps('Tax')}
                           placeholder="Ingresar IVA"
                           fullWidth
                         />
@@ -260,24 +258,24 @@ function AddNewProduct() {
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
-                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('maker')}>
+                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('MakerID')}>
                         {makerList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
-                      <TextField placeholder="Seleccionar Trademark" {...getFieldProps('trademark')} fullWidth select>
+                      <TextField placeholder="Seleccionar Trademark" {...getFieldProps('TrademarkID')} fullWidth select>
                         {tradeMarkList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -286,17 +284,17 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo de Producto</InputLabel>
                       <TextField
                         placeholder="Seleccionar Tipo Producto"
-                        {...getFieldProps('type_product')}
-                        error={Boolean(touched.type_product && errors.type_product)}
-                        helperText={touched.type_product && errors.type_product}
+                        {...getFieldProps('TypesProductID')}
+                        error={Boolean(touched.TypesProductID && errors.TypesProductID)}
+                        helperText={touched.TypesProductID && errors.TypesProductID}
                         fullWidth
                         select
                       >
                         {typeProductList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.Name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -306,7 +304,7 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="warehouse-list"
-                        options={warehouseList.filter((item: any) => item.status === true)}
+                        options={warehouseList.filter((item: any) => item.Status === true)}
                         getOptionLabel={(option) => option.Name}
                         defaultValue={[]}
                         filterSelectedOptions
@@ -343,36 +341,36 @@ function AddNewProduct() {
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryOne')}>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryOneID')}>
                         {categoryListOne
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.categoryOne} value={option.categoryOne}>
-                              {option.categoryOne}
+                            <MenuItem key={option.CategoryOneID} value={option.CategoryOneID}>
+                              {option.CategoryOneID}
                             </MenuItem>
                           ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('categoryTwo')}>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryTwoID')}>
                         {categoryListTwo
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.categoryTwo} value={option.categoryTwo}>
-                              {option.categoryTwo}
+                            <MenuItem key={option.CategoryTwoID} value={option.CategoryTwoID}>
+                              {option.CategoryTwoID}
                             </MenuItem>
                           ))}
                       </TextField>
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" {...getFieldProps('categoryThree')} fullWidth select>
+                      <TextField placeholder="Seleccionar Categoria" {...getFieldProps('CategoryThreeID')} fullWidth select>
                         {categoryListThree
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.categoryThree} value={option.categoryThree}>
-                              {option.categoryThree}
+                            <MenuItem key={option.CategoryThreeID} value={option.CategoryThreeID}>
+                              {option.CategoryThreeID}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -391,17 +389,17 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
                       <TextField
                         placeholder="Selecconar Envase"
-                        {...getFieldProps('pack')}
-                        error={Boolean(touched.pack && errors.pack)}
-                        helperText={touched.pack && errors.pack}
+                        {...getFieldProps('PackID')}
+                        error={Boolean(touched.PackID && errors.PackID)}
+                        helperText={touched.PackID && errors.PackID}
                         select
                         fullWidth
                       >
                         {packList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -410,7 +408,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cantidad</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('quantity')}
+                        {...getFieldProps('Quantity')}
                         placeholder="Ingresar Cantidad"
                         fullWidth
                       />
@@ -419,7 +417,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker Unit</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('makerUnit')}
+                        {...getFieldProps('MakerUnit')}
                         placeholder="Ingresar Maker Unit"
                         fullWidth
                       />
@@ -429,7 +427,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Weight(grams)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('weight')}
+                        {...getFieldProps('Weight')}
                         placeholder="Ingresar Weight(grams)"
                         fullWidth
                       />
@@ -438,7 +436,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Width(cm)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('width')}
+                        {...getFieldProps('Width')}
                         placeholder="Ingresar Width(cm)"
                         fullWidth
                       />
@@ -448,7 +446,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Pack</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('packInfo')}
+                        {...getFieldProps('PackInfo')}
                         placeholder="Ingresar Pack"
                         fullWidth
                       />
@@ -457,7 +455,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Height(cm) </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('height')}
+                        {...getFieldProps('Height')}
                         placeholder="Ingresar Height(cm)"
                         fullWidth
                       />
@@ -466,7 +464,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}> Pack Unit</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('packUnit')}
+                        {...getFieldProps('PackUnit')}
                         placeholder="Ingresar Pack Unit"
                         fullWidth
                       />
@@ -475,7 +473,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Depth(cm)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('depth')}
+                        {...getFieldProps('Depth')}
                         placeholder="Ingresar Depth(cm)"
                         fullWidth
                       />
@@ -501,7 +499,7 @@ function AddNewProduct() {
                             defaultValue={[]}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
-                              setFieldValue('substances', newValue === null ? '' : newValue);
+                              setFieldValue('SubstancesIDs', newValue === null ? '' : newValue);
                             }}
                             renderInput={(params) => <TextField {...params} placeholder="" />}
                             sx={{
@@ -541,7 +539,7 @@ function AddNewProduct() {
                         rows={3}
                         placeholder="Ingresar Keywords del Producto"
                         fullWidth
-                        {...getFieldProps('keywords')}
+                        {...getFieldProps('Keywords')}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -549,12 +547,12 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products.filter((item: any) => item.status === true)}
+                        options={products.filter((item: any) => item.Status === true)}
                         getOptionLabel={(option) => option.name}
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('substitutes', newValue === null ? '' : newValue);
+                          setFieldValue('SubstitutesIDS', newValue === null ? '' : newValue);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="Producto" />}
                         sx={{
@@ -580,7 +578,7 @@ function AddNewProduct() {
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
-                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="top" {...getFieldProps('status')} />
+                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="top" {...getFieldProps('Status')} />
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>

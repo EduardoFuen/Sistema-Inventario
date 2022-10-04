@@ -83,16 +83,16 @@ function AddCategoryOne({ categoryOne: category }: any) {
                   <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>
                       <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Categoria
+                        Grupo
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Nombre de Categoria</InputLabel>
+                          <InputLabel>Nombre del Grupo</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={8}>
                           <TextField
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            placeholder="Ingresar Nombre Categoria"
+                            placeholder="Ingresar Nombre del Grupo"
                             fullWidth
                             {...getFieldProps('Name')}
                             error={Boolean(touched.Name && errors.Name)}

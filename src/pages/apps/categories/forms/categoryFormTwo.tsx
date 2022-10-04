@@ -25,7 +25,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
   };
   const { categoryListOne } = useSelector((state) => state.category);
   const SubstSchema = Yup.object().shape({
-    categoryOne: Yup.string().max(255).required('Categoria dos requerida'),
+    categoryOne: Yup.string().max(255).required('Grupo es requerido'),
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
@@ -90,11 +90,11 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Categoria 1</InputLabel>
+                          <InputLabel>Grupo</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={8}>
                           <TextField
-                            placeholder="Categoria 1"
+                            placeholder="Grupo"
                             fullWidth
                             select
                             {...getFieldProps('categoryOne')}
@@ -111,7 +111,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                           </TextField>
                         </Grid>
                         <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel> Nombre de Categoria 2</InputLabel>
+                          <InputLabel> Nombre de Categoria 1</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={7}>
                           <TextField

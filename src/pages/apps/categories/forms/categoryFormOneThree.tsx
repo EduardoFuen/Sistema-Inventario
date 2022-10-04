@@ -93,7 +93,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Nombre de Categoria 3</InputLabel>
+                          <InputLabel>Nombre de Categoria 2</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={7}>
                           <TextField
@@ -106,11 +106,11 @@ function AddCategoryThree({ categoryThree: category }: any) {
                           />
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Categoria 1</InputLabel>
+                          <InputLabel>Grupo</InputLabel>
                         </Grid>
                         <Grid item xs={12} sm={8}>
                           <TextField
-                            placeholder="Categoria 1"
+                            placeholder="Grupo"
                             fullWidth
                             select
                             {...getFieldProps('CategoryOneID')}
@@ -131,7 +131,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                         </Grid>
                         <Grid item xs={12} sm={8}>
                           <TextField
-                            placeholder="Categoria 2"
+                            placeholder="Categoria 1"
                             fullWidth
                             select
                             {...getFieldProps('CategoryTwoID')}
