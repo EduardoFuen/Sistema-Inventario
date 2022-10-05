@@ -21,7 +21,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
   const dispatch = useDispatch();
 
   const handleCancel = () => {
-    history(`/p/product-list`);
+    history(`/product-list`);
   };
   const { categoryListOne } = useSelector((state) => state.category);
   const SubstSchema = Yup.object().shape({

@@ -68,7 +68,7 @@ function UpdateProduct() {
   }, []);
 
   const handleCancel = () => {
-    history(`/p/product-list`);
+    history(`/product-list`);
   };
 
   const SubstSchema = Yup.object().shape({
@@ -123,7 +123,7 @@ function UpdateProduct() {
             close: false
           })
         );
-        history(`/p/product-list`);
+        history(`/product-list`);
         setSubmitting(false);
       } catch (error) {
         console.error(error);

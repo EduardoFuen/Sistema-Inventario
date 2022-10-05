@@ -22,7 +22,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
 
   const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
   const handleCancel = () => {
-    history(`/p/product-list`);
+    history(`/product-list`);
   };
 
   const SubstSchema = Yup.object().shape({

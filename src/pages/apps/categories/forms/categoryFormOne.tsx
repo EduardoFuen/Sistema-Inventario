@@ -20,7 +20,7 @@ function AddCategoryOne({ categoryOne: category }: any) {
   const dispatch = useDispatch();
 
   const handleCancel = () => {
-    history(`/p/product-list`);
+    history(`/product-list`);
   };
 
   const SubstSchema = Yup.object().shape({

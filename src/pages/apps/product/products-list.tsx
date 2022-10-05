@@ -81,7 +81,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 
   const handleAddProduct = () => {
-    history(`/p/product-list/add-new-product`);
+    history(`/product-list/add-new-product`);
   };
 
   const newDataExport = data.map((item: any) => {
@@ -211,7 +211,7 @@ const ProductList = () => {
 
   const { products } = useSelector((state) => state.product);
   const handleEditProduct = (id: any) => {
-    history(`/p/product-list/product-edit/${id}`);
+    history(`/product-list/product-edit/${id}`);
   };
   useEffect(() => {
     dispatch(getProducts());

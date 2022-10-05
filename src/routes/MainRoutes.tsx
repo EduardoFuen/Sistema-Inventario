@@ -99,7 +99,7 @@ const MainRoutes = {
               ]
             },
             {
-              path: 'p',
+              path: '',
               children: [
                 {
                   path: 'product-list/product-edit/:id',

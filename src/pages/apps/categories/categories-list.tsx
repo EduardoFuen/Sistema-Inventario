@@ -117,7 +117,7 @@ function ReactTable({ columns, data, getHeaderProps, handleImport }: Props) {
   const history = useNavigate();
 
   const handleAddCategory = () => {
-    history(`/p/product-list/add-category`);
+    history(`/product-list/add-category`);
   };
 
   return (
@@ -199,7 +199,7 @@ const CategoriesList = () => {
   const history = useNavigate();
 
   const handleEditCategory = (id: any, index: any) => {
-    history(`/p/product-list/add-category/${id}/${index}`);
+    history(`/product-list/add-category/${id}/${index}`);
   };
   const [value, setValue] = useState(0);
 

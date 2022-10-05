@@ -92,7 +92,7 @@ function AddNewProduct() {
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   const handleCancel = () => {
-    history(`/p/product-list`);
+    history(`/product-list`);
   };
 
   const SubstSchema = Yup.object().shape({
@@ -118,7 +118,7 @@ function AddNewProduct() {
             close: false
           })
         );
-        history(`/p/product-list`);
+        history(`/product-list`);
         setSubmitting(false);
       } catch (error) {
         console.error(error);
