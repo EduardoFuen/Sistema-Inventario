@@ -204,6 +204,11 @@ const SupplierListPage = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'NIT',
         accessor: 'Nit',
         className: 'cell-center'

@@ -262,7 +262,7 @@ function AddNewProduct() {
                         {makerList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.ID}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -274,7 +274,7 @@ function AddNewProduct() {
                         {tradeMarkList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.ID}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -345,8 +345,8 @@ function AddNewProduct() {
                         {categoryListOne
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.CategoryOneID} value={option.CategoryOneID}>
-                              {option.CategoryOneID}
+                            <MenuItem key={option.Name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -357,8 +357,8 @@ function AddNewProduct() {
                         {categoryListTwo
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.CategoryTwoID} value={option.CategoryTwoID}>
-                              {option.CategoryTwoID}
+                            <MenuItem key={option.Name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -369,8 +369,8 @@ function AddNewProduct() {
                         {categoryListThree
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.CategoryThreeID} value={option.CategoryThreeID}>
-                              {option.CategoryThreeID}
+                            <MenuItem key={option.Name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -398,7 +398,7 @@ function AddNewProduct() {
                         {packList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.ID}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}

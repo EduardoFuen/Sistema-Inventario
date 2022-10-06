@@ -221,6 +221,11 @@ const ProductList = () => {
   const columnsProducts = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'SKU',
         accessor: 'sku',
         className: 'cell-center'
