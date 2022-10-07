@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { CategoryOneStateProps } from 'types/e-commerce';
@@ -112,16 +113,6 @@ export function getCategoryListOne() {
     }
   };
 }
-export function addCategoryOne(data: any) {
-  return async () => {
-    try {
-      const response = await axios.post(`${HOST}/categorias/one`, { ...data });
-      dispatch(slice.actions.addCategorySuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
 
 export function getCategoryListTwo() {
   return async () => {
@@ -142,6 +133,16 @@ export function getCategoryListThree() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryThreeSuccess(response.data));
       }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function addCategoryOne(data: any) {
+  return async () => {
+    try {
+      const response = await axios.post(`${HOST}/categorias/one`, { ...data });
+      dispatch(slice.actions.addCategorySuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -218,12 +219,39 @@ export function editCategory(type: string, id: number, data: any) {
   };
 }
 
-export function deleteCategory(row: any) {
+export function deleteCategory(id: number, type: string) {
   return async () => {
     try {
+      switch (type) {
+        case 'CategoryOne': {
+          const response = await axios.delete(`${HOST}/categorias/one`, { data: { ID: id } });
+          if (response) {
+            dispatch(getCategoryListOne());
+          }
+          break;
+        }
+        case 'CategoryTwo': {
+          const response = await axios.delete(`${HOST}/categorias/two`, { data: { ID: id } });
+          if (response) {
+            dispatch(getCategoryListTwo());
+          }
+          break;
+        }
+        default:
+          const response = await axios.delete(`${HOST}/categorias/three`, { data: { ID: id } });
+          if (response) {
+            dispatch(getCategoryListThree());
+          }
+      }
       dispatch(
-        slice.actions.deleteCategorySuccess({
-          row
+        openSnackbar({
+          open: true,
+          message: 'Categoria deleted successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
         })
       );
     } catch (error) {

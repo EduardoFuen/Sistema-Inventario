@@ -34,7 +34,6 @@ import { HeaderSort, SortingSelect, TablePagination } from 'components/third-par
 
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
 
 // assets
@@ -312,18 +311,19 @@ const CategoriesList = () => {
                 color="error"
                 onClick={(e: any) => {
                   e.stopPropagation();
-                  dispatch(
-                    openSnackbar({
-                      open: true,
-                      message: 'Categoria deleted successfully.',
-                      variant: 'alert',
-                      alert: {
-                        color: 'success'
-                      },
-                      close: false
-                    })
-                  );
-                  dispatch(deleteCategory(row.values));
+                  let type: string = '';
+                  switch (value) {
+                    case 0:
+                      type = 'CategoryOne';
+                      break;
+                    case 1:
+                      type = 'CategoryTwo';
+                      break;
+                    default:
+                      type = 'CategoryThree';
+                      break;
+                  }
+                  dispatch(deleteCategory(row.original?.ID, type));
                 }}
               >
                 <DeleteTwoTone twoToneColor={theme.palette.error.main} />
