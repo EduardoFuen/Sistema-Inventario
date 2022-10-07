@@ -20,7 +20,6 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
 
 // assets
@@ -224,17 +223,6 @@ const TradeMarkList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Trademark deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                     dispatch(deleteTrademark(row?.original?.ID));
                   }}
                 >

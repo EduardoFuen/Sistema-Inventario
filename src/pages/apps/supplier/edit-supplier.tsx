@@ -303,17 +303,6 @@ function UpdateSuplier() {
                     onClick={() => {
                       dispatch(deleteSupplier(Number(id)));
                       history(`/supplier`);
-                      dispatch(
-                        openSnackbar({
-                          open: true,
-                          message: 'Proveedor deleted successfully.',
-                          variant: 'alert',
-                          alert: {
-                            color: 'success'
-                          },
-                          close: false
-                        })
-                      );
                     }}
                   >
                     Delete

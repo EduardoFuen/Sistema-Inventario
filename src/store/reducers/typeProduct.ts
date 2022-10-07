@@ -88,6 +88,17 @@ export function deleteTypeProduct(id: number) {
     try {
       const response = await axios.delete(`${HOST}/tipodeproducto`, { data: { ID: id } });
       if (response) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Tipo de Producto deleted successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
         dispatch(getTypeProductList());
       }
     } catch (error) {

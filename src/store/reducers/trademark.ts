@@ -86,6 +86,17 @@ export function deleteTrademark(id: number) {
     try {
       const response = await axios.delete(`${HOST}/trademark`, { data: { ID: id } });
       if (response) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Trademark deleted successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
         dispatch(getTrademarkList());
       }
     } catch (error) {

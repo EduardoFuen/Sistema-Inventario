@@ -37,7 +37,6 @@ import Import from './ImportSupplier';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
-import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
@@ -292,17 +291,6 @@ const SupplierListPage = () => {
                   onClick={(e: any) => {
                     e.stopPropagation();
                     dispatch(deleteSupplier(row?.original?.ID));
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Proveedor deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

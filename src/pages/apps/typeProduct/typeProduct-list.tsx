@@ -18,7 +18,6 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getTypeProductList, deleteTypeProduct } from 'store/reducers/typeProduct';
 
 // assets
@@ -219,17 +218,6 @@ const PackList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Tipo de Producto deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                     dispatch(deleteTypeProduct(row?.original?.ID));
                   }}
                 >

@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { SupplierStateProps } from 'types/e-commerce';
@@ -87,6 +88,17 @@ export function deleteSupplier(id: number) {
       const response = await axios.delete(`${HOST}/proveedores`, { data: { ID: id } });
       if (response) {
         dispatch(getSupplierList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Proveedor delete successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -98,6 +110,17 @@ export function addExcel(data: any) {
     try {
       const response = await axios.post(`${HOST}/proveedores`, data);
       dispatch(slice.actions.excelSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Importado successfully',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
