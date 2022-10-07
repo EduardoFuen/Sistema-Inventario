@@ -5,7 +5,6 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addExcel } from 'store/reducers/warehouse';
 
 import ImportToFile from 'components/ImportToFile';
@@ -23,25 +22,13 @@ const ImportMarker = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        name: item?.name,
-        department: item?.department,
-        city: item?.city,
-        location: item?.location,
-        status: item?.status
+        Name: item?.Name,
+        Department: item?.Department,
+        City: item?.City,
+        Location: item?.Location,
+        Status: item?.status
       }));
       dispatch(addExcel(newData));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Bodegas add successfully.',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-
       onCancel();
     } catch (error) {
       console.error(error);

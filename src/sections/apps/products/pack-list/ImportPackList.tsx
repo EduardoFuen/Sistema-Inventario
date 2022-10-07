@@ -5,10 +5,10 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addExcel } from 'store/reducers/pack';
 
 import ImportToFile from 'components/ImportToFile';
+import { filter } from 'lodash';
 
 // ==============================|| PACK IMPORT ||============================== //
 
@@ -22,23 +22,13 @@ const ImportPack = ({ onCancel }: Props) => {
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => ({
-        Name: item?.name,
-        Status: item?.status
+      const newData = data;
+      filter((item: any) => item.ID !== '').map((item: any) => ({
+        Name: item?.Name || item?.name,
+        Status: item?.Status || item?.status
       }));
-      dispatch(addExcel(newData));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Envase add successfully.',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
 
+      dispatch(addExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

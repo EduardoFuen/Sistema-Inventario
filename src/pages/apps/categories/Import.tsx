@@ -5,7 +5,6 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addExcel } from 'store/reducers/category';
 
 import ImportToFile from 'components/ImportToFile';
@@ -28,41 +27,29 @@ const ImportPack = ({ onCancel, value }: Props) => {
       switch (value) {
         case 0:
           newData = data.map((item: any) => ({
-            categoryOne: item?.name,
-            status: item?.status
+            Name: item?.Name,
+            Status: item?.Status
           }));
           break;
         case 1:
           newData = data.map((item: any) => ({
-            categoryTwo: item?.name,
-            categoryOne: item?.category1,
-            status: item?.status
+            Name: item?.Name,
+            CategoryOneID: item?.category1,
+            Status: item?.Status
           }));
           break;
 
         default:
           newData = data.map((item: any) => ({
-            categoryThree: item?.name,
-            categoryOne: item?.category1,
-            categoryTwo: item?.category2,
-            status: item?.status
+            Name: item?.Name,
+            CategoryOneID: item?.CategoryOneID,
+            CategoryTwoID: item?.CategoryTwoID,
+            Status: item?.status
           }));
           break;
       }
 
       dispatch(addExcel(newData, value));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Categoria add successfully.',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-
       onCancel();
     } catch (error) {
       console.error(error);

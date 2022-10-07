@@ -21,8 +21,8 @@ const ImportMarker = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        Name: item?.name,
-        Status: item?.status
+        Name: item?.Name,
+        Status: item?.Status
       }));
       dispatch(addMakerExcel(newData));
       onCancel();

@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { TrademarkStateProps } from 'types/e-commerce';
@@ -97,6 +98,17 @@ export function addExcel(data: any) {
     try {
       const response = await axios.post(`${HOST}/trademark`, data);
       dispatch(tradeMark.actions.excelSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'TradeMark add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(tradeMark.actions.hasError(error));
     }

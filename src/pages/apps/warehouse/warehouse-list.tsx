@@ -180,6 +180,11 @@ const WarehouseList = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'Bodega',
         accessor: 'Name'
       },

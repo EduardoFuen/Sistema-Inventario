@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from '../../config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { PackStateProps } from 'types/e-commerce';
@@ -99,6 +100,17 @@ export function addExcel(data: any) {
     try {
       const response = await axios.post(`${HOST}/packs`, data);
       dispatch(slice.actions.excelSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Envase add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

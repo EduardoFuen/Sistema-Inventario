@@ -262,10 +262,45 @@ export function deleteCategory(id: number, type: string) {
 export function addExcel(data: any, index: number) {
   return async () => {
     try {
+      switch (index) {
+        case 0: {
+          const response = await axios.post(`${HOST}/categorias/one`, data);
+          dispatch(
+            slice.actions.excelSuccess({
+              index,
+              data: response.data
+            })
+          );
+          break;
+        }
+        case 1: {
+          const response = await axios.post(`${HOST}/categorias/two`, data);
+          dispatch(
+            slice.actions.excelSuccess({
+              index,
+              data: response.data
+            })
+          );
+          break;
+        }
+        default:
+          const response = await axios.post(`${HOST}/categorias/three`, data);
+          dispatch(
+            slice.actions.excelSuccess({
+              index,
+              data: response.data
+            })
+          );
+      }
       dispatch(
-        slice.actions.excelSuccess({
-          index,
-          data
+        openSnackbar({
+          open: true,
+          message: 'Categorias Importadas successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
         })
       );
     } catch (error) {

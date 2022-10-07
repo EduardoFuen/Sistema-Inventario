@@ -244,6 +244,11 @@ const CategoriesList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const columns = () => [
+    {
+      Header: 'ID',
+      accessor: 'ID',
+      className: 'cell-center'
+    },
     value !== 2 && columnsValue,
 
     value === 2 && {
