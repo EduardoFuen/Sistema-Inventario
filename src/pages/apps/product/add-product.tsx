@@ -100,6 +100,15 @@ function AddNewProduct() {
     Ean: Yup.string().max(255).required('ean es requerido')
   });
 
+  const onChange = (e: any) => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setFieldValue('UrlImage', reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
@@ -228,7 +237,9 @@ function AddNewProduct() {
                           label="Outlined"
                           variant="outlined"
                           sx={{ display: 'none' }}
+                          inputProps={{ accept: 'image/*' }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            onChange(e);
                             //   setFieldValue('img', e === null ? '' : e);
                             setSelectedImage(e.target.files?.[0]);
                           }}
