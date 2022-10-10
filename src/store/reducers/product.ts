@@ -181,7 +181,19 @@ export function deleteProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.excelSuccess(data));
+      const response = await axios.post(`${HOST}/productos`, data);
+      dispatch(slice.actions.excelSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Importación de productos successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

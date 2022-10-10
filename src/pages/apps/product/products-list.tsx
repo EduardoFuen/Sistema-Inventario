@@ -89,39 +89,42 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     let warehouse: string = '';
 
     if (item?.substances) {
-      substances = item.substances.map((e: any) => e.name).join();
+      substances = item.substances.map((e: any) => e.Name).join();
     }
     if (item?.substitutes) {
-      substitutes = item?.substitutes.map((e: any) => e.name).join();
+      substitutes = item?.substitutes.map((e: any) => e.Name).join();
     }
     if (item?.warehouse) {
-      warehouse = item?.warehouse.map((e: any) => e.name).join();
+      warehouse = item?.warehouse.map((e: any) => e.Name).join();
     }
     return {
-      name: item.name,
-      sku: item.sku,
-      ean: item.ean,
-      categoryOne: item.categoryOne,
-      categoryThree: item.categoryThree,
-      categoryTwo: item.categoryTwo,
-      depth: item.depth,
-      height: item.height,
-      img: item.img,
-      keywords: item.keywords,
-      maker: item.maker,
-      makerUnit: item.makerUnit,
-      pack: item.pack,
-      packInfo: item.packUnit,
-      packUnit: item.packUnit,
-      trademark: item.trademark,
-      'type product': item.type_product,
-      variation: item.variation,
-      weight: item.weight,
-      width: item.width,
-      warehouse,
-      substances,
-      substitutes,
-      status: item.status
+      Name: item?.Name,
+      Sku: item?.Sku,
+      Ean: item?.Ean,
+      Maker: item?.Maker.Name,
+      Trademark: item?.Trademark,
+      TypeProduct: item?.TypeProduct,
+      Variation: item?.Variation,
+      CategoryOne: item?.CategoryOne,
+      CategoryTwo: item?.CategoryTwo,
+      CategoryThree: item?.CategoryThree,
+      Pack: item?.Wrapper,
+      Quantity: item?.Quantity,
+      MakerUnit: item?.MakerUnit,
+      Weight: item?.Weight,
+      Width: item?.Width,
+      PackInfo: item?.PackInfo,
+      Height: item?.Height,
+      WrapperUnit: item?.WrapperUnit,
+      Depth: item?.Depth,
+      Substances: substances,
+      Keywords: item?.Keywords,
+      Substitutes: substitutes,
+      Warehouse: warehouse,
+      UrlImage: item?.UrlImage,
+      Status: item?.Status,
+      Tax: item?.Tax,
+      IsTaxed: item?.IsTaxed
     };
   });
 

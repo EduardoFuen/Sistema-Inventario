@@ -5,7 +5,6 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addExcel } from 'store/reducers/product';
 
 import ImportToFile from 'components/ImportToFile';
@@ -23,22 +22,35 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        name: item?.name,
-        status: item?.status
+        Name: item?.Name,
+        Sku: item?.Sku,
+        Ean: item?.Ean,
+        Maker: item?.Maker,
+        Trademark: item?.Trademark,
+        TypeProduct: item?.TypeProduct,
+        Variation: item?.Variation,
+        CategoryOne: item?.CategoryOne,
+        CategoryTwo: item?.CategoryTwo,
+        CategoryThree: item?.CategoryThree,
+        Pack: item?.Wrapper,
+        Quantity: item?.Quantity,
+        MakerUnit: item?.MakerUnit,
+        Weight: item?.Weight,
+        Width: item?.Width,
+        PackInfo: item?.PackInfo,
+        Height: item?.Height,
+        WrapperUnit: item?.WrapperUnit,
+        Depth: item?.Depth,
+        Substances: item?.Substances,
+        Keywords: item?.Keywords,
+        Substitutes: item?.Substitutes,
+        Warehouse: item?.Warehouse,
+        UrlImage: item?.UrlImage,
+        Status: item?.Status,
+        Tax: item?.Tax,
+        IsTaxed: item?.IsTaxed
       }));
       dispatch(addExcel(newData));
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Envase add successfully.',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-
       onCancel();
     } catch (error) {
       console.error(error);

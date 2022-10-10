@@ -36,7 +36,7 @@ import { CameraOutlined } from '@ant-design/icons';
 const getInitialValues = () => {
   const newSubstance = {
     Name: '',
-    SKU: '',
+    Sku: '',
     Ean: '',
     MakerID: '',
     TrademarkID: '',
@@ -96,7 +96,7 @@ function AddNewProduct() {
 
   const SubstSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
-    SKU: Yup.string().max(255).required('sku es requerido'),
+    Sku: Yup.string().max(255).required('sku es requerido'),
     Ean: Yup.string().max(255).required('ean es requerido')
   });
 
@@ -143,9 +143,9 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>SKU</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('SKU')}
-                        error={Boolean(touched.SKU && errors.SKU)}
-                        helperText={touched.SKU && errors.SKU}
+                        {...getFieldProps('Sku')}
+                        error={Boolean(touched.Sku && errors.Sku)}
+                        helperText={touched.Sku && errors.Sku}
                         placeholder="Ingresar SKU"
                         fullWidth
                       />
