@@ -58,7 +58,7 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
     const index = listPurchase.findIndex((item) => item.nc === reception.nc);
     if (listPurchase[index] && listPurchase[index].detailsReption && listPurchase[index].detailsReption.length > 0) {
       let data = listPurchase[index].detailsReption
-        .filter((e: any) => e !== undefined && e !== null && e !== '' && e.name === product?.name)
+        .filter((e: any) => e !== undefined && e !== null && e !== '' && e.name === product?.Name)
         .map((item: any) => ({
           qtyrequested: '',
           lot: '',

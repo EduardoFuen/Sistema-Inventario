@@ -13,30 +13,30 @@ services.onPost('/api/products/filter').reply((config) => {
     const { filter } = JSON.parse(config.data);
 
     if (filter.sort === 'high') {
-      products.sort((a: Products, b: Products) => Number(b.price) - Number(a.price));
+      products.sort((a: Products, b: Products) => Number(b.Price) - Number(a.Price));
     }
 
     if (filter.sort === 'low') {
-      products.sort((a, b) => Number(a.price) - Number(b.price));
+      products.sort((a, b) => Number(a.Price) - Number(b.Price));
     }
 
-    if (filter.sort === 'maker') {
-      products.sort((a, b) => Number(b.maker) - Number(a.maker));
+    if (filter.sort === 'Maker') {
+      products.sort((a, b) => Number(b.Maker) - Number(a.Maker));
     }
 
-    if (filter.sort === 'discount') {
-      products.sort((a, b) => Number(b.discount) - Number(a.discount));
+    if (filter.sort === 'Discount') {
+      products.sort((a, b) => Number(b.Discount) - Number(a.Discount));
     }
-
+    /* 
     if (filter.sort === 'new') {
       products.sort((a, b) => Number(b.new) - Number(a.new));
-    }
+    } */
 
     const results = products.filter((product: KeyedObject) => {
       let searchMatches = true;
 
       if (filter.search) {
-        const properties = ['name', 'description', 'rating', 'salePrice', 'price', 'gender'];
+        const properties = ['name', 'description', 'rating', 'salePrice', 'Price', 'gender'];
         let containsQuery = false;
 
         properties.forEach((property) => {
@@ -58,11 +58,11 @@ services.onPost('/api/products/filter').reply((config) => {
       const colorsMatches =
         filter.colors.length > 0 ? filter.colors.some((color: string) => product.colors.some((item: string) => item === color)) : true;
 
-      const minMax = filter.price ? filter.price.split('-') : '';
-      const priceMatches = filter.price ? product.price >= minMax[0] && product.price <= minMax[1] : true;
+      const minMax = filter.Price ? filter.Price.split('-') : '';
+      const PriceMatches = filter.Price ? product.Price >= minMax[0] && product.Price <= minMax[1] : true;
       const ratingMatches = filter.rating > 0 ? product.rating >= filter.rating : true;
 
-      return searchMatches && genderMatches && categoriesMatches && colorsMatches && priceMatches && ratingMatches;
+      return searchMatches && genderMatches && categoriesMatches && colorsMatches && PriceMatches && ratingMatches;
     });
 
     return [200, results];

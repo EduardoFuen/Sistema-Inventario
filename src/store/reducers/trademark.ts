@@ -112,7 +112,7 @@ export function addExcel(data: any) {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'TradeMark add successfully.',
+          message: 'TradeMark Importados successfully.',
           variant: 'alert',
           alert: {
             color: 'success'

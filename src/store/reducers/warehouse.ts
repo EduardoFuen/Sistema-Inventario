@@ -103,7 +103,7 @@ export function addExcel(data: any) {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Importación successfully.',
+          message: 'Importación de bodega successfully.',
           variant: 'alert',
           alert: {
             color: 'success'

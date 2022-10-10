@@ -102,7 +102,7 @@ export function addExcel(data: any) {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Importado Sustancias.',
+          message: 'Importado Sustancias successfully.',
           variant: 'alert',
           alert: {
             color: 'success'

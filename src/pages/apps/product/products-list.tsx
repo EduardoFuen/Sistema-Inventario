@@ -9,7 +9,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 
 // project import
 import ProductView from './ProductView';
-/* import Avatar from 'components/@extended/Avatar'; */
+import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -20,7 +20,6 @@ import { HeaderSort, SortingSelect, TablePagination } from 'components/third-par
 import { useDispatch, useSelector } from 'store';
 
 import { getProducts, deleteProduct } from 'store/reducers/product';
-import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
@@ -227,33 +226,24 @@ const ProductList = () => {
       },
       {
         Header: 'SKU',
-        accessor: 'sku',
+        accessor: 'Sku',
         className: 'cell-center'
       },
       {
         Header: 'EAN',
-        accessor: 'ean',
+        accessor: 'Ean',
         className: 'cell-center'
       },
       {
         Header: 'Nombre Producto',
-        accessor: 'name',
+        accessor: 'Name',
         Cell: ({ row }: any) => {
-          const { values } = row;
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              {/*   <Avatar
-                variant="rounded"
-                alt={values.name}
-                color="secondary"
-                size="sm"
-                src={productImage(`./thumbs/${!values.image ? 'prod-11.png' : values.image}`).default}
-              /> */}
+              <Avatar variant="rounded" alt={original.Name} color="secondary" size="sm" src={original.UrlImage} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {values.description}
-                </Typography>
+                <Typography variant="subtitle1">{original.Name}</Typography>
               </Stack>
             </Stack>
           );
@@ -261,8 +251,17 @@ const ProductList = () => {
       },
       {
         Header: 'Maker',
-        accessor: 'maker',
-        className: 'cell-right'
+        accessor: 'Maker',
+        className: 'cell-right',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{value.Name}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Trademark',
@@ -271,7 +270,7 @@ const ProductList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:
@@ -321,18 +320,7 @@ const ProductList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Producto delete successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                    dispatch(deleteProduct(row.name));
+                    dispatch(deleteProduct(row?.values?.ID));
                   }}
                 >
                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />

@@ -26,7 +26,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addProduct } from 'store/reducers/product';
 
 // assets
@@ -59,7 +58,7 @@ const getInitialValues = () => {
     Keywords: '',
     WarehouseIDS: '',
     SubstitutesIDS: '',
-    Img: '',
+    UrlImage: '',
     Tax: '',
     IsTaxed: false,
     Status: false
@@ -107,17 +106,6 @@ function AddNewProduct() {
     onSubmit: (values, { setSubmitting }) => {
       try {
         dispatch(addProduct(values));
-        dispatch(
-          openSnackbar({
-            open: true,
-            message: 'Producto Add successfully.',
-            variant: 'alert',
-            alert: {
-              color: 'success'
-            },
-            close: false
-          })
-        );
         history(`/product-list`);
         setSubmitting(false);
       } catch (error) {
@@ -548,7 +536,7 @@ function AddNewProduct() {
                         multiple
                         id="list-product"
                         options={products.filter((item: any) => item.Status === true)}
-                        getOptionLabel={(option) => option.name}
+                        getOptionLabel={(option) => option.Name}
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {

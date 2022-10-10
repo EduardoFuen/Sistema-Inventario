@@ -91,7 +91,7 @@ export function deleteMaker(id: number) {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Maker Importados successfully.',
+            message: 'Maker Delete successfully.',
             variant: 'alert',
             alert: {
               color: 'success'
