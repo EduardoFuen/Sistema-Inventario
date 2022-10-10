@@ -88,6 +88,17 @@ export function deleteWarehouse(id: number) {
       const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
       if (response) {
         dispatch(getWarehouseList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Bodega deleted successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
       }
     } catch (error) {
       dispatch(wareHouse.actions.hasError(error));

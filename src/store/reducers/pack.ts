@@ -88,6 +88,17 @@ export function deletePack(id: number) {
       const response = await axios.delete(`${HOST}/packs`, { data: { ID: id } });
       if (response) {
         dispatch(getPackList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Envase deleted successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));

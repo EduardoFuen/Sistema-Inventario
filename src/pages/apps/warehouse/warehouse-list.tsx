@@ -20,7 +20,6 @@ import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'c
 
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
 
 // assets
@@ -238,17 +237,6 @@ const WarehouseList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Bodega deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                     dispatch(deleteWarehouse(original?.ID));
                   }}
                 >

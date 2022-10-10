@@ -18,7 +18,6 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getPackList, deletePack } from 'store/reducers/pack';
 
 // assets
@@ -218,17 +217,6 @@ const PackList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Envase deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                     dispatch(deletePack(row?.original?.ID));
                   }}
                 >

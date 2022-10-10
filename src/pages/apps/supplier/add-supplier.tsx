@@ -50,10 +50,6 @@ function AddSupplier() {
   const history = useNavigate();
 
   const dispatch = useDispatch();
-  /* 
-  const handleChange = (event: SelectChangeEvent) => {
-   // console.log(event.target.value as string);
-  }; */
 
   const handleCancel = () => {
     history(`/supplier`);
