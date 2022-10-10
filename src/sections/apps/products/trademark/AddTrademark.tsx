@@ -63,7 +63,7 @@ export interface Props {
 const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMark;
-  const [MakerID, setMaker] = useState('');
+  const [MakerID, setMaker] = useState(tradeMark?.MakerID!);
   const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido')
@@ -191,7 +191,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                       <FormControlLabel
                         control={<Switch sx={{ mt: 0 }} defaultChecked={tradeMark?.Status} value={tradeMark?.Status} />}
                         label="Estado"
-                        {...getFieldProps('status')}
+                        {...getFieldProps('Status')}
                         labelPlacement="top"
                       />
                     </Stack>

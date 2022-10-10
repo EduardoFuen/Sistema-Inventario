@@ -26,7 +26,8 @@ const ImportMarker = ({ onCancel }: Props) => {
         Department: item?.Department,
         City: item?.City,
         Location: item?.Location,
-        Status: item?.status
+        Status: item?.Status,
+        ID: item?.ID || ''
       }));
       dispatch(addExcel(newData));
       onCancel();

@@ -38,7 +38,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const theme = useTheme();
   const history = useNavigate();
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'Name', desc: true };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,
@@ -212,6 +212,15 @@ const ProductList = () => {
   };
 
   const { products } = useSelector((state) => state.product);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
+
+  const TradeMark = (id: number) => {
+    if (id) {
+      let MakerID: any = tradeMarkList.find((item) => item.ID === id);
+      return MakerID?.Name;
+    }
+  };
+
   const handleEditProduct = (id: any) => {
     history(`/product-list/product-edit/${id}`);
   };
@@ -268,8 +277,15 @@ const ProductList = () => {
       },
       {
         Header: 'Trademark',
-        accessor: 'trademark',
-        className: 'cell-right'
+        accessor: 'TrademarkID',
+        className: 'cell-right',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>{value && <Typography variant="subtitle1">{TradeMark(value)}</Typography>}</Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Estado',

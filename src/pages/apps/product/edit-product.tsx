@@ -41,7 +41,7 @@ function UpdateProduct() {
 
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
-  const [istaxed, setIsTaxed] = useState<boolean>();
+  const [istaxed, setIsTaxed] = useState<boolean | undefined>();
 
   useEffect(() => {
     if (selectedImage) {
@@ -81,14 +81,15 @@ function UpdateProduct() {
       Name: product?.Name,
       Sku: product?.Sku,
       Ean: product?.Ean,
-      Maker: product?.Maker,
-      Trademark: product?.Trademark,
-      TypeProduct: product?.TypeProduct,
+      Maker: product?.Maker?.ID,
+      TrademarkID: product?.TrademarkID,
+      TypesProductID: product?.TypesProductID,
       Variation: product?.Variation,
-      CategoryOne: product?.CategoryOne,
-      CategoryTwo: product?.CategoryTwo,
-      CategoryThree: product?.CategoryThree,
-      Pack: product?.Wrapper,
+      CategoryOne: product?.CategoryOneID,
+      CategoryTwo: product?.CategoryTwoID,
+      CategoryThree: product?.CategoryThreeID,
+      Pack: product?.Pack?.Name,
+      Wrapper: product?.Wrapper,
       Quantity: product?.Quantity,
       MakerUnit: product?.MakerUnit,
       Weight: product?.Weight,
@@ -97,14 +98,14 @@ function UpdateProduct() {
       Height: product?.Height,
       WrapperUnit: product?.WrapperUnit,
       Depth: product?.Depth,
-      Substances: product?.Substances,
+      Substance: product?.Substance,
       Keywords: product?.Keywords,
       Substitutes: product?.Substitutes,
-      Warehouse: product?.Warehouse,
+      Warehouses: product?.Warehouses,
       UrlImage: product?.UrlImage,
       Status: product?.Status,
-      Tax: product?.Tax,
-      IsTaxed: product?.IsTaxed
+      Tax: product?.Iva,
+      IsTaxed: true
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
@@ -175,6 +176,7 @@ function UpdateProduct() {
                               setFieldValue('IsTaxed', !istaxed);
                             }}
                             defaultChecked={product?.IsTaxed}
+                            value={product?.IsTaxed}
                           />
                         }
                         label=""
@@ -182,18 +184,17 @@ function UpdateProduct() {
                         {...getFieldProps('IsTaxed')}
                       />
                     </Grid>
-                    {istaxed ||
-                      (product?.IsTaxed && (
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            {...getFieldProps('Tax')}
-                            placeholder="Ingresar IVA"
-                            fullWidth
-                          />
-                        </Grid>
-                      ))}
+                    {product?.IsTaxed && (
+                      <Grid item xs={6}>
+                        <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
+                        <TextField
+                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                          {...getFieldProps('Tax')}
+                          placeholder="Ingresar IVA"
+                          fullWidth
+                        />
+                      </Grid>
+                    )}
                     <Grid item xs={6}>
                       <Stack alignItems="center" sx={{ mt: 1 }}>
                         <Typography>Agregar imagen</Typography>
@@ -254,7 +255,7 @@ function UpdateProduct() {
                         {makerList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -262,11 +263,11 @@ function UpdateProduct() {
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
-                      <TextField placeholder="Seleccionar Trademark" {...getFieldProps('Trademark')} fullWidth select>
+                      <TextField placeholder="Seleccionar Trademark" {...getFieldProps('TrademarkID')} fullWidth select>
                         {tradeMarkList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -276,16 +277,16 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo de Producto</InputLabel>
                       <TextField
                         placeholder="Seleccionar Tipo Producto"
-                        {...getFieldProps('TypeProduct')}
-                        error={Boolean(touched.TypeProduct && errors.TypeProduct)}
-                        helperText={touched.TypeProduct && errors.TypeProduct}
+                        {...getFieldProps('TypesProductID')}
+                        error={Boolean(touched.TypesProductID && errors.TypesProductID)}
+                        helperText={touched.TypesProductID && errors.TypesProductID}
                         fullWidth
                         select
                       >
                         {typeProductList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -298,10 +299,10 @@ function UpdateProduct() {
                         id="warehouse-list"
                         options={warehouseList.filter((item: any) => item.Status === true)}
                         getOptionLabel={(option) => option.Name}
-                        defaultValue={[...(product?.Warehouse || '')] as []}
+                        defaultValue={[...(product?.Warehouses || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('Warehouse', newValue === null ? '' : newValue);
+                          setFieldValue('Warehouses', newValue === null ? '' : newValue);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="" />}
                         sx={{
@@ -337,7 +338,7 @@ function UpdateProduct() {
                         {categoryListOne
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -349,7 +350,7 @@ function UpdateProduct() {
                         {categoryListTwo
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -361,7 +362,7 @@ function UpdateProduct() {
                         {categoryListThree
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -382,6 +383,7 @@ function UpdateProduct() {
                       <TextField
                         placeholder="Selecconar Envase"
                         {...getFieldProps('Pack')}
+                        value={product?.Pack.ID}
                         error={Boolean(touched.Pack && errors.Pack)}
                         helperText={touched.Pack && errors.Pack}
                         select
@@ -390,7 +392,7 @@ function UpdateProduct() {
                         {packList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.Name}>
+                            <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -488,10 +490,10 @@ function UpdateProduct() {
                             id="substances-list"
                             options={todoListSubs.filter((item: any) => item.Status === true)}
                             getOptionLabel={(option) => option.Name}
-                            defaultValue={[...(product?.Substances || '')] as []}
+                            defaultValue={[...(product?.Substance || '')] as []}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
-                              setFieldValue('Substances', newValue === null ? '' : newValue);
+                              setFieldValue('Substance', newValue === null ? '' : newValue);
                             }}
                             renderInput={(params) => <TextField {...params} placeholder="" />}
                             sx={{

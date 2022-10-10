@@ -2,7 +2,20 @@ import { useEffect, useMemo, useState, Fragment } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
+import {
+  Button,
+  Chip,
+  Dialog,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  useMediaQuery,
+  Typography
+} from '@mui/material';
 
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
@@ -40,7 +53,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: true };
+  const sortBy = { id: 'Name', desc: true };
 
   const {
     getTableProps,
@@ -171,6 +184,14 @@ const TradeMarkList = () => {
   };
 
   const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { makerList } = useSelector((state) => state.maker);
+
+  const maker = (id: number) => {
+    if (id) {
+      let MakerID: any = makerList.find((item) => item.ID === id);
+      return MakerID?.Name;
+    }
+  };
 
   useEffect(() => {
     dispatch(getTrademarkList());
@@ -184,7 +205,14 @@ const TradeMarkList = () => {
       },
       {
         Header: 'Maker',
-        accessor: 'maker'
+        accessor: 'MakerID',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>{value && <Typography variant="subtitle1">{maker(value)}</Typography>}</Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Estado',

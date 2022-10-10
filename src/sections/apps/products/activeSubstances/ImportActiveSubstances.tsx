@@ -23,7 +23,8 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
     try {
       const newData = data.map((item: any) => ({
         Name: item?.Name,
-        Status: item?.Status
+        Status: item?.Status,
+        ID: item?.ID || ''
       }));
       dispatch(addExcel(newData));
       onCancel();

@@ -22,9 +22,10 @@ const ImportTradeMark = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        name: item?.name,
-        maker: item?.maker,
-        status: item?.status
+        Name: item?.Name,
+        MakerId: item?.MakerId,
+        ID: item?.ID || '',
+        Status: item?.Status
       }));
       dispatch(addExcel(newData));
       onCancel();

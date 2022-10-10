@@ -56,7 +56,7 @@ const getInitialValues = () => {
     Depth: '',
     SubstancesIDS: '',
     Keywords: '',
-    WarehouseIDS: '',
+    Warehouses: '',
     SubstitutesIDS: '',
     UrlImage: '',
     Tax: '',

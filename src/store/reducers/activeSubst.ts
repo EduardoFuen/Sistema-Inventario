@@ -25,7 +25,6 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET PACKS
     getSubsSuccess(state, action) {
       state.todoListSubs = action.payload;
@@ -75,6 +74,7 @@ export function addSubs(data: any) {
 
 export function editSubs(id: number, data: any) {
   return async () => {
+    dispatch(slice.actions.hasError(''));
     try {
       const response = await axios.put(`${HOST}/sustancias`, { ID: id, ...data });
       dispatch(slice.actions.updateSubsSuccess(response.data));
@@ -85,6 +85,7 @@ export function editSubs(id: number, data: any) {
 }
 export function deleteSubs(id: number) {
   return async () => {
+    dispatch(slice.actions.hasError(''));
     try {
       const response = await axios.delete(`${HOST}/sustancias`, { data: { ID: id } });
       if (response) {

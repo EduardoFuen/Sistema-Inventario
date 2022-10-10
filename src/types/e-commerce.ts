@@ -9,14 +9,14 @@ export type Products = {
   Quantity?: number;
   Discount?: number;
   Price?: number;
-  Maker?: object;
+  Maker?: any;
   Status?: boolean;
   IsTaxed?: boolean;
   Tax: number;
   Sku?: string;
   Ean?: string;
   Variation: string;
-  Pack: string;
+  Pack?: any;
   TypeProduct: string;
   MakerUnit: string;
   Weight: string;
@@ -25,8 +25,8 @@ export type Products = {
   Height: string;
   PackUnit: string;
   Depth: string;
-  Warehouse: string;
-  Substances: string;
+  Warehouses: string;
+  Substance: string;
   Keywords: string;
   Substitutes: string;
   HandlesBog: string;
@@ -34,6 +34,12 @@ export type Products = {
   UrlImage: string;
   Wrapper: string;
   WrapperUnit: string;
+  TrademarkID: number;
+  TypesProductID: number;
+  CategoryOneID: number;
+  CategoryThreeID: number;
+  CategoryTwoID: number;
+  Iva: number;
 };
 
 // checkout-cart billing address

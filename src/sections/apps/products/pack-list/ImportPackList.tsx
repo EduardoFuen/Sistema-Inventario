@@ -25,7 +25,8 @@ const ImportPack = ({ onCancel }: Props) => {
       const newData = data;
       filter((item: any) => item.ID !== '').map((item: any) => ({
         Name: item?.Name || item?.name,
-        Status: item?.Status || item?.status
+        Status: item?.Status || item?.status,
+        ID: item?.ID || ''
       }));
 
       dispatch(addExcel(newData));
