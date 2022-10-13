@@ -42,8 +42,9 @@ const getInitialValues = (order: FormikValues | null) => {
     supplier: order?.supplier,
     warehouse: order?.warehouse,
     paymentdiscount: order?.paymentdiscount,
-    paymentdate: format(addDays(new Date(), order?.supplier.daysPayment), 'dd-MM-yyyy'),
-    estimatedDeliveryDate: format(addDays(new Date(), order?.supplier.leadTimeBog), 'dd-MM-yyyy')
+    paymentdate: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),
+    estimatedDeliveryDateBog: format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy'),
+    estimatedDeliveryDateBaq: format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy')
   };
 
   return newSubstance;
@@ -149,7 +150,7 @@ function ViewPurchase() {
                     Detalles de la compra
                   </Typography>
                   <Grid container spacing={1} direction="row">
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
@@ -179,7 +180,7 @@ function ViewPurchase() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                       <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('warehouse')}>
                         {warehouseList
@@ -191,7 +192,7 @@ function ViewPurchase() {
                           ))}
                       </TextField>
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={2}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
@@ -201,21 +202,11 @@ function ViewPurchase() {
                         disabled
                       />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('create_order')}
-                        placeholder=""
-                        fullWidth
-                        disabled
-                      />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('estimatedDeliveryDate')}
                         placeholder=""
                         fullWidth
                         disabled
@@ -230,7 +221,7 @@ function ViewPurchase() {
                       marginTop: 20
                     }}
                   >
-                    <Grid item xs={4}>
+                    <Grid item xs={5}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Notas</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
@@ -251,11 +242,31 @@ function ViewPurchase() {
                         disabled
                       />
                     </Grid>
-                    <Grid item xs={2} alignSelf="center">
+                    <Grid item xs={3} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('paymentdate')}
+                        placeholder=""
+                        fullWidth
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={3} alignSelf="center">
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Bogota</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('estimatedDeliveryDateBog')}
+                        placeholder=""
+                        fullWidth
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={3} alignSelf="center">
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Barranquilla</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('estimatedDeliveryDateBaq')}
                         placeholder=""
                         fullWidth
                         disabled

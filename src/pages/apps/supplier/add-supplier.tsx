@@ -73,7 +73,7 @@ function AddSupplier() {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Supplier Add successfully.',
+            message: 'Proveedor Add successfully.',
             variant: 'alert',
             alert: {
               color: 'success'
