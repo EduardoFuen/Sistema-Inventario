@@ -28,6 +28,8 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { editProduct } from 'store/reducers/product';
+import { idsToString } from 'utils/convertToObject';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -54,7 +56,7 @@ function UpdateProduct() {
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
-  const { products } = useSelector((state) => state.product);
+  const { products, error } = useSelector((state) => state.product);
   const { todoListSubs } = useSelector((state) => state.substances);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
@@ -65,6 +67,25 @@ function UpdateProduct() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (product) setIsTaxed(product?.Taxed);
+  }, [product]);
+
+  useEffect(() => {
+    if (error?.response?.data?.Error) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: error?.response?.data?.Error,
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+    }
+  }, [error, dispatch]);
 
   const handleCancel = () => {
     history(`/product-list`);
@@ -72,45 +93,75 @@ function UpdateProduct() {
 
   const SubstSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
-    Sku: Yup.string().max(255).required('sku es requerido'),
-    Ean: Yup.string().max(255).required('ean es requerido')
+    Sku: Yup.string().max(255).required('Sku es requerido'),
+    Ean: Yup.string().max(255).required('Ean es requerido')
   });
+
+  const onChange = (e: any) => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setFieldValue('UrlImage', reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const formik = useFormik({
     initialValues: {
       Name: product?.Name,
       Sku: product?.Sku,
       Ean: product?.Ean,
-      Maker: product?.Maker?.ID,
-      TrademarkID: product?.TrademarkID,
-      TypesProductID: product?.TypesProductID,
+      MakerID: product?.Maker?.ID || 0,
+      TrademarkID: product?.TrademarkID || 0,
+      TypesProductID: product?.TypesProductID || 0,
       Variation: product?.Variation,
-      CategoryOne: product?.CategoryOneID,
-      CategoryTwo: product?.CategoryTwoID,
-      CategoryThree: product?.CategoryThreeID,
-      Pack: product?.Pack?.Name,
+      CategoryOneID: product?.CategoryOneID || 0,
+      CategoryTwoID: product?.CategoryTwoID || 0,
+      CategoryThreeID: product?.CategoryThreeID || 0,
+      PackID: product?.PackID || 0,
       Wrapper: product?.Wrapper,
-      Quantity: product?.Quantity,
-      MakerUnit: product?.MakerUnit,
-      Weight: product?.Weight,
-      Width: product?.Width,
+      Quantity: product?.Quantity || '',
+      MakerUnit: product?.MakerUnit || '',
+      Weight: product?.Weight || '',
+      Width: product?.Width || '',
       PackInfo: product?.PackInfo,
-      Height: product?.Height,
-      WrapperUnit: product?.WrapperUnit,
-      Depth: product?.Depth,
-      Substance: product?.Substance,
+      Height: product?.Height || '',
+      WrapperUnit: product?.WrapperUnit || '',
+      Depth: product?.Depth || '',
+      SubstancesIDS: product?.Substance || '',
       Keywords: product?.Keywords,
-      Substitutes: product?.Substitutes,
-      Warehouses: product?.Warehouses,
+      Substitutes: product?.Substitutes || '',
+      WarehouseIDS: product?.Warehouses || '',
       UrlImage: product?.UrlImage,
       Status: product?.Status,
-      Tax: product?.Iva,
-      IsTaxed: true
+      Tax: product?.Iva.toString(),
+      IsTaxed: product?.Taxed
     },
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        dispatch(editProduct(Number(id), values));
+        let data = {
+          ...values,
+          CategoryOneID: values.CategoryOneID.toString(),
+          CategoryTwoID: values.CategoryTwoID.toString(),
+          CategoryThreeID: values.CategoryThreeID.toString(),
+          PackID: values.PackID.toString(),
+          TrademarkID: values.TrademarkID.toString(),
+          MakerID: values.MakerID.toString(),
+          TypesProductID: values.TypesProductID.toString(),
+          Taxed: values.IsTaxed,
+          Quantity: values.Quantity.toString(),
+          MakerUnit: values.MakerUnit.toString(),
+          iva: values.Tax,
+          Weight: values?.Weight.toString(),
+          Width: values?.Width.toString(),
+          Height: values?.Height.toString(),
+          Depth: values?.Depth.toString(),
+          SubstitutesIDS: idsToString(values.Substitutes),
+          WarehouseIDS: idsToString(values.WarehouseIDS),
+          SubstancesIDS: idsToString(values.SubstancesIDS)
+        };
+        dispatch(editProduct(Number(id), data));
         history(`/product-list`);
         setSubmitting(false);
       } catch (error) {
@@ -175,8 +226,8 @@ function UpdateProduct() {
                               setIsTaxed(!istaxed);
                               setFieldValue('IsTaxed', !istaxed);
                             }}
-                            defaultChecked={product?.IsTaxed}
-                            value={product?.IsTaxed}
+                            defaultChecked={product?.Taxed}
+                            value={product?.Taxed}
                           />
                         }
                         label=""
@@ -184,7 +235,7 @@ function UpdateProduct() {
                         {...getFieldProps('IsTaxed')}
                       />
                     </Grid>
-                    {product?.IsTaxed && (
+                    {istaxed && (
                       <Grid item xs={6}>
                         <InputLabel sx={{ mt: 2, opacity: 0.5 }}>IVA</InputLabel>
                         <TextField
@@ -236,6 +287,7 @@ function UpdateProduct() {
                           sx={{ display: 'none' }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             setSelectedImage(e.target.files?.[0]);
+                            onChange(e);
                           }}
                         />
                       </Stack>
@@ -251,11 +303,11 @@ function UpdateProduct() {
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
-                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('Maker')}>
+                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('MakerID')}>
                         {makerList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -267,7 +319,7 @@ function UpdateProduct() {
                         {tradeMarkList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -286,7 +338,7 @@ function UpdateProduct() {
                         {typeProductList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -302,7 +354,7 @@ function UpdateProduct() {
                         defaultValue={[...(product?.Warehouses || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('Warehouses', newValue === null ? '' : newValue);
+                          setFieldValue('WarehouseIDS', newValue === null ? '' : newValue);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="" />}
                         sx={{
@@ -334,11 +386,11 @@ function UpdateProduct() {
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryOne')}>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryOneID')}>
                         {categoryListOne
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -346,11 +398,11 @@ function UpdateProduct() {
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryTwo')}>
+                      <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryTwoID')}>
                         {categoryListTwo
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -358,11 +410,11 @@ function UpdateProduct() {
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
-                      <TextField placeholder="Seleccionar Categoria" {...getFieldProps('CategoryThree')} fullWidth select>
+                      <TextField placeholder="Seleccionar Categoria" {...getFieldProps('CategoryThreeID')} fullWidth select>
                         {categoryListThree
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -382,17 +434,17 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Envase</InputLabel>
                       <TextField
                         placeholder="Selecconar Envase"
-                        {...getFieldProps('Pack')}
-                        value={product?.Pack.ID}
-                        error={Boolean(touched.Pack && errors.Pack)}
-                        helperText={touched.Pack && errors.Pack}
+                        {...getFieldProps('PackID')}
+                        value={product?.PackID}
+                        error={Boolean(touched.PackID && errors.PackID)}
+                        helperText={touched.PackID && errors.PackID}
                         select
                         fullWidth
                       >
                         {packList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -493,7 +545,7 @@ function UpdateProduct() {
                             defaultValue={[...(product?.Substance || '')] as []}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
-                              setFieldValue('Substance', newValue === null ? '' : newValue);
+                              setFieldValue('SubstancesIDS', newValue === null ? '' : newValue);
                             }}
                             renderInput={(params) => <TextField {...params} placeholder="" />}
                             sx={{

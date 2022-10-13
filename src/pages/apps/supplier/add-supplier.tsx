@@ -272,6 +272,7 @@ function AddSupplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         placeholder="Ingresar Descuento pronto pago %"
                         fullWidth
+                        type="number"
                         {...getFieldProps('Discount')}
                         error={Boolean(touched.Discount && errors.Discount)}
                         helperText={touched.Discount && errors.Discount}

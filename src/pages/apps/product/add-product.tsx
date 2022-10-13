@@ -27,6 +27,8 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { addProduct } from 'store/reducers/product';
+import { idsToString } from 'utils/convertToObject';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -56,7 +58,7 @@ const getInitialValues = () => {
     Depth: '',
     SubstancesIDS: '',
     Keywords: '',
-    Warehouses: '',
+    WarehouseIDS: '',
     SubstitutesIDS: '',
     UrlImage: '',
     Tax: '',
@@ -69,9 +71,10 @@ const getInitialValues = () => {
 function AddNewProduct() {
   const history = useNavigate();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [avatar, setAvatar] = useState<string | undefined>();
-  const [istaxed, setIsTaxed] = useState<boolean>();
+  const [istaxed, setIsTaxed] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
 
   useEffect(() => {
@@ -81,11 +84,10 @@ function AddNewProduct() {
   }, [selectedImage]);
 
   const { makerList } = useSelector((state) => state.maker);
-  const dispatch = useDispatch();
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
-  const { products } = useSelector((state) => state.product);
+  const { products, error } = useSelector((state) => state.product);
   const { todoListSubs } = useSelector((state) => state.substances);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
@@ -108,16 +110,46 @@ function AddNewProduct() {
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {
+    if (error?.response?.data?.Error) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: error?.response?.data?.Error,
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+    }
+  }, [error, dispatch]);
 
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        dispatch(addProduct(values));
-        history(`/product-list`);
+        let data = {
+          ...values,
+          CategoryOneID: values.CategoryOneID.toString(),
+          CategoryTwoID: values.CategoryTwoID.toString(),
+          CategoryThreeID: values.CategoryThreeID.toString(),
+          TypesProductID: values.TypesProductID.toString(),
+          PackID: values.PackID.toString(),
+          TrademarkID: values.TrademarkID.toString(),
+          MakerID: values.MakerID.toString(),
+          Taxed: values.IsTaxed,
+          Quantity: values.Quantity.toString(),
+          iva: values.Tax
+        };
+        dispatch(addProduct(data));
         setSubmitting(false);
+        // history(`/product-list`);
       } catch (error) {
+        console.log(error);
+
         console.error(error);
       }
     }
@@ -177,8 +209,8 @@ function AddNewProduct() {
                           <Switch
                             sx={{ mt: 0 }}
                             onChange={() => {
-                              setIsTaxed(!istaxed);
-                              setFieldValue('IsTaxed', istaxed);
+                              setIsTaxed(true);
+                              setFieldValue('IsTaxed', !istaxed);
                             }}
                           />
                         }
@@ -240,7 +272,6 @@ function AddNewProduct() {
                           inputProps={{ accept: 'image/*' }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange(e);
-                            //   setFieldValue('img', e === null ? '' : e);
                             setSelectedImage(e.target.files?.[0]);
                           }}
                         />
@@ -292,7 +323,7 @@ function AddNewProduct() {
                         {typeProductList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -308,7 +339,7 @@ function AddNewProduct() {
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('warehouse', newValue === null ? '' : newValue);
+                          setFieldValue('WarehouseIDS', newValue === null ? '' : idsToString(newValue));
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="" />}
                         sx={{
@@ -344,7 +375,7 @@ function AddNewProduct() {
                         {categoryListOne
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -356,7 +387,7 @@ function AddNewProduct() {
                         {categoryListTwo
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -368,7 +399,7 @@ function AddNewProduct() {
                         {categoryListThree
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -410,6 +441,7 @@ function AddNewProduct() {
                         {...getFieldProps('Quantity')}
                         placeholder="Ingresar Cantidad"
                         fullWidth
+                        type="number"
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -498,7 +530,7 @@ function AddNewProduct() {
                             defaultValue={[]}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
-                              setFieldValue('SubstancesIDs', newValue === null ? '' : newValue);
+                              setFieldValue('SubstancesIDS', newValue === null ? '' : idsToString(newValue));
                             }}
                             renderInput={(params) => <TextField {...params} placeholder="" />}
                             sx={{
@@ -551,7 +583,7 @@ function AddNewProduct() {
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('SubstitutesIDS', newValue === null ? '' : newValue);
+                          setFieldValue('SubstitutesIDS', newValue === null ? '' : idsToString(newValue));
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="Producto" />}
                         sx={{

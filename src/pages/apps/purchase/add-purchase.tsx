@@ -16,7 +16,7 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import summary from 'utils/calculation';
-
+import Import from './Import';
 import AddSelectProduct from './selectProducts';
 import DetailsPurchase from './detailsProduct';
 
@@ -38,6 +38,11 @@ function AddPurchase() {
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
   const [discount, setDiscount] = useState<any>();
+  const [addImport, setActiveImport] = useState<boolean>(false);
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
 
   const handleAdd = () => {
     setAdd(!add);
@@ -113,7 +118,7 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
-                        options={supplierList.filter((item: any) => item.status === true)}
+                        options={supplierList.filter((item: any) => item.Status === true)}
                         getOptionLabel={(option) => option.BusinessName}
                         onChange={(event, newValue) => {
                           setFieldValue('supplier', newValue === null ? '' : newValue);
@@ -153,10 +158,10 @@ function AddPurchase() {
                         helperText={touched.warehouse && errors.warehouse}
                       >
                         {warehouseList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.name} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -206,6 +211,9 @@ function AddPurchase() {
 
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
+                        <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
+                          Importar Productos
+                        </Button>
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
                           Agregar Productos
                         </Button>
@@ -281,6 +289,9 @@ function AddPurchase() {
       {/* add user dialog */}
       <Dialog maxWidth="lg" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddSelectProduct onCancel={handleAdd} />}
+      </Dialog>
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
       </Dialog>
     </>
   );

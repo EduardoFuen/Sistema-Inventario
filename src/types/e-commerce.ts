@@ -39,7 +39,9 @@ export type Products = {
   CategoryOneID: number;
   CategoryThreeID: number;
   CategoryTwoID: number;
+  PackID: number;
   Iva: number;
+  Taxed: boolean;
 };
 
 // checkout-cart billing address
@@ -88,7 +90,7 @@ export interface ProductStateProps {
   relatedProducts: Products[];
   reviews: Reviews[];
   addresses: Address[];
-  error: object | string | null;
+  error: object | string | null | any;
 }
 
 export interface DefaultRootStateProps {

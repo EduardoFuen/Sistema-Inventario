@@ -29,12 +29,13 @@ import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, Im
 interface Props {
   columns: Column[];
   data: [];
+  typeProductData: [];
   getHeaderProps: (column: any) => void;
   renderRowSubComponent: any;
   handleImport: () => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleImport }: Props) {
+function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleImport, typeProductData }: Props) {
   const theme = useTheme();
   const history = useNavigate();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -84,31 +85,29 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   };
 
   const newDataExport = data.map((item: any) => {
-    let substances: string = '';
-    let substitutes: string = '';
     let warehouse: string = '';
+    let TypesProduct: any;
 
-    if (item?.substances) {
-      substances = item.substances.map((e: any) => e.Name).join();
-    }
-    if (item?.substitutes) {
-      substitutes = item?.substitutes.map((e: any) => e.Name).join();
-    }
     if (item?.warehouse) {
       warehouse = item?.warehouse.map((e: any) => e.Name).join();
     }
+    if (item?.TypesProductID) {
+      TypesProduct = typeProductData.find((data: any) => data?.ID === item?.TypesProductID) || '';
+    }
+
     return {
+      ID: item?.ID,
       Name: item?.Name,
       Sku: item?.Sku,
       Ean: item?.Ean,
       Maker: item?.Maker.Name,
       Trademark: item?.Trademark,
-      TypeProduct: item?.TypeProduct,
+      Type_Product: TypesProduct?.Name,
       Variation: item?.Variation,
-      CategoryOne: item?.CategoryOne,
-      CategoryTwo: item?.CategoryTwo,
-      CategoryThree: item?.CategoryThree,
-      Pack: item?.Wrapper,
+      CategoryOne: item?.CategoryOne?.Name,
+      CategoryTwo: item?.CategoryTwo?.Name,
+      CategoryThree: item?.CategoryThree?.Name,
+      Pack: item?.Pack?.Name,
       Quantity: item?.Quantity,
       MakerUnit: item?.MakerUnit,
       Weight: item?.Weight,
@@ -117,9 +116,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       Height: item?.Height,
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
-      Substances: substances,
-      Keywords: item?.Keywords,
-      Substitutes: substitutes,
       Warehouse: warehouse,
       UrlImage: item?.UrlImage,
       Status: item?.Status,
@@ -213,6 +209,7 @@ const ProductList = () => {
 
   const { products } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { typeProductList } = useSelector((state) => state.typeProduct);
 
   const TradeMark = (id: number) => {
     if (id) {
@@ -264,7 +261,6 @@ const ProductList = () => {
       {
         Header: 'Maker',
         accessor: 'Maker',
-        className: 'cell-right',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
@@ -278,7 +274,6 @@ const ProductList = () => {
       {
         Header: 'Trademark',
         accessor: 'TrademarkID',
-        className: 'cell-right',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
@@ -365,6 +360,7 @@ const ProductList = () => {
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
           handleImport={handleImport}
+          typeProductData={typeProductList as []}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

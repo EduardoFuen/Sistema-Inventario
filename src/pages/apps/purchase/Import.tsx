@@ -5,35 +5,50 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { addExcel } from 'store/reducers/supplier';
+import { addExcel } from 'store/reducers/product';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| SUPPLIER IMPORT ||============================== //
+// ==============================|| PRODUCT IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;
 }
 
-const ImporSupplier = ({ onCancel }: Props) => {
+const Import = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        EmailContact: item?.EmailContact,
-        Nit: item?.Nit.toString(),
-        BusinessName: item?.BusinessName,
-        PhoneContact: item?.PhoneContact.toString(),
+        Name: item?.Name,
+        Sku: item?.Sku,
+        Ean: item?.Ean,
+        Maker: item?.Maker,
+        Trademark: item?.Trademark,
+        TypeProduct: item?.TypeProduct,
+        Variation: item?.Variation,
+        CategoryOne: item?.CategoryOne,
+        CategoryTwo: item?.CategoryTwo,
+        CategoryThree: item?.CategoryThree,
+        Pack: item?.Wrapper,
+        Quantity: item?.Quantity,
+        MakerUnit: item?.MakerUnit,
+        Weight: item?.Weight,
+        Width: item?.Width,
+        PackInfo: item?.PackInfo,
+        Height: item?.Height,
+        WrapperUnit: item?.WrapperUnit,
+        Depth: item?.Depth,
+        Substances: item?.Substances,
+        Keywords: item?.Keywords,
+        Substitutes: item?.Substitutes,
+        Warehouse: item?.Warehouse,
+        UrlImage: item?.UrlImage,
         Status: item?.Status,
-        LeadTimeBog: item?.LeadTimeBog,
-        PaymenTerm: item?.PaymenTerm,
-        leadTimeBaq: item?.leadTimeBaq,
-        Discount: item?.Discount,
-        DaysPayment: item?.DaysPayment.toString(),
-        Cupo: item?.Cupo,
-        NameContact: item?.NameContact
+        Tax: item?.Tax,
+        IsTaxed: item?.IsTaxed
       }));
       dispatch(addExcel(newData));
       onCancel();
@@ -72,4 +87,4 @@ const ImporSupplier = ({ onCancel }: Props) => {
   );
 };
 
-export default ImporSupplier;
+export default Import;

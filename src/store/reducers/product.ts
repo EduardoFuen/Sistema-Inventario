@@ -1,6 +1,5 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
-
 // project imports
 import axios from 'axios';
 import { HOST } from '../../config';
@@ -132,7 +131,7 @@ export function addProduct(data: any) {
 export function editProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/productos`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/productos`, { ID: id.toString(), ...data });
       dispatch(
         slice.actions.editProductsSuccess({
           id,
@@ -150,6 +149,7 @@ export function editProduct(id: number, data: any) {
           close: false
         })
       );
+      dispatch(getProducts());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -158,7 +158,7 @@ export function editProduct(id: number, data: any) {
 export function deleteProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id.toString() } });
       if (response) {
         dispatch(getProducts());
         dispatch(
@@ -194,6 +194,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
+      dispatch(getProducts());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
