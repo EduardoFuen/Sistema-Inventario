@@ -12,6 +12,8 @@ export type NavItemType = {
   caption?: ReactNode | string;
   children?: NavItemType[];
   chip?: ChipProps;
+  mainTitle?: string;
+  mainUrl?: string;
   color?: 'primary' | 'secondary' | 'default' | undefined;
   disabled?: boolean;
   external?: boolean;
