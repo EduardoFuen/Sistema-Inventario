@@ -5,7 +5,7 @@ import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { addExcel } from 'store/reducers/product';
+import { addItemsPurchase } from 'store/reducers/purcharse';
 
 import ImportToFile from 'components/ImportToFile';
 
@@ -21,36 +21,28 @@ const Import = ({ onCancel }: Props) => {
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => ({
-        Name: item?.Name,
-        Sku: item?.Sku,
-        Ean: item?.Ean,
-        Maker: item?.Maker,
-        Trademark: item?.Trademark,
-        TypeProduct: item?.TypeProduct,
-        Variation: item?.Variation,
-        CategoryOne: item?.CategoryOne,
-        CategoryTwo: item?.CategoryTwo,
-        CategoryThree: item?.CategoryThree,
-        Pack: item?.Wrapper,
-        Quantity: item?.Quantity,
-        MakerUnit: item?.MakerUnit,
-        Weight: item?.Weight,
-        Width: item?.Width,
-        PackInfo: item?.PackInfo,
-        Height: item?.Height,
-        WrapperUnit: item?.WrapperUnit,
-        Depth: item?.Depth,
-        Substances: item?.Substances,
-        Keywords: item?.Keywords,
-        Substitutes: item?.Substitutes,
-        Warehouse: item?.Warehouse,
-        UrlImage: item?.UrlImage,
-        Status: item?.Status,
-        Tax: item?.Tax,
-        IsTaxed: item?.IsTaxed
-      }));
-      dispatch(addExcel(newData));
+      const newData = data.map((item: any) => {
+        let SubTotal = item?.Quantity * item?.Price * ((100 - item?.NegotiatedDiscount) / 100) || 0;
+        return {
+          Name: item?.Name,
+          ID: item?.ID,
+          Sku: item?.Sku,
+          Ean: item?.Ean,
+          isSelected: true,
+          Qty: item?.Quantity,
+          Price: item?.Price,
+          Tax: item?.IVA,
+          NegotiatedDiscount: item?.NegotiatedDiscount,
+          AdditionalDiscount: item?.AdditionalDiscount,
+          Bonus: item?.Bonus,
+          SubTotal,
+          Total: SubTotal + (item?.Quantity * item?.Price * item?.IVA) / 100
+        };
+      });
+      let detailsPurchase = newData.filter((element: any, index: number) => {
+        return newData.indexOf(element) === index;
+      });
+      dispatch(addItemsPurchase(detailsPurchase));
       onCancel();
     } catch (error) {
       console.error(error);

@@ -250,9 +250,9 @@ const ProductList = () => {
           const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar variant="rounded" alt={original.Name} color="secondary" size="sm" src={original.UrlImage} />
+              <Avatar variant="rounded" alt={original?.Name} color="secondary" size="sm" src={original?.UrlImage} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original.Name}</Typography>
+                <Typography variant="subtitle1">{original?.Name}</Typography>
               </Stack>
             </Stack>
           );
@@ -265,7 +265,7 @@ const ProductList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{value.Name}</Typography>
+                <Typography variant="subtitle1">{value?.Name}</Typography>
               </Stack>
             </Stack>
           );

@@ -37,18 +37,17 @@ const slice = createSlice({
       state.detailsPurchase = [...state.detailsPurchase, ...action.payload];
     },
     deleteDetailsPurchaseSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.detailsPurchase.findIndex((item) => item.name === name);
+      const { id } = action.payload;
+      const index = state.detailsPurchase.findIndex((item) => item.ID === id);
       state.detailsPurchase.splice(index, 1);
 
       const product = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
-      const idx = product?.findIndex((item: any) => item.name === name);
+      const idx = product?.findIndex((item: any) => item.ID === id);
       product.splice(idx, 1);
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(product));
     },
     updateDetailsPurchaseSuccess(state, action) {
       const { data } = action.payload;
-      /*    const index = state.detailsPurchase.findIndex((item) => item.name === id); */
       state.detailsPurchase = data;
     },
     resetDetailsPurchaseSuccess(state) {
@@ -126,9 +125,7 @@ const slice = createSlice({
     confirmationReceptionSuccess(state, action) {
       const { nc, data } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      // let summaryOrder = summary(data?.products, data?.discountOrder);
       state.listPurchase[index] = { ...data, orderStatus: 'Partial' };
-      // state.detailsReption = action.payload;
     }
   }
 });
@@ -141,7 +138,7 @@ export default slice.reducer;
 export function addItemsPurchase(data: any) {
   return async () => {
     try {
-      let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option.values);
+      let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -166,10 +163,10 @@ export function updateItemsPurchase(data: any) {
     }
   };
 }
-export function deleteItemsPurchase(name: string) {
+export function deleteItemsPurchase(id: number) {
   return async () => {
     try {
-      dispatch(slice.actions.deleteDetailsPurchaseSuccess({ name }));
+      dispatch(slice.actions.deleteDetailsPurchaseSuccess({ id }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

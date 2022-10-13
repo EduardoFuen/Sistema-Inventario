@@ -153,8 +153,8 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
-                        options={supplierList.filter((item: any) => item.status === true)}
-                        getOptionLabel={(option) => option.businessName}
+                        options={supplierList.filter((item: any) => item.Status === true)}
+                        getOptionLabel={(option) => option.BusinessName}
                         onChange={(event, newValue) => {
                           setFieldValue('supplier', newValue === null ? '' : newValue);
                         }}
@@ -183,10 +183,10 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                       <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('warehouse')}>
                         {warehouseList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.ID} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -297,12 +297,13 @@ function ViewPurchase() {
                           <TableCell component="th" scope="row">
                             <Stack direction="row" spacing={1.5} alignItems="center">
                               <Stack spacing={0}>
-                                <Typography variant="subtitle1">{x.name}</Typography>
+                                <Typography variant="subtitle1">{x.ID}</Typography>
+                                <Typography variant="subtitle1">{x.Name}</Typography>
                                 <Typography variant="caption" color="textSecondary">
-                                  SKU {x.sku}
+                                  SKU {x.Sku}
                                 </Typography>
                                 <Typography variant="caption" color="textSecondary">
-                                  EAN :{x.ean}
+                                  EAN :{x.Ean}
                                 </Typography>
                               </Stack>
                             </Stack>

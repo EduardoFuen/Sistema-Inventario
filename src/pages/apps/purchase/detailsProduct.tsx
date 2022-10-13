@@ -36,14 +36,14 @@ const DetailsPurchase = ({ product }: any) => {
 
   useEffect(() => {
     let newData = data.map((item: any) => ({
-      qty: '',
-      price: '',
-      tax: '',
-      Negotiateddiscount: '',
-      Additionaldiscount: '',
-      bonus: '',
-      subtotal: '',
-      total: '',
+      Qty: '',
+      Price: '',
+      Tax: '',
+      NegotiatedDiscount: '',
+      AdditionalDiscount: '',
+      Bonus: '',
+      SubTotal: '',
+      Total: '',
       ...item
     }));
     setInputList(newData);
@@ -53,27 +53,26 @@ const DetailsPurchase = ({ product }: any) => {
   const handleInputChange = (e: any, index: number) => {
     const list = [...inputList];
     const { name, value } = e.target;
-    if (name === 'qty') {
-      list[index]['qty'] = value;
+    if (name === 'Qty') {
+      list[index]['Qty'] = value;
     }
-    if (name === 'price') {
-      list[index]['price'] = value;
+    if (name === 'Price') {
+      list[index]['Price'] = value;
     }
-    if (name === 'tax') {
-      list[index]['tax'] = value;
+    if (name === 'Tax') {
+      list[index]['Tax'] = value;
     }
-    if (name === 'Negotiateddiscount') {
-      list[index]['Negotiateddiscount'] = value;
+    if (name === 'NegotiatedDiscount') {
+      list[index]['NegotiatedDiscount'] = value;
     }
-    if (name === 'Additionaldiscount') {
-      list[index]['Additionaldiscount'] = value;
+    if (name === 'AdditionalDiscount') {
+      list[index]['AdditionalDiscount'] = value;
     }
-    if (name === 'bonus') {
-      list[index]['bonus'] = value;
+    if (name === 'Bonus') {
+      list[index]['Bonus'] = value;
     }
-    list[index]['subtotal'] = list[index]?.qty * list[index]?.price * ((100 - list[index]?.Negotiateddiscount) / 100) || 0;
-    list[index]['total'] = list[index]?.subtotal + (list[index]?.qty * list[index]?.price * list[index]?.tax) / 100;
-
+    list[index]['SubTotal'] = list[index]?.Qty * list[index]?.Price * ((100 - list[index]?.NegotiatedDiscount) / 100) || 0;
+    list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Qty * list[index]?.Price * list[index]?.Tax) / 100;
     setInputList(list);
     dispatch(updateItemsPurchase(list));
   };
@@ -102,12 +101,13 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell component="th" scope="row">
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <Stack spacing={0}>
-                      <Typography variant="subtitle1">{x.name}</Typography>
+                      <Typography variant="subtitle1">{x.ID}</Typography>
+                      <Typography variant="subtitle1">{x.Name}</Typography>
                       <Typography variant="caption" color="textSecondary">
-                        SKU {x.sku}
+                        SKU {x.Sku}
                       </Typography>
                       <Typography variant="caption" color="textSecondary">
-                        EAN :{x.ean}
+                        EAN :{x.Ean}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -119,8 +119,8 @@ const DetailsPurchase = ({ product }: any) => {
                     type="number"
                     placeholder="Ingresar Cantidad"
                     fullWidth
-                    name="qty"
-                    value={x.qty}
+                    name="Qty"
+                    value={x.Qty}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -131,8 +131,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Precio Base"
                     fullWidth
-                    name="price"
-                    value={x.price}
+                    name="Price"
+                    value={x.Price}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -143,8 +143,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar IVA"
                     fullWidth
-                    name="tax"
-                    value={x.tax}
+                    name="Tax"
+                    value={x.Tax}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -155,8 +155,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Descuento Negociado"
                     fullWidth
-                    name="Negotiateddiscount"
-                    value={x.Negotiateddiscount}
+                    name="NegotiatedDiscount"
+                    value={x.NegotiatedDiscount}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -167,8 +167,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Descuento Adicional"
                     fullWidth
-                    name="Additionaldiscount"
-                    value={x.Additionaldiscount}
+                    name="AdditionalDiscount"
+                    value={x.AdditionalDiscount}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -179,8 +179,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Bonificación"
                     fullWidth
-                    value={x.bonus}
-                    name="bonus"
+                    value={x.Bonus}
+                    name="Bonus"
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -188,8 +188,8 @@ const DetailsPurchase = ({ product }: any) => {
                   <Input
                     id="standard-adornment-amount"
                     onChange={(e) => handleInputChange(e, i)}
-                    name="subtotal"
-                    value={x.subtotal || 0}
+                    name="SubTotal"
+                    value={x.SubTotal || 0}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                   />
                 </TableCell>
@@ -197,8 +197,8 @@ const DetailsPurchase = ({ product }: any) => {
                   <Input
                     id="standard-adornment-amount"
                     onChange={(e) => handleInputChange(e, i)}
-                    name="total"
-                    value={x.total || 0}
+                    name="Total"
+                    value={x.Total || 0}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                   />
                 </TableCell>
@@ -219,7 +219,7 @@ const DetailsPurchase = ({ product }: any) => {
                             close: false
                           })
                         );
-                        dispatch(deleteItemsPurchase(x.name));
+                        dispatch(deleteItemsPurchase(x.ID));
                       }}
                     >
                       <DeleteTwoTone twoToneColor={theme.palette.error.main} />

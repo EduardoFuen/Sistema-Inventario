@@ -19,7 +19,7 @@ import summary from 'utils/calculation';
 import Import from './Import';
 import AddSelectProduct from './selectProducts';
 import DetailsPurchase from './detailsProduct';
-
+import Export from 'components/ExportToFile';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
@@ -101,6 +101,20 @@ function AddPurchase() {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   const data = useMemo(() => summary(detailsPurchase, discount || 0), [detailsPurchase, discount]);
+  const dataProduct: any = [
+    {
+      Name: '',
+      ID: '',
+      Sku: '',
+      Ean: '',
+      Quantity: '',
+      Price: '',
+      IVA: '',
+      NegotiatedDiscount: '',
+      AdditionalDiscount: '',
+      Bonus: ''
+    }
+  ];
 
   return (
     <>
@@ -160,7 +174,7 @@ function AddPurchase() {
                         {warehouseList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.ID}>
+                            <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
                           ))}
@@ -211,6 +225,7 @@ function AddPurchase() {
 
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
+                        <Export excelData={dataProduct} fileName="Details Purchase" />
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
                           Importar Productos
                         </Button>

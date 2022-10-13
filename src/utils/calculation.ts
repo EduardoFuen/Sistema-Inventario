@@ -1,8 +1,8 @@
 const summary = (details: any, discount: number) =>
   details.reduce(
     (acc: any = {}, item: any) => {
-      const itemTotal = parseFloat(item?.subtotal) || 0;
-      const tax = (item?.price * item?.qty * item?.tax) / 100 || 0;
+      const itemTotal = parseFloat(item?.SubTotal) || 0;
+      const tax = (item?.Price * item?.Qty * item?.Tax) / 100 || 0;
       acc.subtotal = parseFloat((acc.subtotal + itemTotal).toFixed(2));
       acc.tax = parseFloat((acc.tax + tax).toFixed(2));
       acc.discount = (acc.subtotal - acc.subtotal * ((100 - discount) / 100)).toFixed(0) || 0;

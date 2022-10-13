@@ -166,13 +166,26 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   const dispatch = useDispatch();
   const [itemsNew, setItems] = useState<any[]>([]);
   const { products } = useSelector((state) => state.product);
+  const { tradeMarkList } = useSelector((state) => state.trademaker);
+
+  const TradeMark = (id: number) => {
+    if (id) {
+      let MakerID: any = tradeMarkList.find((item: any) => item.ID === id);
+      return MakerID?.Name;
+    }
+  };
+
   const handleSelect = (row: any) => {
-    setItems((prevArray) => [...prevArray, row]);
+    let newRow = {
+      ...row.original,
+      isSelected: true
+    };
+    setItems((prevArray) => [...prevArray, newRow]);
   };
 
   useEffect(() => {}, [itemsNew]);
 
-  let detailsPurchase = itemsNew.filter((element, index) => {
+  let detailsPurchase: any = itemsNew.filter((element, index) => {
     return itemsNew.indexOf(element) === index;
   });
 
@@ -186,28 +199,30 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
         disableSortBy: true
       },
       {
+        Header: 'ID',
+        accessor: 'ID',
+        className: 'cell-center'
+      },
+      {
         Header: 'SKU',
-        accessor: 'sku',
+        accessor: 'Sku',
         className: 'cell-center'
       },
       {
         Header: 'EAN',
-        accessor: 'ean',
+        accessor: 'Ean',
         className: 'cell-center'
       },
       {
         Header: 'Nombre Producto',
-        accessor: 'name',
+        accessor: 'Name',
         Cell: ({ row }: any) => {
-          const { values } = row;
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar variant="rounded" alt={values.name} color="secondary" size="sm" src="" />
+              <Avatar variant="rounded" alt={original.Name} color="secondary" size="sm" src={original.UrlImage} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{values.name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {values.description}
-                </Typography>
+                <Typography variant="subtitle1">{original.Name}</Typography>
               </Stack>
             </Stack>
           );
@@ -215,22 +230,31 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
       },
       {
         Header: 'Maker',
-        accessor: 'maker',
-        className: 'cell-right'
+        accessor: 'Maker',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{value?.Name}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Trademark',
-        accessor: 'trademark',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Qty',
-        accessor: 'quantity',
-        className: 'cell-right'
+        accessor: 'TrademarkID',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>{value && <Typography variant="subtitle1">{TradeMark(value)}</Typography>}</Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:
