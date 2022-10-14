@@ -1,5 +1,5 @@
 {
-  "plugins": ["prettier", "@typescript-eslint"],
+  "plugins": ["prettier", "@typescript-eslint", "./webpack.config.prod.js"],
   "extends": ["react-app", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

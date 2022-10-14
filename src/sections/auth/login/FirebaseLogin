@@ -24,7 +24,6 @@ import { Formik } from 'formik';
 // project import
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
-import FirebaseSocial from './FirebaseSocial';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 
@@ -203,9 +202,6 @@ const AuthLogin = () => {
                 <Divider>
                   <Typography variant="caption"> Login with</Typography>
                 </Divider>
-              </Grid>
-              <Grid item xs={12}>
-                <FirebaseSocial />
               </Grid>
             </Grid>
           </form>
