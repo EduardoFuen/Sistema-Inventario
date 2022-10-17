@@ -98,8 +98,8 @@ function AddNewProduct() {
 
   const SubstSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
-    Sku: Yup.string().max(255).required('sku es requerido'),
-    Ean: Yup.string().max(255).required('ean es requerido')
+    Sku: Yup.string().max(255).required('Sku es requerido'),
+    Ean: Yup.string().max(255).required('Ean es requerido')
   });
 
   const onChange = (e: any) => {
@@ -129,7 +129,7 @@ function AddNewProduct() {
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         let data = {
           ...values,
@@ -144,17 +144,14 @@ function AddNewProduct() {
           Quantity: values.Quantity.toString(),
           iva: values.Tax
         };
-        dispatch(addProduct(data));
+        await dispatch(addProduct(data));
         setSubmitting(false);
-        if (!error?.response?.data?.Error) {
-          history(`/product-list`);
-        }
       } catch (error) {
         console.error(error);
+        setSubmitting(false);
       }
     }
   });
-
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   return (

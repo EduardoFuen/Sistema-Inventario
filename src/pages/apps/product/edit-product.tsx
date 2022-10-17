@@ -68,15 +68,18 @@ function UpdateProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    if (product) setIsTaxed(product?.Taxed);
+    if (product) {
+      setIsTaxed(product?.Taxed);
+      setAvatar(product?.UrlImage);
+    }
   }, [product]);
 
   useEffect(() => {
-    if (error?.response?.data?.Error) {
+    if ((error && Object.keys(error).length !== 0) || error?.response?.data?.Error) {
       dispatch(
         openSnackbar({
           open: true,
-          message: error?.response?.data?.Error,
+          message: error?.response?.data?.Error || error?.message,
           variant: 'alert',
           alert: {
             color: 'error'
@@ -138,7 +141,7 @@ function UpdateProduct() {
       IsTaxed: product?.Taxed
     },
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         let data = {
           ...values,
@@ -161,11 +164,10 @@ function UpdateProduct() {
           WarehouseIDS: idsToString(values.WarehouseIDS),
           SubstancesIDS: idsToString(values.SubstancesIDS)
         };
-        dispatch(editProduct(Number(id), data));
-        history(`/product-list`);
+        await dispatch(editProduct(Number(id), data));
         setSubmitting(false);
       } catch (error) {
-        console.error(error);
+        setSubmitting(false);
       }
     }
   });

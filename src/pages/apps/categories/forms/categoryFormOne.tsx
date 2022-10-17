@@ -33,7 +33,7 @@ function AddCategoryOne({ categoryOne: category }: any) {
       Status: category?.Status || false
     },
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         if (category?.Name) {
           dispatch(
@@ -47,7 +47,7 @@ function AddCategoryOne({ categoryOne: category }: any) {
               close: false
             })
           );
-          dispatch(editCategory('CategoryOne', category?.ID, values));
+          await dispatch(editCategory('CategoryOne', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -60,7 +60,7 @@ function AddCategoryOne({ categoryOne: category }: any) {
               close: false
             })
           );
-          dispatch(addCategoryOne(values));
+          await dispatch(addCategoryOne(values));
           resetForm();
         }
         setSubmitting(false);

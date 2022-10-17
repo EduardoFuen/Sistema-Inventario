@@ -100,7 +100,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   );
 
   const handleAddSupplier = () => {
-    history(`/add-new-supplier`);
+    history(`/supplier/add`);
   };
 
   return (
@@ -195,7 +195,7 @@ const SupplierListPage = () => {
   }, []);
 
   const handleEditSupplier = (id: any) => {
-    history(`/supplier-edit/${id}`);
+    history(`/supplier/edit/${id}`);
   };
 
   const { supplierList } = useSelector((state) => state.supplier);

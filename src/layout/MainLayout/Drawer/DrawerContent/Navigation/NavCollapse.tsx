@@ -193,7 +193,7 @@ const NavCollapse = ({ menu, level }: Props) => {
           <ListItemText
             primary={
               <Typography variant="h6" color={selected === menu.id ? 'primary' : textColor}>
-                {menu.title}ddddd
+                {menu.title}
               </Typography>
             }
             secondary={

@@ -84,7 +84,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
   const history = useNavigate();
 
   const handleAddPurchase = () => {
-    history(`/purchase/add-new-purchase`);
+    history(`/purchase/add`);
   };
   return (
     <>
@@ -285,7 +285,7 @@ const PurchaseList = () => {
   const history = useNavigate();
 
   const handleViewPurchase = (id: any) => {
-    history(`/purchase/view-purchase/${id}`);
+    history(`/purchase/view/${id}`);
   };
 
   const { listPurchase } = useSelector((state) => state.purchase);

@@ -72,13 +72,10 @@ export function getProducts() {
       const response = await axios.get(`${HOST}/productos`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getProductsSuccess(response.data));
+        dispatch(slice.actions.hasError(null));
       }
     } catch (error: any) {
-      if (error?.response?.status === 404) {
-        dispatch(slice.actions.getProductsSuccess([]));
-      } else {
-        dispatch(slice.actions.hasError(error));
-      }
+      dispatch(slice.actions.hasError(error));
     }
   };
 }
@@ -100,6 +97,8 @@ export function addProduct(data: any) {
         })
       );
       dispatch(getProducts());
+      dispatch(slice.actions.hasError(null));
+      window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -127,6 +126,8 @@ export function editProduct(id: number, data: any) {
         })
       );
       dispatch(getProducts());
+      dispatch(slice.actions.hasError(null));
+      window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -149,6 +150,7 @@ export function deleteProduct(id: number) {
             close: false
           })
         );
+        dispatch(slice.actions.hasError(null));
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -171,18 +173,8 @@ export function addExcel(data: any) {
           close: false
         })
       );
+      dispatch(slice.actions.hasError(null));
       dispatch(getProducts());
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function getProduct(id: string | undefined) {
-  return async () => {
-    try {
-      const response = await axios.post('/api/product/details', { id });
-      dispatch(slice.actions.getProductSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

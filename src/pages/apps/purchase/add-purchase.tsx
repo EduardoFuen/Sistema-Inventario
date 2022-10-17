@@ -13,7 +13,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import summary from 'utils/calculation';
 import Import from './Import';
@@ -78,18 +77,6 @@ function AddPurchase() {
           };
 
           dispatch(addPurchase(newValue));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Orden Creada successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
-          history(`/purchase/view-purchase/${newValue.nc}`);
         }
         setSubmitting(false);
       } catch (error) {

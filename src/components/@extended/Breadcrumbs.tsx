@@ -1,5 +1,5 @@
 import { CSSProperties, ReactElement, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 // material-ui
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
@@ -55,6 +55,7 @@ const Breadcrumbs = ({
   const location = useLocation();
   const [main, setMain] = useState<NavItemType | undefined>();
   const [item, setItem] = useState<NavItemType>();
+  const { id, index } = useParams();
 
   const iconSX = {
     marginRight: theme.spacing(0.75),
@@ -76,11 +77,22 @@ const Breadcrumbs = ({
   // set active item state
   const getCollapse = (menu: NavItemType) => {
     if (menu.children) {
-      menu.children.filter((collapse: NavItemType) => {
+      menu.children.filter((collapse: NavItemType | any) => {
         if (collapse.type && collapse.type === 'collapse') {
           getCollapse(collapse as { children: NavItemType[]; type?: string });
         } else if (collapse.type && collapse.type === 'item') {
-          if (location.pathname === collapse.url) {
+          let url: string | undefined;
+          let newUrl: string | undefined;
+          if (id !== undefined) {
+            if (index) {
+              url = collapse.url.slice(0, collapse.url?.indexOf('/:id/'));
+              newUrl = `${url}/${id}/${index}`;
+            } else {
+              url = collapse.url.slice(0, collapse.url.lastIndexOf('/'));
+              newUrl = `${url}/${id}`;
+            }
+          }
+          if (location.pathname === collapse.url || location.pathname === newUrl) {
             setMain(menu);
             setItem(collapse);
           }
@@ -98,6 +110,7 @@ const Breadcrumbs = ({
   let itemContent;
   let breadcrumbContent: ReactElement = <Typography />;
   let itemTitle: NavItemType['title'] = '';
+  let itemUrl: NavItemType['mainUrl'];
   let CollapseIcon;
   let ItemIcon;
 
@@ -115,7 +128,6 @@ const Breadcrumbs = ({
   // items
   if (item && item.type === 'item') {
     itemTitle = item.title;
-
     ItemIcon = item.icon ? item.icon : ApartmentOutlined;
     itemContent = (
       <Typography variant="subtitle1" color="textPrimary">
@@ -123,7 +135,17 @@ const Breadcrumbs = ({
         {itemTitle}
       </Typography>
     );
-
+    if (item && item.type === 'item' && item.hide) {
+      ItemIcon = item.icon ? item.icon : ApartmentOutlined;
+      itemTitle = item.mainTitle;
+      itemUrl = item.mainUrl;
+      mainContent = (
+        <Typography component={Link} to={itemUrl || ''} variant="h6" sx={{ textDecoration: 'none' }} color="textSecondary">
+          {icons && <ItemIcon style={iconSX} />}
+          {itemTitle}
+        </Typography>
+      );
+    }
     // main
     if (item.breadcrumbs !== false) {
       breadcrumbContent = (

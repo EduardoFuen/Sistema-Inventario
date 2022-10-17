@@ -81,7 +81,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(product!),
     validationSchema: UserSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newProduct = {
           Name: values.Name,
@@ -89,7 +89,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
         };
 
         if (product) {
-          dispatch(editTypeProduct(product.ID, newProduct));
+          await dispatch(editTypeProduct(product.ID, newProduct));
           dispatch(
             openSnackbar({
               open: true,
@@ -102,7 +102,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addTypeProduct(newProduct));
+          await dispatch(addTypeProduct(newProduct));
           dispatch(
             openSnackbar({
               open: true,

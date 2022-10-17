@@ -1,11 +1,11 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
-
 // project imports
 // import axios from 'utils/axios';
 import { dispatch } from '../index';
 import summary from 'utils/calculation';
-
+import { openSnackbar } from './snackbar';
+import { useNavigate } from 'react-router-dom';
 // types
 import { PurchaseStateProps } from 'types/product-type';
 
@@ -134,48 +134,10 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
-
-export function addItemsPurchase(data: any) {
+export function getPurchaseList() {
   return async () => {
     try {
-      let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
-      dispatch(slice.actions.addDetailsPurchaseSuccess(products));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function editItemsPurchase(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.editDetailsPurchaseSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function updateItemsPurchase(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.updateDetailsPurchaseSuccess({ data }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function deleteItemsPurchase(id: number) {
-  return async () => {
-    try {
-      dispatch(slice.actions.deleteDetailsPurchaseSuccess({ id }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-export function resetItemsPurchase() {
-  return async () => {
-    try {
-      dispatch(slice.actions.resetDetailsPurchaseSuccess());
+      localStorage.getItem('mantis-ts-pack');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -184,7 +146,20 @@ export function resetItemsPurchase() {
 export function addPurchase(data: any) {
   return async () => {
     try {
+      const history = useNavigate();
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Orden Creada successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
       dispatch(slice.actions.addPurchaseSuccess(data));
+      history(`/purchase/view/${data.nc}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -234,15 +209,55 @@ export function sendPurchase(nc: any, data: any) {
     }
   };
 }
-export function getPurchaseList() {
+
+export function addItemsPurchase(data: any) {
   return async () => {
     try {
-      localStorage.getItem('mantis-ts-pack');
+      let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
+      dispatch(slice.actions.addDetailsPurchaseSuccess(products));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
+export function editItemsPurchase(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.editDetailsPurchaseSuccess(data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function updateItemsPurchase(data: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateDetailsPurchaseSuccess({ data }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function deleteItemsPurchase(id: number) {
+  return async () => {
+    try {
+      dispatch(slice.actions.deleteDetailsPurchaseSuccess({ id }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function resetItemsPurchase() {
+  return async () => {
+    try {
+      dispatch(slice.actions.resetDetailsPurchaseSuccess());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+/* RECEPTION */
 export function addReception(data: any) {
   return async () => {
     try {

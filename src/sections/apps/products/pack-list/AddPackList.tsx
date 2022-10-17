@@ -81,7 +81,7 @@ const AddPackList = ({ pack, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(pack!),
     validationSchema: UserSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newPack = {
           Name: values.Name,
@@ -89,7 +89,7 @@ const AddPackList = ({ pack, onCancel }: Props) => {
         };
 
         if (pack) {
-          dispatch(editPack(pack.ID, newPack));
+          await dispatch(editPack(pack.ID, newPack));
           dispatch(
             openSnackbar({
               open: true,
@@ -102,7 +102,7 @@ const AddPackList = ({ pack, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addPack(newPack));
+          await dispatch(addPack(newPack));
           dispatch(
             openSnackbar({
               open: true,

@@ -74,7 +74,7 @@ function ReactTable({ columns, data, getHeaderProps, handleImport }: Props) {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'Name', desc: true };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,
@@ -198,7 +198,7 @@ const CategoriesList = () => {
   const history = useNavigate();
 
   const handleEditCategory = (id: any, index: any) => {
-    history(`/product-list/add-category/${id}/${index}`);
+    history(`/product-list/edit-category/${id}/${index}`);
   };
   const [value, setValue] = useState(0);
 

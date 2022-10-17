@@ -81,7 +81,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(subst!),
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newSubstance = {
           Name: values.Name,
@@ -89,7 +89,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
         };
 
         if (subst) {
-          dispatch(editSubs(subst.ID, newSubstance));
+          await dispatch(editSubs(subst.ID, newSubstance));
           dispatch(
             openSnackbar({
               open: true,
@@ -102,7 +102,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addSubs(newSubstance));
+          await dispatch(addSubs(newSubstance));
           dispatch(
             openSnackbar({
               open: true,

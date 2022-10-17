@@ -80,7 +80,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(maker!),
     validationSchema: MakerSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newMaker = {
           Name: values.Name,
@@ -88,7 +88,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
         };
 
         if (maker) {
-          dispatch(editMaker(maker.ID, newMaker));
+          await dispatch(editMaker(maker.ID, newMaker));
           dispatch(
             openSnackbar({
               open: true,
@@ -101,7 +101,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addMaker(newMaker));
+          await dispatch(addMaker(newMaker));
           dispatch(
             openSnackbar({
               open: true,

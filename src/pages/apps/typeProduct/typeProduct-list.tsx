@@ -36,7 +36,7 @@ interface Props {
 function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'Name', desc: true };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,

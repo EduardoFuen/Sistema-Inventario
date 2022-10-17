@@ -36,7 +36,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
       categoryOne: category?.CategoryOneID || ''
     },
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         if (category?.Name) {
           dispatch(
@@ -50,7 +50,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
               close: false
             })
           );
-          dispatch(editCategory('Name', category?.ID, values));
+          await dispatch(editCategory('Name', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -63,7 +63,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
               close: false
             })
           );
-          dispatch(addCategory2(values));
+          await dispatch(addCategory2(values));
           resetForm();
         }
         setSubmitting(false);

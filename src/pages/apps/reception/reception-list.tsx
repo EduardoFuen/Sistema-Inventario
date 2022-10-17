@@ -270,7 +270,7 @@ const ReceptionList = () => {
   const history = useNavigate();
 
   const handleViewReception = (id: any) => {
-    history(`/reception/view-reception/${id}`);
+    history(`/reception/view/${id}`);
   };
   const { listPurchase } = useSelector((state) => state.purchase);
   const columns = useMemo(

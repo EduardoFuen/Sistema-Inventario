@@ -62,24 +62,24 @@ const MainRoutes = {
               element: <AppReceptionList />
             },
             {
-              path: 'reception/view-reception/:id',
+              path: 'reception/view/:id',
               element: <AppReceptionView />
-            },
-            {
-              path: 'inventario',
-              element: <AppInventoryList />
             },
             {
               path: 'purchase',
               element: <AppPurchaseList />
             },
             {
-              path: 'purchase/add-new-purchase',
+              path: 'purchase/add',
               element: <AppAddPurchase />
             },
             {
-              path: 'purchase/view-purchase/:id',
+              path: 'purchase/view/:id',
               element: <AppViewPurchase />
+            },
+            {
+              path: 'inventario',
+              element: <AppInventoryList />
             },
             {
               path: '',
@@ -89,11 +89,11 @@ const MainRoutes = {
                   element: <SupplierList />
                 },
                 {
-                  path: 'add-new-supplier',
+                  path: 'supplier/add',
                   element: <AppAddSupplier />
                 },
                 {
-                  path: 'supplier-edit/:id',
+                  path: 'supplier/edit/:id',
                   element: <AppEditSupplier />
                 }
               ]
@@ -101,10 +101,6 @@ const MainRoutes = {
             {
               path: '',
               children: [
-                {
-                  path: 'product-list/product-edit/:id',
-                  element: <AppEditProduct />
-                },
                 {
                   path: 'product-list',
                   element: <AppProductList />
@@ -114,11 +110,15 @@ const MainRoutes = {
                   element: <AppAddProduct />
                 },
                 {
+                  path: 'product-list/product-edit/:id',
+                  element: <AppEditProduct />
+                },
+                {
                   path: 'product-list/add-category',
                   element: <AppAddCategory />
                 },
                 {
-                  path: 'product-list/add-category/:id/:index',
+                  path: 'product-list/edit-category/:id/:index',
                   element: <AppAddCategory />
                 }
               ]

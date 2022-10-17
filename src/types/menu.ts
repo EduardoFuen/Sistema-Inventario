@@ -17,6 +17,7 @@ export type NavItemType = {
   color?: 'primary' | 'secondary' | 'default' | undefined;
   disabled?: boolean;
   external?: boolean;
+  param?: boolean;
   icon?: GenericCardProps['iconPrimary'];
   id?: string;
   search?: string;

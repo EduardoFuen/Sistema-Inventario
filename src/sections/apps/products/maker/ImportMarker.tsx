@@ -18,14 +18,14 @@ const ImportMarker = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       const newData = data.map((item: any) => ({
         Name: item?.Name,
         ID: item?.ID || '',
         Status: item?.Status
       }));
-      dispatch(addMakerExcel(newData));
+      await dispatch(addMakerExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

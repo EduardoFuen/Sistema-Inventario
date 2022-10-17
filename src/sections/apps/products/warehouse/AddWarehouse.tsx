@@ -106,7 +106,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(warehouse!),
     validationSchema: UserSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newWarehouse = {
           Name: values.Name,
@@ -116,7 +116,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
           Status: values.Status
         };
         if (warehouse) {
-          dispatch(editWarehouse(warehouse?.ID, newWarehouse));
+          await dispatch(editWarehouse(warehouse?.ID, newWarehouse));
           dispatch(
             openSnackbar({
               open: true,
@@ -129,7 +129,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addWarehouse(newWarehouse));
+          await dispatch(addWarehouse(newWarehouse));
           dispatch(
             openSnackbar({
               open: true,

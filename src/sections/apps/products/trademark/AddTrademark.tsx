@@ -87,7 +87,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const formik = useFormik({
     initialValues: getInitialValues(tradeMark!),
     validationSchema: TrademarkSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const newTradeTrademark = {
           Name: values.Name,
@@ -95,7 +95,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
           MakerID
         };
         if (tradeMark) {
-          dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
+          await dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
@@ -108,7 +108,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
             })
           );
         } else {
-          dispatch(addTrademark(newTradeTrademark));
+          await dispatch(addTrademark(newTradeTrademark));
           dispatch(
             openSnackbar({
               open: true,
