@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { TrademarkStateProps } from 'types/e-commerce';
+import { TrademarkStateProps } from 'types/product-type';
 
 // ----------------------------------------------------------------------
 

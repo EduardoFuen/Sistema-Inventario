@@ -6,7 +6,6 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 // types
 import { AuthProps } from './auth';
-import { CalendarProps } from './calendar';
 import { MenuProps } from './menu';
 import { SnackbarProps } from './snackbar';
 
@@ -14,7 +13,6 @@ import { SnackbarProps } from './snackbar';
 
 export type RootStateProps = {
   auth: AuthProps;
-  calendar: CalendarProps;
   menu: MenuProps;
   snackbar: SnackbarProps;
 };

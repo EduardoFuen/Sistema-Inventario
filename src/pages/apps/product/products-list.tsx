@@ -100,7 +100,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       Name: item?.Name,
       Sku: item?.Sku,
       Ean: item?.Ean,
-      Maker: item?.Maker.Name,
+      Maker: item?.Maker?.Name,
       Trademark: item?.Trademark,
       Type_Product: TypesProduct?.Name,
       Variation: item?.Variation,

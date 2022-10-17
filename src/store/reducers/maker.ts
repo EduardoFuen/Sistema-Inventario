@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { MakerStateProps } from 'types/e-commerce';
+import { MakerStateProps } from 'types/product-type';
 
 // ----------------------------------------------------------------------
 

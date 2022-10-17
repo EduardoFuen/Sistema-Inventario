@@ -40,7 +40,7 @@ function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,

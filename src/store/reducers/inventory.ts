@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../index';
 
 // types
-import { InventoryStateProps } from 'types/e-commerce';
+import { InventoryStateProps } from 'types/product-type';
 
 // ----------------------------------------------------------------------
 

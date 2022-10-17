@@ -63,7 +63,7 @@ export interface Props {
 const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMark;
-  const [MakerID, setMaker] = useState(tradeMark?.MakerID!);
+  const [MakerID, setMaker] = useState(tradeMark?.MakerID! || '');
   const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido')
@@ -165,13 +165,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                   <Grid item xs={12} md={9}>
                     <Stack spacing={1.25}>
                       <InputLabel htmlFor="personal-experience">Maker</InputLabel>
-                      <Select
-                        fullWidth
-                        id="tradeMark-maker"
-                        {...getFieldProps('MakerID')}
-                        value={MakerID || tradeMark?.MakerID}
-                        onChange={handleChange}
-                      >
+                      <Select fullWidth id="tradeMark-maker" {...getFieldProps('MakerID')} value={MakerID} onChange={handleChange}>
                         {makerList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (

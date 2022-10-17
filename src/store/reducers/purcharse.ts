@@ -7,7 +7,7 @@ import { dispatch } from '../index';
 import summary from 'utils/calculation';
 
 // types
-import { PurchaseStateProps } from 'types/e-commerce';
+import { PurchaseStateProps } from 'types/product-type';
 
 // ----------------------------------------------------------------------
 

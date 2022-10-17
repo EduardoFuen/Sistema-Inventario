@@ -134,7 +134,7 @@ function UpdateProduct() {
       WarehouseIDS: product?.Warehouses || '',
       UrlImage: product?.UrlImage,
       Status: product?.Status,
-      Tax: product?.Iva.toString(),
+      Tax: product?.Iva?.toString(),
       IsTaxed: product?.Taxed
     },
     validationSchema: SubstSchema,

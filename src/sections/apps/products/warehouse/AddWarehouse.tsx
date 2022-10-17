@@ -38,7 +38,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addWarehouse, editWarehouse, deleteWarehouse } from 'store/reducers/warehouse';
-import { countrys } from 'data/country';
+import { countrys } from 'data/countries';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';

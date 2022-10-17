@@ -28,7 +28,7 @@ import ScrollX from 'components/ScrollX';
 import { useDispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addReception } from 'store/reducers/purcharse';
-import { Products } from 'types/e-commerce';
+import { Products } from 'types/product-type';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 

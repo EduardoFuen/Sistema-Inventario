@@ -146,10 +146,10 @@ function AddNewProduct() {
         };
         dispatch(addProduct(data));
         setSubmitting(false);
-        // history(`/product-list`);
+        if (!error?.response?.data?.Error) {
+          history(`/product-list`);
+        }
       } catch (error) {
-        console.log(error);
-
         console.error(error);
       }
     }
@@ -364,7 +364,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Variación</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('variation')}
+                        {...getFieldProps('Variation')}
                         placeholder="Ingresar Variación"
                         fullWidth
                       />

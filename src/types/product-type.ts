@@ -44,52 +44,9 @@ export type Products = {
   Taxed: boolean;
 };
 
-// checkout-cart billing address
-export type Address = {
-  id?: string | number | undefined;
-  name: string;
-  destination: string;
-  building: string;
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  post: string | number;
-  phone: string | number;
-  isDefault: boolean;
-};
-
-// product reviews list
-export type Reviews = {
-  id: string | number | undefined;
-  rating: number;
-  review: string;
-  date: Date | string;
-  profile: {
-    avatar: string;
-    name: string;
-    status: boolean;
-  };
-};
-
-// product shop filter
-export type ProductsFilter = {
-  length?: number;
-  search: string;
-  sort: string;
-  gender: string[];
-  categories: string[];
-  colors: string[];
-  price: string;
-  rating: number;
-};
-
 export interface ProductStateProps {
   products: Products[];
   product: Products | null;
-  relatedProducts: Products[];
-  reviews: Reviews[];
-  addresses: Address[];
   error: object | string | null | any;
 }
 
@@ -114,14 +71,6 @@ export interface PackStateProps {
   packList: Packs[];
   error: object | string | null;
 }
-
-// country
-
-export type Country = {
-  id: string | number | undefined;
-  department: string;
-  cities: any;
-};
 
 // Warehouse
 export type Warehouses = {

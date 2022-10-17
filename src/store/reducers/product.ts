@@ -7,17 +7,14 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { DefaultRootStateProps, ProductsFilter } from 'types/e-commerce';
+import { DefaultRootStateProps } from 'types/product-type';
 
 // ----------------------------------------------------------------------
 
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
   products: [],
-  product: null,
-  relatedProducts: [],
-  reviews: [],
-  addresses: []
+  product: null
 };
 
 const slice = createSlice({
@@ -60,31 +57,6 @@ const slice = createSlice({
     // GET PRODUCT
     getProductSuccess(state, action) {
       state.product = action.payload;
-    },
-
-    // GET RELATED PRODUCTS
-    getRelatedProductsSuccess(state, action) {
-      state.relatedProducts = action.payload;
-    },
-
-    // GET PRODUCT REVIEWS
-    getProductReviewsSuccess(state, action) {
-      state.reviews = action.payload;
-    },
-
-    // GET ADDRESSES
-    getAddressesSuccess(state, action) {
-      state.addresses = action.payload;
-    },
-
-    // ADD ADDRESS
-    addAddressSuccess(state, action) {
-      state.addresses = action.payload;
-    },
-
-    // EDIT ADDRESS
-    editAddressSuccess(state, action) {
-      state.addresses = action.payload;
     }
   }
 });
@@ -101,8 +73,12 @@ export function getProducts() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getProductsSuccess(response.data));
       }
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getProductsSuccess([]));
+      } else {
+        dispatch(slice.actions.hasError(error));
+      }
     }
   };
 }
@@ -123,6 +99,7 @@ export function addProduct(data: any) {
           close: false
         })
       );
+      dispatch(getProducts());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -201,46 +178,11 @@ export function addExcel(data: any) {
   };
 }
 
-// CRUD SHOPIFY
-
-export function filterProducts(filter: ProductsFilter) {
-  return async () => {
-    try {
-      const response = await axios.post('/api/products/filter', { filter });
-      dispatch(slice.actions.filterProductsSuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
 export function getProduct(id: string | undefined) {
   return async () => {
     try {
       const response = await axios.post('/api/product/details', { id });
       dispatch(slice.actions.getProductSuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function getRelatedProducts(id: string | undefined) {
-  return async () => {
-    try {
-      const response = await axios.post('/api/product/related', { id });
-      dispatch(slice.actions.getRelatedProductsSuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function getProductReviews() {
-  return async () => {
-    try {
-      const response = await axios.get('/api/review/list');
-      dispatch(slice.actions.getProductReviewsSuccess(response.data.productReviews));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
