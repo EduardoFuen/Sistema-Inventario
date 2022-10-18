@@ -1,11 +1,11 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
 // project imports
-// import axios from 'utils/axios';
+import axios from 'axios';
+import { HOST } from '../../config';
 import { dispatch } from '../index';
 import summary from 'utils/calculation';
 import { openSnackbar } from './snackbar';
-import { useNavigate } from 'react-router-dom';
 // types
 import { PurchaseStateProps } from 'types/product-type';
 
@@ -73,15 +73,6 @@ const slice = createSlice({
       let summaryOrder = summary(data?.products, data?.discountOrder);
       state.listPurchase[index] = { ...data, ...summaryOrder };
     },
-    deletePurchaseSuccess(state, action) {
-      const { nc } = action.payload;
-      const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      state.listPurchase[index] = {
-        ...state.listPurchase[index],
-        nc,
-        status: 'Cancelled'
-      };
-    },
     sendPurchaseSuccess(state, action) {
       const { nc, data } = action.payload;
       const index = state.listPurchase.findIndex((item) => item.nc === nc);
@@ -137,8 +128,11 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
-      localStorage.getItem('mantis-ts-pack');
-    } catch (error) {
+      const response = await axios.get(`${HOST}/compras`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getPurchaseSuccess(response.data));
+      }
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -146,7 +140,7 @@ export function getPurchaseList() {
 export function addPurchase(data: any) {
   return async () => {
     try {
-      const history = useNavigate();
+      //  const history = useNavigate();
       dispatch(
         openSnackbar({
           open: true,
@@ -159,7 +153,7 @@ export function addPurchase(data: any) {
         })
       );
       dispatch(slice.actions.addPurchaseSuccess(data));
-      history(`/purchase/view/${data.nc}`);
+      //  history(`/purchase/view/${data.nc}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -181,14 +175,25 @@ export function editPurchase(name: string | undefined, data: any) {
   };
 }
 
-export function deletePurchase(nc: string) {
+export function deletePurchase(id: number) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.deletePurchaseSuccess({
-          nc
-        })
-      );
+      const response = await axios.delete(`${HOST}/compras`, { data: { ID: id } });
+      if (response) {
+        dispatch(getPurchaseList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Orden Cancelada successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+        dispatch(slice.actions.hasError(null));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

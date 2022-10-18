@@ -175,6 +175,7 @@ const WarehouseList = () => {
     dispatch(getWarehouseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const { warehouseList } = useSelector((state) => state.warehouse);
   const columns = useMemo(
     () => [

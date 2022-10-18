@@ -117,7 +117,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
       Warehouse: warehouse,
-      UrlImage: item?.UrlImage,
       Status: item?.Status,
       Tax: item?.Tax,
       IsTaxed: item?.IsTaxed
@@ -221,6 +220,7 @@ const ProductList = () => {
   const handleEditProduct = (id: any) => {
     history(`/product-list/product-edit/${id}`);
   };
+
   useEffect(() => {
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps

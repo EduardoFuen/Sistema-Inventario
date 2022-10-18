@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   Typography,
-  Autocomplete,
   MenuItem,
   Dialog,
   Table,
@@ -36,15 +35,15 @@ import AddSelectProduct from './selectProducts';
 
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
-    note: order?.note,
+    Notes: order?.Notes,
     create_order: order?.create_order,
-    discountOrder: order?.discountOrder,
-    supplier: order?.supplier,
-    warehouse: order?.warehouse,
-    paymentdiscount: order?.paymentdiscount,
-    paymentdate: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),
-    estimatedDeliveryDateBog: format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy'),
-    estimatedDeliveryDateBaq: format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy')
+    DiscountGlobal: order?.DiscountGlobal,
+    SupplierID: order?.SupplierID,
+    WarehouseID: order?.WarehouseID,
+    DiscountEarliyPay: order?.DiscountEarliyPay,
+    /*   paymentdate: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),*/
+    EstimatedDeliveryDateBog: format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy'),
+    EstimatedDeliveryDateBaq: format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy')
   };
 
   return newSubstance;
@@ -71,14 +70,20 @@ function ViewPurchase() {
     history(`/purchase`);
   };
 
-  const orderPurchase = useMemo(() => {
+  const orderPurchase: any = useMemo(() => {
     if (id) {
-      return listPurchase.find((item) => item.nc === id);
+      let data: any = listPurchase.find((item: any) => item.ID === Number(id));
+      let supplier: any = supplierList.find((item) => item.ID === data.SupplierID);
+      return {
+        ...data,
+        supplier
+      };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
-    let data = orderPurchase?.products.map((item: any) => ({ ...item, isSelected: true }));
+    let data = orderPurchase?.Articles.map((item: any) => ({ ...item, isSelected: true }));
     dispatch(editItemsPurchase(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -88,10 +93,10 @@ function ViewPurchase() {
       try {
         if (send) {
           const newValue = {
-            dateR: format(new Date(), 'dd-MM-yyyy'),
+            //  dateR: format(new Date(), 'dd-MM-yyyy'),
             ...values,
             status: 'Send',
-            products: orderPurchase?.products
+            products: orderPurchase?.Articles
           };
           dispatch(sendPurchase(id, newValue));
           dispatch(
@@ -132,11 +137,11 @@ function ViewPurchase() {
     }
   });
   useEffect(() => {
-    const items = summary(detailsPurchase, orderPurchase?.discountOrder || 0);
+    const items = summary(detailsPurchase, orderPurchase?.DiscountGlobal || 0);
     setData(items);
   }, [detailsPurchase, orderPurchase]);
 
-  const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <>
@@ -152,37 +157,19 @@ function ViewPurchase() {
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={4}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
-                      <Autocomplete
-                        id="supplier-list"
-                        options={supplierList.filter((item: any) => item.Status === true)}
-                        getOptionLabel={(option) => option.BusinessName}
-                        onChange={(event, newValue) => {
-                          setFieldValue('supplier', newValue === null ? '' : newValue);
-                        }}
-                        value={orderPurchase?.supplier}
-                        disabled
-                        renderInput={(params) => <TextField {...params} placeholder="" />}
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            p: 0.5
-                          },
-                          '& .MuiAutocomplete-tag': {
-                            bgcolor: 'primary.lighter',
-                            border: '1px solid',
-                            borderColor: 'primary.light',
-                            '& .MuiSvgIcon-root': {
-                              color: 'primary.main',
-                              '&:hover': {
-                                color: 'primary.dark'
-                              }
-                            }
-                          }
-                        }}
-                      />
+                      <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('SupplierID')}>
+                        {supplierList
+                          .filter((item: any) => item.Status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.ID} value={option.ID}>
+                              {option.BusinessName}
+                            </MenuItem>
+                          ))}
+                      </TextField>
                     </Grid>
                     <Grid item xs={3}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                      <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('warehouse')}>
+                      <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('WarehouseID')}>
                         {warehouseList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
@@ -196,7 +183,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('discountOrder')}
+                        {...getFieldProps('DiscountGlobal')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
                         disabled
@@ -229,14 +216,14 @@ function ViewPurchase() {
                         rows={2}
                         placeholder="Ingresar Nota de compras"
                         fullWidth
-                        {...getFieldProps('note')}
+                        {...getFieldProps('Notes')}
                       />
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('paymentdiscount')}
+                        {...getFieldProps('DiscountEarliyPay')}
                         placeholder="Descuento pronto Pago %"
                         fullWidth
                         disabled
@@ -256,7 +243,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Bogota</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('estimatedDeliveryDateBog')}
+                        {...getFieldProps('EstimatedDeliveryDateBog')}
                         placeholder=""
                         fullWidth
                         disabled
@@ -266,7 +253,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Barranquilla</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('estimatedDeliveryDateBaq')}
+                        {...getFieldProps('EstimatedDeliveryDateBaq')}
                         placeholder=""
                         fullWidth
                         disabled
@@ -287,7 +274,7 @@ function ViewPurchase() {
               <Grid item xs={12}>
                 {orderPurchase?.status === 'New' && <DetailsPurchase product={detailsPurchase} />}
 
-                {orderPurchase?.status !== 'New' && (
+                {orderPurchase?.status !== 'New' && orderPurchase?.Articles.length > 0 && (
                   <Table sx={{ minWidth: 650 }} size="small">
                     <TableHead>
                       <TableRow>
@@ -303,7 +290,7 @@ function ViewPurchase() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {orderPurchase?.products.map((x: any, i: number) => (
+                      {orderPurchase?.Articles.map((x: any, i: number) => (
                         <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                           <TableCell component="th" scope="row">
                             <Stack direction="row" spacing={1.5} alignItems="center">
@@ -334,16 +321,16 @@ function ViewPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {orderPurchase?.products && orderPurchase?.products.length > 0 && (
+                {orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Cantidad Total: ({orderPurchase?.products.length})</Typography>
+                      <Typography variant="subtitle1">Cantidad Total: ({orderPurchase?.Articles.length})</Typography>
                     </Stack>
                   </MainCard>
                 )}
               </Grid>
               <Grid item xs={12}>
-                {data && orderPurchase?.products && orderPurchase?.products.length > 0 && (
+                {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
                       <Typography variant="subtitle1">Subtotal: $ {data?.subtotal || 0}</Typography>

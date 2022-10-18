@@ -58,7 +58,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'BusinessName', desc: true };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,

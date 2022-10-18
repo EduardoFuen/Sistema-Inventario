@@ -1,8 +1,5 @@
-import { useMemo, Fragment } from 'react';
+import { useMemo, Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
-// import PSPDFKit from "./PSPDFKit";
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -19,14 +16,13 @@ import ScrollX from 'components/ScrollX';
 import { useSelector, useDispatch } from 'store';
 
 import Export from 'components/ExportToFile';
+import PDF from 'components/PDF';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
-import { deletePurchase } from 'store/reducers/purcharse';
-import { openSnackbar } from 'store/reducers/snackbar';
+import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
 
 // assets
-import { PlusOutlined, DeleteTwoTone, FilePdfOutlined, EditTwoTone } from '@ant-design/icons';
-import Farmu from 'assets/images/home/logoAzulFarmu.png';
+import { PlusOutlined, DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -156,164 +152,62 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
-// Create styles
-const styles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35
-  },
-  title: {
-    fontSize: 15,
-    textAlign: 'center'
-  },
-  author: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  summary: {
-    fontSize: 12,
-    textAlign: 'right',
-    marginBottom: 8,
-    fontWeight: 600
-  },
-  subtitle: {
-    fontSize: 12,
-    margin: 12,
-    fontWeight: 600
-  },
-  text: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: 'justify'
-  },
-  image: {
-    textAlign: 'center',
-    width: 90
-  },
-  header: {
-    fontSize: 12,
-    marginBottom: 20,
-    textAlign: 'center',
-    color: 'grey'
-  },
-  pageNumber: {
-    position: 'absolute',
-    fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
-    textAlign: 'center'
-  },
-  page: {
-    flexDirection: 'column'
-  },
-  row: {
-    flexDirection: 'row'
-  },
-  section: {
-    fontSize: 12,
-    margin: 5,
-    padding: 5,
-    flexGrow: 1,
-    width: 110
-  }
-});
-// Create Document Component
-const MyDocument = ({ data }: any) => {
-  return (
-    <Document>
-      <Page style={styles.body}>
-        <Image src={Farmu} style={styles.image} />
-        <Text style={styles.header} fixed>
-          Fecha {data?.create_order} # Order {data?.nc}
-        </Text>
-        <Text style={styles.header} fixed>
-          Bodega {data?.warehouse}
-        </Text>
-        <Text style={styles.title}>{data?.supplier.businessName}</Text>
-        <Text style={styles.author}>NIT: {data?.supplier.nit}</Text>
-        <Text style={styles.author}>Email: {data?.supplier.email}</Text>
-        <Text style={styles.author}>Teléfono: {data?.supplier.phone}</Text>
-
-        <Text style={styles.subtitle}>Detalles de Compra</Text>
-        <View style={styles.row}>
-          <View style={styles.section}>
-            <Text>Producto</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Precio Base</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Cantidad</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Subtotal</Text>
-          </View>
-        </View>
-        {data?.products.map((item: any, index: number) => (
-          <View style={styles.row} key={index}>
-            <View style={styles.section}>
-              <Text>{item?.name}</Text>
-              <Text>SKU{item?.sku}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.price}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.qty}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.qty * item?.price}</Text>
-            </View>
-          </View>
-        ))}
-        <Text style={styles.summary}>Subtotal: {data?.subtotal}</Text>
-        {data?.tax !== '' && <Text style={styles.summary}>IVA: {data?.tax}</Text>}
-        {data?.discount !== '' && <Text style={styles.summary}>Descuento: {data?.discount}</Text>}
-        <Text style={styles.summary}>Total: {data?.total}</Text>
-      </Page>
-    </Document>
-  );
-};
-
 const PurchaseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const history = useNavigate();
 
-  const handleViewPurchase = (id: any) => {
+  const handleViewPurchase = (id: number) => {
     history(`/purchase/view/${id}`);
   };
 
+  useEffect(() => {
+    dispatch(getPurchaseList());
+  }, [dispatch]);
+
   const { listPurchase } = useSelector((state) => state.purchase);
+  const { supplierList } = useSelector((state) => state.supplier);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+
+  const getSupplier = (id: number) => {
+    if (id) {
+      let Supplier: any = supplierList.find((item) => item.ID === id);
+      return Supplier;
+    }
+  };
+
+  const getWareHouse = (id: number) => {
+    if (id) {
+      let Warehouse: any = warehouseList.find((item) => item.ID === id);
+      return Warehouse?.Name;
+    }
+  };
+
   const columns = useMemo(
     () => [
       {
         Header: 'Order',
-        accessor: 'nc',
+        accessor: 'ID',
         className: 'cell-center'
       },
-      {
+      /*     {
         Header: 'Fecha OC',
         accessor: 'create_order'
-      },
+      }, */
       {
         Header: 'Proveedor',
-        accessor: 'supplier',
-        Cell: ({ row }: any) => {
-          const { values } = row;
+        accessor: 'SupplierID',
+        Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{values?.supplier?.businessName}</Typography>
+                <Typography variant="subtitle1">{getSupplier(value)?.BusinessName || ''}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {values?.supplier?.nit}
+                  {getSupplier(value)?.Nit || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {values?.supplier?.email}
+                  {getSupplier(value)?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -322,17 +216,26 @@ const PurchaseList = () => {
       },
       {
         Header: 'Bodega',
-        accessor: 'warehouse'
+        accessor: 'WarehouseID',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{getWareHouse(value) || ''}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Subtotal',
-        accessor: 'subtotal',
+        accessor: 'SubTotal',
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Total Descuento',
-        accessor: 'discount',
+        accessor: 'SubtotalWithDiscount',
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
@@ -344,19 +247,15 @@ const PurchaseList = () => {
       },
       {
         Header: 'Total',
-        accessor: 'total',
+        accessor: 'Total',
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Estado',
-        accessor: 'status',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 'Partial':
-              return <Chip color="warning" label="Partial" size="small" variant="light" />;
-            case 'Completed':
-              return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 'Cancelled':
               return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 'Send':
@@ -372,25 +271,20 @@ const PurchaseList = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          let dataPDF: any = {
+            ...row.original,
+            supplier: getSupplier(row?.original?.SupplierID),
+            warehouse: getWareHouse(row?.original?.WarehouseID)
+          };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="purchase.pdf">
-                {({ blob, url, loading, error }) =>
-                  loading ? (
-                    '...'
-                  ) : (
-                    <IconButton color="primary">
-                      <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-                    </IconButton>
-                  )
-                }
-              </PDFDownloadLink>
+              {dataPDF && <PDF values={dataPDF} />}
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    if (row?.values?.nc) handleViewPurchase(row?.values?.nc);
+                    if (row?.values?.ID) handleViewPurchase(row?.values?.ID);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -402,18 +296,7 @@ const PurchaseList = () => {
                     color="error"
                     onClick={(e: any) => {
                       e.stopPropagation();
-                      dispatch(deletePurchase(row?.values?.nc));
-                      dispatch(
-                        openSnackbar({
-                          open: true,
-                          message: 'Orden Cancelada successfully.',
-                          variant: 'alert',
-                          alert: {
-                            color: 'success'
-                          },
-                          close: false
-                        })
-                      );
+                      dispatch(deletePurchase(row?.values?.ID));
                     }}
                   >
                     <DeleteTwoTone twoToneColor={theme.palette.error.main} />

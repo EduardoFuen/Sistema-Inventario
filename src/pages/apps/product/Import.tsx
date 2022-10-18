@@ -23,6 +23,7 @@ const Import = ({ onCancel }: Props) => {
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
+  const { warehouseList } = useSelector((state) => state.warehouse);
 
   const onSubmit = () => {
     try {
@@ -45,13 +46,12 @@ const Import = ({ onCancel }: Props) => {
         Height: item?.Height.toString(),
         Depth: item?.Depth.toString(),
         PackInfo: item?.PackInfo,
-
         WrapperUnit: item?.WrapperUnit,
         Keywords: item?.Keywords,
-        Warehouse: item?.Warehouse,
+        WarehouseIDS: searchName(warehouseList, item?.Warehouse)?.ID.toString() || '0',
         Status: item?.Status,
-        Tax: item?.Tax,
-        IsTaxed: item?.IsTaxed
+        Iva: item?.Tax.toString(),
+        Taxed: item?.IsTaxed
       }));
 
       dispatch(addExcel(newData));

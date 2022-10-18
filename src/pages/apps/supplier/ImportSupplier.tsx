@@ -22,7 +22,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => ({
-        EmailContact: item?.EmailContact,
+        EmailContact: item?.EmailContact.toString(),
         Nit: item?.Nit.toString(),
         BusinessName: item?.BusinessName,
         PhoneContact: item?.PhoneContact.toString(),
@@ -33,7 +33,8 @@ const ImporSupplier = ({ onCancel }: Props) => {
         Discount: item?.Discount,
         DaysPayment: item?.DaysPayment.toString(),
         Cupo: item?.Cupo,
-        NameContact: item?.NameContact
+        NameContact: item?.NameContact.toString(),
+        ID: item?.ID || 0
       }));
       dispatch(addExcel(newData));
       onCancel();

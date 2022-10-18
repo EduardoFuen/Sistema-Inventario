@@ -142,7 +142,7 @@ function AddNewProduct() {
           MakerID: values.MakerID.toString(),
           Taxed: values.IsTaxed,
           Quantity: values.Quantity.toString(),
-          iva: values.Tax
+          Iva: values.Tax
         };
         await dispatch(addProduct(data));
         setSubmitting(false);

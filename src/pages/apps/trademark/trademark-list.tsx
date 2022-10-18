@@ -188,8 +188,8 @@ const TradeMarkList = () => {
 
   const maker = (id: number) => {
     if (id) {
-      let MakerID: any = makerList.find((item) => item.ID === id);
-      return MakerID?.Name;
+      let Maker: any = makerList.find((item) => item.ID === id);
+      return Maker?.Name;
     }
   };
 
