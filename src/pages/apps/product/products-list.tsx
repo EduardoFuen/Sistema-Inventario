@@ -88,8 +88,8 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     let warehouse: string = '';
     let TypesProduct: any;
 
-    if (item?.warehouse) {
-      warehouse = item?.warehouse.map((e: any) => e.Name).join();
+    if (item?.Warehouses) {
+      warehouse = item?.Warehouses.map((e: any) => e.Name).join();
     }
     if (item?.TypesProductID) {
       TypesProduct = typeProductData.find((data: any) => data?.ID === item?.TypesProductID) || '';
