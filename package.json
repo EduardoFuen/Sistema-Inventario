@@ -25,7 +25,7 @@
     "@mui/styles": "^5.8.4",
     "@mui/system": "^5.8.4",
     "@mui/x-date-pickers": "^5.0.0-alpha.6",
-    "@react-pdf/renderer": "1.2.2",
+    "@react-pdf/renderer": "^3.0.0",
     "@reduxjs/toolkit": "^1.8.2",
     "@types/file-saver": "^2.0.2",
     "amazon-cognito-identity-js": "^5.2.9",
@@ -94,6 +94,10 @@
     "xlsx": "0.18.5",
     "yup": "^0.32.11"
   },
+  "resolutions": {
+    "@react-pdf/font": "2.2.1",
+    "@react-pdf/pdfkit": "2.1.0"
+},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

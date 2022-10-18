@@ -32,7 +32,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 import { useDispatch, useSelector } from 'store';
-
+import { getMakerList } from 'store/reducers/maker';
 import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
 
 // assets
@@ -194,6 +194,7 @@ const TradeMarkList = () => {
   };
 
   useEffect(() => {
+    dispatch(getMakerList());
     dispatch(getTrademarkList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

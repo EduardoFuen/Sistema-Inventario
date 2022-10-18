@@ -20,7 +20,7 @@ import PDF from 'components/PDF';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
-
+import { getSupplierList } from 'store/reducers/supplier';
 // assets
 import { PlusOutlined, DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
 
@@ -163,8 +163,10 @@ const PurchaseList = () => {
   };
 
   useEffect(() => {
+    dispatch(getSupplierList());
     dispatch(getPurchaseList());
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { listPurchase } = useSelector((state) => state.purchase);
   const { supplierList } = useSelector((state) => state.supplier);
@@ -278,7 +280,20 @@ const PurchaseList = () => {
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {dataPDF && <PDF values={dataPDF} />}
+              <PDF values={dataPDF} />
+
+              {/*   <Tooltip title="PDF">
+                <IconButton
+                  color="primary"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                   console.log(row?.values?.ID);
+                   
+                  }}
+                >
+                  <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
+                </IconButton>
+              </Tooltip> */}
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"

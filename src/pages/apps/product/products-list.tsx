@@ -18,8 +18,10 @@ import Import from './Import';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
-
 import { getProducts, deleteProduct } from 'store/reducers/product';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { getTrademarkList } from 'store/reducers/trademark';
+import { getTypeProductList } from 'store/reducers/typeProduct';
 
 // assets
 import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
@@ -206,7 +208,7 @@ const ProductList = () => {
     setActiveImport(!addImport);
   };
 
-  const { products } = useSelector((state) => state.product);
+  const { products, error } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
@@ -216,12 +218,29 @@ const ProductList = () => {
       return MakerID?.Name;
     }
   };
+  useEffect(() => {
+    if (error?.response?.data?.Error) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: error?.response?.data?.Error,
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+    }
+  }, [error, dispatch]);
 
   const handleEditProduct = (id: any) => {
     history(`/product-list/product-edit/${id}`);
   };
 
   useEffect(() => {
+    dispatch(getTrademarkList());
+    dispatch(getTypeProductList());
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

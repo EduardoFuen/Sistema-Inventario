@@ -1,11 +1,11 @@
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { useTheme } from '@mui/material/styles';
 
 import { FilePdfOutlined } from '@ant-design/icons';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
-import Farmu from 'assets/images/home/logoAzulFarmu.png';
+/// import Farmu from 'assets/images/home/logoAzulFarmu.png';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -76,7 +76,7 @@ const RenderDocument = ({ data }: any) => {
   return (
     <Document>
       <Page style={styles.body}>
-        <Image src={Farmu} style={styles.image} />
+        {/*  <Image src={Farmu} style={styles.image} /> */}
         <Text style={styles.header} fixed>
           Fecha {data?.create_order} # Order {data?.ID}
         </Text>
@@ -88,8 +88,8 @@ const RenderDocument = ({ data }: any) => {
         <Text style={styles.author}>Email: {data?.supplier?.EmailContact}</Text>
         <Text style={styles.author}>Teléfono: {data?.supplier?.PhoneContact}</Text>
 
-        {data?.Articles.length > 0 && <Text style={styles.subtitle}>Detalles de Compra</Text>}
-        {data?.Articles.length > 0 && (
+        {data?.Articles && data?.Articles.length > 0 && <Text style={styles.subtitle}>Detalles de Compra</Text>}
+        {data?.Articles && data?.Articles.length > 0 && (
           <View style={styles.row}>
             <View style={styles.section}>
               <Text>Producto</Text>
@@ -106,7 +106,8 @@ const RenderDocument = ({ data }: any) => {
           </View>
         )}
 
-        {data?.Articles.length > 0 &&
+        {data?.Articles &&
+          data?.Articles.length > 0 &&
           data?.Articles.map((item: any, index: number) => (
             <View style={styles.row} key={index}>
               <View style={styles.section}>
@@ -134,12 +135,16 @@ const RenderDocument = ({ data }: any) => {
 };
 
 const PDF = ({ values }: any) => {
+  console.log(values);
+
   const theme = useTheme();
+  console.log(theme);
+
   return (
     <PDFDownloadLink document={<RenderDocument data={values} />} fileName="purchase.pdf">
       {({ loading }) =>
         loading ? (
-          ''
+          '333'
         ) : (
           <IconButton color="primary">
             <FilePdfOutlined twoToneColor={theme.palette.primary.main} />

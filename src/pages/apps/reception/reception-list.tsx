@@ -1,9 +1,6 @@
 import { useMemo, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
-// import PSPDFKit from "./PSPDFKit";
-
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
 import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, useMediaQuery } from '@mui/material';
@@ -13,6 +10,8 @@ import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 
 // project import
+import PDF from 'components/PDF';
+
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -23,7 +22,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
 // assets
-import { EyeTwoTone, FilePdfOutlined } from '@ant-design/icons';
+import { EyeTwoTone } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -145,126 +144,6 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
 
-// Create styles
-const styles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35
-  },
-  title: {
-    fontSize: 15,
-    textAlign: 'center'
-  },
-  author: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 8
-  },
-  summary: {
-    fontSize: 12,
-    textAlign: 'right',
-    marginBottom: 8,
-    fontWeight: 600
-  },
-  subtitle: {
-    fontSize: 12,
-    margin: 12,
-    fontWeight: 600
-  },
-  text: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: 'justify'
-  },
-  image: {
-    marginVertical: 15,
-    marginHorizontal: 100
-  },
-  header: {
-    fontSize: 12,
-    marginBottom: 20,
-    textAlign: 'center',
-    color: 'grey'
-  },
-  pageNumber: {
-    position: 'absolute',
-    fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
-    textAlign: 'center'
-  },
-  page: {
-    flexDirection: 'column'
-  },
-  row: {
-    flexDirection: 'row'
-  },
-  section: {
-    fontSize: 12,
-    width: 110,
-    margin: 5,
-    padding: 5,
-    flexGrow: 1
-  }
-});
-// Create Document Component
-const MyDocument = ({ data }: any) => {
-  return (
-    <Document>
-      <Page style={styles.body}>
-        <Text style={styles.header} fixed>
-          Fecha {data?.create_order} # Order {data?.nc}
-        </Text>
-        <Text style={styles.header} fixed>
-          Bodega {data?.warehouse}
-        </Text>
-        <Text style={styles.title}>{data?.supplier.businessName}</Text>
-        <Text style={styles.author}>NIT: {data?.supplier.nit}</Text>
-        <Text style={styles.author}>Email: {data?.supplier.email}</Text>
-        <Text style={styles.author}>Teléfono: {data?.supplier.phone}</Text>
-
-        <Text style={styles.subtitle}>Detalles de Recepción</Text>
-        <View style={styles.row}>
-          <View style={styles.section}>
-            <Text>Producto</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Precio Base</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Cantidad</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Subtotal</Text>
-          </View>
-        </View>
-        {data?.products.map((item: any, index: number) => (
-          <View style={styles.row} key={index}>
-            <View style={styles.section}>
-              <Text>{item?.name}</Text>
-              <Text>SKU{item?.sku}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.price}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.qty}</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>{item?.qty * item?.price}</Text>
-            </View>
-          </View>
-        ))}
-        <Text style={styles.summary}>Subtotal: {data?.subtotal}</Text>
-        {data?.tax !== '' && <Text style={styles.summary}>iva: {data?.tax}</Text>}
-        <Text style={styles.summary}>Total: {data?.total}</Text>
-      </Page>
-    </Document>
-  );
-};
-
 const ReceptionList = () => {
   const theme = useTheme();
   const history = useNavigate();
@@ -361,18 +240,7 @@ const ReceptionList = () => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDFDownloadLink document={<MyDocument data={row.original} />} fileName="reception.pdf">
-                {({ blob, url, loading, error }) =>
-                  loading ? (
-                    'Loading document...'
-                  ) : (
-                    <IconButton color="primary">
-                      <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-                    </IconButton>
-                  )
-                }
-              </PDFDownloadLink>
-
+              <PDF values={[]} />
               <Tooltip title="Ingresar">
                 <IconButton
                   color="primary"
