@@ -153,6 +153,13 @@ const PackList = () => {
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 
+  const { packList } = useSelector((state) => state.pack);
+
+  useEffect(() => {
+    dispatch(getPackList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleImport = () => {
     setActiveImport(!addImport);
   };
@@ -160,12 +167,6 @@ const PackList = () => {
     setAdd(!add);
     if (pack && !add) setPack(null);
   };
-
-  const { packList } = useSelector((state) => state.pack);
-  useEffect(() => {
-    dispatch(getPackList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const columnsProducts = useMemo(
     () => [

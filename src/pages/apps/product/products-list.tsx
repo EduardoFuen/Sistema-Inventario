@@ -204,20 +204,17 @@ const ProductList = () => {
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
 
-  const handleImport = () => {
-    setActiveImport(!addImport);
-  };
+  useEffect(() => {
+    dispatch(getTrademarkList());
+    dispatch(getTypeProductList());
+    dispatch(getProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { products, error } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
-  const TradeMark = (id: number) => {
-    if (id) {
-      let MakerID: any = tradeMarkList.find((item) => item.ID === id);
-      return MakerID?.Name;
-    }
-  };
   useEffect(() => {
     if (error?.response?.data?.Error) {
       dispatch(
@@ -234,16 +231,20 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
+  const TradeMark = (id: number) => {
+    if (id) {
+      let MakerID: any = tradeMarkList.find((item) => item.ID === id);
+      return MakerID?.Name;
+    }
+  };
+
   const handleEditProduct = (id: any) => {
     history(`/product-list/product-edit/${id}`);
   };
 
-  useEffect(() => {
-    dispatch(getTrademarkList());
-    dispatch(getTypeProductList());
-    dispatch(getProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
 
   const columnsProducts = useMemo(
     () => [

@@ -76,33 +76,20 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
   const columns = useMemo(
     () => [
       {
-        Header: 'SKU',
+        Header: 'PRODUCTO',
         accessor: 'sku',
         Cell: ({ row }: any) => {
           const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original.name}</Typography>
+                <Typography variant="subtitle1">{original.ID}</Typography>
+                <Typography variant="subtitle1">{original.Name}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  EAN: {original?.ean}
+                  SKU {original.Sku}
                 </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Producto',
-        accessor: 'name',
-        Cell: ({ row }: any) => {
-          const { original } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1">{original.name}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  EAN: {original?.ean}
+                  EAN :{original.Ean}
                 </Typography>
               </Stack>
             </Stack>
@@ -111,35 +98,35 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
       },
       {
         Header: 'Cantidad',
-        accessor: 'qty'
+        accessor: 'Count'
       },
       {
         Header: 'Precio base',
-        accessor: 'price'
+        accessor: 'BasePrice'
       },
       {
         Header: 'IVA',
-        accessor: 'tax'
+        accessor: 'Tax'
       },
       {
         Header: 'Descuento Negociado',
-        accessor: 'Negotiateddiscount'
+        accessor: 'DiscountNegotiated'
       },
       {
         Header: 'Descuento Adicional',
-        accessor: 'Additionaldiscount'
+        accessor: 'DiscountAdditional'
       },
       {
         Header: 'Bonificación',
-        accessor: 'bonus'
+        accessor: 'Bonus'
       },
       {
         Header: 'Subtotal',
-        accessor: 'subtotal'
+        accessor: 'SubTotal'
       },
       {
         Header: 'Total',
-        accessor: 'total'
+        accessor: 'Total'
       },
       {
         Header: 'Acciones',

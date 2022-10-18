@@ -31,7 +31,6 @@ import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
-
 import { getMakerList, deleteMaker } from 'store/reducers/maker';
 
 // assets
@@ -172,6 +171,12 @@ const MakersList = () => {
   const [maker, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const { makerList } = useSelector((state) => state.maker);
+
+  useEffect(() => {
+    dispatch(getMakerList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAdd = () => {
     setAdd(!add);
@@ -181,12 +186,7 @@ const MakersList = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
-  const { makerList } = useSelector((state) => state.maker);
 
-  useEffect(() => {
-    dispatch(getMakerList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const columns = useMemo(
     () => [
       {

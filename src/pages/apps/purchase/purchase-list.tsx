@@ -21,6 +21,10 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
 import { getSupplierList } from 'store/reducers/supplier';
+import { getWarehouseList } from 'store/reducers/warehouse';
+import { getObject } from 'utils/Global';
+import { newDataExport } from 'utils/DataExportPurchase';
+
 // assets
 import { PlusOutlined, DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
 
@@ -29,15 +33,16 @@ import { PlusOutlined, DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
 interface Props {
   columns: Column[];
   data: [];
+  newDataExport: [];
   getHeaderProps: (column: any) => void;
 }
 
-function ReactTable({ columns, data, getHeaderProps }: Props) {
+function ReactTable({ columns, data, getHeaderProps, newDataExport }: Props) {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'nc', desc: true };
+  const sortBy = { id: 'ID', desc: true };
 
   const {
     getTableProps,
@@ -82,6 +87,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
   const handleAddPurchase = () => {
     history(`/purchase/add`);
   };
+
   return (
     <>
       <Stack spacing={3}>
@@ -98,7 +104,7 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
             setGlobalFilter={setGlobalFilter}
             size="small"
           />
-          <Export excelData={data} fileName="Purchase" />
+          <Export excelData={newDataExport} fileName="Purchase" />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
             <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddPurchase}>
@@ -155,15 +161,11 @@ function ReactTable({ columns, data, getHeaderProps }: Props) {
 const PurchaseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-
   const history = useNavigate();
-
-  const handleViewPurchase = (id: number) => {
-    history(`/purchase/view/${id}`);
-  };
 
   useEffect(() => {
     dispatch(getSupplierList());
+    dispatch(getWarehouseList());
     dispatch(getPurchaseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -172,18 +174,8 @@ const PurchaseList = () => {
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
 
-  const getSupplier = (id: number) => {
-    if (id) {
-      let Supplier: any = supplierList.find((item) => item.ID === id);
-      return Supplier;
-    }
-  };
-
-  const getWareHouse = (id: number) => {
-    if (id) {
-      let Warehouse: any = warehouseList.find((item) => item.ID === id);
-      return Warehouse?.Name;
-    }
+  const handleViewPurchase = (id: number) => {
+    history(`/purchase/view/${id}`);
   };
 
   const columns = useMemo(
@@ -204,12 +196,12 @@ const PurchaseList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getSupplier(value)?.BusinessName || ''}</Typography>
+                <Typography variant="subtitle1">{getObject(supplierList, value)?.BusinessName || ''}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {getSupplier(value)?.Nit || ''}
+                  {getObject(supplierList, value)?.Nit || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {getSupplier(value)?.EmailContact || ''}
+                  {getObject(supplierList, value)?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -223,7 +215,7 @@ const PurchaseList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getWareHouse(value) || ''}</Typography>
+                <Typography variant="subtitle1">{getObject(warehouseList, value)?.Name || ''}</Typography>
               </Stack>
             </Stack>
           );
@@ -243,7 +235,7 @@ const PurchaseList = () => {
       },
       {
         Header: 'IVA',
-        accessor: 'tax',
+        accessor: 'Tax',
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
@@ -275,25 +267,12 @@ const PurchaseList = () => {
         Cell: ({ row }: any) => {
           let dataPDF: any = {
             ...row.original,
-            supplier: getSupplier(row?.original?.SupplierID),
-            warehouse: getWareHouse(row?.original?.WarehouseID)
+            supplier: getObject(supplierList, row?.original?.SupplierID),
+            warehouse: getObject(warehouseList, row?.original?.WarehouseID)?.Name
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <PDF values={dataPDF} />
-
-              {/*   <Tooltip title="PDF">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                   console.log(row?.values?.ID);
-                   
-                  }}
-                >
-                  <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-                </IconButton>
-              </Tooltip> */}
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
@@ -329,7 +308,12 @@ const PurchaseList = () => {
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={listPurchase as []} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
+        <ReactTable
+          columns={columns}
+          data={listPurchase as []}
+          newDataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}
+          getHeaderProps={(column: any) => column.getSortByToggleProps()}
+        />
       </ScrollX>
     </MainCard>
   );

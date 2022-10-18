@@ -4,7 +4,7 @@ import { addDays, format } from 'date-fns';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material-ui
-import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
+import { Button, Grid, InputLabel, Stack, TextField, Typography, MenuItem, Dialog } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
@@ -28,14 +28,15 @@ const getInitialValues = (recep: FormikValues | null) => {
     note: '',
     date: '',
     create_order: recep?.create_order,
-    discount: recep?.discount,
-    supplier: recep?.supplier,
-    warehouse: recep?.warehouse,
+    Discount: recep?.Discount,
+    SupplierID: recep?.SupplierID,
+    WarehouseID: recep?.WarehouseID,
     nFactura: '',
     dateFact: '',
-    dateLeadTimeBog: format(addDays(new Date(), recep?.supplier.leadTimeBog), 'dd-MM-yyyy'),
-    dateLeadTimeBaq: format(addDays(new Date(), recep?.supplier.leadTimeBaq), 'dd-MM-yyyy')
+    EstimatedDeliveryDateBog: recep?.supplier ? format(addDays(new Date(), recep?.supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
+    EstimatedDeliveryDateBaq: recep?.supplier ? format(addDays(new Date(), recep?.supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
   };
+
   return newSubstance;
 };
 
@@ -58,11 +59,35 @@ function AddReception() {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { listPurchase } = useSelector((state) => state.purchase);
+  const { products } = useSelector((state) => state.product);
+
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
-  const reception = useMemo(() => {
+  const getProduct = (id: number) => {
     if (id) {
-      return listPurchase.find((item) => item.nc === id);
+      let product: any = products.find((item) => item.ID === id);
+      return product;
+    }
+  };
+
+  const reception: any = useMemo(() => {
+    if (id) {
+      let data: any = listPurchase.find((item: any) => item.ID === Number(id));
+      let supplier: any = supplierList.find((item: any) => item.ID === data.SupplierID);
+      let Articles: any = data.Articles.map((item: any) => {
+        return {
+          ...item,
+          ID: item?.ProductID,
+          Name: getProduct(item.ProductID)?.Name,
+          Sku: getProduct(item.ProductID)?.Sku,
+          Ean: getProduct(item.ProductID)?.Ean
+        };
+      });
+      return {
+        ...data,
+        Articles,
+        supplier
+      };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -104,7 +129,7 @@ function AddReception() {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <>
@@ -120,47 +145,24 @@ function AddReception() {
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
-                      <Autocomplete
-                        id="supplier-list"
-                        options={supplierList.filter((item: any) => item.status === true)}
-                        getOptionLabel={(option) => option.businessName}
-                        onChange={(event, newValue) => {
-                          setFieldValue('supplier', newValue === null ? '' : newValue);
-                        }}
-                        disabled
-                        value={reception?.supplier}
-                        renderInput={(params) => <TextField {...params} placeholder="" />}
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            p: 0.5
-                          },
-                          '& .MuiAutocomplete-tag': {
-                            bgcolor: 'primary.lighter',
-                            border: '1px solid',
-                            borderColor: 'primary.light',
-                            '& .MuiSvgIcon-root': {
-                              color: 'primary.main',
-                              '&:hover': {
-                                color: 'primary.dark'
-                              }
-                            }
-                          }
-                        }}
-                      />
-                      {touched.supplier && errors.supplier && (
-                        <FormHelperText error id="personal-supplier-helper">
-                          {errors.supplier}
-                        </FormHelperText>
-                      )}
+                      <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
+                        {supplierList
+                          .filter((item: any) => item.Status === true)
+                          .map((option: any) => (
+                            <MenuItem key={option.ID} value={option.ID}>
+                              {option.BusinessName}
+                            </MenuItem>
+                          ))}
+                      </TextField>
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                      <TextField placeholder="Seleccionar Bodega" fullWidth disabled select {...getFieldProps('warehouse')}>
+                      <TextField placeholder="Seleccionar Bodega" fullWidth disabled select {...getFieldProps('WarehouseID')}>
                         {warehouseList
-                          .filter((item: any) => item.status === true)
+                          .filter((item: any) => item.Status === true)
                           .map((option: any) => (
-                            <MenuItem key={option.name} value={option.name}>
-                              {option.name}
+                            <MenuItem key={option.ID} value={option.ID}>
+                              {option.Name}
                             </MenuItem>
                           ))}
                       </TextField>
@@ -170,7 +172,7 @@ function AddReception() {
                       <TextField
                         disabled
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('discount')}
+                        {...getFieldProps('Discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
                       />
@@ -190,7 +192,7 @@ function AddReception() {
                       </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('dateLeadTimeBog')}
+                        {...getFieldProps('EstimatedDeliveryDateBog')}
                         fullWidth
                         disabled
                       />
@@ -202,7 +204,7 @@ function AddReception() {
                       </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('dateLeadTimeBaq')}
+                        {...getFieldProps('EstimatedDeliveryDateBaq')}
                         fullWidth
                         disabled
                       />
@@ -290,7 +292,7 @@ function AddReception() {
               </Grid>
               <Grid item xs={12}>
                 <DetailsReception
-                  products={reception?.products}
+                  products={reception?.Articles}
                   handleAdd={(item: any) => {
                     setProduct(item);
                     handleAdd();

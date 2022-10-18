@@ -36,14 +36,15 @@ const DetailsPurchase = ({ product }: any) => {
 
   useEffect(() => {
     let newData = data.map((item: any) => ({
-      Qty: '',
-      Price: '',
+      Count: '',
+      BaseBasePrice: '',
       Tax: '',
-      NegotiatedDiscount: '',
-      AdditionalDiscount: '',
+      DiscountAdditional: '',
+      DiscountNegotiated: '',
       Bonus: '',
       SubTotal: '',
       Total: '',
+      ProductID: item?.ID,
       ...item
     }));
     setInputList(newData);
@@ -53,26 +54,26 @@ const DetailsPurchase = ({ product }: any) => {
   const handleInputChange = (e: any, index: number) => {
     const list = [...inputList];
     const { name, value } = e.target;
-    if (name === 'Qty') {
-      list[index]['Qty'] = value;
+    if (name === 'Count') {
+      list[index]['Count'] = value;
     }
-    if (name === 'Price') {
-      list[index]['Price'] = value;
+    if (name === 'BasePrice') {
+      list[index]['BasePrice'] = value;
     }
     if (name === 'Tax') {
       list[index]['Tax'] = value;
     }
-    if (name === 'NegotiatedDiscount') {
-      list[index]['NegotiatedDiscount'] = value;
+    if (name === 'DiscountNegotiated') {
+      list[index]['DiscountNegotiated'] = value;
     }
-    if (name === 'AdditionalDiscount') {
-      list[index]['AdditionalDiscount'] = value;
+    if (name === 'DiscountAdditional') {
+      list[index]['DiscountAdditional'] = value;
     }
     if (name === 'Bonus') {
       list[index]['Bonus'] = value;
     }
-    list[index]['SubTotal'] = list[index]?.Qty * list[index]?.Price * ((100 - list[index]?.NegotiatedDiscount) / 100) || 0;
-    list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Qty * list[index]?.Price * list[index]?.Tax) / 100;
+    list[index]['SubTotal'] = list[index]?.Count * list[index]?.BasePrice * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
+    list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Count * list[index]?.BasePrice * list[index]?.Tax) / 100;
     setInputList(list);
     dispatch(updateItemsPurchase(list));
   };
@@ -119,8 +120,8 @@ const DetailsPurchase = ({ product }: any) => {
                     type="number"
                     placeholder="Ingresar Cantidad"
                     fullWidth
-                    name="Qty"
-                    value={x.Qty}
+                    name="Count"
+                    value={x.Count}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -131,8 +132,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Precio Base"
                     fullWidth
-                    name="Price"
-                    value={x.Price}
+                    name="BasePrice"
+                    value={x.BasePrice}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -155,8 +156,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Descuento Negociado"
                     fullWidth
-                    name="NegotiatedDiscount"
-                    value={x.NegotiatedDiscount}
+                    name="DiscountNegotiated"
+                    value={x.DiscountNegotiated}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -167,8 +168,8 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Descuento Adicional"
                     fullWidth
-                    name="AdditionalDiscount"
-                    value={x.AdditionalDiscount}
+                    name="DiscountAdditional"
+                    value={x.DiscountAdditional}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>

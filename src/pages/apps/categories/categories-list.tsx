@@ -243,6 +243,7 @@ const CategoriesList = () => {
     dispatch(getCategoryListThree());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const columns = () => [
     {
       Header: 'ID',

@@ -33,8 +33,6 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { HeaderSort, IndeterminateCheckbox, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
-// const productImage = require.context('assets/images/e-commerce', true);
-
 // ==============================|| REACT TABLE ||============================== //
 
 interface Props {

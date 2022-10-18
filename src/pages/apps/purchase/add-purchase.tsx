@@ -1,7 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Chance } from 'chance';
-import { format } from 'date-fns';
 
 // material-ui
 import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
@@ -18,16 +16,18 @@ import summary from 'utils/calculation';
 import Import from './Import';
 import AddSelectProduct from './selectProducts';
 import DetailsPurchase from './detailsProduct';
+import { getProducts } from 'store/reducers/product';
+
 import Export from 'components/ExportToFile';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
   const newSubstance = {
-    note: '',
-    discountOrder: '',
-    supplier: '',
-    warehouse: '',
-    paymentdiscount: ''
+    Notes: '',
+    Discount: '',
+    SupplierID: '',
+    WarehouseID: '',
+    DiscountEarliyPay: ''
   };
   return newSubstance;
 };
@@ -38,6 +38,11 @@ function AddPurchase() {
   const [add, setAdd] = useState<boolean>(false);
   const [discount, setDiscount] = useState<any>();
   const [addImport, setActiveImport] = useState<boolean>(false);
+
+  useEffect(() => {
+    dispatch(getProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleImport = () => {
     setActiveImport(!addImport);
@@ -57,29 +62,25 @@ function AddPurchase() {
   };
 
   const SubstSchema = Yup.object().shape({
-    warehouse: Yup.string().max(255).required('Bodega es requerido'),
-    supplier: Yup.object().required('Proveedor es requerido')
+    WarehouseID: Yup.string().max(255).required('Bodega es requerido'),
+    SupplierID: Yup.number().required('Proveedor es requerido')
   });
 
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         if (detailsPurchase.length > 0) {
-          const chance = new Chance();
           const newValue = {
             ...values,
-            nc: chance.zip(),
-            create_order: format(new Date(), 'dd-MM-yyyy'),
-            products: detailsPurchase,
-            status: 'New'
+            Articles: detailsPurchase
           };
-
-          dispatch(addPurchase(newValue));
+          await dispatch(addPurchase(newValue));
         }
         setSubmitting(false);
       } catch (error) {
+        setSubmitting(false);
         console.error(error);
       }
     }
@@ -88,17 +89,18 @@ function AddPurchase() {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   const data = useMemo(() => summary(detailsPurchase, discount || 0), [detailsPurchase, discount]);
+
   const dataProduct: any = [
     {
-      Name: '',
       ID: '',
+      Name: '',
       Sku: '',
       Ean: '',
-      Quantity: '',
-      Price: '',
-      IVA: '',
-      NegotiatedDiscount: '',
-      AdditionalDiscount: '',
+      Count: '',
+      BasePrice: '',
+      Tax: '',
+      DiscountNegotiated: '',
+      DiscountAdditional: '',
       Bonus: ''
     }
   ];
@@ -122,7 +124,7 @@ function AddPurchase() {
                         options={supplierList.filter((item: any) => item.Status === true)}
                         getOptionLabel={(option) => option.BusinessName}
                         onChange={(event, newValue) => {
-                          setFieldValue('supplier', newValue === null ? '' : newValue);
+                          setFieldValue('SupplierID', newValue === null ? '' : newValue?.ID);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="" />}
                         sx={{
@@ -142,9 +144,9 @@ function AddPurchase() {
                           }
                         }}
                       />
-                      {touched.supplier && errors.supplier && (
+                      {touched.SupplierID && errors.SupplierID && (
                         <FormHelperText error id="personal-supplier-helper">
-                          {errors.supplier}
+                          {errors.SupplierID}
                         </FormHelperText>
                       )}
                     </Grid>
@@ -154,9 +156,9 @@ function AddPurchase() {
                         placeholder="Seleccionar Bodega"
                         fullWidth
                         select
-                        {...getFieldProps('warehouse')}
-                        error={Boolean(touched.warehouse && errors.warehouse)}
-                        helperText={touched.warehouse && errors.warehouse}
+                        {...getFieldProps('WarehouseID')}
+                        error={Boolean(touched.WarehouseID && errors.WarehouseID)}
+                        helperText={touched.WarehouseID && errors.WarehouseID}
                       >
                         {warehouseList
                           .filter((item: any) => item.Status === true)
@@ -171,12 +173,13 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('discountOrder')}
+                        {...getFieldProps('Discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
+                        type="number"
                         onChange={(e) => {
                           setDiscount(e.target.value);
-                          setFieldValue('discountOrder', e.target.value);
+                          setFieldValue('Discount', e.target.value);
                         }}
                       />
                     </Grid>
@@ -197,15 +200,16 @@ function AddPurchase() {
                         rows={2}
                         placeholder="Ingresar Nota de compras"
                         fullWidth
-                        {...getFieldProps('note')}
+                        {...getFieldProps('Notes')}
                       />
                     </Grid>
                     <Grid item xs={4} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('paymentdiscount')}
+                        {...getFieldProps('DiscountEarliyPay')}
                         placeholder="Descuento pronto Pago %"
+                        type="number"
                         fullWidth
                       />
                     </Grid>
@@ -251,25 +255,25 @@ function AddPurchase() {
                 {detailsPurchase && detailsPurchase.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data.subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data.Subtotal || 0}</Typography>
                     </Stack>
-                    {data.discount !== '0' && (
+                    {data.DiscountGlobal !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
+                        <Typography variant="subtitle1">Descuento: $ {data.DiscountGlobal || 0}</Typography>
                       </Stack>
                     )}
-                    {data.subtotalDiscount !== 0 && (
+                    {data.SubtotalWithDiscount !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.subtotalDiscount || 0}</Typography>
+                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.SubtotalWithDiscount || 0}</Typography>
                       </Stack>
                     )}
-                    {data.tax !== 0 && (
+                    {data.Tax !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">IVA: $ {data.tax || 0}</Typography>
+                        <Typography variant="subtitle1">IVA: $ {data.Tax || 0}</Typography>
                       </Stack>
                     )}
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {data.total || 0}</Typography>
+                      <Typography variant="subtitle1">Total: $ {data.Total || 0}</Typography>
                     </Stack>
                   </MainCard>
                 )}

@@ -42,8 +42,8 @@ const getInitialValues = (order: FormikValues | null) => {
     WarehouseID: order?.WarehouseID,
     DiscountEarliyPay: order?.DiscountEarliyPay,
     /*   paymentdate: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),*/
-    EstimatedDeliveryDateBog: format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy'),
-    EstimatedDeliveryDateBaq: format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy')
+    EstimatedDeliveryDateBog: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
+    EstimatedDeliveryDateBaq: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
   };
 
   return newSubstance;
@@ -64,18 +64,37 @@ function ViewPurchase() {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { listPurchase } = useSelector((state) => state.purchase);
+  const { products } = useSelector((state) => state.product);
+
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
   const handleCancel = () => {
     history(`/purchase`);
   };
 
+  const getProduct = (id: number) => {
+    if (id) {
+      let product: any = products.find((item) => item.ID === id);
+      return product;
+    }
+  };
+
   const orderPurchase: any = useMemo(() => {
     if (id) {
       let data: any = listPurchase.find((item: any) => item.ID === Number(id));
-      let supplier: any = supplierList.find((item) => item.ID === data.SupplierID);
+      let supplier: any = supplierList.find((item: any) => item.ID === data.SupplierID);
+      let Articles: any = data.Articles.map((item: any) => {
+        return {
+          ...item,
+          ID: item?.ProductID,
+          Name: getProduct(item.ProductID)?.Name,
+          Sku: getProduct(item.ProductID)?.Sku,
+          Ean: getProduct(item.ProductID)?.Ean
+        };
+      });
       return {
         ...data,
+        Articles,
         supplier
       };
     }
@@ -87,13 +106,13 @@ function ViewPurchase() {
     dispatch(editItemsPurchase(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const formik = useFormik({
     initialValues: getInitialValues(orderPurchase!),
     onSubmit: (values, { setSubmitting }) => {
       try {
         if (send) {
           const newValue = {
-            //  dateR: format(new Date(), 'dd-MM-yyyy'),
             ...values,
             status: 'Send',
             products: orderPurchase?.Articles
@@ -157,7 +176,7 @@ function ViewPurchase() {
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={4}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
-                      <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('SupplierID')}>
+                      <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
                         {supplierList
                           .filter((item: any) => item.Status === true)
                           .map((option: any) => (
@@ -274,7 +293,7 @@ function ViewPurchase() {
               <Grid item xs={12}>
                 {orderPurchase?.status === 'New' && <DetailsPurchase product={detailsPurchase} />}
 
-                {orderPurchase?.status !== 'New' && orderPurchase?.Articles.length > 0 && (
+                {orderPurchase?.status !== 'New' && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <Table sx={{ minWidth: 650 }} size="small">
                     <TableHead>
                       <TableRow>
@@ -290,32 +309,34 @@ function ViewPurchase() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {orderPurchase?.Articles.map((x: any, i: number) => (
-                        <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                          <TableCell component="th" scope="row">
-                            <Stack direction="row" spacing={1.5} alignItems="center">
-                              <Stack spacing={0}>
-                                <Typography variant="subtitle1">{x.ID}</Typography>
-                                <Typography variant="subtitle1">{x.Name}</Typography>
-                                <Typography variant="caption" color="textSecondary">
-                                  SKU {x.Sku}
-                                </Typography>
-                                <Typography variant="caption" color="textSecondary">
-                                  EAN :{x.Ean}
-                                </Typography>
+                      {orderPurchase?.Articles &&
+                        orderPurchase?.Articles.length > 0 &&
+                        orderPurchase?.Articles.map((x: any, i: number) => (
+                          <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell component="th" scope="row">
+                              <Stack direction="row" spacing={1.5} alignItems="center">
+                                <Stack spacing={0}>
+                                  <Typography variant="subtitle1">{x.ID}</Typography>
+                                  <Typography variant="subtitle1">{x.Name}</Typography>
+                                  <Typography variant="caption" color="textSecondary">
+                                    SKU {x.Sku}
+                                  </Typography>
+                                  <Typography variant="caption" color="textSecondary">
+                                    EAN :{x.Ean}
+                                  </Typography>
+                                </Stack>
                               </Stack>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="center">{x.qty}</TableCell>
-                          <TableCell align="center">{x.tax}</TableCell>
-                          <TableCell align="center">{x.qty}</TableCell>
-                          <TableCell align="center">{x.Negotiateddiscount}</TableCell>
-                          <TableCell align="center">{x.Additionaldiscount}</TableCell>
-                          <TableCell align="center">{x.bonus}</TableCell>
-                          <TableCell align="center">{x.subtotal}</TableCell>
-                          <TableCell align="center">{x.total}</TableCell>
-                        </TableRow>
-                      ))}
+                            </TableCell>
+                            <TableCell align="center">{x.Count}</TableCell>
+                            <TableCell align="center">{x.Tax}</TableCell>
+                            <TableCell align="center">{x.BasePrice}</TableCell>
+                            <TableCell align="center">{x.Discount}</TableCell>
+                            <TableCell align="center">{x.DiscountAdditional}</TableCell>
+                            <TableCell align="center">{x.Bonus}</TableCell>
+                            <TableCell align="center">{x.SubTotal}</TableCell>
+                            <TableCell align="center">{x.Total}</TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                   </Table>
                 )}
@@ -333,25 +354,25 @@ function ViewPurchase() {
                 {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data?.subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data.Subtotal || 0}</Typography>
                     </Stack>
-                    {data.discount !== '0' && (
+                    {data.DiscountGlobal !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Descuento: $ {data.discount || 0}</Typography>
+                        <Typography variant="subtitle1">Descuento: $ {data.DiscountGlobal || 0}</Typography>
                       </Stack>
                     )}
-                    {data.subtotalDiscount !== 0 && (
+                    {data.SubtotalWithDiscount !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.subtotalDiscount || 0}</Typography>
+                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.SubtotalWithDiscount || 0}</Typography>
                       </Stack>
                     )}
-                    {data.tax !== 0 && (
+                    {data.Tax !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">IVA: $ {data.tax || 0}</Typography>
+                        <Typography variant="subtitle1">IVA: $ {data.Tax || 0}</Typography>
                       </Stack>
                     )}
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {data.total || 0}</Typography>
+                      <Typography variant="subtitle1">Total: $ {data.Total || 0}</Typography>
                     </Stack>
                   </MainCard>
                 )}

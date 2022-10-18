@@ -58,13 +58,8 @@ const slice = createSlice({
       state.detailsPurchase = action.payload;
     },
     addPurchaseSuccess(state, action) {
-      let summaryOrder = summary(action.payload?.products, action.payload?.discountOrder);
-      const data = {
-        ...action.payload,
-        ...summaryOrder
-      };
       state.detailsPurchase = [];
-      state.listPurchase.push(data);
+      state.listPurchase.push(action.payload);
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
     updatePurchaseSuccess(state, action) {
@@ -140,7 +135,25 @@ export function getPurchaseList() {
 export function addPurchase(data: any) {
   return async () => {
     try {
-      //  const history = useNavigate();
+      let summaryOrder = summary(data.Articles, data?.Discount);
+      const Newdata = {
+        ...data,
+        ...summaryOrder,
+        Discount: parseFloat(data?.Discount) || 0,
+        DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay) || 0,
+        Articles: data?.Articles.map((item: any) => ({
+          ProductID: item?.ProductID,
+          Count: Number(item?.Count) || 0,
+          BasePrice: parseFloat(item?.BasePrice) || 0,
+          Tax: Number(item?.Tax) || 0,
+          Discount: parseFloat(item?.DiscountNegotiated) || 0,
+          DiscountAdditional: parseFloat(item?.DiscountAdditional) || 0,
+          Bonus: Number(item?.Bonus) || 0,
+          SubTotal: Number(item?.SubTotal) || 0,
+          Total: Number(item?.Total) || 0
+        }))
+      };
+      const response = await axios.post(`${HOST}/compras`, { ...Newdata });
       dispatch(
         openSnackbar({
           open: true,
@@ -152,8 +165,10 @@ export function addPurchase(data: any) {
           close: false
         })
       );
-      dispatch(slice.actions.addPurchaseSuccess(data));
-      //  history(`/purchase/view/${data.nc}`);
+      dispatch(slice.actions.addPurchaseSuccess(response.data));
+      dispatch(getPurchaseList());
+      dispatch(slice.actions.hasError(null));
+      window.location.replace(`${HOST} /purchase/view/${response.data.ID}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
