@@ -155,7 +155,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                             control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
                             label=""
                             labelPlacement="top"
-                            {...getFieldProps('status')}
+                            {...getFieldProps('Status')}
                           />
                         </Grid>
                       </Grid>

@@ -89,6 +89,17 @@ export function deleteSubs(id: number) {
     try {
       const response = await axios.delete(`${HOST}/sustancias`, { data: { ID: id } });
       if (response) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Deleted successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
         dispatch(getSubsList());
       }
     } catch (error) {

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 // material-ui
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { useDispatch, useSelector } from 'store';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/category';
-
+import { searchName } from 'utils/findName';
 import ImportToFile from 'components/ImportToFile';
 
 // ==============================|| PACK IMPORT ||============================== //
@@ -19,6 +19,7 @@ export interface Props {
 const ImportPack = ({ onCancel, value }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
+  const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
   const onSubmit = () => {
     try {
@@ -34,7 +35,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
         case 1:
           newData = data.map((item: any) => ({
             Name: item?.Name,
-            CategoryOneID: item?.category1,
+            CategoryOneID: searchName(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
             Status: item?.Status
           }));
           break;
@@ -42,9 +43,9 @@ const ImportPack = ({ onCancel, value }: Props) => {
         default:
           newData = data.map((item: any) => ({
             Name: item?.Name,
-            CategoryOneID: item?.CategoryOneID,
-            CategoryTwoID: item?.CategoryTwoID,
-            Status: item?.status
+            CategoryOneID: searchName(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
+            CategoryTwoID: searchName(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '0',
+            Status: item?.Status
           }));
           break;
       }

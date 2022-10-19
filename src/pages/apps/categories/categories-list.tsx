@@ -1,45 +1,25 @@
-import { useEffect, useMemo, Fragment, useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
-import { alpha, useTheme } from '@mui/material/styles';
-import {
-  Button,
-  Chip,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  useMediaQuery,
-  Box,
-  Tab,
-  Tabs,
-  Dialog
-} from '@mui/material';
-
-// third-party
-import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
+import { useTheme } from '@mui/material/styles';
+import { Chip, Stack, Tooltip, Box, Tab, Tabs, Dialog, Typography } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Export from 'components/ExportToFile';
+import ReactTable from 'components/ReactTable';
 import Import from './Import';
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination } from 'components/third-party/ReactTable';
 
+import { getObject } from 'utils/Global';
 import { useDispatch, useSelector } from 'store';
 
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
-// ==============================|| REACT TABLE ||============================== //
 interface TabPanelProps {
   children?: ReactNode;
   index: number;
@@ -62,152 +42,65 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-interface Props {
-  columns: Column[];
-  data: [];
-  getHeaderProps: (column: any) => void;
-  handleImport: () => void;
-}
 
-function ReactTable({ columns, data, getHeaderProps, handleImport }: Props) {
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'ID', desc: true };
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    allColumns,
-    rows,
-    // @ts-ignore
-    page,
-    // @ts-ignore
-    gotoPage,
-    // @ts-ignore
-    setPageSize,
-    // @ts-ignore
-    state: { globalFilter, pageIndex, pageSize },
-    // @ts-ignore
-    preGlobalFilteredRows,
-    // @ts-ignore
-    setGlobalFilter,
-    // @ts-ignore
-    setSortBy
-  } = useTable(
-    {
-      columns,
-      data,
-      // @ts-ignore
-      filterTypes,
-      // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
-    },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination,
-    useRowSelect
-  );
-  const history = useNavigate();
-
-  const handleAddCategory = () => {
-    history(`/product-list/add-category`);
-  };
-
-  return (
-    <>
-      <Stack spacing={3}>
-        <Stack
-          direction={matchDownSM ? 'column' : 'row'}
-          spacing={1}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ p: 3, pb: 0 }}
-        >
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            size="small"
-          />
-          <Export excelData={data} fileName="Categories" />
-          <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
-            Importar
-          </Button>
-          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddCategory}>
-              Agregar Categorias
-            </Button>
-          </Stack>
-        </Stack>
-
-        <Table {...getTableProps()}>
-          <TableHead>
-            {headerGroups.map((headerGroup) => (
-              <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                {headerGroup.headers.map((column: any) => (
-                  <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
-                    <HeaderSort column={column} />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {page.map((row: any, i: number) => {
-              prepareRow(row);
-              return (
-                <Fragment key={i}>
-                  <TableRow
-                    {...row.getRowProps()}
-                    onClick={() => {
-                      row.toggleRowSelected();
-                    }}
-                    sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                  >
-                    {row.cells.map((cell: any) => (
-                      <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                    ))}
-                  </TableRow>
-                </Fragment>
-              );
-            })}
-            <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-              <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Stack>
-    </>
-  );
-}
-
-// ==============================|| PROFILE - USER LIST ||============================== //
+// ==============================|| CATEGORIES - LIST ||============================== //
 
 const CategoriesList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [value, setValue] = useState(0);
+  const [addImport, setActiveImport] = useState<boolean>(false);
+  const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(getCategoryListOne());
+    dispatch(getCategoryListTwo());
+    dispatch(getCategoryListThree());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEditCategory = (id: any, index: any) => {
     history(`/product-list/edit-category/${id}/${index}`);
   };
-  const [value, setValue] = useState(0);
-
-  const [addImport, setActiveImport] = useState<boolean>(false);
+  const handleAddCategory = () => {
+    history(`/product-list/add-category`);
+  };
 
   const handleImport = () => {
     setActiveImport(!addImport);
   };
 
+  const exportCategoryThre: any = categoryListThree.map((item: any) => {
+    let CategoryOne: string = '';
+    let CategoryTwo: string = '';
+
+    if (item?.CategoryOneID) {
+      CategoryOne = categoryListOne.find((data: any) => data?.ID === item?.CategoryOneID)?.Name || '';
+    }
+    if (item?.CategoryTwoID) {
+      CategoryTwo = categoryListTwo.find((data: any) => data?.ID === item?.CategoryTwoID)?.Name || '';
+    }
+    return {
+      ID: item?.ID,
+      Name: item?.Name,
+      CategoryTwo,
+      CategoryOne
+    };
+  });
+
+  const exportCategoryTwo: any = categoryListTwo.map((item: any) => {
+    let CategoryOne: string = '';
+
+    if (item?.CategoryOneID) {
+      CategoryOne = categoryListOne.find((data: any) => data?.ID === item?.CategoryOneID)?.Name || '';
+    }
+    return {
+      ID: item?.ID,
+      Name: item?.Name,
+      CategoryOne
+    };
+  });
   const [columnsValue, setColumnsValue] = useState<any>({
     Header: 'Grupo',
     accessor: 'Name',
@@ -235,15 +128,6 @@ const CategoriesList = () => {
     setValue(newValue);
   };
 
-  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
-
-  useEffect(() => {
-    dispatch(getCategoryListOne());
-    dispatch(getCategoryListTwo());
-    dispatch(getCategoryListThree());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const columns = () => [
     {
       Header: 'ID',
@@ -252,15 +136,47 @@ const CategoriesList = () => {
     },
     value !== 2 && columnsValue,
 
+    value === 1 && {
+      Header: 'Grupo',
+      accessor: 'CategoryOneID',
+      className: 'cell-center',
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{getObject(categoryListOne, value)?.Name || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
+    },
     value === 2 && {
       Header: 'Grupo',
       accessor: 'CategoryOneID',
-      className: 'cell-center'
+      className: 'cell-center',
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{getObject(categoryListOne, value)?.Name || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
     },
     value === 2 && {
       Header: 'Categoria 1',
       accessor: 'CategoryTwoID',
-      className: 'cell-center'
+      className: 'cell-center',
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{getObject(categoryListTwo, value)?.Name || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
     },
     value === 2 && {
       Header: 'Categoria 2',
@@ -357,6 +273,9 @@ const CategoriesList = () => {
             data={categoryListOne as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
+            TitleButton="Agregar Grupo"
+            FileName="Grupo"
+            handleAdd={handleAddCategory}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -365,6 +284,10 @@ const CategoriesList = () => {
             data={categoryListTwo as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
+            TitleButton=" Agregar Categorias"
+            FileName="Categorias"
+            dataExport={exportCategoryTwo}
+            handleAdd={handleAddCategory}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -373,6 +296,10 @@ const CategoriesList = () => {
             data={categoryListThree as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
+            TitleButton=" Agregar Categorias"
+            FileName="Categorias"
+            dataExport={exportCategoryThre}
+            handleAdd={handleAddCategory}
           />
         </TabPanel>
       </ScrollX>

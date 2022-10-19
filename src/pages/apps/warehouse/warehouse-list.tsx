@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useState, Fragment } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Dialog, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, useMediaQuery } from '@mui/material';
-
-// third-party
-import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
+import { useTheme } from '@mui/material/styles';
+import { Chip, Dialog, Stack, Tooltip } from '@mui/material';
 
 // project import
 import AddWarehouse from 'sections/apps/products/warehouse/AddWarehouse';
@@ -13,146 +10,14 @@ import Import from 'sections/apps/products/warehouse/ImportWarehouse';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Export from 'components/ExportToFile';
-
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
-
+import ReactTable from 'components/ReactTable';
 import { useDispatch, useSelector } from 'store';
-
 import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
-// ==============================|| REACT TABLE ||============================== //
-
-interface Props {
-  columns: Column[];
-  data: [];
-  getHeaderProps: (column: any) => void;
-  handleAdd: () => void;
-  handleImport: () => void;
-}
-
-function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'ID', desc: true };
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    allColumns,
-    rows,
-    // @ts-ignore
-    page,
-    // @ts-ignore
-    gotoPage,
-    // @ts-ignore
-    setPageSize,
-    // @ts-ignore
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
-    // @ts-ignore
-    preGlobalFilteredRows,
-    // @ts-ignore
-    setGlobalFilter,
-    // @ts-ignore
-    setSortBy
-  } = useTable(
-    {
-      columns,
-      data,
-      // @ts-ignore
-      filterTypes,
-      // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
-    },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination,
-    useRowSelect
-  );
-
-  return (
-    <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-      <Stack spacing={3}>
-        <Stack
-          direction={matchDownSM ? 'column' : 'row'}
-          spacing={1}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ p: 3, pb: 0 }}
-        >
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            size="small"
-          />
-          <Export excelData={data} fileName="Bodegas" />
-          <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
-            Importar
-          </Button>
-          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-              Agregar Bodega
-            </Button>
-          </Stack>
-        </Stack>
-
-        <Table {...getTableProps()}>
-          <TableHead>
-            {headerGroups.map((headerGroup) => (
-              <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                {headerGroup.headers.map((column: any) => (
-                  <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
-                    <HeaderSort column={column} />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {page.map((row: any, i: number) => {
-              prepareRow(row);
-              return (
-                <Fragment key={i}>
-                  <TableRow
-                    {...row.getRowProps()}
-                    onClick={() => {
-                      row.toggleRowSelected();
-                    }}
-                    sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                  >
-                    {row.cells.map((cell: any) => (
-                      <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                    ))}
-                  </TableRow>
-                </Fragment>
-              );
-            })}
-            <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-              <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Stack>
-    </>
-  );
-}
-
-// ==============================|| PROFILE - USER LIST ||============================== //
+// ==============================|| WAREHOUSE LIST ||============================== //
 
 const WarehouseList = () => {
   const theme = useTheme();
@@ -261,6 +126,8 @@ const WarehouseList = () => {
           handleImport={handleImport}
           data={warehouseList as []}
           handleAdd={handleAdd}
+          TitleButton="Agregar Bodega"
+          FileName="Bodegas"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>

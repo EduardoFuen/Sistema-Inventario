@@ -1,149 +1,21 @@
-import { useEffect, useMemo, Fragment, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Chip, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Dialog } from '@mui/material';
-// third-party
-import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
+import { useTheme } from '@mui/material/styles';
+import { Chip, Stack, Tooltip, Dialog } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Export from 'components/ExportToFile';
+import ReactTable from 'components/ReactTable';
 import AddActiveSustances from 'sections/apps/products/activeSubstances/AddActiveSubstances';
 import Import from 'sections/apps/products/activeSubstances/ImportActiveSubstances';
-
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 import { useDispatch, useSelector } from 'store';
-
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getSubsList, deleteSubs } from 'store/reducers/activeSubst';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone, ImportOutlined } from '@ant-design/icons';
-
-// ==============================|| REACT TABLE ||============================== //
-
-interface Props {
-  columns: Column[];
-  data: [];
-  getHeaderProps: (column: any) => void;
-  handleAdd: () => void;
-  handleImport: () => void;
-}
-
-function ReactTable({ columns, data, getHeaderProps, handleAdd, handleImport }: Props) {
-  const theme = useTheme();
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'ID', desc: true };
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    allColumns,
-    rows,
-    // @ts-ignore
-    page,
-    // @ts-ignore
-    gotoPage,
-    // @ts-ignore
-    setPageSize,
-    // @ts-ignore
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
-    // @ts-ignore
-    preGlobalFilteredRows,
-    // @ts-ignore
-    setGlobalFilter,
-    // @ts-ignore
-    setSortBy
-  } = useTable(
-    {
-      columns,
-      data,
-      // @ts-ignore
-      filterTypes,
-      // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 5, sortBy: [sortBy] }
-    },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination,
-    useRowSelect
-  );
-
-  return (
-    <>
-      <Box sx={{ width: '100%' }}>
-        <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-        <Stack spacing={3}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 0 }}>
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              size="small"
-            />
-            <Export excelData={data} fileName="SustanciasANDactivos" />
-            <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
-              Importar
-            </Button>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Agregar Sustancias o activos
-              </Button>
-            </Stack>
-          </Stack>
-
-          <Table {...getTableProps()}>
-            <TableHead>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                  {headerGroup.headers.map((column: any) => (
-                    <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
-                      <HeaderSort column={column} />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody {...getTableBodyProps()}>
-              {page.map((row: any, i: number) => {
-                prepareRow(row);
-                return (
-                  <Fragment key={i}>
-                    <TableRow
-                      {...row.getRowProps()}
-                      onClick={() => {
-                        row.toggleRowSelected();
-                      }}
-                      sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                    >
-                      {row.cells.map((cell: any) => (
-                        <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                      ))}
-                    </TableRow>
-                  </Fragment>
-                );
-              })}
-              <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-                <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                  <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Stack>
-      </Box>
-    </>
-  );
-}
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| ACTIVE-SUBSTANCES LIST - MAIN ||============================== //
 
@@ -219,17 +91,6 @@ const ActiveSubstancesList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Envase deleted successfully.',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
                     dispatch(deleteSubs(row.original?.ID));
                   }}
                 >
@@ -252,15 +113,17 @@ const ActiveSubstancesList = () => {
           columns={columnsProducts}
           handleAdd={handleAdd}
           data={todoListSubs as []}
+          FileName="Sustancias&activos"
           handleImport={handleImport}
+          TitleButton="Agregar"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>
-      {/* add pack dialog */}
+      {/* add ActiveSubstances Dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddActiveSustances subst={subst} onCancel={handleAdd} />}
       </Dialog>
-      {/* add import dialog */}
+      {/* add import Dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>

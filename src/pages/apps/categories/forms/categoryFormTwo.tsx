@@ -25,7 +25,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
   };
   const { categoryListOne } = useSelector((state) => state.category);
   const SubstSchema = Yup.object().shape({
-    categoryOne: Yup.string().max(255).required('Grupo es requerido'),
+    CategoryOneID: Yup.string().max(255).required('Grupo es requerido'),
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
@@ -33,7 +33,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
     initialValues: {
       Name: category?.Name || '',
       Status: category?.status || false,
-      categoryOne: category?.CategoryOneID || ''
+      CategoryOneID: category?.CategoryOneID || ''
     },
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -50,7 +50,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
               close: false
             })
           );
-          await dispatch(editCategory('Name', category?.ID, values));
+          await dispatch(editCategory('CategoryTwo', category?.ID, values));
         } else {
           dispatch(
             openSnackbar({
@@ -97,9 +97,9 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                             placeholder="Grupo"
                             fullWidth
                             select
-                            {...getFieldProps('categoryOne')}
-                            error={Boolean(touched.categoryOne && errors.categoryOne)}
-                            helperText={touched.categoryOne && errors.categoryOne}
+                            {...getFieldProps('CategoryOneID')}
+                            error={Boolean(touched.CategoryOneID && errors.CategoryOneID)}
+                            helperText={touched.CategoryOneID && errors.CategoryOneID}
                           >
                             {categoryListOne
                               .filter((item: any) => item.Status === true)
@@ -131,7 +131,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                             control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
                             label=""
                             labelPlacement="top"
-                            {...getFieldProps('status')}
+                            {...getFieldProps('Status')}
                           />
                         </Grid>
                       </Grid>

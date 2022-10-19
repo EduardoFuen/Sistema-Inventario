@@ -148,19 +148,12 @@ export function addCategoryOne(data: any) {
     }
   };
 }
-export function addCategory(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.addCategorySuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
+
 export function addCategory2(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addCategory2Success(data));
+      const response = await axios.post(`${HOST}/categorias/two`, { ...data });
+      dispatch(slice.actions.addCategory2Success(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -170,7 +163,8 @@ export function addCategory2(data: any) {
 export function addCategory3(data: any) {
   return async () => {
     try {
-      dispatch(slice.actions.addCategory3Success(data));
+      const response = await axios.post(`${HOST}/categorias/three`, { ...data });
+      dispatch(slice.actions.addCategory3Success(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
