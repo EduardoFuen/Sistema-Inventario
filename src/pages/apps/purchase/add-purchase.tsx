@@ -88,7 +88,10 @@ function AddPurchase() {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
-  const data = useMemo(() => summary(detailsPurchase, discount || 0), [detailsPurchase, discount]);
+  const data = useMemo(
+    () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, discount || 0),
+    [detailsPurchase, discount]
+  );
 
   const dataProduct: any = [
     {
@@ -96,7 +99,7 @@ function AddPurchase() {
       Name: '',
       Sku: '',
       Ean: '',
-      Count: '',
+      Quantity: '',
       BasePrice: '',
       Tax: '',
       DiscountNegotiated: '',

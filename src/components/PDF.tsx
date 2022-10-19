@@ -1,11 +1,12 @@
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View /* , Image */ } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { useTheme } from '@mui/material/styles';
 
 import { FilePdfOutlined } from '@ant-design/icons';
 
+// import { ReactComponent as Farmu } from 'assets/images/home/logoAzulFarmu.svg';
 // project import
 import IconButton from 'components/@extended/IconButton';
-/* import Farmu from '../assets/images/home/logoAzulFarmu.png'; */
+// import Farmu from 'assets/images/home/logoAzulFarmu.png';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -76,7 +77,7 @@ const RenderDocument = ({ data }: any) => {
   return (
     <Document>
       <Page style={styles.body}>
-        {/*  <Image style={styles.image} cache src={Farmu || ''} /> */}
+        {/*  <Farmu /> */}
         <Text style={styles.header} fixed>
           Fecha {data?.create_order} # Order {data?.ID}
         </Text>

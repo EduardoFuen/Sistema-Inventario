@@ -59,6 +59,7 @@ const slice = createSlice({
     },
     addPurchaseSuccess(state, action) {
       state.detailsPurchase = [];
+      console.log(action.payload);
       state.listPurchase.push(action.payload);
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
@@ -166,9 +167,10 @@ export function addPurchase(data: any) {
         })
       );
       dispatch(slice.actions.addPurchaseSuccess(response.data));
-      dispatch(getPurchaseList());
+      if (response.data.ID) {
+        window.location.replace(`/purchase/view/${response.data.ID}`);
+      }
       dispatch(slice.actions.hasError(null));
-      window.location.replace(`${HOST} /purchase/view/${response.data.ID}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

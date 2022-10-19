@@ -24,7 +24,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase } from 'store/reducers/purcharse';
+import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getPurchaseList } from 'store/reducers/purcharse';
 import { SendOutlined } from '@ant-design/icons';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
@@ -59,6 +59,10 @@ function ViewPurchase() {
   const handleAdd = () => {
     setAdd(!add);
   };
+  useEffect(() => {
+    dispatch(getPurchaseList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
@@ -82,8 +86,8 @@ function ViewPurchase() {
   const orderPurchase: any = useMemo(() => {
     if (id) {
       let data: any = listPurchase.find((item: any) => item.ID === Number(id));
-      let supplier: any = supplierList.find((item: any) => item.ID === data.SupplierID);
-      let Articles: any = data.Articles.map((item: any) => {
+      let supplier: any = supplierList.find((item: any) => item.ID === data?.SupplierID);
+      let Articles: any = data?.Articles.map((item: any) => {
         return {
           ...item,
           ID: item?.ProductID,
@@ -102,7 +106,10 @@ function ViewPurchase() {
   }, []);
 
   useEffect(() => {
-    let data = orderPurchase?.Articles.map((item: any) => ({ ...item, isSelected: true }));
+    let data =
+      orderPurchase?.Articles &&
+      orderPurchase?.Articles.length > 0 &&
+      orderPurchase?.Articles.map((item: any) => ({ ...item, isSelected: true }));
     dispatch(editItemsPurchase(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -156,7 +163,7 @@ function ViewPurchase() {
     }
   });
   useEffect(() => {
-    const items = summary(detailsPurchase, orderPurchase?.DiscountGlobal || 0);
+    const items = detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, orderPurchase?.DiscountGlobal || 0);
     setData(items);
   }, [detailsPurchase, orderPurchase]);
 

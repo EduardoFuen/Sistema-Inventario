@@ -79,7 +79,6 @@ const ReactTable = ({
     usePagination,
     useRowSelect
   );
-
   return (
     <>
       <Box sx={{ width: '100%' }}>

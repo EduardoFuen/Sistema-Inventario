@@ -22,21 +22,20 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => {
-        let SubTotal = item?.Quantity * item?.Price * ((100 - item?.NegotiatedDiscount) / 100) || 0;
+        let SubTotal = Number(item?.Quantity * item?.BasePrice * ((100 - item?.DiscountNegotiated) / 100)) || 0;
         return {
-          Name: item?.Name,
-          ID: item?.ID,
+          ProductID: item?.ID,
           Sku: item?.Sku,
           Ean: item?.Ean,
           isSelected: true,
-          Qty: item?.Quantity,
-          Price: item?.Price,
-          Tax: item?.IVA,
-          NegotiatedDiscount: item?.NegotiatedDiscount,
-          AdditionalDiscount: item?.AdditionalDiscount,
-          Bonus: item?.Bonus,
+          Count: Number(item?.Quantity || 0),
+          BasePrice: parseFloat(item?.BasePrice) || 0,
+          Tax: Number(item?.Tax) || 0,
+          DiscountNegotiated: parseFloat(item?.DiscountNegotiated) || 0,
+          DiscountAdditional: parseFloat(item?.DiscountAdditional) || 0,
+          Bonus: Number(item?.Bonus) || 0,
           SubTotal,
-          Total: SubTotal + (item?.Quantity * item?.Price * item?.IVA) / 100
+          Total: Number(SubTotal + (item?.Quantity * item?.BasePrice * item?.Tax) / 100) || 0
         };
       });
       let detailsPurchase = newData.filter((element: any, index: number) => {
