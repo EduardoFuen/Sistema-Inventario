@@ -24,7 +24,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getPurchaseList } from 'store/reducers/purcharse';
+import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 import { SendOutlined } from '@ant-design/icons';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
@@ -56,18 +56,18 @@ function ViewPurchase() {
   const [send, setSend] = useState<boolean>(false);
   const [data, setData] = useState<any>();
   const { id } = useParams();
-  const handleAdd = () => {
-    setAdd(!add);
-  };
+
   useEffect(() => {
-    dispatch(getPurchaseList());
+    if (id) {
+      dispatch(getIDPurchase(Number(id)));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
-  const { listPurchase } = useSelector((state) => state.purchase);
+  const { order }: any = useSelector((state) => state.purchase);
   const { products } = useSelector((state) => state.product);
 
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
@@ -85,9 +85,8 @@ function ViewPurchase() {
 
   const orderPurchase: any = useMemo(() => {
     if (id) {
-      let data: any = listPurchase.find((item: any) => item.ID === Number(id));
-      let supplier: any = supplierList.find((item: any) => item.ID === data?.SupplierID);
-      let Articles: any = data?.Articles.map((item: any) => {
+      let supplier: any = supplierList.find((item: any) => item.ID === order?.SupplierID);
+      let Articles: any = order?.Articles.map((item: any) => {
         return {
           ...item,
           ID: item?.ProductID,
@@ -97,7 +96,7 @@ function ViewPurchase() {
         };
       });
       return {
-        ...data,
+        ...order,
         Articles,
         supplier
       };
@@ -113,6 +112,10 @@ function ViewPurchase() {
     dispatch(editItemsPurchase(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleAdd = () => {
+    setAdd(!add);
+  };
 
   const formik = useFormik({
     initialValues: getInitialValues(orderPurchase!),

@@ -15,7 +15,8 @@ const initialState: PurchaseStateProps = {
   error: null,
   detailsPurchase: [],
   listPurchase: [],
-  detailsReption: []
+  detailsReption: [],
+  order: {}
 };
 
 const slice = createSlice({
@@ -57,9 +58,11 @@ const slice = createSlice({
     editDetailsPurchaseSuccess(state, action) {
       state.detailsPurchase = action.payload;
     },
+    getIDPurchaseSuccess(state, action) {
+      state.order = action.payload;
+    },
     addPurchaseSuccess(state, action) {
       state.detailsPurchase = [];
-      console.log(action.payload);
       state.listPurchase.push(action.payload);
       window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
     },
@@ -127,8 +130,12 @@ export function getPurchaseList() {
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPurchaseSuccess(response.data));
+        dispatch(slice.actions.hasError(null));
       }
     } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getPurchaseSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -168,9 +175,21 @@ export function addPurchase(data: any) {
       );
       dispatch(slice.actions.addPurchaseSuccess(response.data));
       if (response.data.ID) {
-        window.location.replace(`/purchase/view/${response.data.ID}`);
+        window.location.href = `/purchase/view/${response.data.ID}`;
       }
       dispatch(slice.actions.hasError(null));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function getIDPurchase(id: number) {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/compras?ID=${id}`);
+      if (response.data) {
+        dispatch(slice.actions.getIDPurchaseSuccess(response.data));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

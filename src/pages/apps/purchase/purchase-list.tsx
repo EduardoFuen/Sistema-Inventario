@@ -186,6 +186,7 @@ const PurchaseList = () => {
           handleAdd={handleAddPurchase}
           TitleButton="Agregar Orden Compra"
           FileName="Purchase"
+          hideButton={false}
           dataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />

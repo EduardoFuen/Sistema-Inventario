@@ -172,6 +172,7 @@ const ReceptionList = () => {
           data={listPurchase as []}
           handleImport={() => {}}
           handleAdd={() => {}}
+          hideButton={false}
           TitleButton=""
           FileName="Recepción"
           dataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}

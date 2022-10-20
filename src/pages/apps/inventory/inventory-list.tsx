@@ -178,6 +178,7 @@ const InventoryList = () => {
           handleImport={() => {}}
           handleAdd={() => {}}
           TitleButton=""
+          hideButton={false}
           FileName="ReporteInventario"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />

@@ -202,6 +202,7 @@ export interface PurchaseStateProps {
   detailsPurchase: any[];
   listPurchase: purchase[];
   detailsReption: any[];
+  order: any;
   error: object | string | null;
 }
 
