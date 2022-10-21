@@ -84,7 +84,7 @@ function ViewPurchase() {
   };
 
   const orderPurchase: any = useMemo(() => {
-    if (id) {
+    if (id && order) {
       let supplier: any = supplierList.find((item: any) => item.ID === order?.SupplierID);
       let Articles: any = order?.Articles.map((item: any) => {
         return {

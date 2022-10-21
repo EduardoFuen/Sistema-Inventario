@@ -7,9 +7,10 @@ import * as XLSX from 'xlsx';
 type Props = {
   excelData: Object[];
   fileName: string;
+  title: string;
 };
 
-const Export: React.FC<Props> = ({ excelData, fileName }) => {
+const Export = ({ excelData, fileName, title }: Props) => {
   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   const fileExtension = '.xlsx';
 
@@ -24,8 +25,12 @@ const Export: React.FC<Props> = ({ excelData, fileName }) => {
 
   return (
     <Button variant="contained" onClick={(e) => exportToCSV(excelData, fileName)}>
-      Exportar
+      {title}
     </Button>
   );
 };
+Export.defaultProps = {
+  title: 'Exportar'
+};
+
 export default Export;

@@ -629,7 +629,7 @@ function UpdateProduct() {
                   <FormControlLabel
                     control={<Switch sx={{ mt: 0 }} defaultChecked={product?.Status} value={product?.Status} />}
                     label=""
-                    {...getFieldProps('status')}
+                    {...getFieldProps('Status')}
                     labelPlacement="top"
                   />
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>

@@ -15,10 +15,10 @@ import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import summary from 'utils/calculation';
 import Import from './Import';
 import AddSelectProduct from './selectProducts';
+import Export from 'components/ExportToFile';
 import DetailsPurchase from './detailsProduct';
 import { getProducts } from 'store/reducers/product';
 
-import Export from 'components/ExportToFile';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
