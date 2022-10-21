@@ -36,7 +36,7 @@ import { CameraOutlined } from '@ant-design/icons';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
-  const newSubstance = {
+  const newProduct = {
     Name: '',
     Sku: '',
     Ean: '',
@@ -52,9 +52,9 @@ const getInitialValues = () => {
     MakerUnit: '',
     Weight: '',
     Width: '',
-    PackInfo: '',
+    Wrapper: '',
     Height: '',
-    PackUnit: '',
+    WrapperUnit: '',
     Depth: '',
     SubstancesIDS: '',
     Keywords: '',
@@ -65,7 +65,7 @@ const getInitialValues = () => {
     IsTaxed: false,
     Status: false
   };
-  return newSubstance;
+  return newProduct;
 };
 
 function AddNewProduct() {
@@ -474,7 +474,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Pack</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('PackInfo')}
+                        {...getFieldProps('Wrapper')}
                         placeholder="Ingresar Pack"
                         fullWidth
                       />
@@ -492,7 +492,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}> Pack Unit</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('PackUnit')}
+                        {...getFieldProps('WrapperUnit')}
                         placeholder="Ingresar Pack Unit"
                         fullWidth
                       />

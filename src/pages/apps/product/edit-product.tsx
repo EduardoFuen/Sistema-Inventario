@@ -133,11 +133,11 @@ function UpdateProduct() {
       Depth: product?.Depth || '',
       SubstancesIDS: product?.Substance || '',
       Keywords: product?.Keywords,
-      Substitutes: product?.Substitutes || '',
+      SubstitutesIDS: product?.Substitutes || '',
       WarehouseIDS: product?.Warehouses || '',
       UrlImage: product?.UrlImage,
       Status: product?.Status,
-      Tax: product?.Iva?.toString(),
+      Tax: product?.iva?.toString(),
       IsTaxed: product?.Taxed
     },
     validationSchema: SubstSchema,
@@ -160,7 +160,7 @@ function UpdateProduct() {
           Width: values?.Width.toString(),
           Height: values?.Height.toString(),
           Depth: values?.Depth.toString(),
-          SubstitutesIDS: idsToString(values.Substitutes),
+          SubstitutesIDS: idsToString(values.SubstitutesIDS),
           WarehouseIDS: idsToString(values.WarehouseIDS),
           SubstancesIDS: idsToString(values.SubstancesIDS)
         };
@@ -600,7 +600,7 @@ function UpdateProduct() {
                         defaultValue={[...(product?.Substitutes || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
-                          setFieldValue('Substitutes', newValue === null ? '' : newValue);
+                          setFieldValue('SubstitutesIDS', newValue === null ? '' : newValue);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="Producto" />}
                         sx={{

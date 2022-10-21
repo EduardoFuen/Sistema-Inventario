@@ -219,7 +219,7 @@ function AddPurchase() {
 
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
-                        <Export excelData={dataProduct} fileName="Details Purchase" />
+                        <Export excelData={dataProduct} fileName="Details Purchase" title="Descargar plantilla de productos" />
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
                           Importar Productos
                         </Button>

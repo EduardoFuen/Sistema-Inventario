@@ -78,8 +78,12 @@ const ProductList = () => {
 
   const newDataExport: any = products.map((item: any) => {
     let warehouse: string = '';
+    let Substance: string = '';
     let TypesProduct: any;
 
+    if (item?.Substance) {
+      Substance = item?.Substance.map((e: any) => e.Name).join();
+    }
     if (item?.Warehouses) {
       warehouse = item?.Warehouses.map((e: any) => e.Name).join();
     }
@@ -104,14 +108,16 @@ const ProductList = () => {
       MakerUnit: item?.MakerUnit,
       Weight: item?.Weight,
       Width: item?.Width,
-      PackInfo: item?.PackInfo,
+      PackInfo: item?.Wrapper,
       Height: item?.Height,
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
       Warehouse: warehouse,
+      Substance,
       Status: item?.Status,
-      Tax: item?.Tax,
-      IsTaxed: item?.IsTaxed
+      Keywords: item?.Keywords,
+      Tax: item?.iva,
+      IsTaxed: item?.Taxed
     };
   });
 

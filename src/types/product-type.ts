@@ -41,6 +41,7 @@ export type Products = {
   CategoryTwoID: number;
   PackID: number;
   Iva: number;
+  iva: number;
   Taxed: boolean;
 };
 

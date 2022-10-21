@@ -127,7 +127,7 @@ export function editProduct(id: number, data: any) {
       );
       dispatch(getProducts());
       dispatch(slice.actions.hasError(null));
-      window.location.replace('/product-list');
+      // window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -162,6 +162,7 @@ export function addExcel(data: any) {
     try {
       const response = await axios.post(`${HOST}/productos`, data);
       dispatch(slice.actions.excelSuccess(response.data));
+      dispatch(getProducts());
       dispatch(
         openSnackbar({
           open: true,
@@ -173,8 +174,6 @@ export function addExcel(data: any) {
           close: false
         })
       );
-      dispatch(slice.actions.hasError(null));
-      dispatch(getProducts());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
