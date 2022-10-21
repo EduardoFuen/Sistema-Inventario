@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'store';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/category';
-import { searchName } from 'utils/findName';
+import { SearchNameToArray } from 'utils/findName';
 import ImportToFile from 'components/ImportToFile';
 
 // ==============================|| PACK IMPORT ||============================== //
@@ -35,7 +35,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
         case 1:
           newData = data.map((item: any) => ({
             Name: item?.Name,
-            CategoryOneID: searchName(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
+            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
             Status: item?.Status
           }));
           break;
@@ -43,8 +43,8 @@ const ImportPack = ({ onCancel, value }: Props) => {
         default:
           newData = data.map((item: any) => ({
             Name: item?.Name,
-            CategoryOneID: searchName(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
-            CategoryTwoID: searchName(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '0',
+            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
+            CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '0',
             Status: item?.Status
           }));
           break;

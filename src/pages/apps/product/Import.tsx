@@ -8,7 +8,9 @@ import { addExcel } from 'store/reducers/product';
 
 import ImportToFile from 'components/ImportToFile';
 import { useDispatch, useSelector } from 'store';
-import { searchName } from 'utils/findName';
+import { SearchNameToArray } from 'utils/findName';
+import { ConvertToArray } from 'utils/convertStringToArray';
+
 // ==============================|| PRODUCT IMPORT ||============================== //
 
 export interface Props {
@@ -25,35 +27,23 @@ const Import = ({ onCancel }: Props) => {
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { todoListSubs } = useSelector((state) => state.substances);
+  const { products } = useSelector((state) => state.product);
 
   const onSubmit = () => {
     try {
       const newData = data.map((item: any) => {
-        let warehouseIDS: any = [];
-        let SubstanceIDS: any = [];
-
-        const warehouseArray: any = item?.Warehouse?.split(',');
-        if (warehouseArray.length > 0) {
-          warehouseArray.map((item: string) => warehouseIDS.push(searchName(warehouseList, item)?.ID?.toString()));
-        }
-
-        const substanceArray: any = item?.Substance?.split(',');
-        if (substanceArray.length > 0) {
-          substanceArray.map((item: string) => SubstanceIDS.push(searchName(todoListSubs, item)?.ID?.toString()));
-        }
-
         return {
           Name: item?.Name,
           Sku: item?.Sku.toString(),
           Ean: item?.Ean.toString(),
-          MakerID: searchName(makerList, item?.Maker)?.ID.toString() || '',
-          TrademarkID: searchName(tradeMarkList, item?.Trademark)?.ID.toString() || '',
-          TypesProductID: searchName(typeProductList, item?.Type_Product)?.ID.toString() || '',
+          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID.toString() || '',
+          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID.toString() || '',
+          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID.toString() || '',
           Variation: item?.Variation?.toString(),
-          CategoryOneID: searchName(categoryListOne, item?.CategoryOne)?.ID.toString() || '',
-          CategoryTwoID: searchName(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '',
-          CategoryThreeID: searchName(categoryListThree, item?.CategoryThree)?.ID.toString() || '',
-          PackID: searchName(packList, item?.Pack)?.ID.toString() || '',
+          CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '',
+          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '',
+          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID.toString() || '',
+          PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
           Quantity: item?.Quantity?.toString(),
           MakerUnit: item?.MakerUnit?.toString(),
           Weight: item?.Weight?.toString(),
@@ -63,8 +53,9 @@ const Import = ({ onCancel }: Props) => {
           Wrapper: item?.PackInfo,
           WrapperUnit: item?.WrapperUnit,
           Keywords: item?.Keywords,
-          SubstancesIDS: SubstanceIDS?.toString() || '',
-          WarehouseIDS: warehouseIDS?.toString() || '',
+          SubstancesIDS: ConvertToArray(item?.Substance, todoListSubs) || '',
+          WarehouseIDS: ConvertToArray(item?.Warehouse, warehouseList) || '',
+          SubstitutesIDS: ConvertToArray(item?.Substitutes, products) || '',
           Status: item?.Status,
           iva: item?.Tax?.toString(),
           Taxed: item?.IsTaxed

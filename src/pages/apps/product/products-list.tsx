@@ -77,7 +77,8 @@ const ProductList = () => {
   };
 
   const newDataExport: any = products.map((item: any) => {
-    let warehouse: string = '';
+    let Warehouse: string = '';
+    let Substitutes: string = '';
     let Substance: string = '';
     let TypesProduct: any;
 
@@ -85,7 +86,10 @@ const ProductList = () => {
       Substance = item?.Substance.map((e: any) => e.Name).join();
     }
     if (item?.Warehouses) {
-      warehouse = item?.Warehouses.map((e: any) => e.Name).join();
+      Warehouse = item?.Warehouses.map((e: any) => e.Name).join();
+    }
+    if (item?.Substitutes) {
+      Substitutes = item?.Substitutes.map((e: any) => e.Sku).join();
     }
     if (item?.TypesProductID) {
       TypesProduct = typeProductList.find((data: any) => data?.ID === item?.TypesProductID) || '';
@@ -112,8 +116,9 @@ const ProductList = () => {
       Height: item?.Height,
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
-      Warehouse: warehouse,
+      Warehouse,
       Substance,
+      Substitutes,
       Status: item?.Status,
       Keywords: item?.Keywords,
       Tax: item?.iva,
