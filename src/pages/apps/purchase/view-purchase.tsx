@@ -28,7 +28,6 @@ import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getI
 import { SendOutlined } from '@ant-design/icons';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
-
 import AddSelectProduct from './selectProducts';
 
 // ==============================||VIEW PURCHASE - MAIN ||============================== //
@@ -85,16 +84,19 @@ function ViewPurchase() {
 
   const orderPurchase: any = useMemo(() => {
     if (id && order) {
-      let supplier: any = supplierList.find((item: any) => item.ID === order?.SupplierID);
-      let Articles: any = order?.Articles.map((item: any) => {
-        return {
-          ...item,
-          ID: item?.ProductID,
-          Name: getProduct(item.ProductID)?.Name,
-          Sku: getProduct(item.ProductID)?.Sku,
-          Ean: getProduct(item.ProductID)?.Ean
-        };
-      });
+      let supplier: any = supplierList?.find((item: any) => item.ID === order?.SupplierID);
+      let Articles: any =
+        order?.Articles &&
+        order?.Articles?.length > 0 &&
+        order?.Articles.map((item: any) => {
+          return {
+            ...item,
+            ID: item?.ProductID,
+            Name: getProduct(item.ProductID)?.Name,
+            Sku: getProduct(item.ProductID)?.Sku,
+            Ean: getProduct(item.ProductID)?.Ean
+          };
+        });
       return {
         ...order,
         Articles,
