@@ -36,6 +36,7 @@ const PackList = () => {
   };
 
   const { typeProductList } = useSelector((state) => state.typeProduct);
+
   useEffect(() => {
     dispatch(getTypeProductList());
     // eslint-disable-next-line react-hooks/exhaustive-deps

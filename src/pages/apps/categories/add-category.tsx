@@ -10,7 +10,7 @@ import CategoryTwo from './forms/categoryFormTwo';
 import CategoryThree from './forms/categoryFormOneThree';
 import { useSelector } from 'store';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD CATEGORY - MAIN ||============================== //
 
 function AddNewCategories() {
   const { id, index } = useParams();

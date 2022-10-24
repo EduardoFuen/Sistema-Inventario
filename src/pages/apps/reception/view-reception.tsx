@@ -19,7 +19,7 @@ import { resetItemsPurchase, confirmationReception } from 'store/reducers/purcha
 import AddReceptionModal from './addReception';
 import DetailsReception from './detailsProduct';
 
-// ==============================|| ADD VIEW RECEPTION - MAIN ||============================== //
+// ==============================|| VIEW RECEPTION - MAIN ||============================== //
 
 const getInitialValues = (recep: FormikValues | null) => {
   const newSubstance = {

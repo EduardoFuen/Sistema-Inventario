@@ -9,7 +9,7 @@ import { addExcel } from 'store/reducers/category';
 import { SearchNameToArray } from 'utils/findName';
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| PACK IMPORT ||============================== //
+// ==============================|| CATEGORY IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;

@@ -231,8 +231,6 @@ const DetailsPurchase = ({ product }: any) => {
             ))}
           </TableBody>
         </Table>
-
-        {/*   <ReactTable columns={columns} data={data} updateMyData={updateMyData} skipPageReset={skipPageReset} /> */}
       </ScrollX>
     </MainCard>
   );

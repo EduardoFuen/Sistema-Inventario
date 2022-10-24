@@ -15,7 +15,6 @@ import {
   MenuItem,
   Select,
   FormHelperText
-  // SelectChangeEvent
 } from '@mui/material';
 
 // third-party
@@ -28,7 +27,8 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| EDIT SUPPLIER - MAIN ||============================== //
+
 const getInitialValues = (supplier: FormikValues | null) => {
   const newSubstance = {
     NameContact: supplier?.NameContact,

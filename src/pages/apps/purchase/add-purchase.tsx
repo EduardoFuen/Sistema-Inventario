@@ -19,7 +19,7 @@ import Export from 'components/ExportToFile';
 import DetailsPurchase from './detailsProduct';
 import { getProducts } from 'store/reducers/product';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD NEW PURCHASE - MAIN ||============================== //
 
 const getInitialValues = () => {
   const newSubstance = {

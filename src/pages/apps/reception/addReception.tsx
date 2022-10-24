@@ -32,7 +32,7 @@ import { Products } from 'types/product-type';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
-// ==============================|| SELECT PRODUCT - LIST VIEW ||============================== //
+// ==============================|| ADD RECEPTION ||============================== //
 
 export interface PropsSelect {
   onCancel: () => void;

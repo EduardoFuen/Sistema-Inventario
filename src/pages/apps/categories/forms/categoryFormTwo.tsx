@@ -14,7 +14,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { addCategory2, editCategory } from 'store/reducers/category';
 import { useSelector } from 'store';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD CATEGORY TWO - MAIN ||============================== //
 
 function AddCategoryTwo({ categoryTwo: category }: any) {
   const history = useNavigate();

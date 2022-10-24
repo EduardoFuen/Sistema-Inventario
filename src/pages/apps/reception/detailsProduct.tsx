@@ -12,9 +12,6 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import IconButton from 'components/@extended/IconButton';
 
-/* import { deleteItemsPurchase } from 'store/reducers/purcharse';
-import { openSnackbar } from 'store/reducers/snackbar'; */
-
 // assets
 import { EditTwoTone } from '@ant-design/icons';
 

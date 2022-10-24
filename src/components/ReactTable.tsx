@@ -25,6 +25,7 @@ interface Props {
   hideButton: boolean;
   renderRowSubComponent: any | undefined;
   dataExport: [];
+  handleSelect: (row: any) => void;
 }
 
 const ReactTable = ({
@@ -37,7 +38,8 @@ const ReactTable = ({
   FileName,
   renderRowSubComponent,
   dataExport,
-  hideButton
+  hideButton,
+  handleSelect
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -128,6 +130,7 @@ const ReactTable = ({
                     <TableRow
                       {...row.getRowProps()}
                       onClick={() => {
+                        handleSelect(row);
                         row.toggleRowSelected();
                       }}
                       sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
@@ -155,6 +158,7 @@ const ReactTable = ({
 
 ReactTable.defaultProps = {
   renderRowSubComponent: () => {},
+  handleSelect: () => {},
   dataExport: [],
   hideButton: true
 };

@@ -13,7 +13,6 @@ import {
   MenuItem,
   Select,
   FormHelperText
-  // SelectChangeEvent
 } from '@mui/material';
 
 // third-party
@@ -26,7 +25,7 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD SUPPLIER - MAIN ||============================== //
 
 const getInitialValues = () => {
   const newSubstance = {

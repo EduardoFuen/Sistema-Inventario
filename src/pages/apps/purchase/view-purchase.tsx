@@ -31,7 +31,7 @@ import summary from 'utils/calculation';
 
 import AddSelectProduct from './selectProducts';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================||VIEW PURCHASE - MAIN ||============================== //
 
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {

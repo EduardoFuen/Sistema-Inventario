@@ -39,6 +39,7 @@ const ReceptionList = () => {
   const handleViewReception = (id: any) => {
     history(`/reception/view/${id}`);
   };
+
   const { listPurchase } = useSelector((state) => state.purchase);
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);

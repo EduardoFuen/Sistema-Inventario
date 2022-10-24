@@ -23,7 +23,8 @@ import MainCard from 'components/MainCard';
 
 // assets
 import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
-// ==============================|| USER - VIEW ||============================== //
+
+// ==============================|| VIEW SUPPLIER - MAIN ||============================== //
 
 const UserView = ({ data }: any) => {
   const theme = useTheme();

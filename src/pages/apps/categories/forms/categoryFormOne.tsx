@@ -13,7 +13,7 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addCategoryOne, editCategory } from 'store/reducers/category';
 
-// ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
+// ==============================|| ADD CATEGORY ONE - MAIN ||============================== //
 
 function AddCategoryOne({ categoryOne: category }: any) {
   const history = useNavigate();

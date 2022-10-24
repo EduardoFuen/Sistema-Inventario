@@ -9,7 +9,7 @@ import { addItemsPurchase } from 'store/reducers/purcharse';
 
 import ImportToFile from 'components/ImportToFile';
 
-// ==============================|| PRODUCT IMPORT ||============================== //
+// ==============================|| PURCHASE PRODUCT IMPORT ||============================== //
 
 export interface Props {
   onCancel: () => void;

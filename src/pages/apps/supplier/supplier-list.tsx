@@ -32,9 +32,6 @@ const SupplierListPage = () => {
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
 
-  const handleImport = () => {
-    setActiveImport(!addImport);
-  };
   useEffect(() => {
     dispatch(getSupplierList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,8 +40,13 @@ const SupplierListPage = () => {
   const handleEditSupplier = (id: any) => {
     history(`/supplier/edit/${id}`);
   };
+
   const handleAddSupplier = () => {
     history(`/supplier/add`);
+  };
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
   };
 
   const { supplierList } = useSelector((state) => state.supplier);
