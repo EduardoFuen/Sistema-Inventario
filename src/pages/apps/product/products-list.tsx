@@ -17,8 +17,6 @@ import Import from './Import';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getTrademarkList } from 'store/reducers/trademark';
-import { getTypeProductList } from 'store/reducers/typeProduct';
 
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -32,8 +30,6 @@ const ProductList = () => {
   const [addImport, setActiveImport] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getTrademarkList());
-    dispatch(getTypeProductList());
     dispatch(getProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

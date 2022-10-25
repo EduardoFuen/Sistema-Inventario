@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
+import emailjs from '@emailjs/browser';
+
 // material-ui
 import {
   Button,
@@ -10,12 +12,12 @@ import {
   TextField,
   Typography,
   MenuItem,
-  Dialog,
-  Table,
+  Dialog
+  /*  Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow */
 } from '@mui/material';
 
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
@@ -24,7 +26,6 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getSupplierList } from 'store/reducers/supplier';
 import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
@@ -63,9 +64,7 @@ function ViewPurchase() {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
     }
-    dispatch(getSupplierList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, id]);
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
@@ -151,6 +150,8 @@ function ViewPurchase() {
             ...orderPurchase,
             products: detailsPurchase
           };
+          console.log(newValue);
+
           dispatch(editPurchase(id, newValue));
           dispatch(
             openSnackbar({
@@ -307,9 +308,9 @@ function ViewPurchase() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                {orderPurchase?.status === 'New' && <DetailsPurchase product={detailsPurchase} />}
-
-                {orderPurchase?.status !== 'New' && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
+                {/* {orderPurchase?.status === 'New' && */} <DetailsPurchase product={detailsPurchase} />
+                {/* } */}
+                {/*  {orderPurchase?.status !== 'New' && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <Table sx={{ minWidth: 650 }} size="small">
                     <TableHead>
                       <TableRow>
@@ -355,7 +356,7 @@ function ViewPurchase() {
                         ))}
                     </TableBody>
                   </Table>
-                )}
+                )} */}
               </Grid>
               <Grid item xs={12}>
                 {orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
@@ -398,22 +399,37 @@ function ViewPurchase() {
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
-                  {orderPurchase?.status === 'New' && (
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      startIcon={<SendOutlined />}
-                      disabled={isSubmitting}
-                      onClick={() => setSend(true)}
-                    >
-                      Enviar
-                    </Button>
-                  )}
-                  {orderPurchase?.status === 'New' && (
-                    <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                      Guardar
-                    </Button>
-                  )}
+                  {/*   {orderPurchase?.status === 'New' && ( */}
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    startIcon={<SendOutlined />}
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      const templateParams = {
+                        name: 'James',
+                        notes: 'Check this out!'
+                      };
+
+                      emailjs.send('service_rqahuu8', 'template_i88uyuy', templateParams, 'jm1Z-3tJFhFfHL_dK').then(
+                        (response) => {
+                          console.log('SUCCESS!', response.status, response.text);
+                        },
+                        (err) => {
+                          console.log('FAILED...', err);
+                        }
+                      );
+                      setSend(true);
+                    }}
+                  >
+                    Enviar
+                  </Button>
+                  {/*     )} */}
+                  {/*  {orderPurchase?.status === 'New' && ( */}
+                  <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
+                    Guardar
+                  </Button>
+                  {/*  )} */}
                 </Stack>
               </Grid>
             </Grid>
