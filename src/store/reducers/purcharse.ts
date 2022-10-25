@@ -6,6 +6,8 @@ import { HOST } from '../../config';
 import { dispatch } from '../index';
 import summary from 'utils/calculation';
 import { openSnackbar } from './snackbar';
+import { getSupplierList } from './supplier';
+import { getWarehouseList } from './warehouse';
 // types
 import { PurchaseStateProps } from 'types/product-type';
 
@@ -129,6 +131,8 @@ export function getPurchaseList() {
     try {
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
+        dispatch(getSupplierList());
+        dispatch(getWarehouseList());
         dispatch(slice.actions.getPurchaseSuccess(response.data));
         dispatch(slice.actions.hasError(null));
       }

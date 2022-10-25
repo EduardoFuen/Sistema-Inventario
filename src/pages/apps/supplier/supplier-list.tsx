@@ -18,7 +18,6 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Import from './ImportSupplier';
-
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
 
 // assets

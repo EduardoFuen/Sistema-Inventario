@@ -16,8 +16,6 @@ import { useSelector, useDispatch } from 'store';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
 import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
-import { getSupplierList } from 'store/reducers/supplier';
-import { getWarehouseList } from 'store/reducers/warehouse';
 import { getObject } from 'utils/Global';
 import { newDataExport } from 'utils/DataExportPurchase';
 
@@ -31,20 +29,19 @@ const PurchaseList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
 
+  const { supplierList } = useSelector((state) => state.supplier);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { listPurchase } = useSelector((state) => state.purchase);
+
   useEffect(() => {
-    dispatch(getSupplierList());
-    dispatch(getWarehouseList());
     dispatch(getPurchaseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { listPurchase } = useSelector((state) => state.purchase);
-  const { supplierList } = useSelector((state) => state.supplier);
-  const { warehouseList } = useSelector((state) => state.warehouse);
-
   const handleAddPurchase = () => {
     history(`/purchase/add`);
   };
+
   const handleViewPurchase = (id: number) => {
     history(`/purchase/view/${id}`);
   };

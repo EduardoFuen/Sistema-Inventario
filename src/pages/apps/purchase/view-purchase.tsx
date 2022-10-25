@@ -24,11 +24,14 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { getSupplierList } from 'store/reducers/supplier';
 import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
-import { SendOutlined } from '@ant-design/icons';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
+
+// assets
+import { SendOutlined } from '@ant-design/icons';
 
 // ==============================||VIEW PURCHASE - MAIN ||============================== //
 
@@ -60,6 +63,7 @@ function ViewPurchase() {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
     }
+    dispatch(getSupplierList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -64,6 +64,7 @@ const ProductList = () => {
       return MakerID?.Name;
     }
   };
+
   const handleAddProduct = () => {
     history(`/product-list/add-new-product`);
   };

@@ -15,8 +15,6 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { useSelector, useDispatch } from 'store';
 import { getPurchaseList } from 'store/reducers/purcharse';
-import { getSupplierList } from 'store/reducers/supplier';
-import { getWarehouseList } from 'store/reducers/warehouse';
 import { newDataExport } from 'utils/DataExportPurchase';
 
 // assets
@@ -30,8 +28,6 @@ const ReceptionList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSupplierList());
-    dispatch(getWarehouseList());
     dispatch(getPurchaseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
