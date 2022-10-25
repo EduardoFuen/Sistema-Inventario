@@ -78,9 +78,9 @@ function AddReception() {
         return {
           ...item,
           ID: item?.ProductID,
-          Name: getProduct(item.ProductID)?.Name,
-          Sku: getProduct(item.ProductID)?.Sku,
-          Ean: getProduct(item.ProductID)?.Ean
+          Name: getProduct(item?.ProductID)?.Name,
+          Sku: getProduct(item?.ProductID)?.Sku,
+          Ean: getProduct(item?.ProductID)?.Ean
         };
       });
       return {

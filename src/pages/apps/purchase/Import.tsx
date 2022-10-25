@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+
 // material-ui
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addItemsPurchase } from 'store/reducers/purcharse';
-
+import { useDispatch, useSelector } from 'store';
 import ImportToFile from 'components/ImportToFile';
+import { SearchNameToArray } from 'utils/findName';
 
 // ==============================|| PURCHASE PRODUCT IMPORT ||============================== //
 
@@ -18,26 +19,33 @@ export interface Props {
 const Import = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
+  const { products } = useSelector((state) => state.product);
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => {
-        let SubTotal = Number(item?.Quantity * item?.BasePrice * ((100 - item?.DiscountNegotiated) / 100)) || 0;
+      const newData = data?.map((item: any) => {
+        let SubTotal = Number(item?.Quantity || 0 * item?.BasePrice || 0 * ((100 - item?.DiscountNegotiated || 0) / 100)) || 0;
+        let Tax = Number(item?.Tax) || 0;
+        let Total = Number(SubTotal + (item?.Quantity || 0 * item?.BasePrice || 0 * Tax) / 100) || 0;
+
         return {
-          ProductID: item?.ID,
+          ProductID: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.ID || '',
           Sku: item?.Sku,
           Ean: item?.Ean,
+          ID: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.ID || '',
+          Name: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.Name || '',
           isSelected: true,
           Count: Number(item?.Quantity || 0),
           BasePrice: parseFloat(item?.BasePrice) || 0,
-          Tax: Number(item?.Tax) || 0,
           DiscountNegotiated: parseFloat(item?.DiscountNegotiated) || 0,
           DiscountAdditional: parseFloat(item?.DiscountAdditional) || 0,
           Bonus: Number(item?.Bonus) || 0,
           SubTotal,
-          Total: Number(SubTotal + (item?.Quantity * item?.BasePrice * item?.Tax) / 100) || 0
+          Tax,
+          Total
         };
       });
+
       let detailsPurchase = newData.filter((element: any, index: number) => {
         return newData.indexOf(element) === index;
       });

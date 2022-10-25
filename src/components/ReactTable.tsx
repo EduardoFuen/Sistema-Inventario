@@ -103,9 +103,11 @@ const ReactTable = ({
             )}
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                {TitleButton}
-              </Button>
+              {TitleButton !== '' && (
+                <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                  {TitleButton}
+                </Button>
+              )}
             </Stack>
           </Stack>
 
@@ -159,8 +161,12 @@ const ReactTable = ({
 ReactTable.defaultProps = {
   renderRowSubComponent: () => {},
   handleSelect: () => {},
+  handleAdd: () => {},
+  handleImport: () => {},
   dataExport: [],
-  hideButton: true
+  hideButton: true,
+  TitleButton: '',
+  FileName: ''
 };
 
 export default ReactTable;

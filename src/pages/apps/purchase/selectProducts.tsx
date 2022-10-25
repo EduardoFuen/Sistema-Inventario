@@ -169,10 +169,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
           <ReactTable
             columns={columns}
             data={products as []}
-            FileName=""
-            handleImport={() => {}}
-            handleAdd={() => {}}
-            TitleButton="Agregar Producto"
+            hideButton={false}
             handleSelect={(row: any) => handleSelect(row)}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
           />

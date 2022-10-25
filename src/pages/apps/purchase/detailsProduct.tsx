@@ -29,13 +29,13 @@ import { useDispatch, useSelector } from 'store';
 const DetailsPurchase = ({ product }: any) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [inputList, setInputList] = useState<any>([{}]);
+  const [inputList, setInputList] = useState<any>([]);
   const { detailsPurchase } = useSelector((state) => state.purchase);
 
   const data = product && product?.length > 0 ? product : detailsPurchase;
 
   useEffect(() => {
-    let newData = data.map((item: any) => ({
+    let newData = data?.map((item: any) => ({
       Count: '',
       BaseBasePrice: '',
       Tax: '',
@@ -44,7 +44,7 @@ const DetailsPurchase = ({ product }: any) => {
       Bonus: '',
       SubTotal: '',
       Total: '',
-      ProductID: item?.ID,
+      ProductID: item?.ID || '',
       ...item
     }));
     setInputList(newData);
@@ -102,13 +102,12 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell component="th" scope="row">
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <Stack spacing={0}>
-                      <Typography variant="subtitle1">{x.ID}</Typography>
                       <Typography variant="subtitle1">{x.Name}</Typography>
                       <Typography variant="caption" color="textSecondary">
-                        SKU {x.Sku}
+                        Sku {x.Sku}
                       </Typography>
                       <Typography variant="caption" color="textSecondary">
-                        EAN :{x.Ean}
+                        Ean :{x.Ean}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -187,7 +186,7 @@ const DetailsPurchase = ({ product }: any) => {
                 </TableCell>
                 <TableCell align="center">
                   <Input
-                    id="standard-adornment-amount"
+                    id="SubTotal"
                     onChange={(e) => handleInputChange(e, i)}
                     name="SubTotal"
                     value={x.SubTotal || 0}
@@ -196,7 +195,7 @@ const DetailsPurchase = ({ product }: any) => {
                 </TableCell>
                 <TableCell align="center">
                   <Input
-                    id="standard-adornment-amount"
+                    id="Total"
                     onChange={(e) => handleInputChange(e, i)}
                     name="Total"
                     value={x.Total || 0}

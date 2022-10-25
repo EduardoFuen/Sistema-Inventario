@@ -2,7 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
-// import axios from 'utils/axios';
 import { dispatch } from '../index';
 
 // types

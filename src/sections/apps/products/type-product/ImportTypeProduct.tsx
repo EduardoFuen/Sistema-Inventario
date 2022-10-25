@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 // material-ui
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/typeProduct';
-
 import ImportToFile from 'components/ImportToFile';
 
 // ==============================|| TYPE PRODUCT IMPORT ||============================== //
@@ -21,7 +20,7 @@ const Import = ({ onCancel }: Props) => {
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => ({
+      const newData = data?.map((item: any) => ({
         Name: item?.Name,
         Status: item?.Status,
         ID: item?.ID || ''

@@ -31,18 +31,18 @@ const Import = ({ onCancel }: Props) => {
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => {
+      const newData = data?.map((item: any) => {
         return {
           Name: item?.Name,
           Sku: item?.Sku.toString(),
           Ean: item?.Ean.toString(),
-          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID.toString() || '',
-          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID.toString() || '',
-          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID.toString() || '',
+          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
+          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
+          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
           Variation: item?.Variation?.toString(),
-          CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '',
-          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '',
-          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID.toString() || '',
+          CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID?.toString() || '',
+          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID?.toString() || '',
+          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() || '',
           PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
           Quantity: item?.Quantity?.toString(),
           MakerUnit: item?.MakerUnit?.toString(),
@@ -57,6 +57,8 @@ const Import = ({ onCancel }: Props) => {
           WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
           SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
           Status: item?.Status,
+          HandlesBaq: item?.HandlesBaq?.toString() || '',
+          HandlesBog: item?.HandlesBog?.toString() || '',
           iva: item?.Tax?.toString(),
           Taxed: item?.IsTaxed
         };

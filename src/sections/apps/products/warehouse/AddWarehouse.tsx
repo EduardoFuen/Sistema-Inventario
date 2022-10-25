@@ -26,7 +26,6 @@ import {
   Switch
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party

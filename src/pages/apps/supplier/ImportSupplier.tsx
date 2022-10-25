@@ -21,7 +21,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
 
   const onSubmit = () => {
     try {
-      const newData = data.map((item: any) => ({
+      const newData = data?.map((item: any) => ({
         EmailContact: item?.EmailContact.toString(),
         Nit: item?.Nit.toString(),
         BusinessName: item?.BusinessName,

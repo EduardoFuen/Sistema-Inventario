@@ -29,7 +29,12 @@ import MainCard from 'components/MainCard';
 import { addProduct } from 'store/reducers/product';
 import { idsToString } from 'utils/convertToObject';
 import { openSnackbar } from 'store/reducers/snackbar';
-
+import { getTrademarkList } from 'store/reducers/trademark';
+import { getCategoryListOne, getCategoryListTwo, getCategoryListThree } from 'store/reducers/category';
+import { getMakerList } from 'store/reducers/maker';
+import { getPackList } from 'store/reducers/pack';
+import { getSubsList } from 'store/reducers/activeSubst';
+import { getWarehouseList } from 'store/reducers/warehouse';
 // assets
 import { CameraOutlined } from '@ant-design/icons';
 
@@ -76,6 +81,18 @@ function AddNewProduct() {
   const [avatar, setAvatar] = useState<string | undefined>();
   const [istaxed, setIsTaxed] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
+
+  useEffect(() => {
+    dispatch(getTrademarkList());
+    dispatch(getCategoryListOne());
+    dispatch(getCategoryListTwo());
+    dispatch(getCategoryListThree());
+    dispatch(getPackList());
+    dispatch(getMakerList());
+    dispatch(getSubsList());
+    dispatch(getWarehouseList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (selectedImage) {

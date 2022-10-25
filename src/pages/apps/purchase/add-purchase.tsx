@@ -55,6 +55,7 @@ function AddPurchase() {
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
+
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
   const handleCancel = () => {
@@ -95,7 +96,6 @@ function AddPurchase() {
 
   const dataProduct: any = [
     {
-      ID: '',
       Name: '',
       Sku: '',
       Ean: '',
@@ -258,25 +258,25 @@ function AddPurchase() {
                 {detailsPurchase && detailsPurchase.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data.Subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data?.Subtotal || 0}</Typography>
                     </Stack>
                     {data.DiscountGlobal !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Descuento: $ {data.DiscountGlobal || 0}</Typography>
+                        <Typography variant="subtitle1">Descuento: $ {data?.DiscountGlobal || 0}</Typography>
                       </Stack>
                     )}
                     {data.SubtotalWithDiscount !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Subtotal con descuento: $ {data.SubtotalWithDiscount || 0}</Typography>
+                        <Typography variant="subtitle1">Subtotal con descuento: $ {data?.SubtotalWithDiscount || 0}</Typography>
                       </Stack>
                     )}
                     {data.Tax !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">IVA: $ {data.Tax || 0}</Typography>
+                        <Typography variant="subtitle1">IVA: $ {data?.Tax || 0}</Typography>
                       </Stack>
                     )}
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {data.Total || 0}</Typography>
+                      <Typography variant="subtitle1">Total: $ {data?.Total || 0}</Typography>
                     </Stack>
                   </MainCard>
                 )}

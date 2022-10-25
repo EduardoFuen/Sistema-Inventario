@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
-import { Table, TableBody, TableCell, TableHead, TableRow, Stack, Typography, Tooltip } from '@mui/material';
+import { Stack, Typography, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-// third-party
-import { useTable, useFilters, Column } from 'react-table';
-
 // project import
+import ReactTable from 'components/ReactTable';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import IconButton from 'components/@extended/IconButton';
@@ -15,51 +13,7 @@ import IconButton from 'components/@extended/IconButton';
 // assets
 import { EditTwoTone } from '@ant-design/icons';
 
-// ==============================|| REACT TABLE ||============================== //
-
-interface Props {
-  columns: Column[];
-  data: [];
-}
-
-function ReactTable({ columns, data }: Props) {
-  const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } = useTable(
-    {
-      columns,
-      data
-      // @ts-ignore
-    },
-    useFilters
-  );
-
-  return (
-    <Table {...getTableProps()}>
-      <TableHead>
-        {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column: any) => (
-              <TableCell {...column.getHeaderProps()}>{column.render('Header')}</TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableHead>
-      <TableBody {...getTableBodyProps()}>
-        {rows.map((row: any, i: number) => {
-          prepareRow(row);
-          return (
-            <TableRow {...row.getRowProps()}>
-              {row.cells.map((cell: any) => (
-                <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
-              ))}
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
-  );
-}
-
-// ==============================|| REACT TABLE - EDITABLE ||============================== //
+// ==============================|| DETAILS PRODUCT RECEPTION - LIST VIEW ||============================== //
 
 interface PropsProduct {
   products: [];
@@ -74,19 +28,18 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
     () => [
       {
         Header: 'PRODUCTO',
-        accessor: 'sku',
+        accessor: 'Sku',
         Cell: ({ row }: any) => {
           const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original.ID}</Typography>
-                <Typography variant="subtitle1">{original.Name}</Typography>
+                <Typography variant="subtitle1">{original?.Name}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  SKU {original.Sku}
+                  Sku {original?.Sku}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  EAN :{original.Ean}
+                  Ean :{original?.Ean}
                 </Typography>
               </Stack>
             </Stack>
@@ -164,7 +117,7 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={data} />
+        <ReactTable columns={columns} data={data} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
       </ScrollX>
     </MainCard>
   );

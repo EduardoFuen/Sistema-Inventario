@@ -172,9 +172,7 @@ const ReceptionList = () => {
           columns={columns}
           data={listPurchase as []}
           handleImport={() => {}}
-          handleAdd={() => {}}
           hideButton={false}
-          TitleButton=""
           FileName="Recepción"
           dataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}

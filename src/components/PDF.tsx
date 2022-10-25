@@ -1,11 +1,11 @@
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 import { useTheme } from '@mui/material/styles';
 import { useSelector } from 'store';
 import { FilePdfOutlined } from '@ant-design/icons';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
-// import Farmu from 'assets/images/home/logoAzulFarmu.png';
+import Farmu from 'assets/images/home/logoAzulFarmu.png';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 });
 const getProduct = (id: number, data: any) => {
   if (id) {
-    let product: any = data.find((item: any) => item.ID === id);
+    let product: any = data?.find((item: any) => item?.ID === id);
     return product;
   }
 };
@@ -83,7 +83,7 @@ const RenderDocument = ({ data }: any) => {
   return (
     <Document>
       <Page style={styles.body}>
-        {/*   <Image src="" /> */}
+        <Image src={Farmu} style={styles.image} />
         <Text style={styles.header} fixed>
           Fecha {data?.create_order} # Order {data?.ID}
         </Text>
@@ -150,15 +150,17 @@ const PDF = ({ values }: any) => {
 
   const newData = {
     ...values,
-    Articles: values?.Articles.map((item: any) => {
-      return {
-        ...item,
-        ID: item?.ProductID,
-        Name: getProduct(item.ProductID, products)?.Name,
-        Sku: getProduct(item.ProductID, products)?.Sku,
-        Ean: getProduct(item.ProductID, products)?.Ean
-      };
-    })
+    Articles:
+      values?.Articles ||
+      [].map((item: any) => {
+        return {
+          ...item,
+          ID: item?.ProductID,
+          Name: getProduct(item.ProductID, products)?.Name,
+          Sku: getProduct(item.ProductID, products)?.Sku,
+          Ean: getProduct(item.ProductID, products)?.Ean
+        };
+      })
   };
 
   return (
