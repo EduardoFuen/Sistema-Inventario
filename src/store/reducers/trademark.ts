@@ -55,7 +55,10 @@ export function getTrademarkList() {
       if (response.data instanceof Array) {
         dispatch(tradeMark.actions.getTrademarkSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(tradeMark.actions.getTrademarkSuccess([]));
+      }
       dispatch(tradeMark.actions.hasError(error));
     }
   };

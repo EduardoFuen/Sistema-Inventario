@@ -72,7 +72,10 @@ export function addItemsInventory(data: any) {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option.values);
       dispatch(slice.actions.addDetailsInventorySuccess(products));
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.addDetailsInventorySuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

@@ -56,7 +56,10 @@ export function getTypeProductList() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getTypeProductSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getTypeProductSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

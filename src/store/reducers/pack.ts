@@ -55,7 +55,10 @@ export function getPackList() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPackSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getPackSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

@@ -55,7 +55,10 @@ export function getSubsList() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSubsSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getSubsSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

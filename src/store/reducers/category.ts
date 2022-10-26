@@ -108,7 +108,10 @@ export function getCategoryListOne() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryOneSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getCategoryOneSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -121,7 +124,10 @@ export function getCategoryListTwo() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryTwoSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getCategoryTwoSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -133,7 +139,10 @@ export function getCategoryListThree() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryThreeSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getCategoryThreeSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

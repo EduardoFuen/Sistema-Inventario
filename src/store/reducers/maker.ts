@@ -56,7 +56,10 @@ export function getMakerList() {
       if (response.data instanceof Array) {
         dispatch(maker.actions.getMakerSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(maker.actions.getMakerSuccess([]));
+      }
       dispatch(maker.actions.hasError(error));
     }
   };

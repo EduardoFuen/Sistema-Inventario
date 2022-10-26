@@ -54,7 +54,10 @@ export function getWarehouseList() {
       if (response.data instanceof Array) {
         dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(wareHouse.actions.getWarehouseSuccess([]));
+      }
       dispatch(wareHouse.actions.hasError(error));
     }
   };

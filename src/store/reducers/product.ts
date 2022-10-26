@@ -79,6 +79,9 @@ export function getProducts() {
         dispatch(slice.actions.hasError(null));
       }
     } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getProductsSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };

@@ -55,7 +55,10 @@ export function getSupplierList() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSupplierSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getSupplierSuccess([]));
+      }
       dispatch(slice.actions.hasError(error));
     }
   };
