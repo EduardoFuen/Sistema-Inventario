@@ -39,7 +39,7 @@ const ProductList = () => {
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
-    if (error?.response?.data?.Error) {
+    if (error?.response?.data?.Error && error?.response?.status !== 404) {
       dispatch(
         openSnackbar({
           open: true,

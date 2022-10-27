@@ -90,14 +90,14 @@ export function getProducts() {
 export function addProduct(data: any) {
   return async () => {
     try {
-      const headers = {
+      /* const headers = {
         'Content-Type': 'application/json',
         'X-Shopify-Access-Token': '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',
         'Access-Control-Allow-Origin': '*'
       };
       const response = await axios.get(
         `https://bogota.farmu.com.co/admin/api/2022-10/products.json`,
-        /*  {
+         {
           product: {
             title: 'Burton Custom Freestyle 151',
             body_html: '<strong>Good snowboard!</strong>',
@@ -105,14 +105,14 @@ export function addProduct(data: any) {
             product_type: 'Snowboard',
             tags: ['Barnes & Noble', 'Big Air', "John's Fav"]
           }
-        }, */
+        },
         {
           headers: headers
         }
       );
-      console.log(response);
+      console.log(response); */
 
-      /*    const response = await axios.post(`${HOST}/productos`, { ...data });
+      const response = await axios.post(`${HOST}/productos`, { ...data });
       dispatch(slice.actions.addProductSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -124,7 +124,7 @@ export function addProduct(data: any) {
           },
           close: false
         })
-      ); */
+      );
       dispatch(getProducts());
       dispatch(slice.actions.hasError(null));
       window.location.replace('/product-list');
@@ -165,7 +165,7 @@ export function editProduct(id: number, data: any) {
 export function deleteProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id.toString() } });
+      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id } });
       if (response) {
         dispatch(getProducts());
         dispatch(

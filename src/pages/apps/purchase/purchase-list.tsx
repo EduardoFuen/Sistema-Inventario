@@ -53,10 +53,10 @@ const PurchaseList = () => {
         accessor: 'ID',
         className: 'cell-center'
       },
-      /*     {
+      {
         Header: 'Fecha OC',
-        accessor: 'create_order'
-      }, */
+        accessor: 'CreatedAt'
+      },
       {
         Header: 'Proveedor',
         accessor: 'SupplierID',
@@ -117,6 +117,8 @@ const PurchaseList = () => {
         Header: 'Estado',
         accessor: 'Status',
         Cell: ({ value }: any) => {
+          console.log(value);
+
           switch (value) {
             case 'Cancelled':
               return <Chip color="error" label="Cancelled" size="small" variant="light" />;

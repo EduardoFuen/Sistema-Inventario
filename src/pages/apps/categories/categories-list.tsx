@@ -111,12 +111,28 @@ const CategoriesList = () => {
     let columnOne = {
       Header: 'Grupo',
       accessor: 'Name',
-      className: 'cell-center'
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{value || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
     };
     let columnTwo = {
       Header: 'Categoria 1',
       accessor: 'Name',
-      className: 'cell-center'
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{value || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
     };
 
     if (newValue === 0) {
@@ -139,7 +155,6 @@ const CategoriesList = () => {
     value === 1 && {
       Header: 'Grupo',
       accessor: 'CategoryOneID',
-      className: 'cell-center',
       Cell: ({ value }: any) => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
@@ -153,7 +168,6 @@ const CategoriesList = () => {
     value === 2 && {
       Header: 'Grupo',
       accessor: 'CategoryOneID',
-      className: 'cell-center',
       Cell: ({ value }: any) => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
@@ -167,7 +181,6 @@ const CategoriesList = () => {
     value === 2 && {
       Header: 'Categoria 1',
       accessor: 'CategoryTwoID',
-      className: 'cell-center',
       Cell: ({ value }: any) => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
@@ -181,12 +194,19 @@ const CategoriesList = () => {
     value === 2 && {
       Header: 'Categoria 2',
       accessor: 'Name',
-      className: 'cell-center'
+      Cell: ({ value }: any) => {
+        return (
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack spacing={0}>
+              <Typography variant="subtitle1">{value || ''}</Typography>
+            </Stack>
+          </Stack>
+        );
+      }
     },
     {
       Header: 'Estado',
       accessor: 'Status',
-      className: 'cell-center',
       Cell: ({ value }: any) => {
         switch (value) {
           case false:
