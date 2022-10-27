@@ -90,7 +90,7 @@ function AddPurchase() {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   const data = useMemo(
-    () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, discount || 0),
+    () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, Number(discount) || 0),
     [detailsPurchase, discount]
   );
 
@@ -258,7 +258,7 @@ function AddPurchase() {
                 {detailsPurchase && detailsPurchase.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data?.Subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data?.SubTotal || 0}</Typography>
                     </Stack>
                     {data.DiscountGlobal !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>

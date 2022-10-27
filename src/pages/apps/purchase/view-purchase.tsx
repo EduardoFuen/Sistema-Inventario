@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
-import emailjs from '@emailjs/browser';
 
 // material-ui
 import {
@@ -12,12 +11,12 @@ import {
   TextField,
   Typography,
   MenuItem,
-  Dialog
-  /*  Table,
+  Dialog,
+  Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow */
+  TableRow
 } from '@mui/material';
 
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
@@ -25,8 +24,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project import
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { openSnackbar } from 'store/reducers/snackbar';
-import { editPurchase, sendPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import { editPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
@@ -39,12 +37,13 @@ import { SendOutlined } from '@ant-design/icons';
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes,
-    create_order: order?.create_order,
+    CreatedAt: format(new Date(order?.CreatedAt), 'dd-MM-yyyy'),
     DiscountGlobal: order?.DiscountGlobal,
     SupplierID: order?.SupplierID,
+    Discount: order?.Discount,
     WarehouseID: order?.WarehouseID,
     DiscountEarliyPay: order?.DiscountEarliyPay,
-    /*   paymentdate: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),*/
+    DaysPayment: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),
     EstimatedDeliveryDateBog: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
     EstimatedDeliveryDateBaq: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
   };
@@ -69,7 +68,7 @@ function ViewPurchase() {
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
-  const { order }: any = useSelector((state) => state.purchase);
+  const { order } = useSelector((state) => state.purchase);
   const { products } = useSelector((state) => state.product);
 
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
@@ -128,52 +127,31 @@ function ViewPurchase() {
       try {
         if (send) {
           const newValue = {
+            ...orderPurchase,
             ...values,
-            status: 'Send',
-            products: orderPurchase?.Articles
+            Status: 1,
+            Articles: orderPurchase?.Articles
           };
-          dispatch(sendPurchase(id, newValue));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Orden Enviada successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
+          dispatch(editPurchase(Number(id), newValue));
+          history(`/purchase`);
         } else {
           const newValue = {
-            ...values,
             ...orderPurchase,
-            products: detailsPurchase
+            ...values,
+            Status: 0,
+            Articles: detailsPurchase
           };
-          console.log(newValue);
-
-          dispatch(editPurchase(id, newValue));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Orden Actualizada successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
+          dispatch(editPurchase(Number(id), newValue));
         }
-        history(`/purchase`);
         setSubmitting(false);
       } catch (error) {
         console.error(error);
       }
     }
   });
+
   useEffect(() => {
-    const items = detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, orderPurchase?.DiscountGlobal || 0);
+    const items = detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, orderPurchase?.Discount || 0);
     setData(items);
   }, [detailsPurchase, orderPurchase]);
 
@@ -219,7 +197,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('DiscountGlobal')}
+                        {...getFieldProps('Discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
                         disabled
@@ -229,7 +207,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
+                        {...getFieldProps('CreatedAt')}
                         placeholder=""
                         fullWidth
                         disabled
@@ -269,7 +247,7 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('paymentdate')}
+                        {...getFieldProps('DaysPayment')}
                         placeholder=""
                         fullWidth
                         disabled
@@ -296,7 +274,7 @@ function ViewPurchase() {
                       />
                     </Grid>
                   </Grid>
-                  {orderPurchase?.status === 'New' && (
+                  {order?.Status === 0 && (
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
@@ -308,9 +286,9 @@ function ViewPurchase() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                {/* {orderPurchase?.status === 'New' && */} <DetailsPurchase product={detailsPurchase} />
-                {/* } */}
-                {/*  {orderPurchase?.status !== 'New' && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
+                {order?.Status === 0 && <DetailsPurchase product={detailsPurchase} />}
+
+                {order?.Status !== 0 && order?.Articles && order?.Articles?.length > 0 && (
                   <Table sx={{ minWidth: 650 }} size="small">
                     <TableHead>
                       <TableRow>
@@ -327,7 +305,7 @@ function ViewPurchase() {
                     </TableHead>
                     <TableBody>
                       {orderPurchase?.Articles &&
-                        orderPurchase?.Articles.length > 0 &&
+                        orderPurchase?.Articles?.length > 0 &&
                         orderPurchase?.Articles.map((x: any, i: number) => (
                           <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell component="th" scope="row">
@@ -356,10 +334,10 @@ function ViewPurchase() {
                         ))}
                     </TableBody>
                   </Table>
-                )} */}
+                )}
               </Grid>
               <Grid item xs={12}>
-                {orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
+                {orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mt: 6 }}>
                       <Typography variant="subtitle1">Cantidad Total: ({orderPurchase?.Articles.length})</Typography>
@@ -371,7 +349,7 @@ function ViewPurchase() {
                 {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
                   <MainCard>
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data.Subtotal || 0}</Typography>
+                      <Typography variant="subtitle1">Subtotal: $ {data.SubTotal || 0}</Typography>
                     </Stack>
                     {data.DiscountGlobal !== '0' && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
@@ -399,37 +377,24 @@ function ViewPurchase() {
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
-                  {/*   {orderPurchase?.status === 'New' && ( */}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    startIcon={<SendOutlined />}
-                    disabled={isSubmitting}
-                    onClick={() => {
-                      const templateParams = {
-                        name: 'James',
-                        notes: 'Check this out!'
-                      };
-
-                      emailjs.send('service_rqahuu8', 'template_i88uyuy', templateParams, 'jm1Z-3tJFhFfHL_dK').then(
-                        (response) => {
-                          console.log('SUCCESS!', response.status, response.text);
-                        },
-                        (err) => {
-                          console.log('FAILED...', err);
-                        }
-                      );
-                      setSend(true);
-                    }}
-                  >
-                    Enviar
-                  </Button>
-                  {/*     )} */}
-                  {/*  {orderPurchase?.status === 'New' && ( */}
-                  <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Guardar
-                  </Button>
-                  {/*  )} */}
+                  {order?.Status === 0 && (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      startIcon={<SendOutlined />}
+                      disabled={isSubmitting}
+                      onClick={() => {
+                        setSend(true);
+                      }}
+                    >
+                      Enviar
+                    </Button>
+                  )}
+                  {order?.Status === 0 && (
+                    <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
+                      Guardar
+                    </Button>
+                  )}
                 </Stack>
               </Grid>
             </Grid>

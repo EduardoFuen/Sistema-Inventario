@@ -2,6 +2,7 @@ import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '
 import { useTheme } from '@mui/material/styles';
 import { useSelector } from 'store';
 import { FilePdfOutlined } from '@ant-design/icons';
+import { format } from 'date-fns';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -85,7 +86,7 @@ const RenderDocument = ({ data }: any) => {
       <Page style={styles.body}>
         <Image src={Farmu} style={styles.image} />
         <Text style={styles.header} fixed>
-          Fecha {data?.create_order} # Order {data?.ID}
+          Fecha {format(new Date(data?.CreatedAt), 'dd-MM-yyyy')} # Order Farmu-{data?.ID}
         </Text>
         <Text style={styles.header} fixed>
           Bodega {data?.warehouse}
@@ -136,8 +137,8 @@ const RenderDocument = ({ data }: any) => {
             </View>
           ))}
         <Text style={styles.summary}>Subtotal: {data?.SubTotal}</Text>
-        {data?.Tax && data?.Tax !== '' && <Text style={styles.summary}>IVA: {data?.Tax}</Text>}
-        {data?.Discount !== '' && <Text style={styles.summary}>Descuento: {data?.Discount}</Text>}
+        {data?.Tax > 0 && <Text style={styles.summary}>IVA: {data?.Tax}</Text>}
+        {data?.Discount && <Text style={styles.summary}>Descuento: {data?.Discount}</Text>}
         <Text style={styles.summary}>Total: {data?.Total}</Text>
       </Page>
     </Document>
@@ -150,17 +151,15 @@ const PDF = ({ values }: any) => {
 
   const newData = {
     ...values,
-    Articles:
-      values?.Articles ||
-      [].map((item: any) => {
-        return {
-          ...item,
-          ID: item?.ProductID,
-          Name: getProduct(item.ProductID, products)?.Name,
-          Sku: getProduct(item.ProductID, products)?.Sku,
-          Ean: getProduct(item.ProductID, products)?.Ean
-        };
-      })
+    Articles: values?.Articles?.map((item: any) => {
+      return {
+        ...item,
+        ID: item?.ProductID,
+        Name: getProduct(item.ProductID, products)?.Name,
+        Sku: getProduct(item.ProductID, products)?.Sku,
+        Ean: getProduct(item.ProductID, products)?.Ean
+      };
+    })
   };
 
   return (

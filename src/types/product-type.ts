@@ -192,7 +192,7 @@ export type purchase = {
   subtotal: number;
   iva: number;
   total: number;
-  status: string;
+  status: number;
   products: any;
   reception: any;
   detailsReption: any;

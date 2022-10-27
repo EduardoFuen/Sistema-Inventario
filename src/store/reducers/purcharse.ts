@@ -61,6 +61,7 @@ const slice = createSlice({
       state.detailsPurchase = action.payload;
     },
     getIDPurchaseSuccess(state, action) {
+      state.detailsPurchase = [];
       state.order = action.payload;
     },
     addPurchaseSuccess(state, action) {
@@ -200,15 +201,25 @@ export function getIDPurchase(id: number) {
   };
 }
 
-export function editPurchase(name: string | undefined, data: any) {
+export function editPurchase(id: number, data: any) {
   return async () => {
     try {
-      dispatch(
-        slice.actions.updatePurchaseSuccess({
-          name,
-          data
-        })
-      );
+      const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
+      if (response) {
+        dispatch(getPurchaseList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Orden Enviada successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+        dispatch(slice.actions.hasError(null));
+      }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -227,7 +238,7 @@ export function deletePurchase(id: number) {
             message: 'Orden Cancelada successfully.',
             variant: 'alert',
             alert: {
-              color: 'success'
+              color: 'error'
             },
             close: false
           })

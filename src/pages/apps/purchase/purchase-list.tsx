@@ -1,5 +1,6 @@
 import { useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -51,11 +52,28 @@ const PurchaseList = () => {
       {
         Header: 'Order',
         accessor: 'ID',
-        className: 'cell-center'
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">Farmu-{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Fecha OC',
-        accessor: 'CreatedAt'
+        accessor: 'CreatedAt',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{format(new Date(value), 'dd-MM-yyyy')}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Proveedor',
@@ -117,14 +135,12 @@ const PurchaseList = () => {
         Header: 'Estado',
         accessor: 'Status',
         Cell: ({ value }: any) => {
-          console.log(value);
-
           switch (value) {
-            case 'Cancelled':
+            case 2:
               return <Chip color="error" label="Cancelled" size="small" variant="light" />;
-            case 'Send':
+            case 1:
               return <Chip color="info" label="Send" size="small" variant="light" />;
-            case 'New':
+            case 0:
             default:
               return <Chip color="warning" label="New" size="small" variant="light" />;
           }
