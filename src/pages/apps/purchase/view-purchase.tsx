@@ -37,13 +37,13 @@ import { SendOutlined } from '@ant-design/icons';
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes,
-    CreatedAt: format(new Date(order?.CreatedAt), 'dd-MM-yyyy'),
+    CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), 'dd-MM-yyyy') : '',
     DiscountGlobal: order?.DiscountGlobal,
     SupplierID: order?.SupplierID,
     Discount: order?.Discount,
     WarehouseID: order?.WarehouseID,
     DiscountEarliyPay: order?.DiscountEarliyPay,
-    DaysPayment: format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy'),
+    DaysPayment: order?.supplier?.DaysPayment ? format(addDays(new Date(), order?.supplier?.DaysPayment), 'dd-MM-yyyy') : '',
     EstimatedDeliveryDateBog: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
     EstimatedDeliveryDateBaq: order?.supplier ? format(addDays(new Date(), order?.supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
   };
@@ -63,7 +63,8 @@ function ViewPurchase() {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
     }
-  }, [dispatch, id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
@@ -123,25 +124,17 @@ function ViewPurchase() {
 
   const formik = useFormik({
     initialValues: getInitialValues(orderPurchase!),
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
+        const newValue = {
+          ...orderPurchase,
+          ...values,
+          Articles: detailsPurchase
+        };
         if (send) {
-          const newValue = {
-            ...orderPurchase,
-            ...values,
-            Status: 1,
-            Articles: orderPurchase?.Articles
-          };
-          dispatch(editPurchase(Number(id), newValue));
-          history(`/purchase`);
+          await dispatch(editPurchase(Number(id), { ...newValue, Status: 1 }));
         } else {
-          const newValue = {
-            ...orderPurchase,
-            ...values,
-            Status: 0,
-            Articles: detailsPurchase
-          };
-          dispatch(editPurchase(Number(id), newValue));
+          await dispatch(editPurchase(Number(id), { ...newValue, Status: 0 }));
         }
         setSubmitting(false);
       } catch (error) {
@@ -152,8 +145,14 @@ function ViewPurchase() {
 
   useEffect(() => {
     const items = detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, orderPurchase?.Discount || 0);
-    setData(items);
-  }, [detailsPurchase, orderPurchase]);
+    if (items) {
+      setData(items);
+    } else {
+      setData(orderPurchase);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -286,9 +285,9 @@ function ViewPurchase() {
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
-                {order?.Status === 0 && <DetailsPurchase product={detailsPurchase} />}
+                {orderPurchase?.Status === 0 && <DetailsPurchase product={detailsPurchase} />}
 
-                {order?.Status !== 0 && order?.Articles && order?.Articles?.length > 0 && (
+                {orderPurchase?.Status === 1 && orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (
                   <Table sx={{ minWidth: 650 }} size="small">
                     <TableHead>
                       <TableRow>
@@ -391,7 +390,15 @@ function ViewPurchase() {
                     </Button>
                   )}
                   {order?.Status === 0 && (
-                    <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setSend(false);
+                      }}
+                      sx={{ textTransform: 'none' }}
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       Guardar
                     </Button>
                   )}

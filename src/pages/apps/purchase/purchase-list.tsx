@@ -17,6 +17,10 @@ import { useSelector, useDispatch } from 'store';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
 import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
+import { getProducts } from 'store/reducers/product';
+import { getWarehouseList } from 'store/reducers/warehouse';
+import { getSupplierList } from 'store/reducers/supplier';
+
 import { getObject } from 'utils/Global';
 import { newDataExport } from 'utils/DataExportPurchase';
 
@@ -36,6 +40,9 @@ const PurchaseList = () => {
 
   useEffect(() => {
     dispatch(getPurchaseList());
+    dispatch(getProducts());
+    dispatch(getSupplierList());
+    dispatch(getWarehouseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -170,13 +177,13 @@ const PurchaseList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              {row.values.status !== 'Cancelled' && (
+              {row.original.Status === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton
                     color="error"
                     onClick={(e: any) => {
                       e.stopPropagation();
-                      dispatch(deletePurchase(row?.values?.ID));
+                      dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
                     }}
                   >
                     <DeleteTwoTone twoToneColor={theme.palette.error.main} />

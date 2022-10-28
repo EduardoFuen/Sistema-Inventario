@@ -6,14 +6,13 @@ import { Box, Grid, Stack, TableCell, TableRow, Typography } from '@mui/material
 
 const ProductView = ({ data }: any) => {
   const theme = useTheme();
-
   return (
     <TableRow sx={{ '&:hover': { bgcolor: `transparent !important` } }}>
       <TableCell colSpan={8} sx={{ p: 2.5 }}>
         <Grid container spacing={2.5} sx={{ pl: { xs: 0, sm: 5, md: 6, lg: 10, xl: 12 } }}>
           <Grid item xs={6} sm={5} md={4} lg={3}>
             <Box sx={{ position: 'relative' }}>
-              <img src={data.UrlImage} alt="product" style={{ background: theme.palette.grey[200], width: '100%' }} />
+              {data.UrlImage && <img src={data.UrlImage} alt="product" style={{ background: theme.palette.grey[200], width: '100%' }} />}
             </Box>
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>

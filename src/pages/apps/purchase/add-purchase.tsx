@@ -75,6 +75,7 @@ function AddPurchase() {
         if (detailsPurchase.length > 0) {
           const newValue = {
             ...values,
+            Status: 0,
             Articles: detailsPurchase
           };
           await dispatch(addPurchase(newValue));

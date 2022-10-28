@@ -61,32 +61,15 @@ const slice = createSlice({
       state.detailsPurchase = action.payload;
     },
     getIDPurchaseSuccess(state, action) {
-      state.detailsPurchase = [];
       state.order = action.payload;
     },
     addPurchaseSuccess(state, action) {
-      state.detailsPurchase = [];
+      // state.detailsPurchase = [];
       state.listPurchase.push(action.payload);
-      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
-    },
-    updatePurchaseSuccess(state, action) {
-      const { name, data } = action.payload;
-      const index = state.listPurchase.findIndex((item) => item.nc === name);
-      let summaryOrder = summary(data?.products, data?.discountOrder);
-      state.listPurchase[index] = { ...data, ...summaryOrder };
-    },
-    sendPurchaseSuccess(state, action) {
-      const { nc, data } = action.payload;
-      const index = state.listPurchase.findIndex((item) => item.nc === nc);
-      let summaryOrder = summary(data?.products, data?.discountOrder);
-      state.listPurchase[index] = { ...data, ...summaryOrder };
-      const NewData = {
-        ...data,
-        ...state.listPurchase[index],
-        ...summaryOrder,
-        nc
-      };
-      state.listPurchase[index] = NewData;
+      window.localStorage.setItem('farmu-productsDetails', JSON.stringify([]));
+      if (action.payload.ID) {
+        window.location.href = `/purchase/view/${action.payload.ID}`;
+      }
     },
     addReceptionSuccess(state, action) {
       const index = state.listPurchase.findIndex((item) => item.nc === action.payload.nc);
@@ -178,10 +161,8 @@ export function addPurchase(data: any) {
           close: false
         })
       );
+      dispatch(resetItemsPurchase());
       dispatch(slice.actions.addPurchaseSuccess(response.data));
-      if (response.data.ID) {
-        window.location.href = `/purchase/view/${response.data.ID}`;
-      }
       dispatch(slice.actions.hasError(null));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -193,6 +174,8 @@ export function getIDPurchase(id: number) {
     try {
       const response = await axios.get(`${HOST}/compras?ID=${id}`);
       if (response.data) {
+        dispatch(getSupplierList());
+        dispatch(getWarehouseList());
         dispatch(slice.actions.getIDPurchaseSuccess(response.data));
       }
     } catch (error) {
@@ -204,21 +187,36 @@ export function getIDPurchase(id: number) {
 export function editPurchase(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/compras`, { ...data, ID: id });
       if (response) {
         dispatch(getPurchaseList());
-        dispatch(
-          openSnackbar({
-            open: true,
-            message: 'Orden Enviada successfully.',
-            variant: 'alert',
-            alert: {
-              color: 'success'
-            },
-            close: false
-          })
-        );
-        dispatch(slice.actions.hasError(null));
+        dispatch(getIDPurchase(id));
+
+        if (data?.Status === 0) {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Orden Actualizada successfully.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
+        } else {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Orden Enviada successfully.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
+        }
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -226,10 +224,12 @@ export function editPurchase(id: number, data: any) {
   };
 }
 
-export function deletePurchase(id: number) {
+export function deletePurchase(id: number, data: any) {
   return async () => {
     try {
       const response = await axios.delete(`${HOST}/compras`, { data: { ID: id } });
+
+      // const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(
@@ -245,21 +245,6 @@ export function deletePurchase(id: number) {
         );
         dispatch(slice.actions.hasError(null));
       }
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function sendPurchase(nc: any, data: any) {
-  return async () => {
-    try {
-      dispatch(
-        slice.actions.sendPurchaseSuccess({
-          nc,
-          data
-        })
-      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

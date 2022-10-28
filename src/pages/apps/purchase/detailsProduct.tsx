@@ -55,22 +55,22 @@ const DetailsPurchase = ({ product }: any) => {
     const list = [...inputList];
     const { name, value } = e.target;
     if (name === 'Count') {
-      list[index]['Count'] = value;
+      list[index]['Count'] = Number(value);
     }
     if (name === 'BasePrice') {
-      list[index]['BasePrice'] = value;
+      list[index]['BasePrice'] = Number(value);
     }
     if (name === 'Tax') {
-      list[index]['Tax'] = value;
+      list[index]['Tax'] = Number(value);
     }
     if (name === 'DiscountNegotiated') {
-      list[index]['DiscountNegotiated'] = value;
+      list[index]['DiscountNegotiated'] = Number(value);
     }
     if (name === 'DiscountAdditional') {
-      list[index]['DiscountAdditional'] = value;
+      list[index]['DiscountAdditional'] = Number(value);
     }
     if (name === 'Bonus') {
-      list[index]['Bonus'] = value;
+      list[index]['Bonus'] = Number(value);
     }
     list[index]['SubTotal'] = list[index]?.Count * list[index]?.BasePrice * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
     list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Count * list[index]?.BasePrice * list[index]?.Tax) / 100;

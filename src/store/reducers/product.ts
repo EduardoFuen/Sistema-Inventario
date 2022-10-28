@@ -135,7 +135,7 @@ export function addProduct(data: any) {
 export function editProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/productos`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/productos`, { ID: id.toString(), ...data });
       dispatch(
         slice.actions.editProductsSuccess({
           id,

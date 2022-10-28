@@ -138,7 +138,7 @@ const RenderDocument = ({ data }: any) => {
           ))}
         <Text style={styles.summary}>Subtotal: {data?.SubTotal}</Text>
         {data?.Tax > 0 && <Text style={styles.summary}>IVA: {data?.Tax}</Text>}
-        {data?.Discount && <Text style={styles.summary}>Descuento: {data?.Discount}</Text>}
+        <Text style={styles.summary}>Descuento: {data?.Discount}</Text>
         <Text style={styles.summary}>Total: {data?.Total}</Text>
       </Page>
     </Document>
