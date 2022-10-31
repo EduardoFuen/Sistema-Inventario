@@ -85,19 +85,17 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {status === 'Send' && (
-                <Tooltip title="Ingresar">
-                  <IconButton
-                    color="primary"
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      handleAdd(row.values);
-                    }}
-                  >
-                    <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                  </IconButton>
-                </Tooltip>
-              )}
+              <Tooltip title="Ingresar">
+                <IconButton
+                  color="primary"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleAdd(row.values);
+                  }}
+                >
+                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                </IconButton>
+              </Tooltip>
             </Stack>
           );
         }
@@ -117,7 +115,7 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={data} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
+        <ReactTable columns={columns} hideButton={false} data={data} getHeaderProps={(column: any) => column.getSortByToggleProps()} />
       </ScrollX>
     </MainCard>
   );

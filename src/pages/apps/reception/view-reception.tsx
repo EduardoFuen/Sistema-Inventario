@@ -23,16 +23,15 @@ import DetailsReception from './detailsProduct';
 
 const getInitialValues = (recep: FormikValues | null) => {
   const newSubstance = {
-    priceP: '',
     dateP: '',
-    note: '',
+    Notes: '',
     date: '',
-    create_order: recep?.create_order,
+    CreatedAt: recep?.CreatedAt ? format(new Date(recep?.CreatedAt), 'dd-MM-yyyy') : '',
     Discount: recep?.Discount,
     SupplierID: recep?.SupplierID,
     WarehouseID: recep?.WarehouseID,
+    DiscountEarliyPay: recep?.DiscountEarliyPay,
     nFactura: '',
-    dateFact: '',
     EstimatedDeliveryDateBog: recep?.supplier ? format(addDays(new Date(), recep?.supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
     EstimatedDeliveryDateBaq: recep?.supplier ? format(addDays(new Date(), recep?.supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
   };
@@ -181,7 +180,7 @@ function AddReception() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
+                        {...getFieldProps('CreatedAt')}
                         fullWidth
                         disabled
                       />
@@ -213,7 +212,7 @@ function AddReception() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Recibo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
+                        {...getFieldProps('CreatedAt')}
                         fullWidth
                         disabled
                       />
@@ -235,23 +234,24 @@ function AddReception() {
                         rows={2}
                         placeholder="Ingresar Nota de compras"
                         fullWidth
-                        {...getFieldProps('note')}
+                        {...getFieldProps('Notes')}
                       />
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('priceP')}
+                        {...getFieldProps('DiscountEarliyPay')}
                         placeholder="Descuento pronto Pago %"
                         fullWidth
+                        disabled
                       />
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pronto Pago</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('create_order')}
+                        {...getFieldProps('CreatedAt')}
                         fullWidth
                         disabled
                       />
@@ -261,7 +261,6 @@ function AddReception() {
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DesktopDatePicker
                           label=""
-                          /*  name="dateExpiration" */
                           inputFormat="MM/dd/yyyy"
                           /*    {...getFieldProps('date')} */
                           value={value}
@@ -270,11 +269,6 @@ function AddReception() {
                           }}
                           renderInput={(params) => <TextField {...params} />}
                         />
-                        {/*  {touched.date && errors.date && (
-                          <FormHelperText error id="personal-supplier-helper">
-                            {errors.date}
-                          </FormHelperText>
-                        )} */}
                       </LocalizationProvider>
                     </Grid>
                     <Grid item xs={2} alignSelf="center">
