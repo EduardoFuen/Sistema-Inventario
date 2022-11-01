@@ -165,7 +165,7 @@ const PurchaseList = () => {
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDF values={dataPDF} />
+              <PDF values={dataPDF} FileName="Purchase" />
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"

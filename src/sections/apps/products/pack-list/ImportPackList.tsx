@@ -19,7 +19,7 @@ const ImportPack = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       const newData = data;
       filter((item: any) => item.ID !== '').map((item: any) => ({
@@ -28,7 +28,7 @@ const ImportPack = ({ onCancel }: Props) => {
         ID: item?.ID || ''
       }));
 
-      dispatch(addExcel(newData));
+      await dispatch(addExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

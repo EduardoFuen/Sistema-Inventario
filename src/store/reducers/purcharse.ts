@@ -9,7 +9,7 @@ import { openSnackbar } from './snackbar';
 import { getSupplierList } from './supplier';
 import { getWarehouseList } from './warehouse';
 // types
-import { PurchaseStateProps } from 'types/product-type';
+import { PurchaseStateProps } from 'types/purchase';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ const slice = createSlice({
       }
     },
     addReceptionSuccess(state, action) {
-      const index = state.listPurchase.findIndex((item) => item.nc === action.payload.nc);
+      const index = state.listPurchase.findIndex((item) => item.ID === action.payload.nc);
       let data = action.payload.detailsReption.concat(state.listPurchase[index].detailsReption);
       data = data.filter((item: any, index: number) => {
         return data.indexOf(item) === index;
@@ -100,7 +100,7 @@ const slice = createSlice({
     },
     confirmationReceptionSuccess(state, action) {
       const { nc, data } = action.payload;
-      const index = state.listPurchase.findIndex((item) => item.nc === nc);
+      const index = state.listPurchase.findIndex((item) => item.ID === nc);
       state.listPurchase[index] = { ...data, orderStatus: 'Partial' };
     }
   }

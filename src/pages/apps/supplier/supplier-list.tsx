@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 // third-party
 import NumberFormat from 'react-number-format';
-
 import { useSelector, useDispatch } from 'store';
 
 // project import

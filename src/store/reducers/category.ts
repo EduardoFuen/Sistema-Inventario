@@ -20,7 +20,7 @@ const initialState: CategoryOneStateProps = {
 };
 
 const slice = createSlice({
-  name: 'category',
+  name: 'categories',
   initialState,
   reducers: {
     // HAS ERROR

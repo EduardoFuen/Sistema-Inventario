@@ -32,6 +32,9 @@ import { Products } from 'types/product-type';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
+// types
+import { Purchase } from 'types/purchase';
+
 // ==============================|| ADD RECEPTION ||============================== //
 
 export interface PropsSelect {
@@ -55,7 +58,7 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
   };
 
   useEffect(() => {
-    const index = listPurchase.findIndex((item) => item.nc === reception.nc);
+    const index = listPurchase.findIndex((item: Purchase) => item.ID === reception.nc);
     if (listPurchase[index] && listPurchase[index].detailsReption && listPurchase[index].detailsReption.length > 0) {
       let data = listPurchase[index].detailsReption
         .filter((e: any) => e !== undefined && e !== null && e !== '' && e.name === product?.Name)

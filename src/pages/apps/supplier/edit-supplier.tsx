@@ -27,9 +27,12 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
 
+// types
+import { Supplier } from 'types/supplier';
+
 // ==============================|| EDIT SUPPLIER - MAIN ||============================== //
 
-const getInitialValues = (supplier: FormikValues | null) => {
+const getInitialValues = (supplier: FormikValues | Supplier) => {
   const newSubstance = {
     NameContact: supplier?.NameContact,
     PhoneContact: supplier?.PhoneContact,
@@ -77,9 +80,9 @@ function UpdateSuplier() {
   const formik = useFormik({
     initialValues: getInitialValues(supplier!),
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-        dispatch(editSupplier(Number(id), values));
+        await dispatch(editSupplier(Number(id), values));
         dispatch(
           openSnackbar({
             open: true,
@@ -281,6 +284,7 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         placeholder="Ingresar Descuento pronto pago %"
                         fullWidth
+                        type="number"
                         {...getFieldProps('Discount')}
                         error={Boolean(touched.Discount && errors.Discount)}
                         helperText={touched.Discount && errors.Discount}

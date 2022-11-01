@@ -19,7 +19,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       const newData = data?.map((item: any) => ({
         EmailContact: item?.EmailContact.toString(),
@@ -36,7 +36,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
         NameContact: item?.NameContact.toString(),
         ID: item?.ID || 0
       }));
-      dispatch(addExcel(newData));
+      await dispatch(addExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

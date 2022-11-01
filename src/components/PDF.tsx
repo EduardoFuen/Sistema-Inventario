@@ -144,8 +144,12 @@ const RenderDocument = ({ data }: any) => {
     </Document>
   );
 };
+interface Props {
+  values: any;
+  FileName: string;
+}
 
-const PDF = ({ values }: any) => {
+const PDF = ({ values, FileName }: Props) => {
   const theme = useTheme();
   const { products } = useSelector((state) => state.product);
 
@@ -161,9 +165,8 @@ const PDF = ({ values }: any) => {
       };
     })
   };
-
   return (
-    <PDFDownloadLink document={<RenderDocument data={newData} />} fileName="purchase.pdf">
+    <PDFDownloadLink document={<RenderDocument data={newData} />} fileName={`${FileName}.pdf`}>
       {({ loading }) =>
         loading ? (
           ''

@@ -66,9 +66,9 @@ function AddSupplier() {
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-        dispatch(createSupplier(values));
+        await dispatch(createSupplier(values));
         dispatch(
           openSnackbar({
             open: true,

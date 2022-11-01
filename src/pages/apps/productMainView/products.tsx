@@ -1,4 +1,4 @@
-import { ReactNode, useState, lazy } from 'react';
+import { ReactNode, ReactElement, useState, lazy } from 'react';
 import Loadable from 'components/Loadable';
 
 // material-ui
@@ -19,12 +19,12 @@ const Categories = Loadable(lazy(() => import('../categories/categories-list')))
 const TypeProduct = Loadable(lazy(() => import('../typeProduct/typeProduct-list')));
 const ActiveSubstances = Loadable(lazy(() => import('../activeSubstances/activeSubstances-list')));
 
-// ==============================|| REACT TAB ||============================== //
+// ==============================|| TAB ||============================== //
 
 interface TabPanelProps {
-  children?: ReactNode;
+  children?: ReactElement | ReactNode | string;
+  value: string | number;
   index: number;
-  value: number;
 }
 
 function a11yProps(index: number) {
@@ -94,7 +94,7 @@ function TabProducts() {
   );
 }
 
-// ==============================|| PRODUCT LIST - MAIN ||============================== //
+// ==============================|| PRODUCT - MAIN ||============================== //
 
 const Products = () => {
   return (

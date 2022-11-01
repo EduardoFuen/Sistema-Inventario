@@ -65,7 +65,7 @@ const reducers = combineReducers({
   ),
   category: persistReducer(
     {
-      key: 'category',
+      key: 'categories',
       storage,
       keyPrefix: 'farmu-'
     },

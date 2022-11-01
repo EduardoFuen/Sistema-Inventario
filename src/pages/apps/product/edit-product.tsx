@@ -24,7 +24,6 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
-
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { editProduct } from 'store/reducers/product';
@@ -36,6 +35,20 @@ import { getMakerList } from 'store/reducers/maker';
 import { getPackList } from 'store/reducers/pack';
 import { getSubsList } from 'store/reducers/activeSubst';
 import { getWarehouseList } from 'store/reducers/warehouse';
+
+// types
+import {
+  Products,
+  Packs,
+  TypeProduct,
+  Warehouses,
+  Trademark,
+  Maker,
+  Substances,
+  CategoryOne,
+  CategoryTwo,
+  CategoryThree
+} from 'types/product-type';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -325,8 +338,8 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
                       <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('MakerID')}>
                         {makerList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Maker) => item.Status === true)
+                          .map((option: Maker) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -337,8 +350,8 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                       <TextField placeholder="Seleccionar Trademark" {...getFieldProps('TrademarkID')} fullWidth select>
                         {tradeMarkList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Trademark) => item.Status === true)
+                          .map((option: Trademark) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -356,8 +369,8 @@ function UpdateProduct() {
                         select
                       >
                         {typeProductList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: TypeProduct) => item.Status === true)
+                          .map((option: TypeProduct) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -369,8 +382,8 @@ function UpdateProduct() {
                       <Autocomplete
                         multiple
                         id="warehouse-list"
-                        options={warehouseList.filter((item: any) => item.Status === true)}
-                        getOptionLabel={(option) => option.Name}
+                        options={warehouseList.filter((item: Warehouses) => item.Status === true)}
+                        getOptionLabel={(option: Warehouses) => option.Name ?? ''}
                         defaultValue={[...(product?.Warehouses || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
@@ -408,8 +421,8 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryOneID')}>
                         {categoryListOne
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: CategoryOne) => item.Status === true)
+                          .map((option: CategoryOne) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -420,8 +433,8 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 2</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" fullWidth select {...getFieldProps('CategoryTwoID')}>
                         {categoryListTwo
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: CategoryTwo) => item.Status === true)
+                          .map((option: CategoryTwo) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -432,8 +445,8 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Categoria 3</InputLabel>
                       <TextField placeholder="Seleccionar Categoria" {...getFieldProps('CategoryThreeID')} fullWidth select>
                         {categoryListThree
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: CategoryThree) => item.Status === true)
+                          .map((option: CategoryThree) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -462,8 +475,8 @@ function UpdateProduct() {
                         fullWidth
                       >
                         {packList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Packs) => item.Status === true)
+                          .map((option: Packs) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -560,8 +573,8 @@ function UpdateProduct() {
                           <Autocomplete
                             multiple
                             id="substances-list"
-                            options={todoListSubs.filter((item: any) => item.Status === true)}
-                            getOptionLabel={(option) => option.Name}
+                            options={todoListSubs.filter((item: Substances) => item.Status === true)}
+                            getOptionLabel={(option: Substances) => option.Name ?? ''}
                             defaultValue={[...(product?.Substance || '')] as []}
                             filterSelectedOptions
                             onChange={(event, newValue) => {
@@ -613,8 +626,8 @@ function UpdateProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products.filter((item: any) => item.Status === true)}
-                        getOptionLabel={(option) => option?.Name}
+                        options={products.filter((item: Products) => item.Status === true)}
+                        getOptionLabel={(option: string | any) => option.Name ?? option}
                         defaultValue={[...(product?.Substitutes || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {

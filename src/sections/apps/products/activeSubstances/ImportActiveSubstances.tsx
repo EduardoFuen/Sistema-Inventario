@@ -18,14 +18,14 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       const newData = data?.map((item: any) => ({
         Name: item?.Name,
         Status: item?.Status,
         ID: item?.ID || ''
       }));
-      dispatch(addExcel(newData));
+      await dispatch(addExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

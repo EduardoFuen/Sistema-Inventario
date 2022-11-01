@@ -19,15 +19,19 @@ import Export from 'components/ExportToFile';
 import DetailsPurchase from './detailsProduct';
 import { getProducts } from 'store/reducers/product';
 
+// types
+import { Warehouses } from 'types/product-type';
+import { Supplier } from 'types/supplier';
+
 // ==============================|| ADD NEW PURCHASE - MAIN ||============================== //
 
 const getInitialValues = () => {
   const newSubstance = {
     Notes: '',
-    Discount: '',
-    SupplierID: '',
-    WarehouseID: '',
-    DiscountEarliyPay: ''
+    Discount: 0,
+    SupplierID: 0,
+    WarehouseID: 0,
+    DiscountEarliyPay: 0
   };
   return newSubstance;
 };
@@ -125,8 +129,8 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
-                        options={supplierList.filter((item: any) => item.Status === true)}
-                        getOptionLabel={(option) => option.BusinessName}
+                        options={supplierList.filter((item: Supplier) => item.Status === true)}
+                        getOptionLabel={(option: Supplier) => option.BusinessName ?? ''}
                         onChange={(event, newValue) => {
                           setFieldValue('SupplierID', newValue === null ? '' : newValue?.ID);
                         }}
@@ -165,8 +169,8 @@ function AddPurchase() {
                         helperText={touched.WarehouseID && errors.WarehouseID}
                       >
                         {warehouseList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Warehouses) => item.Status === true)
+                          .map((option: Warehouses) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>

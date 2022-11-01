@@ -61,8 +61,8 @@ const AddMaker = ({ maker, onCancel }: Props) => {
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
-  const deleteHandler = () => {
-    dispatch(deleteMaker(maker?.ID));
+  const deleteHandler = async () => {
+    await dispatch(deleteMaker(maker?.ID));
     dispatch(
       openSnackbar({
         open: true,

@@ -61,7 +61,8 @@ const AddPackList = ({ product, onCancel }: Props) => {
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
+    await dispatch(deleteTypeProduct(product.ID));
     dispatch(
       openSnackbar({
         open: true,
@@ -73,7 +74,6 @@ const AddPackList = ({ product, onCancel }: Props) => {
         close: false
       })
     );
-    dispatch(deleteTypeProduct(product.ID));
     onCancel();
   };
 

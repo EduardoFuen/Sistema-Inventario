@@ -56,6 +56,10 @@ const TradeMarkList = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'ID'
+      },
+      {
         Header: 'Trademark',
         accessor: 'Name'
       },

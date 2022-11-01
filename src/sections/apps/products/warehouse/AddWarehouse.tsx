@@ -80,8 +80,8 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
     Location: Yup.string().required('Dirección es requerido').max(500)
   });
 
-  const deleteHandler = () => {
-    dispatch(deleteWarehouse(warehouse?.ID));
+  const deleteHandler = async () => {
+    await dispatch(deleteWarehouse(warehouse?.ID));
     dispatch(
       openSnackbar({
         open: true,

@@ -28,7 +28,7 @@ const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
     () => [
       {
         Header: 'PRODUCTO',
-        accessor: 'Sku',
+        accessor: 'Name',
         Cell: ({ row }: any) => {
           const { original } = row;
           return (

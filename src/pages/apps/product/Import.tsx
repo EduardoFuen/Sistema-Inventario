@@ -29,7 +29,7 @@ const Import = ({ onCancel }: Props) => {
   const { todoListSubs } = useSelector((state) => state.substances);
   const { products } = useSelector((state) => state.product);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       const newData = data?.map((item: any) => {
         return {
@@ -64,7 +64,7 @@ const Import = ({ onCancel }: Props) => {
         };
       });
 
-      dispatch(addExcel(newData));
+      await dispatch(addExcel(newData));
       onCancel();
     } catch (error) {
       console.error(error);

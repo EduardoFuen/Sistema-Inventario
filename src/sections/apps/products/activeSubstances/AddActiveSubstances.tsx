@@ -61,7 +61,8 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
+    await dispatch(deleteSubs(subst.ID));
     dispatch(
       openSnackbar({
         open: true,
@@ -73,7 +74,6 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
         close: false
       })
     );
-    dispatch(deleteSubs(subst.ID));
     onCancel();
   };
 

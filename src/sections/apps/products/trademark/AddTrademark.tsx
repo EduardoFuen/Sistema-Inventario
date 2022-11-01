@@ -70,8 +70,8 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 
-  const deleteHandler = () => {
-    dispatch(deleteTrademark(tradeMark?.ID));
+  const deleteHandler = async () => {
+    await dispatch(deleteTrademark(tradeMark?.ID));
     dispatch(
       openSnackbar({
         open: true,

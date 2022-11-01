@@ -1,5 +1,6 @@
 import { useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -45,7 +46,28 @@ const ReceptionList = () => {
       {
         Header: 'Order',
         accessor: 'ID',
-        className: 'cell-center'
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">Farmu-{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
+        Header: 'Fecha OC',
+        accessor: 'CreatedAt',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1">{format(new Date(value), 'dd-MM-yyyy')}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Proveedor',
@@ -66,11 +88,6 @@ const ReceptionList = () => {
           );
         }
       },
-      /*    {
-        Header: 'Fecha OC',
-        accessor: 'create_order',
-        disableSortBy: true
-      }, */
       {
         Header: 'Bodega',
         accessor: 'WarehouseID',
@@ -138,7 +155,7 @@ const ReceptionList = () => {
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDF values={dataPDF} />
+              <PDF values={dataPDF} FileName="Recepción" />
               <Tooltip title="Ingresar">
                 <IconButton
                   color="primary"

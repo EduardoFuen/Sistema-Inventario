@@ -29,6 +29,10 @@ import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
 
+// types
+import { Warehouses } from 'types/product-type';
+import { Supplier } from 'types/supplier';
+
 // assets
 import { SendOutlined } from '@ant-design/icons';
 
@@ -87,7 +91,7 @@ function ViewPurchase() {
 
   const orderPurchase: any = useMemo(() => {
     if (id && order) {
-      let supplier: any = supplierList?.find((item: any) => item.ID === order?.SupplierID);
+      let supplier: any = supplierList?.find((item: Supplier) => item.ID === order?.SupplierID);
       let Articles: any =
         order?.Articles &&
         order?.Articles?.length > 0 &&
@@ -172,8 +176,8 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
                         {supplierList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Supplier) => item.Status === true)
+                          .map((option: Supplier) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.BusinessName}
                             </MenuItem>
@@ -184,8 +188,8 @@ function ViewPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                       <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('WarehouseID')}>
                         {warehouseList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
+                          .filter((item: Warehouses) => item.Status === true)
+                          .map((option: Warehouses) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
