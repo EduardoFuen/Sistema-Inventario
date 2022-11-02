@@ -8,6 +8,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/activeSubst';
 import ImportToFile from 'components/ImportToFile';
 
+// types
+import { Substances } from 'types/product-type';
+
 // ==============================|| ACTIVE/SUBSTANCES IMPORT ||============================== //
 
 export interface Props {
@@ -20,10 +23,10 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data?.map((item: any) => ({
+      const newData = data?.map((item: Substances) => ({
         Name: item?.Name,
         Status: item?.Status,
-        ID: item?.ID || ''
+        ID: item?.ID || 0
       }));
       await dispatch(addExcel(newData));
       onCancel();

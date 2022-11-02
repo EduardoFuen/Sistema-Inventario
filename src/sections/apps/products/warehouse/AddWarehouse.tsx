@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { useDispatch } from 'react-redux';
 
 // material-ui
@@ -41,6 +40,9 @@ import { countrys } from 'data/countries';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+
+// types
+import { Warehouses } from 'types/product-type';
 
 // constant
 const getInitialValues = (warehouse: FormikValues | null) => {
@@ -107,13 +109,14 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
     validationSchema: UserSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newWarehouse = {
+        const newWarehouse: Warehouses = {
           Name: values.Name,
           Department: values.Department,
           City: values.City,
           Location: values.Location,
           Status: values.Status
         };
+
         if (warehouse) {
           await dispatch(editWarehouse(warehouse?.ID, newWarehouse));
           dispatch(

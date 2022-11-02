@@ -113,7 +113,7 @@ export function deleteSubs(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/tipodeproducto`, data);
+      const response = await axios.post(`${HOST}/sustancias`, data);
       dispatch(
         openSnackbar({
           open: true,

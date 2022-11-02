@@ -21,7 +21,7 @@ import {
 
 // third-party
 import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider } from 'formik';
+import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project import
 import { useSelector, useDispatch } from 'store';
@@ -55,6 +55,40 @@ import { CameraOutlined } from '@ant-design/icons';
 
 // ==============================|| EDIT PRODUCT - MAIN ||============================== //
 
+const getInitialValues = (product: FormikValues | null) => {
+  const newProduct: Products = {
+    Name: product?.Name,
+    Sku: product?.Sku,
+    Ean: product?.Ean,
+    MakerID: product?.Maker?.ID || '',
+    TrademarkID: product?.TrademarkID || '',
+    TypesProductID: product?.TypesProductID || '',
+    Variation: product?.Variation,
+    CategoryOneID: product?.CategoryOneID || '',
+    CategoryTwoID: product?.CategoryTwoID || '',
+    CategoryThreeID: product?.CategoryThreeID || '',
+    PackID: product?.PackID || '',
+    Wrapper: product?.Wrapper,
+    Quantity: product?.Quantity || '',
+    MakerUnit: product?.MakerUnit || '',
+    Weight: product?.Weight || '',
+    Width: product?.Width || '',
+    PackInfo: product?.PackInfo,
+    Height: product?.Height || '',
+    WrapperUnit: product?.WrapperUnit || '',
+    Depth: product?.Depth || '',
+    SubstancesIDS: product?.Substance || '',
+    Keywords: product?.Keywords,
+    SubstitutesIDS: product?.Substitutes || '',
+    WarehouseIDS: product?.Warehouses || '',
+    UrlImage: product?.UrlImage,
+    Status: product?.Status,
+    Tax: product?.iva?.toString(),
+    IsTaxed: product?.Taxed
+  };
+  return newProduct;
+};
+
 function UpdateProduct() {
   const history = useNavigate();
   const theme = useTheme();
@@ -63,6 +97,7 @@ function UpdateProduct() {
   const [avatar, setAvatar] = useState<string | undefined>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
   const [istaxed, setIsTaxed] = useState<boolean | undefined>();
+  const [maker_ID, setIsMakerID] = useState<string | number>();
 
   useEffect(() => {
     dispatch(getTrademarkList());
@@ -140,56 +175,27 @@ function UpdateProduct() {
   };
 
   const formik = useFormik({
-    initialValues: {
-      Name: product?.Name,
-      Sku: product?.Sku,
-      Ean: product?.Ean,
-      MakerID: product?.Maker?.ID || '',
-      TrademarkID: product?.TrademarkID || '',
-      TypesProductID: product?.TypesProductID || '',
-      Variation: product?.Variation,
-      CategoryOneID: product?.CategoryOneID || '',
-      CategoryTwoID: product?.CategoryTwoID || '',
-      CategoryThreeID: product?.CategoryThreeID || '',
-      PackID: product?.PackID || '',
-      Wrapper: product?.Wrapper,
-      Quantity: product?.Quantity || '',
-      MakerUnit: product?.MakerUnit || '',
-      Weight: product?.Weight || '',
-      Width: product?.Width || '',
-      PackInfo: product?.PackInfo,
-      Height: product?.Height || '',
-      WrapperUnit: product?.WrapperUnit || '',
-      Depth: product?.Depth || '',
-      SubstancesIDS: product?.Substance || '',
-      Keywords: product?.Keywords,
-      SubstitutesIDS: product?.Substitutes || '',
-      WarehouseIDS: product?.Warehouses || '',
-      UrlImage: product?.UrlImage,
-      Status: product?.Status,
-      Tax: product?.iva?.toString(),
-      IsTaxed: product?.Taxed
-    },
+    initialValues: getInitialValues(product!),
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         let data = {
           ...values,
-          CategoryOneID: values.CategoryOneID.toString(),
-          CategoryTwoID: values.CategoryTwoID.toString(),
-          CategoryThreeID: values.CategoryThreeID.toString(),
-          PackID: values.PackID.toString(),
-          TrademarkID: values.TrademarkID.toString(),
-          MakerID: values.MakerID.toString(),
-          TypesProductID: values.TypesProductID.toString(),
+          CategoryOneID: values?.CategoryOneID,
+          CategoryTwoID: values?.CategoryTwoID?.toString(),
+          CategoryThreeID: values?.CategoryThreeID?.toString(),
+          PackID: values?.PackID?.toString(),
+          TrademarkID: values?.TrademarkID?.toString(),
+          MakerID: values?.MakerID?.toString(),
+          TypesProductID: values?.TypesProductID?.toString(),
           Taxed: values.IsTaxed,
-          Quantity: values.Quantity.toString(),
-          MakerUnit: values.MakerUnit.toString(),
-          iva: values.Tax,
-          Weight: values?.Weight.toString(),
-          Width: values?.Width.toString(),
-          Height: values?.Height.toString(),
-          Depth: values?.Depth.toString(),
+          Quantity: values?.Quantity?.toString(),
+          MakerUnit: values.MakerUnit?.toString(),
+          iva: values.Tax?.toString(),
+          Weight: values?.Weight?.toString(),
+          Width: values?.Width?.toString(),
+          Height: values?.Height?.toString(),
+          Depth: values?.Depth?.toString(),
           SubstitutesIDS: idsToString(values.SubstitutesIDS),
           WarehouseIDS: idsToString(values.WarehouseIDS),
           SubstancesIDS: idsToString(values.SubstancesIDS)
@@ -336,7 +342,16 @@ function UpdateProduct() {
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
-                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('MakerID')}>
+                      <TextField
+                        placeholder="Seleccionar Maker"
+                        fullWidth
+                        select
+                        {...getFieldProps('MakerID')}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                          setIsMakerID(event.target.value);
+                          setFieldValue('MakerID', event.target.value);
+                        }}
+                      >
                         {makerList
                           .filter((item: Maker) => item.Status === true)
                           .map((option: Maker) => (
@@ -350,7 +365,7 @@ function UpdateProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                       <TextField placeholder="Seleccionar Trademark" {...getFieldProps('TrademarkID')} fullWidth select>
                         {tradeMarkList
-                          .filter((item: Trademark) => item.Status === true)
+                          .filter((item: Trademark) => (item.Status === true && item.MakerID === maker_ID) || product?.Maker?.ID)
                           .map((option: Trademark) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}

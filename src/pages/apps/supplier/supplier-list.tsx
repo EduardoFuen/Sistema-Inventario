@@ -19,6 +19,9 @@ import ScrollX from 'components/ScrollX';
 import Import from './ImportSupplier';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
 
+// types
+import { Supplier } from 'types/supplier';
+
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
@@ -154,6 +157,39 @@ const SupplierListPage = () => {
     [theme]
   );
 
+  const newDataExport: any = supplierList.map((item: Supplier) => ({
+    ID: item?.ID,
+    BusinessName: item?.BusinessName,
+    Nit: item?.Nit,
+    Cupo: item?.Cupo,
+    DaysPayment: item?.DaysPayment,
+    LeadTimeBaq: item?.LeadTimeBaq,
+    LeadTimeBog: item?.LeadTimeBog,
+    PaymenTerm: item?.PaymenTerm,
+    Discount: item?.Discount,
+    NameContact: item?.NameContact,
+    EmailContact: item?.EmailContact,
+    PhoneContact: item?.PhoneContact,
+    Status: item?.Status
+  }));
+
+  const Template: any = [
+    {
+      ID: '',
+      BusinessName: '',
+      Nit: '',
+      Cupo: '',
+      DaysPayment: '',
+      LeadTimeBaq: '',
+      LeadTimeBog: '',
+      PaymenTerm: '',
+      Discount: '',
+      NameContact: '',
+      EmailContact: '',
+      PhoneContact: '',
+      Status: ''
+    }
+  ];
   const renderRowSubComponent = useCallback(({ row }) => <SupplierView data={supplierList[row.id]} />, [supplierList]);
 
   return (
@@ -168,6 +204,10 @@ const SupplierListPage = () => {
           renderRowSubComponent={renderRowSubComponent}
           TitleButton="Agregar Proveedor"
           FileName="Proveedores"
+          dataExport={newDataExport}
+          FileNameTemplate="Descargar Plantilla"
+          download
+          dataTemplate={Template}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

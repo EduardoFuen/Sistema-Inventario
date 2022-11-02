@@ -17,6 +17,9 @@ import { getSubsList, deleteSubs } from 'store/reducers/activeSubst';
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
+// types
+import { Substances } from 'types/product-type';
+
 // ==============================|| ACTIVE-SUBSTANCES LIST - MAIN ||============================== //
 
 const ActiveSubstancesList = () => {
@@ -40,6 +43,14 @@ const ActiveSubstancesList = () => {
     dispatch(getSubsList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const newDataExport: any = todoListSubs.map((item: Substances) => {
+    return {
+      ID: item?.ID,
+      Name: item?.Name,
+      Status: item?.Status
+    };
+  });
 
   const columnsProducts = useMemo(
     () => [
@@ -116,6 +127,7 @@ const ActiveSubstancesList = () => {
           FileName="Sustancias&activos"
           handleImport={handleImport}
           TitleButton="Agregar"
+          dataExport={newDataExport}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>

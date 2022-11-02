@@ -31,15 +31,18 @@ import { addMaker, editMaker, deleteMaker } from 'store/reducers/maker';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
+// types
+import { Maker } from 'types/product-type';
+
 // constant
 const getInitialValues = (maker: FormikValues | null) => {
   const newMaker = {
     Name: '',
-    status: false
+    Status: false
   };
 
   if (maker) {
-    newMaker.status = maker?.Status;
+    newMaker.Status = maker?.Status;
     return _.merge({}, newMaker, maker);
   }
 
@@ -81,9 +84,9 @@ const AddMaker = ({ maker, onCancel }: Props) => {
     validationSchema: MakerSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newMaker = {
+        const newMaker: Maker = {
           Name: values.Name,
-          Status: values.status
+          Status: values.Status
         };
 
         if (maker) {
@@ -155,7 +158,7 @@ const AddMaker = ({ maker, onCancel }: Props) => {
                       <FormControlLabel
                         control={<Switch sx={{ mt: 0 }} defaultChecked={maker?.Status} value={maker?.Status} />}
                         label="Estado"
-                        {...getFieldProps('status')}
+                        {...getFieldProps('Status')}
                         labelPlacement="top"
                       />
                     </Stack>

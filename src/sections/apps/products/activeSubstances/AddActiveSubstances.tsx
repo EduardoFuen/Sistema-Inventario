@@ -31,6 +31,9 @@ import { addSubs, editSubs, deleteSubs } from 'store/reducers/activeSubst';
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
+// types
+import { Substances } from 'types/product-type';
+
 // constant
 const getInitialValues = (subst: FormikValues | null) => {
   const newSubstance = {
@@ -82,7 +85,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newSubstance = {
+        const newSubstance: Substances = {
           Name: values.Name,
           Status: values.Status
         };

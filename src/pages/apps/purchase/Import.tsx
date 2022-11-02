@@ -24,9 +24,10 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = () => {
     try {
       const newData = data?.map((item: any) => {
-        let SubTotal = Number(item?.Quantity || 0 * item?.BasePrice || 0 * ((100 - item?.DiscountNegotiated || 0) / 100)) || 0;
-        let Tax = Number(item?.Tax) || 0;
-        let Total = Number(SubTotal + (item?.Quantity || 0 * item?.BasePrice || 0 * Tax) / 100) || 0;
+        let TotalDiscountNegotiated = Number((100 - item?.DiscountNegotiated) / 100);
+        let SubTotal = item?.Quantity * item?.BasePrice * TotalDiscountNegotiated || 0;
+        let Tax = Number.parseFloat(item?.Tax) || 0;
+        let Total = SubTotal + (item?.Quantity * item?.BasePrice * Tax) / 100 || 0;
 
         return {
           ProductID: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.ID || '',
@@ -36,9 +37,9 @@ const Import = ({ onCancel }: Props) => {
           Name: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.Name || '',
           isSelected: true,
           Count: Number(item?.Quantity || 0),
-          BasePrice: parseFloat(item?.BasePrice) || 0,
-          DiscountNegotiated: parseFloat(item?.DiscountNegotiated) || 0,
-          DiscountAdditional: parseFloat(item?.DiscountAdditional) || 0,
+          BasePrice: Number.parseFloat(item?.BasePrice) || 0,
+          DiscountNegotiated: Number.parseFloat(item?.DiscountNegotiated) || 0,
+          DiscountAdditional: Number.parseFloat(item?.DiscountAdditional) || 0,
           Bonus: Number(item?.Bonus) || 0,
           SubTotal,
           Tax,

@@ -23,9 +23,12 @@ interface Props {
   TitleButton: string;
   FileName: string;
   hideButton: boolean;
+  download: boolean;
   renderRowSubComponent: any | undefined;
   dataExport: [];
+  dataTemplate: [];
   handleSelect: (row: any) => void;
+  FileNameTemplate: string;
 }
 
 const ReactTable = ({
@@ -39,7 +42,10 @@ const ReactTable = ({
   renderRowSubComponent,
   dataExport,
   hideButton,
-  handleSelect
+  download,
+  dataTemplate,
+  handleSelect,
+  FileNameTemplate
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -95,6 +101,7 @@ const ReactTable = ({
               setGlobalFilter={setGlobalFilter}
               size="small"
             />
+            {download && <Export excelData={dataTemplate} fileName={FileName} title={FileNameTemplate} />}
             <Export excelData={dataExport && dataExport.length > 0 ? dataExport : data} fileName={FileName} />
             {hideButton && (
               <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
@@ -164,8 +171,11 @@ ReactTable.defaultProps = {
   handleAdd: () => {},
   handleImport: () => {},
   dataExport: [],
+  dataTemplate: [],
   hideButton: true,
+  download: false,
   TitleButton: '',
+  FileNameTemplate: '',
   FileName: ''
 };
 

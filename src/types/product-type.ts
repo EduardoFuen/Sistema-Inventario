@@ -28,12 +28,16 @@ export type Products = {
   UrlImage?: string;
   Wrapper?: string;
   WrapperUnit?: string;
-  TrademarkID?: number;
-  TypesProductID?: number;
-  CategoryOneID?: number;
-  CategoryThreeID?: number;
-  CategoryTwoID?: number;
-  PackID?: number;
+  TrademarkID?: string;
+  TypesProductID?: string;
+  CategoryOneID?: string;
+  CategoryThreeID?: string;
+  SubstitutesIDS?: string;
+  WarehouseIDS?: string;
+  SubstancesIDS?: string;
+  CategoryTwoID?: string;
+  MakerID?: string;
+  PackID?: string;
   Iva?: number;
   iva?: number;
   Tax?: number;
@@ -149,7 +153,7 @@ export interface TypeProductStateProps {
 // Active Substances
 export type Substances = {
   ID?: string | number | undefined;
-  Name?: string | undefined;
+  Name?: string;
   Status?: boolean;
 };
 

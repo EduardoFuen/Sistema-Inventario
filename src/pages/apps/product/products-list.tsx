@@ -101,9 +101,9 @@ const ProductList = () => {
       Trademark: item?.Trademark,
       Type_Product: TypesProduct?.Name,
       Variation: item?.Variation,
-      CategoryOne: item?.CategoryOne?.Name,
-      CategoryTwo: item?.CategoryTwo?.Name,
-      CategoryThree: item?.CategoryThree?.Name,
+      Grupo: item?.CategoryOne?.Name,
+      CategoryOne: item?.CategoryTwo?.Name,
+      CategoryTwo: item?.CategoryThree?.Name,
       Pack: item?.Pack?.Name,
       Quantity: item?.Quantity,
       MakerUnit: item?.MakerUnit,
@@ -122,6 +122,38 @@ const ProductList = () => {
       IsTaxed: item?.Taxed
     };
   });
+
+  const Template: any = [
+    {
+      ID: '',
+      Name: '',
+      Sku: '',
+      Ean: '',
+      Maker: '',
+      Trademark: '',
+      Type_Product: '',
+      Variation: '',
+      Grupo: '',
+      CategoryOne: '',
+      CategoryTwo: '',
+      Pack: '',
+      Quantity: '',
+      MakerUnit: '',
+      Weight: '',
+      Width: '',
+      PackInfo: '',
+      Height: '',
+      WrapperUnit: '',
+      Depth: '',
+      Warehouse: '',
+      Substance: '',
+      Substitutes: '',
+      Status: 'item?.Status',
+      Keywords: '',
+      Tax: '',
+      IsTaxed: ''
+    }
+  ];
 
   const columnsProducts = useMemo(
     () => [
@@ -259,7 +291,10 @@ const ProductList = () => {
           handleImport={handleImport}
           handleAdd={handleAddProduct}
           TitleButton="Agregar Producto"
+          FileNameTemplate="Descargar Plantilla"
           dataExport={newDataExport}
+          download
+          dataTemplate={Template}
           FileName="Productos"
         />
       </ScrollX>

@@ -265,7 +265,7 @@ function AddPurchase() {
                     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
                       <Typography variant="subtitle1">Subtotal: $ {data?.SubTotal || 0}</Typography>
                     </Stack>
-                    {data.DiscountGlobal !== '0' && (
+                    {data.DiscountGlobal !== 0 && (
                       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
                         <Typography variant="subtitle1">Descuento: $ {data?.DiscountGlobal || 0}</Typography>
                       </Stack>

@@ -8,6 +8,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/trademark';
 import ImportToFile from 'components/ImportToFile';
 
+// types
+import { Trademark } from 'types/product-type';
+
 // ==============================|| TRADEMARK IMPORT ||============================== //
 
 export interface Props {
@@ -20,10 +23,10 @@ const ImportTradeMark = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data?.map((item: any) => ({
+      const newData = data?.map((item: Trademark) => ({
         Name: item?.Name,
-        MakerId: item?.MakerId,
-        ID: item?.ID || '',
+        MakerID: item?.MakerID,
+        ID: item?.ID || 0,
         Status: item?.Status
       }));
       await dispatch(addExcel(newData));

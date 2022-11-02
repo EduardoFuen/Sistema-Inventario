@@ -25,12 +25,15 @@ import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
 
+// types
+import { Supplier } from 'types/supplier';
+
 // ==============================|| ADD SUPPLIER - MAIN ||============================== //
 
 const getInitialValues = () => {
-  const newSubstance = {
+  const newSubstance: Supplier = {
     NameContact: '',
-    PhoneContact: '',
+    PhoneContact: 0,
     BusinessName: '',
     EmailContact: '',
     Nit: '',

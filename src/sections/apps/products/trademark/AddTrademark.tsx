@@ -38,6 +38,9 @@ import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/tra
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
+// types
+import { Trademark } from 'types/product-type';
+
 // constant
 const getInitialValues = (tradeMark: FormikValues | null) => {
   const newTradeTrademark = {
@@ -90,11 +93,12 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
     validationSchema: TrademarkSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newTradeTrademark = {
+        const newTradeTrademark: Trademark = {
           Name: values.Name,
           Status: values.Status,
           MakerID
         };
+
         if (tradeMark) {
           await dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
           dispatch(

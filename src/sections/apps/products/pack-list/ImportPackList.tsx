@@ -9,6 +9,9 @@ import { addExcel } from 'store/reducers/pack';
 import ImportToFile from 'components/ImportToFile';
 import { filter } from 'lodash';
 
+// types
+import { Packs } from 'types/product-type';
+
 // ==============================|| PACK IMPORT ||============================== //
 
 export interface Props {
@@ -22,10 +25,10 @@ const ImportPack = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data;
-      filter((item: any) => item.ID !== '').map((item: any) => ({
-        Name: item?.Name || item?.name,
-        Status: item?.Status || item?.status,
-        ID: item?.ID || ''
+      filter((item: Packs) => item.ID !== '').map((item: Packs) => ({
+        Name: item?.Name,
+        Status: item?.Status,
+        ID: item?.ID || 0
       }));
 
       await dispatch(addExcel(newData));

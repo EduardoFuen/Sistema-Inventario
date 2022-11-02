@@ -8,6 +8,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addMakerExcel } from 'store/reducers/maker';
 import ImportToFile from 'components/ImportToFile';
 
+// types
+import { Maker } from 'types/product-type';
+
 // ==============================|| MAKER IMPORT||============================== //
 
 export interface Props {
@@ -20,9 +23,9 @@ const ImportMarker = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data?.map((item: any) => ({
+      const newData = data?.map((item: Maker) => ({
         Name: item?.Name,
-        ID: item?.ID || '',
+        ID: item?.ID || 0,
         Status: item?.Status
       }));
       await dispatch(addMakerExcel(newData));

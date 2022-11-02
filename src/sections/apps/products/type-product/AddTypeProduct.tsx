@@ -31,6 +31,9 @@ import { addTypeProduct, editTypeProduct, deleteTypeProduct } from 'store/reduce
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
+// types
+import { TypeProduct } from 'types/product-type';
+
 // constant
 const getInitialValues = (product: FormikValues | null) => {
   const newProduct = {
@@ -82,7 +85,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
     validationSchema: UserSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newProduct = {
+        const newProduct: TypeProduct = {
           Name: values.Name,
           Status: values.Status
         };

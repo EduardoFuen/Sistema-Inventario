@@ -56,7 +56,7 @@ import { CameraOutlined } from '@ant-design/icons';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
-  const newProduct = {
+  const newProduct: Products = {
     Name: '',
     Sku: '',
     Ean: '',
@@ -68,7 +68,7 @@ const getInitialValues = () => {
     CategoryTwoID: '',
     CategoryThreeID: '',
     PackID: '',
-    Quantity: '',
+    Quantity: 0,
     MakerUnit: '',
     Weight: '',
     Width: '',
@@ -81,7 +81,7 @@ const getInitialValues = () => {
     WarehouseIDS: '',
     SubstitutesIDS: '',
     UrlImage: '',
-    Tax: '',
+    Tax: 0,
     IsTaxed: false,
     Status: false
   };
@@ -95,6 +95,7 @@ function AddNewProduct() {
 
   const [avatar, setAvatar] = useState<string | undefined>();
   const [istaxed, setIsTaxed] = useState<boolean>(false);
+  const [maker_ID, setIsMakerID] = useState<string | number>();
   const [selectedImage, setSelectedImage] = useState<File | undefined>(undefined);
 
   useEffect(() => {
@@ -165,15 +166,15 @@ function AddNewProduct() {
       try {
         let data = {
           ...values,
-          CategoryOneID: values.CategoryOneID.toString(),
-          CategoryTwoID: values.CategoryTwoID.toString(),
-          CategoryThreeID: values.CategoryThreeID.toString(),
-          TypesProductID: values.TypesProductID.toString(),
-          PackID: values.PackID.toString(),
-          TrademarkID: values.TrademarkID.toString(),
-          MakerID: values.MakerID.toString(),
+          CategoryOneID: values.CategoryOneID,
+          CategoryTwoID: values.CategoryTwoID,
+          CategoryThreeID: values.CategoryThreeID,
+          TypesProductID: values.TypesProductID,
+          PackID: values.PackID,
+          TrademarkID: values.TrademarkID,
+          MakerID: values.MakerID,
           Taxed: values.IsTaxed,
-          Quantity: values.Quantity.toString(),
+          Quantity: values.Quantity,
           Iva: values.Tax
         };
         await dispatch(addProduct(data));
@@ -317,7 +318,16 @@ function AddNewProduct() {
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Maker</InputLabel>
-                      <TextField placeholder="Seleccionar Maker" fullWidth select {...getFieldProps('MakerID')}>
+                      <TextField
+                        placeholder="Seleccionar Maker"
+                        fullWidth
+                        select
+                        {...getFieldProps('MakerID')}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                          setIsMakerID(event.target.value);
+                          setFieldValue('MakerID', event.target.value);
+                        }}
+                      >
                         {makerList
                           .filter((item: Maker) => item.Status === true)
                           .map((option: Maker) => (
@@ -331,7 +341,7 @@ function AddNewProduct() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Trademark</InputLabel>
                       <TextField placeholder="Seleccionar Trademark" {...getFieldProps('TrademarkID')} fullWidth select>
                         {tradeMarkList
-                          .filter((item: Trademark) => item.Status === true)
+                          .filter((item: Trademark) => item.Status === true && item.MakerID === maker_ID)
                           .map((option: Trademark) => (
                             <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}

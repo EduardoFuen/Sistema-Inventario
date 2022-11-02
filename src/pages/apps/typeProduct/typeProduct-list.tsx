@@ -17,6 +17,9 @@ import { getTypeProductList, deleteTypeProduct } from 'store/reducers/typeProduc
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
+// types
+import { Substances } from 'types/product-type';
+
 // ==============================|| TYPE PRODUCT LIST - MAIN ||============================== //
 
 const PackList = () => {
@@ -41,6 +44,14 @@ const PackList = () => {
     dispatch(getTypeProductList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const newDataExport: any = typeProductList.map((item: Substances) => {
+    return {
+      ID: item?.ID,
+      Name: item?.Name,
+      Status: item?.Status
+    };
+  });
 
   const columnsProducts = useMemo(
     () => [
@@ -117,6 +128,7 @@ const PackList = () => {
           data={typeProductList as []}
           TitleButton="Agregar Tipo de Producto"
           FileName="TipodeProductos"
+          dataExport={newDataExport}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>
