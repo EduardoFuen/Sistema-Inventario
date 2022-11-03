@@ -117,6 +117,7 @@ export function getPurchaseList() {
       if (response.data instanceof Array) {
         dispatch(getSupplierList());
         dispatch(getWarehouseList());
+        dispatch(resetItemsPurchase());
         dispatch(slice.actions.getPurchaseSuccess(response.data));
         dispatch(slice.actions.hasError(null));
       }
@@ -150,6 +151,9 @@ export function addPurchase(data: any) {
         }))
       };
       const response = await axios.post(`${HOST}/compras`, { ...Newdata });
+      await dispatch(getPurchaseList());
+      await dispatch(resetItemsPurchase());
+      await dispatch(slice.actions.addPurchaseSuccess(response.data));
       dispatch(
         openSnackbar({
           open: true,
@@ -161,8 +165,6 @@ export function addPurchase(data: any) {
           close: false
         })
       );
-      dispatch(resetItemsPurchase());
-      dispatch(slice.actions.addPurchaseSuccess(response.data));
       dispatch(slice.actions.hasError(null));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -174,8 +176,8 @@ export function getIDPurchase(id: number) {
     try {
       const response = await axios.get(`${HOST}/compras?ID=${id}`);
       if (response.data) {
-        dispatch(getSupplierList());
-        dispatch(getWarehouseList());
+        await dispatch(getSupplierList());
+        await dispatch(getWarehouseList());
         dispatch(slice.actions.getIDPurchaseSuccess(response.data));
       }
     } catch (error) {

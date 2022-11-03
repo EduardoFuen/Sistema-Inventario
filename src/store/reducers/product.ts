@@ -57,7 +57,7 @@ const slice = createSlice({
     },
 
     // GET PRODUCT
-    getProductSuccess(state, action) {
+    getProductIDSuccess(state, action) {
       state.product = action.payload;
     }
   }
@@ -87,11 +87,23 @@ export function getProducts() {
   };
 }
 
+export function getProductID(id: number) {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/productos?ID=${id}`);
+      dispatch(slice.actions.getProductIDSuccess(response.data));
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function addProduct(data: any) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/productos`, { ...data });
-      dispatch(slice.actions.addProductSuccess(response.data));
+      await dispatch(getProducts());
+      await dispatch(slice.actions.addProductSuccess(response.data));
       dispatch(
         openSnackbar({
           open: true,
@@ -103,8 +115,8 @@ export function addProduct(data: any) {
           close: false
         })
       );
-      dispatch(slice.actions.hasError(null));
-      window.location.replace('/product-list');
+      window.location.href = `/product-list/product-edit/${response.data.ID}`;
+      //window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

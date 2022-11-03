@@ -20,6 +20,8 @@ export interface Props {
 const Import = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
+  const [Submitting, setSubmitting] = useState<boolean>(false);
+
   const { makerList } = useSelector((state) => state.maker);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
@@ -31,42 +33,43 @@ const Import = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data?.map((item: any) => {
-        return {
-          Name: item?.Name,
-          Sku: item?.Sku.toString(),
-          Ean: item?.Ean.toString(),
-          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
-          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
-          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
-          Variation: item?.Variation?.toString(),
-          CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() || '',
-          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() || '',
-          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryTwo)?.ID?.toString() || '',
-          PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
-          Quantity: item?.Quantity?.toString(),
-          MakerUnit: item?.MakerUnit?.toString(),
-          Weight: item?.Weight?.toString(),
-          Width: item?.Width?.toString(),
-          Height: item?.Height?.toString(),
-          Depth: item?.Depth?.toString(),
-          Wrapper: item?.PackInfo?.toString(),
-          WrapperUnit: item?.WrapperUnit?.toString(),
-          Keywords: item?.Keywords?.toString(),
-          SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
-          WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
-          SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
-          Status: item?.Status,
-          HandlesBaq: item?.HandlesBaq?.toString() || '',
-          HandlesBog: item?.HandlesBog?.toString() || '',
-          iva: item?.Tax?.toString(),
-          Taxed: item?.IsTaxed
-        };
-      });
+      setSubmitting(true);
+      const newData = data?.map((item: any) => ({
+        Name: item?.Name,
+        Sku: item?.Sku.toString(),
+        Ean: item?.Ean.toString(),
+        MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
+        TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
+        TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
+        Variation: item?.Variation?.toString(),
+        CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() || '',
+        CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() || '',
+        CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() || '',
+        PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
+        Quantity: item?.Quantity?.toString(),
+        MakerUnit: item?.MakerUnit?.toString(),
+        Weight: item?.Weight?.toString(),
+        Width: item?.Width?.toString(),
+        Height: item?.Height?.toString(),
+        Depth: item?.Depth?.toString(),
+        Wrapper: item?.PackInfo?.toString(),
+        WrapperUnit: item?.WrapperUnit?.toString(),
+        Keywords: item?.Keywords?.toString(),
+        SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
+        WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
+        SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
+        Status: item?.Status,
+        HandlesBaq: item?.HandlesBaq?.toString() || '',
+        HandlesBog: item?.HandlesBog?.toString() || '',
+        iva: item?.Tax?.toString(),
+        Taxed: item?.IsTaxed
+      }));
 
       await dispatch(addExcel(newData));
       onCancel();
+      setSubmitting(false);
     } catch (error) {
+      setSubmitting(false);
       console.error(error);
     }
   };
@@ -90,7 +93,7 @@ const Import = ({ onCancel }: Props) => {
               <Button color="error" onClick={onCancel}>
                 Cancelar
               </Button>
-              <Button type="submit" variant="contained" onClick={onSubmit} disabled={data.length < 0}>
+              <Button type="submit" variant="contained" onClick={onSubmit} disabled={data.length < 0 || Submitting}>
                 Confirmar
               </Button>
             </Stack>

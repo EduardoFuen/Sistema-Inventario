@@ -32,6 +32,7 @@ const MakersList = () => {
   const [maker, setWarehouse] = useState(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
+
   const { makerList } = useSelector((state) => state.maker);
 
   useEffect(() => {

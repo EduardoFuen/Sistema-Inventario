@@ -24,7 +24,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project import
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { editPurchase, resetItemsPurchase, editItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import { editPurchase, resetItemsPurchase, editItemsPurchase } from 'store/reducers/purcharse';
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
@@ -63,17 +63,17 @@ function ViewPurchase() {
   const [data, setData] = useState<any>();
   const { id } = useParams();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); */
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
-  const { order } = useSelector((state) => state.purchase);
+  const { listPurchase } = useSelector((state) => state.purchase);
   const { products } = useSelector((state) => state.product);
 
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
@@ -90,7 +90,8 @@ function ViewPurchase() {
   };
 
   const orderPurchase: any = useMemo(() => {
-    if (id && order) {
+    if (id) {
+      let order = listPurchase.find((item) => item.ID === Number(id));
       let supplier: any = supplierList?.find((item: Supplier) => item.ID === order?.SupplierID);
       let Articles: any =
         order?.Articles &&
@@ -277,7 +278,7 @@ function ViewPurchase() {
                       />
                     </Grid>
                   </Grid>
-                  {order?.Status === 0 && (
+                  {orderPurchase?.Status === 0 && (
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
@@ -380,7 +381,7 @@ function ViewPurchase() {
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancel
                   </Button>
-                  {order?.Status === 0 && (
+                  {orderPurchase?.Status === 0 && (
                     <Button
                       type="submit"
                       variant="contained"
@@ -393,7 +394,7 @@ function ViewPurchase() {
                       Enviar
                     </Button>
                   )}
-                  {order?.Status === 0 && (
+                  {orderPurchase?.Status === 0 && (
                     <Button
                       variant="contained"
                       onClick={() => {

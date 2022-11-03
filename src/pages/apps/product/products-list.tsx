@@ -36,6 +36,7 @@ const ProductList = () => {
 
   const { products, error } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { makerList } = useSelector((state) => state.maker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
@@ -54,12 +55,9 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
-  const TradeMark = (id: number) => {
-    if (id) {
-      let MakerID: any = tradeMarkList.find((item) => item.ID === id);
-      return MakerID?.Name;
-    }
-  };
+  const getTradeMark = (id: number) => tradeMarkList.find((item) => item.ID === id)?.Name;
+
+  const getMaker = (id: number) => makerList.find((item) => item.ID === id)?.Name;
 
   const handleAddProduct = () => {
     history(`/product-list/add-new-product`);
@@ -189,13 +187,11 @@ const ProductList = () => {
       },
       {
         Header: 'Maker',
-        accessor: 'Maker',
+        accessor: 'MakerID',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1">{value?.Name}</Typography>
-              </Stack>
+              <Stack spacing={0}>{value && <Typography variant="subtitle1">{getMaker(value)}</Typography>}</Stack>
             </Stack>
           );
         }
@@ -206,7 +202,7 @@ const ProductList = () => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography variant="subtitle1">{TradeMark(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography variant="subtitle1">{getTradeMark(value)}</Typography>}</Stack>
             </Stack>
           );
         }

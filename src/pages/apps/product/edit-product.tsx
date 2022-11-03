@@ -127,6 +127,12 @@ function UpdateProduct() {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
 
+  useEffect(() => {
+    if (selectedImage) {
+      setAvatar(URL.createObjectURL(selectedImage));
+    }
+  }, [selectedImage]);
+
   const product = useMemo(() => {
     if (id) {
       return products.find((item) => item.ID === Number(id));
@@ -181,7 +187,7 @@ function UpdateProduct() {
       try {
         let data = {
           ...values,
-          CategoryOneID: values?.CategoryOneID,
+          CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),
           CategoryThreeID: values?.CategoryThreeID?.toString(),
           PackID: values?.PackID?.toString(),

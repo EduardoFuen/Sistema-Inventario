@@ -2,7 +2,7 @@
 import { useTheme } from '@mui/material/styles';
 import { Box, Grid, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
-// ==============================|| CUSTOMER - VIEW ||============================== //
+// ==============================||  PRODUCT - VIEW ||============================== //
 
 const ProductView = ({ data }: any) => {
   const theme = useTheme();

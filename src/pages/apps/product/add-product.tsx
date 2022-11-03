@@ -166,17 +166,23 @@ function AddNewProduct() {
       try {
         let data = {
           ...values,
-          CategoryOneID: values.CategoryOneID,
-          CategoryTwoID: values.CategoryTwoID,
-          CategoryThreeID: values.CategoryThreeID,
-          TypesProductID: values.TypesProductID,
-          PackID: values.PackID,
-          TrademarkID: values.TrademarkID,
-          MakerID: values.MakerID,
+          CategoryOneID: values?.CategoryOneID?.toString(),
+          CategoryTwoID: values?.CategoryTwoID?.toString(),
+          CategoryThreeID: values?.CategoryThreeID?.toString(),
+          PackID: values?.PackID?.toString(),
+          TrademarkID: values?.TrademarkID?.toString(),
+          MakerID: values?.MakerID?.toString(),
+          TypesProductID: values?.TypesProductID?.toString(),
           Taxed: values.IsTaxed,
-          Quantity: values.Quantity,
-          Iva: values.Tax
+          Quantity: values?.Quantity?.toString(),
+          MakerUnit: values.MakerUnit?.toString(),
+          iva: values.Tax?.toString(),
+          Weight: values?.Weight?.toString(),
+          Width: values?.Width?.toString(),
+          Height: values?.Height?.toString(),
+          Depth: values?.Depth?.toString()
         };
+
         await dispatch(addProduct(data));
         setSubmitting(false);
       } catch (error) {
