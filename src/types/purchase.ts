@@ -21,5 +21,6 @@ export interface PurchaseStateProps {
   listPurchase: Purchase[];
   detailsReption: any[];
   order: any;
+  isLoading: boolean;
   error: object | string | null;
 }

@@ -18,7 +18,7 @@ import { getTypeProductList, deleteTypeProduct } from 'store/reducers/typeProduc
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // types
-import { Substances } from 'types/product-type';
+import { TypeProduct } from 'types/products';
 
 // ==============================|| TYPE PRODUCT LIST - MAIN ||============================== //
 
@@ -45,7 +45,7 @@ const PackList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const newDataExport: any = typeProductList.map((item: Substances) => {
+  const newDataExport: any = typeProductList.map((item: TypeProduct) => {
     return {
       ID: item?.ID,
       Name: item?.Name,

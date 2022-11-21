@@ -18,7 +18,7 @@ import { getSubsList, deleteSubs } from 'store/reducers/activeSubst';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // types
-import { Substances } from 'types/product-type';
+import { Substances } from 'types/products';
 
 // ==============================|| ACTIVE-SUBSTANCES LIST - MAIN ||============================== //
 

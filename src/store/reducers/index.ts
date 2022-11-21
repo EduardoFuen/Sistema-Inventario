@@ -17,6 +17,7 @@ import typeProduct from './typeProduct';
 import activeSubst from './activeSubst';
 import purchase from './purcharse';
 import inventory from './inventory';
+import reception from './reception';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -38,6 +39,14 @@ const reducers = combineReducers({
       keyPrefix: 'farmu-'
     },
     purchase
+  ),
+  reception: persistReducer(
+    {
+      key: 'reception',
+      storage,
+      keyPrefix: 'farmu-'
+    },
+    reception
   ),
   substances: persistReducer(
     {

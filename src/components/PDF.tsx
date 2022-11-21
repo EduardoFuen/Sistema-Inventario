@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   section: {
-    fontSize: 12,
+    fontSize: 8,
     margin: 5,
     padding: 5,
     flexGrow: 1,
@@ -89,30 +89,42 @@ const RenderDocument = ({ data }: any) => {
           Fecha {format(new Date(data?.CreatedAt), 'dd-MM-yyyy')} # Order Farmu-{data?.ID}
         </Text>
         <Text style={styles.header} fixed>
-          Bodega {data?.warehouse}
+          Bodega {data?.Warehouse?.Name}
         </Text>
-        <Text style={styles.title}>{data?.supplier?.BusinessName}</Text>
-        <Text style={styles.author}>NIT: {data?.supplier?.Nit}</Text>
-        <Text style={styles.author}>Email: {data?.supplier?.EmailContact}</Text>
-        <Text style={styles.author}>Teléfono: {data?.supplier?.PhoneContact}</Text>
+        <Text style={styles.title}>{data?.Supplier?.BusinessName}</Text>
+        <Text style={styles.author}>NIT: {data?.Supplier?.Nit}</Text>
+        <Text style={styles.author}>Email: {data?.Supplier?.EmailContact}</Text>
+        <Text style={styles.author}>Teléfono: {data?.Supplier?.PhoneContact}</Text>
         {data?.Articles && data?.Articles.length > 0 && (
           <Text style={styles.subtitle} x="10" y="30">
             Detalles de Compra
           </Text>
         )}
-        {data?.Articles && data?.Articles.length > 0 && (
+        {data?.Articles && data?.Articles?.length > 0 && (
           <View style={styles.row}>
             <View style={styles.section}>
               <Text>Producto</Text>
             </View>
             <View style={styles.section}>
-              <Text>Precio Base</Text>
-            </View>
-            <View style={styles.section}>
               <Text>Cantidad</Text>
             </View>
             <View style={styles.section}>
-              <Text>Subtotal</Text>
+              <Text>Precio Base</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>IVA</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>Descuento Negociado %</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>Bonificación</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>SubTotal</Text>
+            </View>
+            <View style={styles.section}>
+              <Text>Total</Text>
             </View>
           </View>
         )}
@@ -121,18 +133,30 @@ const RenderDocument = ({ data }: any) => {
           data?.Articles.map((item: any, index: number) => (
             <View style={styles.row} key={index}>
               <View style={styles.section}>
-                <Text>Name: {item?.Name}</Text>
-                <Text>Sku: {item?.Sku}</Text>
-                <Text>Ean: {item?.Ean}</Text>
-              </View>
-              <View style={styles.section}>
-                <Text>{item?.BasePrice}</Text>
+                <Text>{item?.Name}</Text>
+                <Text>{item?.Sku}</Text>
+                <Text>{item?.Ean}</Text>
               </View>
               <View style={styles.section}>
                 <Text>{item?.Count}</Text>
               </View>
               <View style={styles.section}>
-                <Text>{item?.Count * item?.BasePrice}</Text>
+                <Text>$ {item?.BasePrice}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>{item?.Tax}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>{item?.Discount}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>{item?.Bonus}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>$ {item?.SubTotal}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>$ {item?.Total}</Text>
               </View>
             </View>
           ))}

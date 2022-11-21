@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { WarehouseStateProps } from 'types/product-type';
+import { WarehouseStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: WarehouseStateProps = {
   error: null,
   warehouseList: []
 };
+
+// ==============================||  WAREHOUSE REDUCER  ||============================== //
 
 const wareHouse = createSlice({
   name: 'warehouse',
@@ -25,20 +26,22 @@ const wareHouse = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-    // GET PACKS
+    // GET WAREHOUSE
     getWarehouseSuccess(state, action) {
       state.warehouseList = action.payload;
     },
-    excelSuccess(state, action) {
-      state.warehouseList = [...state.warehouseList, ...action.payload];
-    },
-    // ADD PACK
+    // ADD WAREHOUSE
     addWarehouseSuccess(state, action) {
       state.warehouseList.push(action.payload);
     },
+    // UPDATE WAREHOUSE
     updateWarehouseSuccess(state, action) {
       const index = state.warehouseList.findIndex((item) => item?.ID === action.payload?.ID);
       state.warehouseList[index] = action.payload;
+    },
+    // ADD EXCEL WAREHOUSE
+    excelSuccess(state, action) {
+      state.warehouseList = [...state.warehouseList, ...action.payload];
     }
   }
 });
@@ -68,6 +71,17 @@ export function addWarehouse(data: any) {
     try {
       const response = await axios.post(`${HOST}/bodegas`, { ...data });
       dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Bodega update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(wareHouse.actions.hasError(error));
     }
@@ -79,6 +93,17 @@ export function editWarehouse(id: number, data: any) {
     try {
       const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
       dispatch(wareHouse.actions.updateWarehouseSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Bodega add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(wareHouse.actions.hasError(error));
     }

@@ -34,7 +34,6 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addWarehouse, editWarehouse, deleteWarehouse } from 'store/reducers/warehouse';
 import { countrys } from 'data/countries';
 
@@ -42,7 +41,7 @@ import { countrys } from 'data/countries';
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Warehouses } from 'types/product-type';
+import { Warehouses } from 'types/products';
 
 // constant
 const getInitialValues = (warehouse: FormikValues | null) => {
@@ -84,17 +83,6 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deleteWarehouse(warehouse?.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Bodega deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
 
@@ -119,30 +107,8 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
 
         if (warehouse) {
           await dispatch(editWarehouse(warehouse?.ID, newWarehouse));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Bodega update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addWarehouse(newWarehouse));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Bodega add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

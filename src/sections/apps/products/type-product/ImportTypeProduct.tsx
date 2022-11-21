@@ -9,7 +9,7 @@ import { addExcel } from 'store/reducers/typeProduct';
 import ImportToFile from 'components/ImportToFile';
 
 // types
-import { TypeProduct } from 'types/product-type';
+import { TypeProduct } from 'types/products';
 
 // ==============================|| TYPE PRODUCT IMPORT ||============================== //
 

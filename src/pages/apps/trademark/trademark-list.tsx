@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from 'store';
 import { getMakerList } from 'store/reducers/maker';
 import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
 
+// types
+import { Maker } from 'types/products';
+
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
@@ -42,7 +45,7 @@ const TradeMarkList = () => {
 
   const getMaker = (id: number) => {
     if (id) {
-      let Maker: any = makerList.find((item) => item.ID === id);
+      let Maker: any = makerList.find((item: Maker) => item.ID === id);
       return Maker?.Name;
     }
   };

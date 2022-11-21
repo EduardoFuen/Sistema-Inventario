@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { TypeProductStateProps } from 'types/product-type';
+import { TypeProductStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: TypeProductStateProps = {
   error: null,
   typeProductList: []
 };
+
+// ==============================||  TYPE PRODUCT REDUCER  ||============================== //
 
 const slice = createSlice({
   name: 'typeProduct',
@@ -25,22 +26,22 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
-    // GET PACKS
+    // GET TYPE PRODUCT
     getTypeProductSuccess(state, action) {
       state.typeProductList = action.payload;
     },
-
-    // ADD PACK
+    // ADD TYPE PRODUCT
     addTypeProductSuccess(state, action) {
       state.typeProductList.push(action.payload);
     },
-    excelSuccess(state, action) {
-      state.typeProductList = [...state.typeProductList, ...action.payload];
-    },
+    // UPDATE TYPE PRODUCT
     updateTypeProductSuccess(state, action) {
       const index = state.typeProductList.findIndex((item) => item.ID === action.payload?.ID);
       state.typeProductList[index] = action.payload;
+    },
+    // ADD EXCEL TYPE PRODUCT
+    excelSuccess(state, action) {
+      state.typeProductList = [...state.typeProductList, ...action.payload];
     }
   }
 });
@@ -70,6 +71,17 @@ export function addTypeProduct(data: any) {
     try {
       const response = await axios.post(`${HOST}/tipodeproducto`, { ...data });
       dispatch(slice.actions.addTypeProductSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Tipo de Producto Add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -80,6 +92,17 @@ export function editTypeProduct(id: number, data: any) {
     try {
       const response = await axios.put(`${HOST}/tipodeproducto`, { ID: id, ...data });
       dispatch(slice.actions.updateTypeProductSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Tipo de Producto Update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -94,7 +117,7 @@ export function deleteTypeProduct(id: number) {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Tipo de Producto deleted successfully.',
+            message: 'Tipo de Producto Deleted successfully.',
             variant: 'alert',
             alert: {
               color: 'success'

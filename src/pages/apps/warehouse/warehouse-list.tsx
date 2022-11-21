@@ -132,7 +132,7 @@ const WarehouseList = () => {
         />
       </ScrollX>
 
-      {/* add user dialog */}
+      {/* add WareHouse*/}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddWarehouse warehouse={warehouse} onCancel={handleAdd} />}
       </Dialog>

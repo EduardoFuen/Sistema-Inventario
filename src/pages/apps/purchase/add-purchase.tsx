@@ -18,9 +18,11 @@ import AddSelectProduct from './selectProducts';
 import Export from 'components/ExportToFile';
 import DetailsPurchase from './detailsProduct';
 import { getProducts } from 'store/reducers/product';
+import { getWarehouseList } from 'store/reducers/warehouse';
+import { getSupplierList } from 'store/reducers/supplier';
 
 // types
-import { Warehouses } from 'types/product-type';
+import { Warehouses } from 'types/products';
 import { Supplier } from 'types/supplier';
 
 // ==============================|| ADD NEW PURCHASE - MAIN ||============================== //
@@ -45,6 +47,8 @@ function AddPurchase() {
 
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getWarehouseList());
+    dispatch(getSupplierList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -300,7 +304,7 @@ function AddPurchase() {
           </Form>
         </FormikProvider>
       </MainCard>
-      {/* add user dialog */}
+      {/* add Product Purchase dialog */}
       <Dialog maxWidth="lg" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddSelectProduct onCancel={handleAdd} />}
       </Dialog>

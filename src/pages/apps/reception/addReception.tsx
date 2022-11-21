@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -19,102 +19,130 @@ import {
 
 // third-party
 import { useFormik, Form, FormikProvider } from 'formik';
-
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { useDispatch, useSelector } from 'store';
+import { useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { addReception } from 'store/reducers/purcharse';
-import { Products } from 'types/product-type';
+import { getIDPurchase } from 'store/reducers/purcharse';
+import { UpdateRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
+import { Products } from 'types/products';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
-
-// types
-import { Purchase } from 'types/purchase';
 
 // ==============================|| ADD RECEPTION ||============================== //
 
 export interface PropsSelect {
   onCancel: () => void;
   reception: any;
-  product: Products;
+  product: Products | any;
+  status: boolean;
+  id: number;
 }
 
-const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
+const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const { detailsReption } = useSelector((state) => state.purchase);
-  const { listPurchase } = useSelector((state) => state.purchase);
-  const dataNew: any = useMemo(() => detailsReption, [detailsReption]);
+  const validationItems = product?.Count === reception?.TotalItemsCountReception;
+  let Items: any;
 
-  const [inputList, setInputList] = useState([{ qtyrequested: '', lot: '', dateExpiration: '', ...product }]);
+  if (reception && reception?.Articles) {
+    Items = reception?.Articles.map((item: any) => ({
+      ...item,
+      edit: false
+    }));
+  } else {
+    Items = [{ CountItemReception: '', Batch: '', Date: '', ArticleID: product?.ArticleID, ...product }];
+  }
+
+  const [inputList, setInputList] = useState(Items);
   const [value, setValue] = useState<Date | null>();
+  const [validationQuantity, setValidationQuantity] = useState<boolean>(validationItems || false);
+
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    const index = listPurchase.findIndex((item: Purchase) => item.ID === reception.nc);
-    if (listPurchase[index] && listPurchase[index].detailsReption && listPurchase[index].detailsReption.length > 0) {
-      let data = listPurchase[index].detailsReption
-        .filter((e: any) => e !== undefined && e !== null && e !== '' && e.name === product?.Name)
-        .map((item: any) => ({
-          qtyrequested: '',
-          lot: '',
-          dateExpiration: '',
-          ...item
-        }));
-      if (data.length > 0) {
-        setInputList(data);
-        window.localStorage.setItem('farmu-productsDetails', JSON.stringify(data));
-      }
-    }
-  }, [reception, product, listPurchase]);
-
-  // handle click event of the Remove button
   const handleRemoveClick = (index: number) => {
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
   };
 
-  // handle click event of the Add button
   const handleAddClick = () => {
-    setInputList([...inputList, { qtyrequested: '', lot: '', dateExpiration: '', ...product }]);
+    setInputList([...inputList, { CountItemReception: '', Batch: '', Date: '', ArticleID: product?.ArticleID }]);
+  };
+
+  const validationQty = (list: any) => {
+    const SumQty = list.reduce(
+      (acc: any = {}, item: any) => {
+        acc.CountItemReception = Number(acc.CountItemReception) + Number(item.CountItemReception);
+        return acc;
+      },
+      {
+        CountItemReception: ''
+      }
+    );
+    if (product?.Count < SumQty?.CountItemReception) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'La Cantidad a ingresar debe ser igual o menor a la compra',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+      setValidationQuantity(true);
+    }
+  };
+
+  const handleInputChange = (e: any, index: number) => {
+    const list: any = [...inputList];
+    if (e.target) {
+      const { name, value } = e.target;
+      setValidationQuantity(false);
+      if (name === 'CountItemReception') {
+        list[index]['CountItemReception'] = value;
+      }
+      if (name === 'Batch') {
+        list[index]['Batch'] = value;
+      }
+      validationQty(list);
+      setInputList(list);
+    } else {
+      list[index]['Date'] = e;
+    }
   };
 
   const formik = useFormik({
     initialValues: {
-      missingQuantity: dataNew?.missingQuantity || '',
-      returnQuantity: dataNew?.returnQuantity || '',
-      reasonReturn: dataNew?.reasonReturn || ''
+      Missing: reception?.Missing || '',
+      Refund: reception?.Refund || '',
+      Reason: reception?.Reason || ''
     },
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newValue = {
-          ...values,
-          ...reception,
-          detailsReption: inputList
-        };
-        dispatch(addReception(newValue));
-        dispatch(
-          openSnackbar({
-            open: true,
-            message: 'Recepción confirmada',
-            variant: 'alert',
-            alert: {
-              color: 'success'
+        await dispatch(
+          UpdateRecepctionArticles(
+            {
+              ...reception,
+              ...values,
+              Articles: inputList
             },
-            close: false
-          })
+            product?.ArticleID
+          )
         );
-        onCancel();
+        await dispatch(getIDPurchase(Number(id)));
 
-        setSubmitting(false);
+        await onCancel();
+        await setSubmitting(false);
       } catch (error) {
         console.error(error);
       }
@@ -122,24 +150,6 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
   });
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
-
-  // handle input change
-  const handleInputChange = (e: any, index: number) => {
-    const list: any = [...inputList];
-    if (e.target) {
-      const { name, value } = e.target;
-      if (name === 'qtyrequested') {
-        list[index]['qtyrequested'] = value;
-      }
-      if (name === 'lot') {
-        list[index]['lot'] = value;
-      }
-
-      setInputList(list);
-    } else {
-      list[index]['dateExpiration'] = e;
-    }
-  };
 
   return (
     <ScrollX>
@@ -162,7 +172,8 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                       InputProps={{ inputProps: { min: 0 } }}
                       placeholder="Ingresar Cantidad Faltantes"
                       fullWidth
-                      {...getFieldProps('missingQuantity')}
+                      disabled={validationItems}
+                      {...getFieldProps('Missing')}
                     />
                   </Grid>
                   <Grid item xs={4}>
@@ -172,16 +183,23 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                       type="number"
                       InputProps={{ inputProps: { min: 0 } }}
                       placeholder="Ingresar Cantidad Devolución"
+                      disabled={validationItems}
                       fullWidth
-                      {...getFieldProps('returnQuantity')}
+                      {...getFieldProps('Refund')}
                     />
                   </Grid>
                   <Grid item xs={4}>
                     <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Motivo Devolución</InputLabel>
-                    <TextField placeholder="Seleccionar Tipo Producto" fullWidth select {...getFieldProps('reasonReturn')}>
-                      <MenuItem value="Mal Estado">Mal Estado</MenuItem>
-                      <MenuItem value="Fecha Corta">Fecha Corta</MenuItem>
-                      <MenuItem value="Excedente">Excedente</MenuItem>
+                    <TextField
+                      placeholder="Seleccionar Tipo Producto"
+                      fullWidth
+                      select
+                      {...getFieldProps('Reason')}
+                      disabled={validationItems}
+                    >
+                      <MenuItem value="1">Mal Estado</MenuItem>
+                      <MenuItem value="2">Fecha Corta</MenuItem>
+                      <MenuItem value="3">Excedente</MenuItem>
                     </TextField>
                   </Grid>
                 </Stack>
@@ -189,12 +207,17 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
               <Grid item xs={12}>
                 <MainCard>
                   <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ p: 1 }}>
-                    <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddClick}>
+                    <Button
+                      variant="contained"
+                      startIcon={<PlusOutlined />}
+                      onClick={handleAddClick}
+                      disabled={validationQuantity || status}
+                    >
                       Agregar
                     </Button>
                     <Divider />
                   </Stack>
-                  {inputList.map((x: any, i: number) => {
+                  {inputList?.map((x: any, i: number) => {
                     return (
                       <Grid
                         container
@@ -210,11 +233,12 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                           <TextField
                             sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                             type="number"
-                            InputProps={{ inputProps: { min: 0 } }}
+                            InputProps={{ inputProps: { min: 0, max: product?.Count } }}
                             placeholder="Ingresar Cantidad"
                             fullWidth
-                            name="qtyrequested"
-                            value={x.qtyrequested}
+                            name="CountItemReception"
+                            value={x.CountItemReception}
+                            disabled={validationItems || x.edit === false}
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
@@ -225,8 +249,9 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                             onChange={(e) => handleInputChange(e, i)}
                             placeholder="Ingresar Lote"
                             fullWidth
-                            name="lot"
-                            value={x.lot}
+                            name="Batch"
+                            value={x.Batch}
+                            disabled={validationItems || x.edit === false}
                           />
                         </Grid>
                         <Grid item xs={4}>
@@ -235,7 +260,8 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                             <DesktopDatePicker
                               label=""
                               inputFormat="MM/dd/yyyy"
-                              value={value || x.dateExpiration}
+                              value={value || x.Date}
+                              disabled={validationItems || x.edit === false}
                               onChange={(value: any) => {
                                 handleInputChange(value, i);
                                 handleChange(value);
@@ -244,20 +270,25 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                             />
                           </LocalizationProvider>
                         </Grid>
-                        <Grid item xs={2} alignItems="end" alignSelf="center">
-                          <Tooltip title="Delete">
-                            <IconButton
-                              /*   disabled={inputList?.length <= 1} */
-                              color="secondary"
-                              onClick={(e: any) => {
-                                e.stopPropagation();
-                                handleRemoveClick(i);
-                              }}
-                            >
-                              <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                            </IconButton>
-                          </Tooltip>
-                        </Grid>
+                        {inputList?.length > 1 && !validationQuantity && (
+                          <Grid item xs={2} alignItems="end" alignSelf="center">
+                            <Tooltip title="Delete">
+                              <IconButton
+                                color="secondary"
+                                onClick={(e: any) => {
+                                  e.stopPropagation();
+                                  if (x.edit === false) {
+                                    dispatch(deleteItemsRecepction(x.ID));
+                                  } else {
+                                    handleRemoveClick(i);
+                                  }
+                                }}
+                              >
+                                <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                              </IconButton>
+                            </Tooltip>
+                          </Grid>
+                        )}
                       </Grid>
                     );
                   })}
@@ -271,7 +302,7 @@ const AddReceptionLot = ({ onCancel, reception, product }: PropsSelect) => {
                     <Button color="error" onClick={onCancel}>
                       Cancelar
                     </Button>
-                    <Button variant="contained" type="submit" disabled={isSubmitting}>
+                    <Button variant="contained" type="submit" disabled={isSubmitting || validationQuantity || status}>
                       Confirmar
                     </Button>
                   </Stack>

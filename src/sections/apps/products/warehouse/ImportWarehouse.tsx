@@ -9,7 +9,7 @@ import { addExcel } from 'store/reducers/warehouse';
 import ImportToFile from 'components/ImportToFile';
 
 // types
-import { Warehouses } from 'types/product-type';
+import { Warehouses } from 'types/products';
 
 // ==============================|| WAREHOUSE IMPORT ||============================== //
 

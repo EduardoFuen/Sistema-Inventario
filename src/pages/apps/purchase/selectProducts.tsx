@@ -15,6 +15,9 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
 
+// types
+import { Trademark } from 'types/products';
+
 // ==============================|| SELECT PRODUCT PURCHASE - LIST VIEW ||============================== //
 
 export interface PropsSelect {
@@ -30,7 +33,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
 
   const TradeMark = (id: number) => {
     if (id) {
-      let MakerID: any = tradeMarkList.find((item: any) => item.ID === id);
+      let MakerID: any = tradeMarkList.find((item: Trademark) => item.ID === id);
       return MakerID?.Name;
     }
   };

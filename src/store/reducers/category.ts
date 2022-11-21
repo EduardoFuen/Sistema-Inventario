@@ -3,21 +3,22 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST, CATEGORY } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { CategoryOneStateProps } from 'types/product-type';
+import { CategoryOneStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: CategoryOneStateProps = {
   error: null,
   categoryListOne: [],
   categoryListTwo: [],
   categoryListThree: []
 };
+
+// ==============================||  CATEGORY  REDUCER ||============================== //
 
 const slice = createSlice({
   name: 'categories',
@@ -31,31 +32,36 @@ const slice = createSlice({
     getCategoryOneSuccess(state, action) {
       state.categoryListOne = action.payload;
     },
+    // GET CATEGORY TWO
     getCategoryTwoSuccess(state, action) {
       state.categoryListTwo = action.payload;
     },
+    // GET CATEGORY THREE
     getCategoryThreeSuccess(state, action) {
       state.categoryListThree = action.payload;
     },
     // ADD CATEGORY ONE
-    addCategorySuccess(state, action) {
+    addCategoryOneSuccess(state, action) {
       state.categoryListOne.push(action.payload);
     },
-    addCategory2Success(state, action) {
+    // ADD CATEGORY TWO
+    addCategoryTwoSuccess(state, action) {
       state.categoryListTwo.push(action.payload);
     },
-    addCategory3Success(state, action) {
+    // ADD CATEGORY THREE
+    addCategoryThreeSuccess(state, action) {
       state.categoryListThree.push(action.payload);
     },
+    // UPDATE CATEGORIES
     updateCategorySuccess(state, action) {
       const { type, id, data } = action.payload;
       switch (type) {
-        case 'CategoryOne': {
+        case CATEGORY.CategoryOne: {
           let index: number = state.categoryListOne.findIndex((item) => item.ID === id);
           state.categoryListOne[index] = data;
           break;
         }
-        case 'CategoryTwo': {
+        case CATEGORY.CategoryTwo: {
           let index: number = state.categoryListTwo.findIndex((item) => item.ID === id);
           state.categoryListTwo[index] = data;
           break;
@@ -65,21 +71,7 @@ const slice = createSlice({
           state.categoryListThree[index] = data;
       }
     },
-    deleteCategorySuccess(state, action) {
-      const { row } = action.payload;
-      if (row.categoryOne) {
-        const index = state.categoryListOne.findIndex((item) => item.ID === row.categoryOne);
-        state.categoryListOne.splice(index, 1);
-      }
-      if (row.categoryTwo) {
-        const index = state.categoryListTwo.findIndex((item) => item.ID === row.categoryTwo);
-        state.categoryListTwo.splice(index, 1);
-      }
-      if (row.categoryThree) {
-        const index = state.categoryListThree.findIndex((item) => item.ID === row.categoryThree);
-        state.categoryListThree.splice(index, 1);
-      }
-    },
+    // ADD EXCEL CATEGORIES
     excelSuccess(state, action) {
       const { index, data } = action.payload;
       switch (index) {
@@ -101,6 +93,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+
 export function getCategoryListOne() {
   return async () => {
     try {
@@ -151,29 +144,32 @@ export function addCategoryOne(data: any) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categorias/one`, { ...data });
-      dispatch(slice.actions.addCategorySuccess(response.data));
+      dispatch(slice.actions.addCategoryOneSuccess(response.data));
+      dispatch(Alert());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function addCategory2(data: any) {
+export function addCategoryTwo(data: any) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categorias/two`, { ...data });
-      dispatch(slice.actions.addCategory2Success(response.data));
+      dispatch(slice.actions.addCategoryTwoSuccess(response.data));
+      dispatch(Alert());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function addCategory3(data: any) {
+export function addCategoryThree(data: any) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categorias/three`, { ...data });
-      dispatch(slice.actions.addCategory3Success(response.data));
+      dispatch(slice.actions.addCategoryThreeSuccess(response.data));
+      dispatch(Alert());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -184,7 +180,7 @@ export function editCategory(type: string, id: number, data: any) {
   return async () => {
     try {
       switch (type) {
-        case 'CategoryOne': {
+        case CATEGORY.CategoryOne: {
           const response = await axios.put(`${HOST}/categorias/one`, { ID: id, ...data });
           dispatch(
             slice.actions.updateCategorySuccess({
@@ -195,7 +191,7 @@ export function editCategory(type: string, id: number, data: any) {
           );
           break;
         }
-        case 'CategoryTwo': {
+        case CATEGORY.CategoryTwo: {
           const response = await axios.put(`${HOST}/categorias/two`, { ID: id, ...data });
           dispatch(
             slice.actions.updateCategorySuccess({
@@ -216,6 +212,17 @@ export function editCategory(type: string, id: number, data: any) {
             })
           );
       }
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Categoria Update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -226,14 +233,14 @@ export function deleteCategory(id: number, type: string) {
   return async () => {
     try {
       switch (type) {
-        case 'CategoryOne': {
+        case CATEGORY.CategoryOne: {
           const response = await axios.delete(`${HOST}/categorias/one`, { data: { ID: id } });
           if (response) {
             dispatch(getCategoryListOne());
           }
           break;
         }
-        case 'CategoryTwo': {
+        case CATEGORY.CategoryTwo: {
           const response = await axios.delete(`${HOST}/categorias/two`, { data: { ID: id } });
           if (response) {
             dispatch(getCategoryListTwo());
@@ -309,5 +316,20 @@ export function addExcel(data: any, index: number) {
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
+  };
+}
+export function Alert() {
+  return async () => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: 'Categoria Add successfully.',
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        },
+        close: false
+      })
+    );
   };
 }

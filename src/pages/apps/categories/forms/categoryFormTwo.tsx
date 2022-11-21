@@ -10,9 +10,9 @@ import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
 import MainCard from 'components/MainCard';
-import { openSnackbar } from 'store/reducers/snackbar';
-import { addCategory2, editCategory } from 'store/reducers/category';
+import { addCategoryTwo, editCategory } from 'store/reducers/category';
 import { useSelector } from 'store';
+import { CATEGORY } from 'config';
 
 // ==============================|| ADD CATEGORY TWO - MAIN ||============================== //
 
@@ -39,31 +39,9 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         if (category?.Name) {
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Categoria Update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
-          await dispatch(editCategory('CategoryTwo', category?.ID, values));
+          await dispatch(editCategory(CATEGORY.CategoryOne, category?.ID, values));
         } else {
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Categoria Add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
-          await dispatch(addCategory2(values));
+          await dispatch(addCategoryTwo(values));
           resetForm();
         }
         setSubmitting(false);

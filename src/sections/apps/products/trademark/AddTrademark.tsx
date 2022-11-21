@@ -32,14 +32,13 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addTrademark, editTrademark, deleteTrademark } from 'store/reducers/trademark';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Trademark } from 'types/product-type';
+import { Trademark } from 'types/products';
 
 // constant
 const getInitialValues = (tradeMark: FormikValues | null) => {
@@ -75,17 +74,6 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deleteTrademark(tradeMark?.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Trademark deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
   const formik = useFormik({
@@ -101,30 +89,8 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
 
         if (tradeMark) {
           await dispatch(editTrademark(tradeMark?.ID, newTradeTrademark));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Trademark update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addTrademark(newTradeTrademark));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Trademark add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

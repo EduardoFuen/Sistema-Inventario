@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { SubstancesStateProps } from 'types/product-type';
+import { SubstancesStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: SubstancesStateProps = {
   error: null,
   todoListSubs: []
 };
+
+// ==============================||  ACTIVE SUBSTANCES REDUCER  ||============================== //
 
 const slice = createSlice({
   name: 'substances',
@@ -25,19 +26,20 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-    // GET PACKS
+    // GET SUBSTANCES
     getSubsSuccess(state, action) {
       state.todoListSubs = action.payload;
     },
-
-    // ADD PACK
+    // ADD SUBSTANCES
     addSubsSuccess(state, action) {
       state.todoListSubs.push(action.payload);
     },
+    // UPDATE SUBSTANCES
     updateSubsSuccess(state, action) {
       const index = state.todoListSubs.findIndex((item) => item.ID === action.payload?.ID);
       state.todoListSubs[index] = action.payload;
     },
+    // ADD EXCEL SUBSTANCES
     excelSuccess(state, action) {
       state.todoListSubs = [...state.todoListSubs, ...action.payload];
     }
@@ -69,6 +71,17 @@ export function addSubs(data: any) {
     try {
       const response = await axios.post(`${HOST}/sustancias`, { ...data });
       dispatch(slice.actions.addSubsSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -81,6 +94,17 @@ export function editSubs(id: number, data: any) {
     try {
       const response = await axios.put(`${HOST}/sustancias`, { ID: id, ...data });
       dispatch(slice.actions.updateSubsSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

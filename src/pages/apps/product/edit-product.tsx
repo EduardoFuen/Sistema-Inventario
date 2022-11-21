@@ -48,7 +48,7 @@ import {
   CategoryOne,
   CategoryTwo,
   CategoryThree
-} from 'types/product-type';
+} from 'types/products';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -135,7 +135,7 @@ function UpdateProduct() {
 
   const product = useMemo(() => {
     if (id) {
-      return products.find((item) => item.ID === Number(id));
+      return products.find((item: Products) => item.ID === Number(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

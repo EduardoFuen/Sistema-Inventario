@@ -16,12 +16,7 @@ import ScrollX from 'components/ScrollX';
 import { useSelector, useDispatch } from 'store';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
-import { deletePurchase, getPurchaseList } from 'store/reducers/purcharse';
-import { getProducts } from 'store/reducers/product';
-import { getWarehouseList } from 'store/reducers/warehouse';
-import { getSupplierList } from 'store/reducers/supplier';
-
-import { getObject } from 'utils/Global';
+import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 import { newDataExport } from 'utils/DataExportPurchase';
 
 // assets
@@ -34,23 +29,20 @@ const PurchaseList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  const { supplierList } = useSelector((state) => state.supplier);
-  const { warehouseList } = useSelector((state) => state.warehouse);
   const { listPurchase } = useSelector((state) => state.purchase);
 
   useEffect(() => {
     dispatch(getPurchaseList());
-    dispatch(getProducts());
-    dispatch(getSupplierList());
-    dispatch(getWarehouseList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddPurchase = () => {
+    dispatch(resetItemsPurchase());
     history(`/purchase/add`);
   };
 
   const handleViewPurchase = (id: number) => {
+    dispatch(resetItemsPurchase());
     history(`/purchase/view/${id}`);
   };
 
@@ -84,17 +76,17 @@ const PurchaseList = () => {
       },
       {
         Header: 'Proveedor',
-        accessor: 'SupplierID',
+        accessor: 'Supplier',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getObject(supplierList, value)?.BusinessName || ''}</Typography>
+                <Typography variant="subtitle1">{value?.BusinessName || ''}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {getObject(supplierList, value)?.Nit || ''}
+                  {value?.Nit || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {getObject(supplierList, value)?.EmailContact || ''}
+                  {value?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -103,12 +95,12 @@ const PurchaseList = () => {
       },
       {
         Header: 'Bodega',
-        accessor: 'WarehouseID',
+        accessor: 'Warehouse',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getObject(warehouseList, value)?.Name || ''}</Typography>
+                <Typography variant="subtitle1">{value?.Name || ''}</Typography>
               </Stack>
             </Stack>
           );
@@ -159,9 +151,7 @@ const PurchaseList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           let dataPDF: any = {
-            ...row.original,
-            supplier: getObject(supplierList, row?.original?.SupplierID),
-            warehouse: getObject(warehouseList, row?.original?.WarehouseID)?.Name
+            ...row.original
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -209,7 +199,7 @@ const PurchaseList = () => {
           TitleButton="Agregar Orden Compra"
           FileName="Purchase"
           hideButton={false}
-          dataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}
+          dataExport={newDataExport(listPurchase) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>

@@ -17,6 +17,7 @@ import Import from './Import';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { Trademark, Maker } from 'types/products';
 
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -55,9 +56,9 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
-  const getTradeMark = (id: number) => tradeMarkList.find((item) => item.ID === id)?.Name;
+  const getTradeMark = (id: number) => tradeMarkList.find((item: Trademark) => item.ID === id)?.Name;
 
-  const getMaker = (id: number) => makerList.find((item) => item.ID === id)?.Name;
+  const getMaker = (id: number) => makerList.find((item: Maker) => item.ID === id)?.Name;
 
   const handleAddProduct = () => {
     history(`/product-list/add-new-product`);

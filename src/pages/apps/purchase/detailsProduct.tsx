@@ -1,5 +1,4 @@
-import { useEffect, useState /*  ChangeEvent */ } from 'react';
-
+import { useEffect, useState } from 'react';
 // material-ui
 import {
   Table,
@@ -21,7 +20,7 @@ import { useTheme } from '@mui/material/styles';
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { deleteItemsPurchase, updateItemsPurchase } from 'store/reducers/purcharse';
+import { deleteItemsPurchase, editItemsPurchase } from 'store/reducers/purcharse';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { useDispatch, useSelector } from 'store';
@@ -37,7 +36,7 @@ const DetailsPurchase = ({ product }: any) => {
   useEffect(() => {
     let newData = data?.map((item: any) => ({
       Count: '',
-      BaseBasePrice: '',
+      BasePrice: '',
       Tax: '',
       DiscountAdditional: '',
       DiscountNegotiated: '',
@@ -48,7 +47,7 @@ const DetailsPurchase = ({ product }: any) => {
       ...item
     }));
     setInputList(newData);
-    window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
+    //  window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
   }, [data]);
 
   const handleInputChange = (e: any, index: number) => {
@@ -75,7 +74,7 @@ const DetailsPurchase = ({ product }: any) => {
     list[index]['SubTotal'] = list[index]?.Count * list[index]?.BasePrice * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
     list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Count * list[index]?.BasePrice * list[index]?.Tax) / 100;
     setInputList(list);
-    dispatch(updateItemsPurchase(list));
+    dispatch(editItemsPurchase(list));
   };
 
   return (

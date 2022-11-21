@@ -10,7 +10,7 @@ import ImportToFile from 'components/ImportToFile';
 import { filter } from 'lodash';
 
 // types
-import { Packs } from 'types/product-type';
+import { Packs } from 'types/products';
 
 // ==============================|| PACK IMPORT ||============================== //
 

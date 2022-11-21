@@ -9,6 +9,9 @@ import { addExcel } from 'store/reducers/category';
 import { SearchNameToArray } from 'utils/findName';
 import ImportToFile from 'components/ImportToFile';
 
+// types
+import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
+
 // ==============================|| CATEGORY IMPORT ||============================== //
 
 export interface Props {
@@ -27,13 +30,13 @@ const ImportPack = ({ onCancel, value }: Props) => {
 
       switch (value) {
         case 0:
-          newData = data.map((item: any) => ({
+          newData = data.map((item: CategoryOne) => ({
             Name: item?.Name,
             Status: item?.Status
           }));
           break;
         case 1:
-          newData = data.map((item: any) => ({
+          newData = data.map((item: CategoryTwo | any) => ({
             Name: item?.Name,
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
             Status: item?.Status
@@ -41,7 +44,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
           break;
 
         default:
-          newData = data.map((item: any) => ({
+          newData = data.map((item: CategoryThree | any) => ({
             Name: item?.Name,
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
             CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '0',

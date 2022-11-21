@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
@@ -11,11 +11,13 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import Import from './Import';
-
 import { getObject } from 'utils/Global';
 import { useDispatch, useSelector } from 'store';
-
+import { CATEGORY } from 'config';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
+
+// types
+import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -60,7 +62,7 @@ const CategoriesList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleEditCategory = (id: any, index: any) => {
+  const handleEditCategory = (id: number, index: number) => {
     history(`/product-list/edit-category/${id}/${index}`);
   };
   const handleAddCategory = () => {
@@ -71,15 +73,15 @@ const CategoriesList = () => {
     setActiveImport(!addImport);
   };
 
-  const exportCategoryThre: any = categoryListThree.map((item: any) => {
+  const exportCategoryThre: any = categoryListThree.map((item: CategoryThree) => {
     let CategoryOne: string = '';
     let CategoryTwo: string = '';
 
     if (item?.CategoryOneID) {
-      CategoryOne = categoryListOne.find((data: any) => data?.ID === item?.CategoryOneID)?.Name || '';
+      CategoryOne = categoryListOne.find((data: CategoryOne) => data?.ID === item?.CategoryOneID)?.Name || '';
     }
     if (item?.CategoryTwoID) {
-      CategoryTwo = categoryListTwo.find((data: any) => data?.ID === item?.CategoryTwoID)?.Name || '';
+      CategoryTwo = categoryListTwo.find((data: CategoryTwo) => data?.ID === item?.CategoryTwoID)?.Name || '';
     }
     return {
       ID: item?.ID,
@@ -89,11 +91,11 @@ const CategoriesList = () => {
     };
   });
 
-  const exportCategoryTwo: any = categoryListTwo.map((item: any) => {
+  const exportCategoryTwo: any = categoryListTwo.map((item: CategoryTwo) => {
     let CategoryOne: string = '';
 
     if (item?.CategoryOneID) {
-      CategoryOne = categoryListOne.find((data: any) => data?.ID === item?.CategoryOneID)?.Name || '';
+      CategoryOne = categoryListOne.find((data: CategoryOne) => data?.ID === item?.CategoryOneID)?.Name || '';
     }
     return {
       ID: item?.ID,
@@ -107,7 +109,7 @@ const CategoriesList = () => {
     className: 'cell-center'
   });
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     let columnOne = {
       Header: 'Grupo',
       accessor: 'Name',
@@ -229,20 +231,20 @@ const CategoriesList = () => {
                 color="primary"
                 onClick={(e: any) => {
                   e.stopPropagation();
-                  let category: string;
+                  let ID: number;
                   switch (value) {
                     case 0:
-                      category = row.original?.ID;
+                      ID = row.original?.ID;
                       break;
                     case 1:
-                      category = row.original?.ID;
+                      ID = row.original?.ID;
                       break;
 
                     default:
-                      category = row.original?.ID;
+                      ID = row.original?.ID;
                       break;
                   }
-                  handleEditCategory(category, value);
+                  handleEditCategory(ID, value);
                 }}
               >
                 <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -256,13 +258,13 @@ const CategoriesList = () => {
                   let type: string = '';
                   switch (value) {
                     case 0:
-                      type = 'CategoryOne';
+                      type = CATEGORY.CategoryOne;
                       break;
                     case 1:
-                      type = 'CategoryTwo';
+                      type = CATEGORY.CategoryTwo;
                       break;
                     default:
-                      type = 'CategoryThree';
+                      type = CATEGORY.CategoryThree;
                       break;
                   }
                   dispatch(deleteCategory(row.original?.ID, type));

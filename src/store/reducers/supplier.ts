@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
 import { SupplierStateProps } from 'types/supplier';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: SupplierStateProps = {
   error: null,
   supplierList: []
 };
+
+// ==============================||  SUPPLIER  REDUCER ||============================== //
 
 const slice = createSlice({
   name: 'supplier',
@@ -25,21 +26,22 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET SUPPLIERS
     getSupplierSuccess(state, action) {
       state.supplierList = action.payload;
-    },
-    excelSuccess(state, action) {
-      state.supplierList = [...state.supplierList, ...action.payload];
     },
     // ADD SUPPLIER
     addSupplierSuccess(state, action) {
       state.supplierList.push(action.payload);
     },
+    // UPDATE SUPPLIER
     updateSupplierSuccess(state, action) {
       const index = state.supplierList.findIndex((item) => item.ID === action.payload?.ID);
       state.supplierList[index] = action.payload;
+    },
+    //ADD EXCEL SUPPLIER
+    excelSuccess(state, action) {
+      state.supplierList = [...state.supplierList, ...action.payload];
     }
   }
 });
@@ -63,7 +65,16 @@ export function getSupplierList() {
     }
   };
 }
-
+export function getIdSupplier(id: number) {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/proveedores?ID=${id}]`);
+      return response;
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 export function createSupplier(data: any) {
   return async () => {
     try {
@@ -74,6 +85,7 @@ export function createSupplier(data: any) {
     }
   };
 }
+
 export function editSupplier(id: number, data: any) {
   return async () => {
     try {
@@ -116,7 +128,7 @@ export function addExcel(data: any) {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Importado successfully',
+          message: 'Importado Proveedores successfully',
           variant: 'alert',
           alert: {
             color: 'success'

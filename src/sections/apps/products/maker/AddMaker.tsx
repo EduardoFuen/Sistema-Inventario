@@ -25,14 +25,13 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addMaker, editMaker, deleteMaker } from 'store/reducers/maker';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Maker } from 'types/product-type';
+import { Maker } from 'types/products';
 
 // constant
 const getInitialValues = (maker: FormikValues | null) => {
@@ -66,17 +65,6 @@ const AddMaker = ({ maker, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deleteMaker(maker?.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Maker deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
   const formik = useFormik({
@@ -91,30 +79,8 @@ const AddMaker = ({ maker, onCancel }: Props) => {
 
         if (maker) {
           await dispatch(editMaker(maker.ID, newMaker));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Maker update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addMaker(newMaker));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Maker add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

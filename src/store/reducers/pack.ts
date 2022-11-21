@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { PackStateProps } from 'types/product-type';
+import { PackStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: PackStateProps = {
   error: null,
   packList: []
 };
+
+// ==============================||  PACKS  REDUCER ||============================== //
 
 const slice = createSlice({
   name: 'pack',
@@ -25,7 +26,6 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET PACKS
     getPackSuccess(state, action) {
       state.packList = action.payload;
@@ -34,10 +34,12 @@ const slice = createSlice({
     addPackSuccess(state, action) {
       state.packList.push(action.payload);
     },
+    // UPDATE PACK
     updatePackSuccess(state, action) {
       const index = state.packList.findIndex((item) => item?.ID === action.payload?.ID);
       state.packList[index] = action.payload;
     },
+    // ADD EXCEL PACK
     excelSuccess(state, action) {
       state.packList = [...state.packList, ...action.payload];
     }
@@ -63,12 +65,22 @@ export function getPackList() {
     }
   };
 }
-
 export function addPack(data: any) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/packs`, { ...data });
       dispatch(slice.actions.addPackSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Envase add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -79,12 +91,22 @@ export function editPack(id: number, data: any) {
     try {
       const response = await axios.put(`${HOST}/packs`, { ID: id, ...data });
       dispatch(slice.actions.updatePackSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Envase update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-
 export function deletePack(id: number) {
   return async () => {
     try {
@@ -94,7 +116,7 @@ export function deletePack(id: number) {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Envase deleted successfully.',
+            message: 'Envase Deleted successfully.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -108,7 +130,6 @@ export function deletePack(id: number) {
     }
   };
 }
-
 export function addExcel(data: any) {
   return async () => {
     try {

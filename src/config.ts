@@ -32,6 +32,13 @@ export const AUTH0_API = {
   domain: 'dev-w0-vxep3.us.auth0.com'
 };
 
+export const HOST: string = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';
+
+export const CATEGORY = {
+  CategoryOne: 'CategoryOne',
+  CategoryTwo: 'CategoryTwo',
+  CategoryThree: 'CategoryThree'
+};
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config: DefaultConfigProps = {
@@ -46,5 +53,3 @@ const config: DefaultConfigProps = {
 };
 
 export default config;
-
-export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';

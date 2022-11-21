@@ -25,14 +25,13 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addTypeProduct, editTypeProduct, deleteTypeProduct } from 'store/reducers/typeProduct';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { TypeProduct } from 'types/product-type';
+import { TypeProduct } from 'types/products';
 
 // constant
 const getInitialValues = (product: FormikValues | null) => {
@@ -66,17 +65,6 @@ const AddPackList = ({ product, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deleteTypeProduct(product.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Tipo de Producto deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
 
@@ -92,30 +80,8 @@ const AddPackList = ({ product, onCancel }: Props) => {
 
         if (product) {
           await dispatch(editTypeProduct(product.ID, newProduct));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Tipo de Producto update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addTypeProduct(newProduct));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Tipo de Producto add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

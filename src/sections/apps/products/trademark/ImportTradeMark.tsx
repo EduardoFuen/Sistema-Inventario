@@ -9,7 +9,7 @@ import { addExcel } from 'store/reducers/trademark';
 import ImportToFile from 'components/ImportToFile';
 
 // types
-import { Trademark } from 'types/product-type';
+import { Trademark } from 'types/products';
 
 // ==============================|| TRADEMARK IMPORT ||============================== //
 

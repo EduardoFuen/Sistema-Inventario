@@ -2,22 +2,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 import { getTrademarkList } from './trademark';
 import { getTypeProductList } from './typeProduct';
 
 // types
-import { DefaultRootStateProps } from 'types/product-type';
+import { DefaultRootStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
   products: [],
   product: null
 };
+
+// ==============================||  PRODUCT  REDUCER ||============================== //
 
 const slice = createSlice({
   name: 'product',
@@ -27,10 +28,13 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET PRODUCTS
     getProductsSuccess(state, action) {
       state.products = action.payload;
+    },
+    // GET ID PRODUCT
+    getProductIDSuccess(state, action) {
+      state.product = action.payload;
     },
     // ADD PRODUCTS
     addProductSuccess(state, action) {
@@ -48,17 +52,9 @@ const slice = createSlice({
       const index = state.products.findIndex((item) => item.ID === name);
       state.products.splice(index, 1);
     },
+    // ADD EXCEL PRODUCTS
     excelSuccess(state, action) {
       state.products = [...state.products, ...action.payload];
-    },
-    // FILTER PRODUCTS
-    filterProductsSuccess(state, action) {
-      state.product = action.payload;
-    },
-
-    // GET PRODUCT
-    getProductIDSuccess(state, action) {
-      state.product = action.payload;
     }
   }
 });
@@ -86,7 +82,6 @@ export function getProducts() {
     }
   };
 }
-
 export function getProductID(id: number) {
   return async () => {
     try {
@@ -97,7 +92,6 @@ export function getProductID(id: number) {
     }
   };
 }
-
 export function addProduct(data: any) {
   return async () => {
     try {
@@ -116,7 +110,6 @@ export function addProduct(data: any) {
         })
       );
       window.location.href = `/product-list/product-edit/${response.data.ID}`;
-      //window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -145,7 +138,6 @@ export function editProduct(id: number, data: any) {
       );
       dispatch(getProducts());
       dispatch(slice.actions.hasError(null));
-      // window.location.replace('/product-list');
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

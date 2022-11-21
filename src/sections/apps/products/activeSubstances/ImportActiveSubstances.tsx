@@ -9,7 +9,7 @@ import { addExcel } from 'store/reducers/activeSubst';
 import ImportToFile from 'components/ImportToFile';
 
 // types
-import { Substances } from 'types/product-type';
+import { Substances } from 'types/products';
 
 // ==============================|| ACTIVE/SUBSTANCES IMPORT ||============================== //
 

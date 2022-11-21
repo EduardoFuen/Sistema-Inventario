@@ -11,6 +11,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 // assets
 import { PlusOutlined, ImportOutlined } from '@ant-design/icons';
+import { initial } from 'lodash';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -29,6 +30,7 @@ interface Props {
   dataTemplate: [];
   handleSelect: (row: any) => void;
   FileNameTemplate: string;
+  FontSize: boolean;
 }
 
 const ReactTable = ({
@@ -45,7 +47,8 @@ const ReactTable = ({
   download,
   dataTemplate,
   handleSelect,
-  FileNameTemplate
+  FileNameTemplate,
+  FontSize
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -123,7 +126,10 @@ const ReactTable = ({
               {headerGroups.map((headerGroup) => (
                 <TableRow {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
                   {headerGroup.headers.map((column: any) => (
-                    <TableCell {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
+                    <TableCell
+                      {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}
+                      style={{ fontSize: !FontSize ? initial : 8 }}
+                    >
                       <HeaderSort column={column} />
                     </TableCell>
                   ))}
@@ -176,7 +182,8 @@ ReactTable.defaultProps = {
   download: false,
   TitleButton: '',
   FileNameTemplate: '',
-  FileName: ''
+  FileName: '',
+  FontSize: false
 };
 
 export default ReactTable;

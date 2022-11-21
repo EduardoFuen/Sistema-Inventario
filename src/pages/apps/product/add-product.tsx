@@ -48,7 +48,7 @@ import {
   CategoryOne,
   CategoryTwo,
   CategoryThree
-} from 'types/product-type';
+} from 'types/products';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';

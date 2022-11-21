@@ -25,14 +25,13 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addSubs, editSubs, deleteSubs } from 'store/reducers/activeSubst';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Substances } from 'types/product-type';
+import { Substances } from 'types/products';
 
 // constant
 const getInitialValues = (subst: FormikValues | null) => {
@@ -66,17 +65,6 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deleteSubs(subst.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
 
@@ -92,30 +80,8 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
 
         if (subst) {
           await dispatch(editSubs(subst.ID, newSubstance));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addSubs(newSubstance));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

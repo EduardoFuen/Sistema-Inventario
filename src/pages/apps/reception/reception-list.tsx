@@ -15,11 +15,11 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { useSelector, useDispatch } from 'store';
-import { getPurchaseList } from 'store/reducers/purcharse';
+import { getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 import { newDataExport } from 'utils/DataExportPurchase';
 
 // assets
-import { EyeTwoTone } from '@ant-design/icons';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
 
@@ -34,6 +34,7 @@ const ReceptionList = () => {
   }, []);
 
   const handleViewReception = (id: any) => {
+    dispatch(resetItemsPurchase());
     history(`/reception/view/${id}`);
   };
 
@@ -127,9 +128,9 @@ const ReceptionList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'Status',
-        Cell: ({ value }: any) => {
-          switch (value) {
+        accessor: 'ReceptionStatus',
+        Cell: ({ row }: any) => {
+          switch (row) {
             case 4:
               return <Chip color="warning" label="Partial" size="small" variant="light" />;
             case 3:
@@ -149,9 +150,7 @@ const ReceptionList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           let dataPDF: any = {
-            ...row.original,
-            supplier: getObject(supplierList, row?.original?.SupplierID),
-            warehouse: getObject(warehouseList, row?.original?.WarehouseID)?.Name
+            ...row.original
           };
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -164,7 +163,7 @@ const ReceptionList = () => {
                     handleViewReception(row.values.ID);
                   }}
                 >
-                  <EyeTwoTone twoToneColor={theme.palette.primary.main} />
+                  <PlusCircleOutlined twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
             </Stack>
@@ -180,11 +179,11 @@ const ReceptionList = () => {
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={listPurchase as []}
+          data={listPurchase.filter((item) => item.Status === 1) as []}
           handleImport={() => {}}
           hideButton={false}
           FileName="Recepción"
-          dataExport={newDataExport(listPurchase, warehouseList, supplierList) as []}
+          dataExport={newDataExport(listPurchase) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>

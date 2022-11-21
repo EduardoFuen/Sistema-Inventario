@@ -3,19 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
+import { HOST } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { TrademarkStateProps } from 'types/product-type';
+import { TrademarkStateProps } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: TrademarkStateProps = {
   error: null,
   tradeMarkList: []
 };
+
+// ==============================||  TRADEMARK REDUCER ||============================== //
 
 const tradeMark = createSlice({
   name: 'trademaker',
@@ -25,21 +26,22 @@ const tradeMark = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-
     // GET PACKS
     getTrademarkSuccess(state, action) {
       state.tradeMarkList = action.payload;
     },
-    excelSuccess(state, action) {
-      state.tradeMarkList = [...state.tradeMarkList, ...action.payload];
-    },
-    // ADD PACK
+    // ADD TRADEMARK
     addTrademarkSuccess(state, action) {
       state.tradeMarkList.push(action.payload);
     },
+    // UPDATE TRADEMARK
     updateTrademarkSuccess(state, action) {
       const index = state.tradeMarkList.findIndex((item) => item?.ID === action.payload?.ID);
       state.tradeMarkList[index] = action.payload;
+    },
+    // ADD EXCEL TRADEMARK
+    excelSuccess(state, action) {
+      state.tradeMarkList = [...state.tradeMarkList, ...action.payload];
     }
   }
 });
@@ -69,6 +71,17 @@ export function addTrademark(data: any) {
     try {
       const response = await axios.post(`${HOST}/trademark`, { ...data });
       dispatch(tradeMark.actions.addTrademarkSuccess(response.data));
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Trademark Add successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
     } catch (error) {
       dispatch(tradeMark.actions.hasError(error));
     }
@@ -78,6 +91,17 @@ export function editTrademark(id: number, data: any) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/trademark`, { ID: id, ...data });
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Trademark Update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
       dispatch(tradeMark.actions.updateTrademarkSuccess(response.data));
     } catch (error) {
       dispatch(tradeMark.actions.hasError(error));
@@ -92,7 +116,7 @@ export function deleteTrademark(id: number) {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Trademark deleted successfully.',
+            message: 'Trademark Deleted successfully.',
             variant: 'alert',
             alert: {
               color: 'success'

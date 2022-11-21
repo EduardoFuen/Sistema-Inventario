@@ -1,6 +1,7 @@
 {
   "name": "inventory-farmu",
   "version": "1.1.0",
+  "homepage": "/",
   "private": false,
   "dependencies": {
     "@ant-design/colors": "^6.0.0",

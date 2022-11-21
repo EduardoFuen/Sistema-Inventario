@@ -7,7 +7,7 @@ import { dispatch } from '../index';
 // types
 import { InventoryStateProps } from 'types/inventory';
 
-// ----------------------------------------------------------------------
+// ==============================||  INVENTORY  ||============================== //
 
 const initialState: InventoryStateProps = {
   error: null,

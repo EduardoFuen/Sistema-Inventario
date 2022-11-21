@@ -122,6 +122,16 @@ const applications: NavItemType = {
       param: true,
       mainTitle: 'Productos',
       mainUrl: '/product-list'
+    },
+    {
+      id: 'edit',
+      type: 'item',
+      title: 'Recepción de la Orden de Compra ',
+      url: '/reception/view/:id',
+      hide: true,
+      param: true,
+      mainTitle: 'Recepción',
+      mainUrl: '/reception'
     }
   ]
 };

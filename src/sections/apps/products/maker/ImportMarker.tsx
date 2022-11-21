@@ -9,7 +9,7 @@ import { addMakerExcel } from 'store/reducers/maker';
 import ImportToFile from 'components/ImportToFile';
 
 // types
-import { Maker } from 'types/product-type';
+import { Maker } from 'types/products';
 
 // ==============================|| MAKER IMPORT||============================== //
 

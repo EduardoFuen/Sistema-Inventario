@@ -25,14 +25,13 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project imports
 import IconButton from 'components/@extended/IconButton';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addPack, editPack, deletePack } from 'store/reducers/pack';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Packs } from 'types/product-type';
+import { Packs } from 'types/products';
 
 // constant
 const getInitialValues = (pack: FormikValues | null) => {
@@ -66,17 +65,6 @@ const AddPackList = ({ pack, onCancel }: Props) => {
 
   const deleteHandler = async () => {
     await dispatch(deletePack(pack.ID));
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: 'Envase deleted successfully.',
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
     onCancel();
   };
 
@@ -92,30 +80,8 @@ const AddPackList = ({ pack, onCancel }: Props) => {
 
         if (pack) {
           await dispatch(editPack(pack.ID, newPack));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Envase update successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         } else {
           await dispatch(addPack(newPack));
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Envase add successfully.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
         }
 
         setSubmitting(false);

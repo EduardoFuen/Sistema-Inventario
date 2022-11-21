@@ -2,106 +2,76 @@
 import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'axios';
-import { HOST } from '../../config';
-import { dispatch } from '../index';
+import { HOST } from 'config';
+import { dispatch, store } from '../index';
 import summary from 'utils/calculation';
 import { openSnackbar } from './snackbar';
 import { getSupplierList } from './supplier';
 import { getWarehouseList } from './warehouse';
+import { getProducts } from './product';
+import { resetViewReception } from './reception';
+
 // types
 import { PurchaseStateProps } from 'types/purchase';
+import { Products } from 'types/products';
 
-// ----------------------------------------------------------------------
-
+// initial state
 const initialState: PurchaseStateProps = {
   error: null,
   detailsPurchase: [],
   listPurchase: [],
   detailsReption: [],
-  order: {}
+  order: {},
+  isLoading: false
 };
+
+// ==============================||  PURCHASE  REDUCER ||============================== //
 
 const slice = createSlice({
   name: 'purchase',
   initialState,
   reducers: {
+    // LOADER
+    loading(state) {
+      state.isLoading = true;
+    },
     // HAS ERROR
     hasError(state, action) {
       state.error = action.payload;
+      state.isLoading = false;
     },
-
     // GET PURCHASES
     getPurchaseSuccess(state, action) {
       state.listPurchase = action.payload;
+      state.error = null;
     },
-
+    // GET ID PURCHASE
+    getIDPurchaseSuccess(state, action) {
+      state.order = action.payload;
+      state.isLoading = false;
+    },
     // ADD PURCHASE
+    addPurchaseSuccess(state, action) {
+      state.listPurchase.push(action.payload);
+    },
+    // ADD DETAILS PURCHASE
     addDetailsPurchaseSuccess(state, action) {
       state.detailsPurchase = [...state.detailsPurchase, ...action.payload];
     },
+    // UPDATE DETAILS PURCHASE
+    editDetailsPurchaseSuccess(state, action) {
+      state.detailsPurchase = action.payload;
+    },
+
+    // DELETE DETAILS PURCHASE
     deleteDetailsPurchaseSuccess(state, action) {
       const { id } = action.payload;
       const index = state.detailsPurchase.findIndex((item) => item.ID === id);
       state.detailsPurchase.splice(index, 1);
-
-      const product = JSON.parse(window.localStorage.getItem('farmu-productsDetails')!);
-      const idx = product?.findIndex((item: any) => item.ID === id);
-      product.splice(idx, 1);
-      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(product));
     },
-    updateDetailsPurchaseSuccess(state, action) {
-      const { data } = action.payload;
-      state.detailsPurchase = data;
-    },
+    // RESET DETAILS PURCHASE
     resetDetailsPurchaseSuccess(state) {
       state.detailsPurchase = [];
-      window.localStorage.setItem('farmu-productsDetails', JSON.stringify(state.detailsPurchase));
-    },
-    editDetailsPurchaseSuccess(state, action) {
-      state.detailsPurchase = action.payload;
-    },
-    getIDPurchaseSuccess(state, action) {
-      state.order = action.payload;
-    },
-    addPurchaseSuccess(state, action) {
-      // state.detailsPurchase = [];
-      state.listPurchase.push(action.payload);
-      window.localStorage.setItem('farmu-productsDetails', JSON.stringify([]));
-      if (action.payload.ID) {
-        window.location.href = `/purchase/view/${action.payload.ID}`;
-      }
-    },
-    addReceptionSuccess(state, action) {
-      const index = state.listPurchase.findIndex((item) => item.ID === action.payload.nc);
-      let data = action.payload.detailsReption.concat(state.listPurchase[index].detailsReption);
-      data = data.filter((item: any, index: number) => {
-        return data.indexOf(item) === index;
-      });
-      const uniqueIds: any = [];
-
-      const unique = data.filter((element: any) => {
-        const isDuplicate = uniqueIds.includes(element?.lot);
-
-        if (!isDuplicate) {
-          uniqueIds.push(element?.lot);
-
-          return true;
-        }
-
-        return false;
-      });
-
-      state.listPurchase[index] = {
-        ...action.payload,
-        detailsReption: unique
-      };
-
-      state.detailsReption = data;
-    },
-    confirmationReceptionSuccess(state, action) {
-      const { nc, data } = action.payload;
-      const index = state.listPurchase.findIndex((item) => item.ID === nc);
-      state.listPurchase[index] = { ...data, orderStatus: 'Partial' };
     }
   }
 });
@@ -113,11 +83,9 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
+      await dispatch(getProducts());
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
-        dispatch(getSupplierList());
-        dispatch(getWarehouseList());
-        dispatch(resetItemsPurchase());
         dispatch(slice.actions.getPurchaseSuccess(response.data));
         dispatch(slice.actions.hasError(null));
       }
@@ -132,6 +100,7 @@ export function getPurchaseList() {
 export function addPurchase(data: any) {
   return async () => {
     try {
+      await dispatch(getPurchaseList());
       let summaryOrder = summary(data.Articles, data?.Discount);
       const Newdata = {
         ...data,
@@ -151,9 +120,6 @@ export function addPurchase(data: any) {
         }))
       };
       const response = await axios.post(`${HOST}/compras`, { ...Newdata });
-      await dispatch(getPurchaseList());
-      await dispatch(resetItemsPurchase());
-      await dispatch(slice.actions.addPurchaseSuccess(response.data));
       dispatch(
         openSnackbar({
           open: true,
@@ -165,7 +131,8 @@ export function addPurchase(data: any) {
           close: false
         })
       );
-      dispatch(slice.actions.hasError(null));
+      await dispatch(slice.actions.addPurchaseSuccess(response.data));
+      window.location.href = `/purchase/view/${response.data.ID}`;
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -173,12 +140,39 @@ export function addPurchase(data: any) {
 }
 export function getIDPurchase(id: number) {
   return async () => {
+    dispatch(slice.actions.getIDPurchaseSuccess({}));
+    dispatch(slice.actions.loading());
+    dispatch(resetViewReception());
     try {
+      dispatch(resetItemsPurchase());
+      await dispatch(getSupplierList());
+      await dispatch(getWarehouseList());
       const response = await axios.get(`${HOST}/compras?ID=${id}`);
       if (response.data) {
-        await dispatch(getSupplierList());
-        await dispatch(getWarehouseList());
-        dispatch(slice.actions.getIDPurchaseSuccess(response.data));
+        let Articles: any;
+        let dataNew: any;
+        let {
+          product: { products }
+        } = store.getState();
+
+        if (products && products.length > 0) {
+          Articles = response.data?.Articles?.map((item: Products | any) => ({
+            ...item,
+            ID: item?.ProductID,
+            ArticleID: item?.ID,
+            Name: products.find((e) => e.ID === item.ProductID)?.Name,
+            Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
+            Ean: products.find((e) => e.ID === item.ProductID)?.Ean,
+            isSelected: true
+          }));
+        }
+
+        dataNew = {
+          ...response.data,
+          Articles
+        };
+        await dispatch(addItemsPurchase(Articles));
+        dispatch(slice.actions.getIDPurchaseSuccess(dataNew));
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -189,7 +183,7 @@ export function getIDPurchase(id: number) {
 export function editPurchase(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/compras`, { ...data, ID: id });
+      const response: any = await axios.put(`${HOST}/compras`, { ...data, ID: id });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(getIDPurchase(id));
@@ -207,6 +201,7 @@ export function editPurchase(id: number, data: any) {
             })
           );
         } else {
+          /// await dispatch(createRecepctionArticles(response.data?.Articles));
           dispatch(
             openSnackbar({
               open: true,
@@ -230,7 +225,6 @@ export function deletePurchase(id: number, data: any) {
   return async () => {
     try {
       const response = await axios.delete(`${HOST}/compras`, { data: { ID: id } });
-
       // const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
       if (response) {
         dispatch(getPurchaseList());
@@ -252,7 +246,6 @@ export function deletePurchase(id: number, data: any) {
     }
   };
 }
-
 export function addItemsPurchase(data: any) {
   return async () => {
     try {
@@ -272,15 +265,6 @@ export function editItemsPurchase(data: any) {
     }
   };
 }
-export function updateItemsPurchase(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.updateDetailsPurchaseSuccess({ data }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
 export function deleteItemsPurchase(id: number) {
   return async () => {
     try {
@@ -294,27 +278,6 @@ export function resetItemsPurchase() {
   return async () => {
     try {
       dispatch(slice.actions.resetDetailsPurchaseSuccess());
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-/* RECEPTION */
-export function addReception(data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.addReceptionSuccess(data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function confirmationReception(nc: any, data: any) {
-  return async () => {
-    try {
-      dispatch(slice.actions.confirmationReceptionSuccess({ nc, data }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
