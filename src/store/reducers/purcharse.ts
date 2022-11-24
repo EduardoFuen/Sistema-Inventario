@@ -250,6 +250,17 @@ export function addItemsPurchase(data: any) {
   return async () => {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Producto Seleccionados',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

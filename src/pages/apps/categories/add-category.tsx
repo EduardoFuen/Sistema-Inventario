@@ -21,13 +21,13 @@ function AddNewCategories() {
   const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
 
   const category = useMemo(() => {
-    if (id && index === '0') {
+    if (id && Number(index) === 0) {
       return categoryListOne.find((item: CategoryOne) => item?.ID === Number(id));
     }
-    if (id && index === '1') {
+    if (id && Number(index) === 1) {
       return categoryListTwo.find((item: CategoryTwo) => item?.ID === Number(id));
     }
-    if (id && index === '2') {
+    if (id && Number(index) === 2) {
       return categoryListThree.find((item: CategoryThree) => item?.ID === Number(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

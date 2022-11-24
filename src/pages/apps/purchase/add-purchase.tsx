@@ -9,14 +9,17 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
-import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import summary from 'utils/calculation';
 import Import from './Import';
 import AddSelectProduct from './selectProducts';
 import Export from 'components/ExportToFile';
+import Summary from 'components/Summary';
 import DetailsPurchase from './detailsProduct';
+import { ProductPurchaseDefault } from 'config';
+
+import { useSelector, useDispatch } from 'store';
+import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import { getProducts } from 'store/reducers/product';
 import { getWarehouseList } from 'store/reducers/warehouse';
 import { getSupplierList } from 'store/reducers/supplier';
@@ -102,20 +105,6 @@ function AddPurchase() {
     () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, Number(discount) || 0),
     [detailsPurchase, discount]
   );
-
-  const dataProduct: any = [
-    {
-      Name: '',
-      Sku: '',
-      Ean: '',
-      Quantity: '',
-      BasePrice: '',
-      Tax: '',
-      DiscountNegotiated: '',
-      DiscountAdditional: '',
-      Bonus: ''
-    }
-  ];
 
   return (
     <>
@@ -228,7 +217,7 @@ function AddPurchase() {
 
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
-                        <Export excelData={dataProduct} fileName="Details Purchase" title="Descargar plantilla de productos" />
+                        <Export excelData={ProductPurchaseDefault} fileName="Details Purchase" title="Descargar plantilla de productos" />
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
                           Importar Productos
                         </Button>
@@ -264,31 +253,7 @@ function AddPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {detailsPurchase && detailsPurchase.length > 0 && (
-                  <MainCard>
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1">Subtotal: $ {data?.SubTotal || 0}</Typography>
-                    </Stack>
-                    {data.DiscountGlobal !== 0 && (
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Descuento: $ {data?.DiscountGlobal || 0}</Typography>
-                      </Stack>
-                    )}
-                    {data.SubtotalWithDiscount !== 0 && (
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Subtotal con descuento: $ {data?.SubtotalWithDiscount || 0}</Typography>
-                      </Stack>
-                    )}
-                    {data.Tax !== 0 && (
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">IVA: $ {data?.Tax || 0}</Typography>
-                      </Stack>
-                    )}
-                    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                      <Typography variant="subtitle1">Total: $ {data?.Total || 0}</Typography>
-                    </Stack>
-                  </MainCard>
-                )}
+                {detailsPurchase && detailsPurchase.length > 0 && <Summary data={data} />}
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

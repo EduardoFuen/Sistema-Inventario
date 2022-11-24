@@ -11,13 +11,15 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project import
-import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
+import Summary from 'components/Summary';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
 import AddReceptionModal from './addReception';
 import summary from 'utils/calculation';
 import DetailsReception from './detailsProduct';
+import { DATEFORMAT } from 'config';
 
+import { useSelector, useDispatch } from 'store';
 import { getIDPurchase, editPurchase } from 'store/reducers/purcharse';
 import { getByArticleId } from 'store/reducers/reception';
 
@@ -25,7 +27,7 @@ import { getByArticleId } from 'store/reducers/reception';
 
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
-    CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), 'dd-MM-yyyy') : '',
+    CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
     Discount: order?.Discount || 0,
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
@@ -33,8 +35,8 @@ const getInitialValues = (order: FormikValues | null) => {
     DiscountEarliyPay: order?.DiscountEarliyPay || 0,
     InvoiceNumber: order?.InvoiceNumber || '',
     DateExpireInvoice: order?.DateExpireInvoice || '',
-    EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
-    EstimatedDeliveryDateBaq: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
+    EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), DATEFORMAT) : '',
+    EstimatedDeliveryDateBaq: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBaq), DATEFORMAT) : ''
   };
 
   return newSubstance;
@@ -284,31 +286,7 @@ function AddReception() {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  {data && order?.Articles && order?.Articles.length > 0 && (
-                    <MainCard>
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                        <Typography variant="subtitle1">Subtotal: $ {data.SubTotal || 0}</Typography>
-                      </Stack>
-                      {data.DiscountGlobal !== '0' && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">Descuento: $ {data.DiscountGlobal || 0}</Typography>
-                        </Stack>
-                      )}
-                      {data.SubtotalWithDiscount !== 0 && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">Subtotal con descuento: $ {data.SubtotalWithDiscount || 0}</Typography>
-                        </Stack>
-                      )}
-                      {data.Tax !== 0 && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">IVA: $ {data.Tax || 0}</Typography>
-                        </Stack>
-                      )}
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Total: $ {data.Total || 0}</Typography>
-                      </Stack>
-                    </MainCard>
-                  )}
+                  {data && order?.Articles && order?.Articles.length > 0 && <Summary data={data} />}
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

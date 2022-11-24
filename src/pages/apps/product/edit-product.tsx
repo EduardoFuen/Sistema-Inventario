@@ -185,7 +185,7 @@ function UpdateProduct() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let data = {
+        let data: Products = {
           ...values,
           CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),

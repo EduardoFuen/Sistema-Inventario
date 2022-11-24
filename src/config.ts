@@ -39,6 +39,54 @@ export const CATEGORY = {
   CategoryTwo: 'CategoryTwo',
   CategoryThree: 'CategoryThree'
 };
+
+export const DATEFORMAT = 'dd-MM-yyyy';
+
+export const ProductDefault: any = [
+  {
+    ID: '',
+    Name: '',
+    Sku: '',
+    Ean: '',
+    Maker: '',
+    Trademark: '',
+    Type_Product: '',
+    Variation: '',
+    Grupo: '',
+    CategoryOne: '',
+    CategoryTwo: '',
+    Pack: '',
+    Quantity: '',
+    MakerUnit: '',
+    Weight: '',
+    Width: '',
+    PackInfo: '',
+    Height: '',
+    WrapperUnit: '',
+    Depth: '',
+    Warehouse: '',
+    Substance: '',
+    Substitutes: '',
+    Status: false,
+    Keywords: '',
+    Tax: '',
+    IsTaxed: false
+  }
+];
+
+export const ProductPurchaseDefault: any = [
+  {
+    Name: '',
+    Sku: '',
+    Ean: '',
+    Quantity: '',
+    BasePrice: '',
+    Tax: '',
+    DiscountNegotiated: '',
+    DiscountAdditional: '',
+    Bonus: ''
+  }
+];
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config: DefaultConfigProps = {

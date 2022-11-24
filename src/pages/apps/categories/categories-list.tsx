@@ -15,9 +15,10 @@ import { getObject } from 'utils/Global';
 import { useDispatch, useSelector } from 'store';
 import { CATEGORY } from 'config';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
+import { SearchIDToArray } from 'utils/findName';
 
 // types
-import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
+import { CategoryTwo, CategoryThree } from 'types/products';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -37,7 +38,6 @@ function a11yProps(index: number) {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
   return (
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
       {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
@@ -73,15 +73,16 @@ const CategoriesList = () => {
     setActiveImport(!addImport);
   };
 
+  let CategoryOne: string = '';
+
   const exportCategoryThre: any = categoryListThree.map((item: CategoryThree) => {
-    let CategoryOne: string = '';
     let CategoryTwo: string = '';
 
     if (item?.CategoryOneID) {
-      CategoryOne = categoryListOne.find((data: CategoryOne) => data?.ID === item?.CategoryOneID)?.Name || '';
+      CategoryOne = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
     }
     if (item?.CategoryTwoID) {
-      CategoryTwo = categoryListTwo.find((data: CategoryTwo) => data?.ID === item?.CategoryTwoID)?.Name || '';
+      CategoryTwo = SearchIDToArray(categoryListTwo, item?.CategoryTwoID)?.Name || '';
     }
     return {
       ID: item?.ID,
@@ -92,10 +93,8 @@ const CategoriesList = () => {
   });
 
   const exportCategoryTwo: any = categoryListTwo.map((item: CategoryTwo) => {
-    let CategoryOne: string = '';
-
     if (item?.CategoryOneID) {
-      CategoryOne = categoryListOne.find((data: CategoryOne) => data?.ID === item?.CategoryOneID)?.Name || '';
+      CategoryOne = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
     }
     return {
       ID: item?.ID,
@@ -103,6 +102,7 @@ const CategoriesList = () => {
       CategoryOne
     };
   });
+
   const [columnsValue, setColumnsValue] = useState<any>({
     Header: 'Grupo',
     accessor: 'Name',

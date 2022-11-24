@@ -26,8 +26,10 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
-import { addProduct } from 'store/reducers/product';
+
 import { idsToString } from 'utils/convertToObject';
+
+import { addProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { getTrademarkList } from 'store/reducers/trademark';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree } from 'store/reducers/category';
@@ -164,7 +166,7 @@ function AddNewProduct() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let data = {
+        let data: Products = {
           ...values,
           CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),

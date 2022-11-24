@@ -11,12 +11,9 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import { useSelector, useDispatch } from 'store';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
-
-// types
-import { Trademark } from 'types/products';
+import { SearchIDToArray } from 'utils/findName';
 
 // ==============================|| SELECT PRODUCT PURCHASE - LIST VIEW ||============================== //
 
@@ -31,12 +28,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   const { products } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
 
-  const TradeMark = (id: number) => {
-    if (id) {
-      let MakerID: any = tradeMarkList.find((item: Trademark) => item.ID === id);
-      return MakerID?.Name;
-    }
-  };
+  const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
   const handleSelect = (row: any) => {
     let newRow = {
@@ -133,6 +125,23 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
     [theme]
   );
 
+  const Accions = () => (
+    <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ pr: 1 }}>
+      <Button color="error" onClick={onCancel}>
+        Cancelar
+      </Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          dispatch(addItemsPurchase(detailsPurchase));
+          onCancel();
+        }}
+      >
+        Confirmar
+      </Button>
+    </Stack>
+  );
+
   return (
     <ScrollX>
       <Grid container alignItems="center">
@@ -140,31 +149,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
           <DialogTitle>Listado de productos</DialogTitle>
         </Grid>
         <Grid item xs={8} justifyContent="end">
-          <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ pr: 1 }}>
-            <Button color="error" onClick={onCancel}>
-              Cancelar
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                dispatch(addItemsPurchase(detailsPurchase));
-                onCancel();
-                dispatch(
-                  openSnackbar({
-                    open: true,
-                    message: 'Producto Seleccionados',
-                    variant: 'alert',
-                    alert: {
-                      color: 'success'
-                    },
-                    close: false
-                  })
-                );
-              }}
-            >
-              Confirmar
-            </Button>
-          </Stack>
+          <Accions />
         </Grid>
       </Grid>
       <MainCard content={false}>
@@ -180,31 +165,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
         <DialogActions sx={{ p: 2.5 }}>
           <Grid container justifyContent="end" alignItems="center">
             <Grid item>
-              <Stack direction="row" spacing={2} alignItems="center" justifyContent="end">
-                <Button color="error" onClick={onCancel}>
-                  Cancelar
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    dispatch(addItemsPurchase(detailsPurchase));
-                    onCancel();
-                    dispatch(
-                      openSnackbar({
-                        open: true,
-                        message: 'Producto Seleccionados',
-                        variant: 'alert',
-                        alert: {
-                          color: 'success'
-                        },
-                        close: false
-                      })
-                    );
-                  }}
-                >
-                  Confirmar
-                </Button>
-              </Stack>
+              <Accions />
             </Grid>
           </Grid>
         </DialogActions>

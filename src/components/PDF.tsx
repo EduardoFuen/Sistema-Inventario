@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 // project import
 import IconButton from 'components/@extended/IconButton';
 import Farmu from 'assets/images/home/logoAzulFarmu.png';
+import { DATEFORMAT } from 'config';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -86,7 +87,7 @@ const RenderDocument = ({ data }: any) => {
       <Page style={styles.body}>
         <Image src={Farmu} style={styles.image} />
         <Text style={styles.header} fixed>
-          Fecha {format(new Date(data?.CreatedAt), 'dd-MM-yyyy')} # Order Farmu-{data?.ID}
+          Fecha {format(new Date(data?.CreatedAt), DATEFORMAT)} # Order Farmu-{data?.ID}
         </Text>
         <Text style={styles.header} fixed>
           Bodega {data?.Warehouse?.Name}

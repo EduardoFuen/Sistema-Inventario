@@ -26,8 +26,8 @@ function AddCategoryThree({ categoryThree: category }: any) {
   };
 
   const SubstSchema = Yup.object().shape({
-    CategoryOneID: Yup.string().max(255).required('Categoria 1 es requerido'),
-    CategoryTwoID: Yup.string().max(255).required('Categoria 2 es requerido'),
+    CategoryOneID: Yup.string().max(255).required('Grupo es requerido'),
+    CategoryTwoID: Yup.string().max(255).required('Categoria 1 es requerido'),
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
 

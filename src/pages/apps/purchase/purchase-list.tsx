@@ -13,11 +13,13 @@ import NumberFormat from 'react-number-format';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { useSelector, useDispatch } from 'store';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
-import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 import { newDataExport } from 'utils/DataExportPurchase';
+import { DATEFORMAT } from 'config';
+
+import { useSelector, useDispatch } from 'store';
+import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 
 // assets
 import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
@@ -68,7 +70,7 @@ const PurchaseList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{format(new Date(value), 'dd-MM-yyyy')}</Typography>
+                <Typography variant="subtitle1">{format(new Date(value), DATEFORMAT)}</Typography>
               </Stack>
             </Stack>
           );
@@ -153,6 +155,7 @@ const PurchaseList = () => {
           let dataPDF: any = {
             ...row.original
           };
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <PDF values={dataPDF} FileName="Purchase" />

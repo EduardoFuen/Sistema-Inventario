@@ -22,13 +22,16 @@ import {
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project import
-import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
-import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import Summary from 'components/Summary';
+
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
+import { DATEFORMAT } from 'config';
+import { useSelector, useDispatch } from 'store';
+import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // types
 import { Warehouses } from 'types/products';
@@ -42,15 +45,15 @@ import { SendOutlined } from '@ant-design/icons';
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes || '',
-    CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), 'dd-MM-yyyy') : '',
+    CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
     WarehouseID: order?.WarehouseID || 0,
     Discount: order?.Discount || 0,
     DiscountEarliyPay: order?.DiscountEarliyPay || 0,
-    DaysPayment: order?.Supplier?.DaysPayment ? format(addDays(new Date(), order?.Supplier?.DaysPayment), 'dd-MM-yyyy') : '',
-    EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), 'dd-MM-yyyy') : '',
-    EstimatedDeliveryDateBaq: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBaq), 'dd-MM-yyyy') : ''
+    DaysPayment: order?.Supplier?.DaysPayment ? format(addDays(new Date(), order?.Supplier?.DaysPayment), DATEFORMAT) : '',
+    EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), DATEFORMAT) : '',
+    EstimatedDeliveryDateBaq: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBaq), DATEFORMAT) : ''
   };
 
   return newSubstance;
@@ -316,31 +319,7 @@ function ViewPurchase() {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && (
-                    <MainCard>
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
-                        <Typography variant="subtitle1">Subtotal: $ {data.SubTotal || 0}</Typography>
-                      </Stack>
-                      {data.DiscountGlobal !== '0' && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">Descuento: $ {data.DiscountGlobal || 0}</Typography>
-                        </Stack>
-                      )}
-                      {data.SubtotalWithDiscount !== 0 && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">Subtotal con descuento: $ {data.SubtotalWithDiscount || 0}</Typography>
-                        </Stack>
-                      )}
-                      {data.Tax !== 0 && (
-                        <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                          <Typography variant="subtitle1">IVA: $ {data.Tax || 0}</Typography>
-                        </Stack>
-                      )}
-                      <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
-                        <Typography variant="subtitle1">Total: $ {data.Total || 0}</Typography>
-                      </Stack>
-                    </MainCard>
-                  )}
+                  {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && <Summary data={data} />}
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

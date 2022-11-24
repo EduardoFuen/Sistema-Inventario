@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement, useState, lazy } from 'react';
+import { ReactNode, ReactElement, useState, lazy, SyntheticEvent } from 'react';
 import Loadable from 'components/Loadable';
 
 // material-ui
@@ -46,7 +46,7 @@ function TabPanel(props: TabPanelProps) {
 function TabProducts() {
   const [value, setValue] = useState<number>(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Chip, Stack, Tooltip, Typography, Dialog } from '@mui/material';
-// third-party
 
 // project import
 import ProductView from './ProductView';
@@ -14,10 +13,14 @@ import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
 import Import from './Import';
+
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { Trademark, Maker } from 'types/products';
+
+import { SearchIDToArray, SearchNameToArray } from 'utils/findName';
+import { ArrayToString } from 'utils/convertToObject';
+import { ProductDefault } from 'config';
 
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -56,9 +59,8 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
-  const getTradeMark = (id: number) => tradeMarkList.find((item: Trademark) => item.ID === id)?.Name;
-
-  const getMaker = (id: number) => makerList.find((item: Maker) => item.ID === id)?.Name;
+  const getMaker = (id: number) => SearchIDToArray(makerList, id)?.Name || '';
+  const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
   const handleAddProduct = () => {
     history(`/product-list/add-new-product`);
@@ -76,19 +78,19 @@ const ProductList = () => {
     let Warehouse: string = '';
     let Substitutes: string = '';
     let Substance: string = '';
-    let TypesProduct: any;
+    let TypesProduct: string = '';
 
     if (item?.Substance) {
-      Substance = item?.Substance.map((e: any) => e.Name).join();
+      Substance = ArrayToString(item?.Substance);
     }
     if (item?.Warehouses) {
-      Warehouse = item?.Warehouses.map((e: any) => e.Name).join();
+      Warehouse = ArrayToString(item?.Warehouses);
     }
     if (item?.Substitutes) {
       Substitutes = item?.Substitutes.map((e: any) => e.Sku).join();
     }
     if (item?.TypesProductID) {
-      TypesProduct = typeProductList.find((data: any) => data?.ID === item?.TypesProductID) || '';
+      TypesProduct = SearchNameToArray(typeProductList, item?.TypesProductID)?.Name || '';
     }
 
     return {
@@ -98,7 +100,7 @@ const ProductList = () => {
       Ean: item?.Ean,
       Maker: item?.Maker?.Name,
       Trademark: item?.Trademark,
-      Type_Product: TypesProduct?.Name,
+      Type_Product: TypesProduct,
       Variation: item?.Variation,
       Grupo: item?.CategoryOne?.Name,
       CategoryOne: item?.CategoryTwo?.Name,
@@ -121,38 +123,6 @@ const ProductList = () => {
       IsTaxed: item?.Taxed
     };
   });
-
-  const Template: any = [
-    {
-      ID: '',
-      Name: '',
-      Sku: '',
-      Ean: '',
-      Maker: '',
-      Trademark: '',
-      Type_Product: '',
-      Variation: '',
-      Grupo: '',
-      CategoryOne: '',
-      CategoryTwo: '',
-      Pack: '',
-      Quantity: '',
-      MakerUnit: '',
-      Weight: '',
-      Width: '',
-      PackInfo: '',
-      Height: '',
-      WrapperUnit: '',
-      Depth: '',
-      Warehouse: '',
-      Substance: '',
-      Substitutes: '',
-      Status: 'item?.Status',
-      Keywords: '',
-      Tax: '',
-      IsTaxed: ''
-    }
-  ];
 
   const columnsProducts = useMemo(
     () => [
@@ -291,7 +261,7 @@ const ProductList = () => {
           FileNameTemplate="Descargar Plantilla"
           dataExport={newDataExport}
           download
-          dataTemplate={Template}
+          dataTemplate={ProductDefault}
           FileName="Productos"
         />
       </ScrollX>

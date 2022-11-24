@@ -2,13 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Chip,
-  Dialog,
-  Stack,
-  Tooltip
-  // TextField
-} from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip } from '@mui/material';
 
 // project import
 import AddMaker from 'sections/apps/products/maker/AddMaker';

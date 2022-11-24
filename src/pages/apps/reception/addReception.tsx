@@ -48,6 +48,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
   const theme = useTheme();
 
   const validationItems = product?.Count === reception?.TotalItemsCountReception;
+
   let Items: any;
 
   if (reception && reception?.Articles) {
@@ -129,16 +130,14 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await dispatch(
-          UpdateRecepctionArticles(
-            {
-              ...reception,
-              ...values,
-              Articles: inputList
-            },
-            product?.ArticleID
-          )
-        );
+        let data = {
+          ...reception,
+          ...values,
+          Articles: inputList
+        };
+        let ArticleID: number = product?.ArticleID;
+
+        await dispatch(UpdateRecepctionArticles(data, ArticleID));
         await dispatch(getIDPurchase(Number(id)));
 
         await onCancel();

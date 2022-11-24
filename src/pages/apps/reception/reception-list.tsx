@@ -14,9 +14,11 @@ import ReactTable from 'components/ReactTable';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import { newDataExport } from 'utils/DataExportPurchase';
+import { DATEFORMAT } from 'config';
+
 import { useSelector, useDispatch } from 'store';
 import { getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
-import { newDataExport } from 'utils/DataExportPurchase';
 
 // assets
 import { PlusCircleOutlined } from '@ant-design/icons';
@@ -64,7 +66,7 @@ const ReceptionList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{format(new Date(value), 'dd-MM-yyyy')}</Typography>
+                <Typography variant="subtitle1">{format(new Date(value), DATEFORMAT)}</Typography>
               </Stack>
             </Stack>
           );

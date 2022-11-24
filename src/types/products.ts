@@ -2,7 +2,7 @@
 export type Products = {
   ID?: string | number | undefined;
   Name?: string;
-  Quantity?: number;
+  Quantity?: number | string;
   Discount?: number;
   Price?: number;
   Maker?: any;
@@ -39,7 +39,7 @@ export type Products = {
   MakerID?: string;
   PackID?: string;
   Iva?: number;
-  iva?: number;
+  iva?: number | string;
   Tax?: number;
   Taxed?: boolean;
 };
@@ -130,7 +130,7 @@ export type CategoryThree = {
   Status?: boolean;
 };
 
-// Categorys
+// Categories
 export interface CategoryOneStateProps {
   categoryListOne: CategoryOne[];
   categoryListTwo: CategoryTwo[];

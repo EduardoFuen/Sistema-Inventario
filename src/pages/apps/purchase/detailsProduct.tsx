@@ -47,7 +47,6 @@ const DetailsPurchase = ({ product }: any) => {
       ...item
     }));
     setInputList(newData);
-    //  window.localStorage.setItem('farmu-productsDetails', JSON.stringify(newData));
   }, [data]);
 
   const handleInputChange = (e: any, index: number) => {

@@ -11,6 +11,9 @@ import { useDispatch, useSelector } from 'store';
 import { SearchNameToArray } from 'utils/findName';
 import { ConvertToArray } from 'utils/convertStringToArray';
 
+// types
+import { Products } from 'types/products';
+
 // ==============================|| PRODUCT IMPORT ||============================== //
 
 export interface Props {
@@ -34,7 +37,7 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       setSubmitting(true);
-      const newData = data?.map((item: any) => ({
+      const newData: Products = data?.map((item: any) => ({
         Name: item?.Name,
         Sku: item?.Sku.toString(),
         Ean: item?.Ean.toString(),
