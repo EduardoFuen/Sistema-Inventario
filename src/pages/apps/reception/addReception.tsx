@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -47,7 +47,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const validationItems = product?.Count === reception?.TotalItemsCountReception;
+  const validationItems = product?.Count ? product?.Count === reception?.TotalItemsCountReception : false;
 
   let Items: any;
 
@@ -62,7 +62,14 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
 
   const [inputList, setInputList] = useState(Items);
   const [value, setValue] = useState<Date | null>();
-  const [validationQuantity, setValidationQuantity] = useState<boolean>(validationItems || false);
+  const [validationQuantity, setValidationQuantity] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (product?.Count === reception?.TotalItemsCountReception) {
+      setValidationQuantity(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
@@ -149,6 +156,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
   });
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
+  console.log(validationQuantity);
 
   return (
     <ScrollX>
@@ -182,7 +190,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                       type="number"
                       InputProps={{ inputProps: { min: 0 } }}
                       placeholder="Ingresar Cantidad Devolución"
-                      disabled={validationItems}
+                      // disabled={validationItems}
                       fullWidth
                       {...getFieldProps('Refund')}
                     />
@@ -194,7 +202,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                       fullWidth
                       select
                       {...getFieldProps('Reason')}
-                      disabled={validationItems}
+                      //  disabled={validationItems}
                     >
                       <MenuItem value="1">Mal Estado</MenuItem>
                       <MenuItem value="2">Fecha Corta</MenuItem>
@@ -206,12 +214,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
               <Grid item xs={12}>
                 <MainCard>
                   <Stack direction="row" justifyContent="end" spacing={2} alignItems="end" sx={{ p: 1 }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<PlusOutlined />}
-                      onClick={handleAddClick}
-                      disabled={validationQuantity || status}
-                    >
+                    <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAddClick}>
                       Agregar
                     </Button>
                     <Divider />
@@ -237,7 +240,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                             fullWidth
                             name="CountItemReception"
                             value={x.CountItemReception}
-                            disabled={validationItems || x.edit === false}
+                            // disabled={validationItems || x.edit === false}
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
@@ -250,7 +253,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                             fullWidth
                             name="Batch"
                             value={x.Batch}
-                            disabled={validationItems || x.edit === false}
+                            // disabled={validationItems || x.edit === false}
                           />
                         </Grid>
                         <Grid item xs={4}>
@@ -260,7 +263,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                               label=""
                               inputFormat="MM/dd/yyyy"
                               value={value || x.Date}
-                              disabled={validationItems || x.edit === false}
+                              // disabled={validationItems || x.edit === false}
                               onChange={(value: any) => {
                                 handleInputChange(value, i);
                                 handleChange(value);
@@ -301,7 +304,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                     <Button color="error" onClick={onCancel}>
                       Cancelar
                     </Button>
-                    <Button variant="contained" type="submit" disabled={isSubmitting || validationQuantity || status}>
+                    <Button variant="contained" type="submit" disabled={validationQuantity || status || isSubmitting}>
                       Confirmar
                     </Button>
                   </Stack>

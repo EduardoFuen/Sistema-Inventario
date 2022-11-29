@@ -131,16 +131,14 @@ const ReceptionList = () => {
       {
         Header: 'Estado',
         accessor: 'ReceptionStatus',
-        Cell: ({ row }: any) => {
-          switch (row) {
-            case 4:
-              return <Chip color="warning" label="Partial" size="small" variant="light" />;
+        Cell: ({ value }: any) => {
+          switch (value) {
             case 3:
-              return <Chip color="success" label="Completed" size="small" variant="light" />;
-            case 2:
               return <Chip color="error" label="Cancelled" size="small" variant="light" />;
+            case 2:
+              return <Chip color="success" label="Completed" size="small" variant="light" />;
             case 1:
-              return <Chip color="info" label="Send" size="small" variant="light" />;
+              return <Chip color="warning" label="Partial" size="small" variant="light" />;
             default:
               return <Chip color="warning" label="New" size="small" variant="light" />;
           }

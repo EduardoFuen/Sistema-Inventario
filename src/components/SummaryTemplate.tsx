@@ -6,7 +6,7 @@ import MainCard from 'components/MainCard';
 
 // ==============================|| SUMMARY ORDER ||============================== //
 
-const Summary = (data: any) => (
+const SummaryTemplate = ({ data }: any) => (
   <MainCard>
     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
       <Typography variant="subtitle1">Subtotal: $ {data?.SubTotal || 0}</Typography>
@@ -32,4 +32,4 @@ const Summary = (data: any) => (
   </MainCard>
 );
 
-export default Summary;
+export default SummaryTemplate;

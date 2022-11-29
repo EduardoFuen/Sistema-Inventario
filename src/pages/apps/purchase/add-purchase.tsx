@@ -14,7 +14,7 @@ import summary from 'utils/calculation';
 import Import from './Import';
 import AddSelectProduct from './selectProducts';
 import Export from 'components/ExportToFile';
-import Summary from 'components/Summary';
+import SummaryTemplate from 'components/SummaryTemplate';
 import DetailsPurchase from './detailsProduct';
 import { ProductPurchaseDefault } from 'config';
 
@@ -253,7 +253,7 @@ function AddPurchase() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {detailsPurchase && detailsPurchase.length > 0 && <Summary data={data} />}
+                {detailsPurchase && detailsPurchase.length > 0 && <SummaryTemplate data={data} />}
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

@@ -1,0 +1,15 @@
+{
+    "filetypes": [
+      ".js",
+      ".ts",
+      ".css",
+      ".svg",
+      ".png",
+      ".jpg",
+      ".wav",
+      ".tff",
+      ".woff2",
+      ".map"
+    ],
+    "directory": "/build"
+  }

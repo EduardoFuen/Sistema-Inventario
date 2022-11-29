@@ -19,7 +19,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party
-import _ from 'lodash';
+import { merge } from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
@@ -43,7 +43,7 @@ const getInitialValues = (subst: FormikValues | null) => {
   if (subst) {
     newSubstance.Name = subst.Name;
     newSubstance.Status = subst.Status;
-    return _.merge({}, newSubstance, subst);
+    return merge({}, newSubstance, subst);
   }
   return newSubstance;
 };

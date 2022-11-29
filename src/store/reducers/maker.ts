@@ -10,12 +10,13 @@ import { openSnackbar } from './snackbar';
 // types
 import { MakerStateProps } from 'types/products';
 
-// ==============================||  MAKER  ||============================== //
-
+// initial state
 const initialState: MakerStateProps = {
   error: null,
   makerList: []
 };
+
+// ==============================||  MAKER  ||============================== //
 
 const maker = createSlice({
   name: 'maker',
@@ -25,20 +26,20 @@ const maker = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
-    // GET PACKS
+    // GET MAKER
     getMakerSuccess(state, action) {
       state.makerList = action.payload;
     },
-    // ADD PACK
+    // ADD MAKER
     addMakerSuccess(state, action) {
       state.makerList.push(action.payload);
     },
-    // UPDATE PACK
+    // UPDATE MAKER
     updateMakerSuccess(state, action) {
       const index = state.makerList.findIndex((item) => item.ID === action.payload?.ID);
       state.makerList[index] = action.payload;
     },
-    // ADD EXCEL PACK
+    // ADD EXCEL MAKER
     addMakerExcelSuccess(state, action) {
       state.makerList = [...state.makerList, ...action.payload];
     }

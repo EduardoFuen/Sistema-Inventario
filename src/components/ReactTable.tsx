@@ -104,8 +104,10 @@ const ReactTable = ({
               setGlobalFilter={setGlobalFilter}
               size="small"
             />
-            {download && <Export excelData={dataTemplate} fileName={FileName} title={FileNameTemplate} />}
-            <Export excelData={dataExport && dataExport.length > 0 ? dataExport : data} fileName={FileName} />
+            {download && dataTemplate.length > 0 && <Export excelData={dataTemplate} fileName={FileName} title={FileNameTemplate} />}
+            {dataExport && dataExport.length > 0 && (
+              <Export excelData={dataExport && dataExport.length > 0 ? dataExport : data} fileName={FileName} />
+            )}
             {hideButton && (
               <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
                 Importar

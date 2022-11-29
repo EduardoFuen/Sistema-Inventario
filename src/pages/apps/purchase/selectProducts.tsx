@@ -11,6 +11,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import { useSelector, useDispatch } from 'store';
+import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
 import { SearchIDToArray } from 'utils/findName';
@@ -133,6 +134,17 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
       <Button
         variant="contained"
         onClick={() => {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Producto Seleccionados',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
           dispatch(addItemsPurchase(detailsPurchase));
           onCancel();
         }}

@@ -26,7 +26,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useSelector } from 'store';
 
 // third-party
-import _ from 'lodash';
+import { merge } from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
@@ -50,7 +50,7 @@ const getInitialValues = (tradeMark: FormikValues | null) => {
   if (tradeMark) {
     newTradeTrademark.Status = tradeMark.Status;
     newTradeTrademark.MakerID = tradeMark.MakerID;
-    return _.merge({}, newTradeTrademark, tradeMark);
+    return merge({}, newTradeTrademark, tradeMark);
   }
 
   return newTradeTrademark;

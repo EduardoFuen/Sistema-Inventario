@@ -36,23 +36,23 @@ const slice = createSlice({
     getProductIDSuccess(state, action) {
       state.product = action.payload;
     },
-    // ADD PRODUCTS
+    // ADD PRODUCT
     addProductSuccess(state, action) {
       state.products.push(action.payload);
     },
-    // EDIT PRODUCTS
+    // EDIT PRODUCT
     editProductsSuccess(state, action) {
       const { id, data } = action.payload;
       const index = state.products.findIndex((item) => item.ID === id);
       state.products[index] = data;
     },
-    // DELETE PRODUCTS
+    // DELETE PRODUCT
     deleteProductSuccess(state, action) {
       const { name } = action.payload;
       const index = state.products.findIndex((item) => item.ID === name);
       state.products.splice(index, 1);
     },
-    // ADD EXCEL PRODUCTS
+    // ADD EXCEL PRODUCT
     excelSuccess(state, action) {
       state.products = [...state.products, ...action.payload];
     }

@@ -12,7 +12,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
 // project import
 import MainCard from 'components/MainCard';
-import Summary from 'components/Summary';
+import SummaryTemplate from 'components/SummaryTemplate';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
 import AddReceptionModal from './addReception';
 import summary from 'utils/calculation';
@@ -84,7 +84,6 @@ function AddReception() {
       try {
         await dispatch(
           editPurchase(Number(id), {
-            ...order,
             InvoiceNumber: values?.InvoiceNumber || '',
             DateExpireInvoice: values?.DateExpireInvoice || ''
           })
@@ -270,10 +269,9 @@ function AddReception() {
                     products={detailsPurchase as []}
                     handleAdd={async (item: any) => {
                       await dispatch(getByArticleId(Number(item.ArticleID)));
-                      handleAdd();
+                      setAdd(true);
                       setProduct(item);
                     }}
-                    status={order?.Status || (order?.DateExpireInvoice && order?.InvoiceNumber)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -286,7 +284,7 @@ function AddReception() {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  {data && order?.Articles && order?.Articles.length > 0 && <Summary data={data} />}
+                  {data && order?.Articles && order?.Articles.length > 0 && <SummaryTemplate data={data} />}
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

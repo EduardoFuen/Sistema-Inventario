@@ -28,7 +28,7 @@ const reducers = combineReducers({
     {
       key: 'inventory',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     inventory
   ),
@@ -36,7 +36,7 @@ const reducers = combineReducers({
     {
       key: 'purchase',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     purchase
   ),
@@ -44,7 +44,7 @@ const reducers = combineReducers({
     {
       key: 'reception',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     reception
   ),
@@ -52,7 +52,7 @@ const reducers = combineReducers({
     {
       key: 'substances',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     activeSubst
   ),
@@ -60,7 +60,7 @@ const reducers = combineReducers({
     {
       key: 'supplier',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     supplier
   ),
@@ -68,7 +68,7 @@ const reducers = combineReducers({
     {
       key: 'typeProduct',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     typeProduct
   ),
@@ -76,7 +76,7 @@ const reducers = combineReducers({
     {
       key: 'categories',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     category
   ),
@@ -84,7 +84,7 @@ const reducers = combineReducers({
     {
       key: 'maker',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     maker
   ),
@@ -92,7 +92,7 @@ const reducers = combineReducers({
     {
       key: 'trademaker',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     trademaker
   ),
@@ -100,7 +100,7 @@ const reducers = combineReducers({
     {
       key: 'pack',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     pack
   ),
@@ -108,7 +108,7 @@ const reducers = combineReducers({
     {
       key: 'warehouse',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     warehouse
   ),
@@ -116,7 +116,7 @@ const reducers = combineReducers({
     {
       key: 'productReducer',
       storage,
-      keyPrefix: 'farmu-'
+      keyPrefix: 'Midas-'
     },
     productReducer
   )

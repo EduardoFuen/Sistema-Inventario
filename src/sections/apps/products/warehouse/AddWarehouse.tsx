@@ -28,7 +28,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third-party
-import _ from 'lodash';
+import { merge } from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 
@@ -56,7 +56,7 @@ const getInitialValues = (warehouse: FormikValues | null) => {
   if (warehouse) {
     newWarehouse.Location = warehouse.address;
     newWarehouse.Status = warehouse.Status;
-    return _.merge({}, newWarehouse, warehouse);
+    return merge({}, newWarehouse, warehouse);
   }
 
   return newWarehouse;

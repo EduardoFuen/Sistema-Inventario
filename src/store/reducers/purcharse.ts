@@ -147,6 +147,7 @@ export function getIDPurchase(id: number) {
       dispatch(resetItemsPurchase());
       await dispatch(getSupplierList());
       await dispatch(getWarehouseList());
+
       const response = await axios.get(`${HOST}/compras?ID=${id}`);
       if (response.data) {
         let Articles: any;
@@ -156,15 +157,17 @@ export function getIDPurchase(id: number) {
         } = store.getState();
 
         if (products && products.length > 0) {
-          Articles = response.data?.Articles?.map((item: Products | any) => ({
-            ...item,
-            ID: item?.ProductID,
-            ArticleID: item?.ID,
-            Name: products.find((e) => e.ID === item.ProductID)?.Name,
-            Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
-            Ean: products.find((e) => e.ID === item.ProductID)?.Ean,
-            isSelected: true
-          }));
+          Articles = response.data?.Articles?.map((item: Products | any) => {
+            return {
+              ...item,
+              ID: item?.ProductID,
+              ArticleID: item?.ID,
+              Name: products.find((e) => e.ID === item.ProductID)?.Name,
+              Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
+              Ean: products.find((e) => e.ID === item.ProductID)?.Ean,
+              isSelected: true
+            };
+          });
         }
 
         dataNew = {
@@ -250,17 +253,6 @@ export function addItemsPurchase(data: any) {
   return async () => {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Producto Seleccionados',
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

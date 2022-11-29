@@ -23,10 +23,9 @@ import { CheckSquareOutlined } from '@ant-design/icons';
 interface PropsProduct {
   products: [];
   handleAdd: (item: any) => void;
-  status: string;
 }
 
-const DetailsPurchase = ({ products, handleAdd, status }: PropsProduct) => {
+const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
   const theme = useTheme();
   const { reception: itemReception }: any = useSelector((state) => state.reception);
 

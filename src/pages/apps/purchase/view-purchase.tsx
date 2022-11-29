@@ -24,7 +24,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 // project import
 import MainCard from 'components/MainCard';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
-import Summary from 'components/Summary';
+import SummaryTemplate from 'components/SummaryTemplate';
 
 import DetailsPurchase from './detailsProduct';
 import summary from 'utils/calculation';
@@ -283,7 +283,7 @@ function ViewPurchase() {
                               <TableCell component="th" scope="row">
                                 <Stack direction="row" spacing={1.5} alignItems="center">
                                   <Stack spacing={0}>
-                                    <Typography variant="subtitle1">{x.ID}</Typography>
+                                    <Typography variant="subtitle1">ID {x.ID}</Typography>
                                     <Typography variant="subtitle1">{x.Name}</Typography>
                                     <Typography variant="caption" color="textSecondary">
                                       SKU {x.Sku}
@@ -319,7 +319,7 @@ function ViewPurchase() {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && <Summary data={data} />}
+                  {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && <SummaryTemplate data={data} />}
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

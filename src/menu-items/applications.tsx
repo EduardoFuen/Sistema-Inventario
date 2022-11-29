@@ -1,11 +1,11 @@
 // assets
-import { AppstoreOutlined, ReconciliationOutlined, UnorderedListOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { AppstoreOutlined, ReconciliationOutlined, UnorderedListOutlined, ShoppingCartOutlined, UserOutlined };
+const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -18,7 +18,7 @@ const applications: NavItemType = {
       title: 'Productos',
       type: 'item',
       url: '/product-list',
-      icon: icons.UnorderedListOutlined
+      icon: icons.DiffOutlined
     },
     {
       id: 'AddProduct',
@@ -43,7 +43,7 @@ const applications: NavItemType = {
       title: 'Proveedores',
       type: 'item',
       url: '/supplier',
-      icon: icons.AppstoreOutlined
+      icon: icons.TeamOutlined
     },
     {
       id: 'addSupplier',
@@ -73,7 +73,7 @@ const applications: NavItemType = {
     {
       id: 'recepcion',
       title: 'Recepción',
-      icon: icons.UserOutlined,
+      icon: icons.ApartmentOutlined,
       type: 'item',
       url: '/reception'
     },
@@ -82,7 +82,7 @@ const applications: NavItemType = {
       title: 'Inventario',
       type: 'item',
       url: '/inventario',
-      icon: icons.ShoppingCartOutlined
+      icon: icons.HddOutlined
     },
     {
       id: 'edit',

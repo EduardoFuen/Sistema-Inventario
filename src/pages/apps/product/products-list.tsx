@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-import { SearchIDToArray, SearchNameToArray } from 'utils/findName';
+import { SearchIDToArray } from 'utils/findName';
 import { ArrayToString } from 'utils/convertToObject';
 import { ProductDefault } from 'config';
 
@@ -90,7 +90,7 @@ const ProductList = () => {
       Substitutes = item?.Substitutes.map((e: any) => e.Sku).join();
     }
     if (item?.TypesProductID) {
-      TypesProduct = SearchNameToArray(typeProductList, item?.TypesProductID)?.Name || '';
+      TypesProduct = SearchIDToArray(typeProductList, item?.TypesProductID)?.Name || '';
     }
 
     return {
