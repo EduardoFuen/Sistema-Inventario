@@ -97,7 +97,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {TotalItemsCountReception}
+              {TotalItemsCountReception || 0}
             </Stack>
           );
         }
@@ -109,7 +109,10 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
           const { original } = row;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <NumberFormat value={TotalItemsCountReception * original?.BasePrice} displayType="text" prefix="$" />
+              {(TotalItemsCountReception && (
+                <NumberFormat value={TotalItemsCountReception * original?.BasePrice} displayType="text" prefix="$" />
+              )) ||
+                0}
             </Stack>
           );
         }
@@ -121,7 +124,10 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
           const { original } = row;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <NumberFormat value={TotalItemsCountReception * original?.BasePrice + original?.Tax} displayType="text" prefix="$" />
+              {(TotalItemsCountReception && (
+                <NumberFormat value={TotalItemsCountReception * original?.BasePrice + original?.Tax} displayType="text" prefix="$" />
+              )) ||
+                0}
             </Stack>
           );
         }

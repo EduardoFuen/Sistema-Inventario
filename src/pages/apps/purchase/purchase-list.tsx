@@ -62,7 +62,7 @@ const PurchaseList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Order',
+        Header: '#',
         accessor: 'ID',
         Cell: ({ value }: any) => {
           return (
@@ -125,12 +125,12 @@ const PurchaseList = () => {
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
-      {
-        Header: 'Total Descuento',
+      /* {
+        Header: 'Subtotal con Descuento',
         accessor: 'SubtotalWithDiscount',
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
-      },
+      }, */
       {
         Header: 'IVA',
         accessor: 'Tax',
@@ -176,8 +176,11 @@ const PurchaseList = () => {
                     if (row?.values?.ID) handleInfoPDF(setIsLoading, row?.values?.ID);
                   }}
                 >
-                  {!isLoading && <FilePdfOutlined twoToneColor={theme.palette.primary.main} />}
-                  {isLoading && <SyncOutlined spin twoToneColor={theme.palette.primary.main} />}
+                  {!isLoading ? (
+                    <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
+                  ) : (
+                    <SyncOutlined spin twoToneColor={theme.palette.primary.main} />
+                  )}
                 </IconButton>
               </Tooltip>
               <Tooltip title="Edit">

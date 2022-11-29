@@ -27,7 +27,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { getIDPurchase } from 'store/reducers/purcharse';
+// import { getIDPurchase } from 'store/reducers/purcharse';
 import { UpdateRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
 import { Products } from 'types/products';
 // assets
@@ -142,11 +142,10 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
           ...values,
           Articles: inputList
         };
+
         let ArticleID: number = product?.ArticleID;
 
         await dispatch(UpdateRecepctionArticles(data, ArticleID));
-        await dispatch(getIDPurchase(Number(id)));
-
         await onCancel();
         await setSubmitting(false);
       } catch (error) {
@@ -156,7 +155,6 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
   });
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
-  console.log(validationQuantity);
 
   return (
     <ScrollX>

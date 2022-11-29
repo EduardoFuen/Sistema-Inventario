@@ -71,12 +71,14 @@ export function UpdateRecepctionArticles(data: any, id: number) {
   return async () => {
     try {
       let newData: any = data?.Articles.map((item: any) => ({
-        ...item,
         Reason: Number(data?.Reason),
         Refund: Number(data?.Refund),
         Missing: Number(data?.Missing),
+        Batch: item.Batch,
         Count: Number(item?.CountItemReception),
-        ArticleID: item.ArticleID || id
+        ID: item?.ID || 0,
+        Date: item.Date,
+        ArticleID: id
       }));
 
       const response = await axios.post(`${HOST}/recepcion`, newData);

@@ -164,7 +164,7 @@ export function getIDPurchase(id: number) {
           Articles = response.data?.Articles?.map((item: Products | any) => {
             return {
               ...item,
-              ID: item?.ProductID,
+              ID: item?.ID,
               ArticleID: item?.ID,
               Name: products.find((e) => e.ID === item.ProductID)?.Name,
               Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
