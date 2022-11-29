@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
@@ -17,11 +17,11 @@ import ScrollX from 'components/ScrollX';
 import { newDataExport } from 'utils/DataExportPurchase';
 import { DATEFORMAT } from 'config';
 
-import { useSelector, useDispatch } from 'store';
-import { getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
+import { useSelector, useDispatch, store } from 'store';
+import { getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // assets
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, FilePdfOutlined, SyncOutlined } from '@ant-design/icons';
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
 
@@ -43,6 +43,17 @@ const ReceptionList = () => {
   const { listPurchase } = useSelector((state) => state.purchase);
   const { supplierList } = useSelector((state) => state.supplier);
   const { warehouseList } = useSelector((state) => state.warehouse);
+
+  const handleInfoPDF = async (setIsLoading: any, id: number) => {
+    dispatch(getIDPurchase(id)).then(async () => {
+      let {
+        purchase: { order }
+      } = store.getState();
+
+      if (order) await PDF(order, 'Recepción');
+      setIsLoading(false);
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -149,12 +160,23 @@ const ReceptionList = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          let dataPDF: any = {
-            ...row.original
-          };
+          const [isLoading, setIsLoading] = useState<boolean>(false);
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDF values={dataPDF} FileName="Recepción" />
+              <Tooltip title="PDF">
+                <IconButton
+                  color="primary"
+                  disabled={isLoading}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    setIsLoading(true);
+                    if (row?.values?.ID) handleInfoPDF(setIsLoading, row?.values?.ID);
+                  }}
+                >
+                  {!isLoading && <FilePdfOutlined twoToneColor={theme.palette.primary.main} />}
+                  {isLoading && <SyncOutlined spin twoToneColor={theme.palette.primary.main} />}
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Ingresar">
                 <IconButton
                   color="primary"

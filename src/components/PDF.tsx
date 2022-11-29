@@ -1,11 +1,8 @@
-import { PDFDownloadLink, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
-import { useTheme } from '@mui/material/styles';
-import { useSelector } from 'store';
-import { FilePdfOutlined } from '@ant-design/icons';
+import { pdf, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 import { format } from 'date-fns';
-
+import { saveAs } from 'file-saver';
 // project import
-import IconButton from 'components/@extended/IconButton';
+
 import Farmu from 'assets/images/home/logoAzulFarmu.png';
 import { DATEFORMAT } from 'config';
 
@@ -74,24 +71,22 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-const getProduct = (id: number, data: any) => {
-  if (id) {
-    let product: any = data?.find((item: any) => item?.ID === id);
-    return product;
-  }
-};
 
 const RenderDocument = ({ data }: any) => {
   return (
     <Document>
       <Page style={styles.body}>
         <Image src={Farmu} style={styles.image} />
-        <Text style={styles.header} fixed>
-          Fecha {format(new Date(data?.CreatedAt), DATEFORMAT)} # Order Farmu-{data?.ID}
-        </Text>
-        <Text style={styles.header} fixed>
-          Bodega {data?.Warehouse?.Name}
-        </Text>
+        {data && data?.CreatedAt && (
+          <Text style={styles.header} fixed>
+            Fecha {format(new Date(data?.CreatedAt), DATEFORMAT)} # Order Farmu-{data?.ID}
+          </Text>
+        )}
+        {data && data?.Warehouse && (
+          <Text style={styles.header} fixed>
+            Bodega {data?.Warehouse?.Name}
+          </Text>
+        )}
         <Text style={styles.title}>{data?.Supplier?.BusinessName}</Text>
         <Text style={styles.author}>NIT: {data?.Supplier?.Nit}</Text>
         <Text style={styles.author}>Email: {data?.Supplier?.EmailContact}</Text>
@@ -169,40 +164,10 @@ const RenderDocument = ({ data }: any) => {
     </Document>
   );
 };
-interface Props {
-  values: any;
-  FileName: string;
-}
 
-const PDF = ({ values, FileName }: Props) => {
-  const theme = useTheme();
-  const { products } = useSelector((state) => state.product);
-
-  const newData = {
-    ...values,
-    Articles: values?.Articles?.map((item: any) => {
-      return {
-        ...item,
-        ID: item?.ProductID,
-        Name: getProduct(item.ProductID, products)?.Name,
-        Sku: getProduct(item.ProductID, products)?.Sku,
-        Ean: getProduct(item.ProductID, products)?.Ean
-      };
-    })
-  };
-  return (
-    <PDFDownloadLink document={<RenderDocument data={newData} />} fileName={`${FileName}.pdf`}>
-      {({ loading }) =>
-        loading ? (
-          ''
-        ) : (
-          <IconButton color="primary">
-            <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-          </IconButton>
-        )
-      }
-    </PDFDownloadLink>
-  );
+const PDF = async (values: any, FileName: string) => {
+  const blob = await pdf(<RenderDocument title={FileName} data={values} />).toBlob();
+  saveAs(blob, FileName);
 };
 
 export default PDF;

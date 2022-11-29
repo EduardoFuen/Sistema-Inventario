@@ -72,6 +72,10 @@ const slice = createSlice({
     // RESET DETAILS PURCHASE
     resetDetailsPurchaseSuccess(state) {
       state.detailsPurchase = [];
+    },
+    // RESET DETAILS ORDER
+    resetOrderSuccess(state) {
+      state.order = {};
     }
   }
 });
@@ -140,9 +144,9 @@ export function addPurchase(data: any) {
 }
 export function getIDPurchase(id: number) {
   return async () => {
-    dispatch(slice.actions.getIDPurchaseSuccess({}));
     dispatch(slice.actions.loading());
     dispatch(resetViewReception());
+    dispatch(resetOrder());
     try {
       dispatch(resetItemsPurchase());
       await dispatch(getSupplierList());
@@ -281,6 +285,15 @@ export function resetItemsPurchase() {
   return async () => {
     try {
       dispatch(slice.actions.resetDetailsPurchaseSuccess());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function resetOrder() {
+  return async () => {
+    try {
+      dispatch(slice.actions.resetOrderSuccess());
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

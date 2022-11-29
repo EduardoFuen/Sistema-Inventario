@@ -82,12 +82,14 @@ function AddReception() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await dispatch(
-          editPurchase(Number(id), {
-            InvoiceNumber: values?.InvoiceNumber || '',
-            DateExpireInvoice: values?.DateExpireInvoice || ''
-          })
-        );
+        const newValue = {
+          ...order,
+          InvoiceNumber: values?.InvoiceNumber || '',
+          DateExpireInvoice: values?.DateExpireInvoice || ''
+        };
+        delete newValue.CreatedAt;
+
+        await dispatch(editPurchase(Number(id), newValue));
 
         history(`/reception`);
         setSubmitting(false);

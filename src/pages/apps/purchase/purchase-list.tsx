@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
@@ -18,11 +18,11 @@ import PDF from 'components/PDF';
 import { newDataExport } from 'utils/DataExportPurchase';
 import { DATEFORMAT } from 'config';
 
-import { useSelector, useDispatch } from 'store';
-import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
+import { useSelector, useDispatch, store } from 'store';
+import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // assets
-import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, FilePdfOutlined, SyncOutlined } from '@ant-design/icons';
 
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
@@ -46,6 +46,17 @@ const PurchaseList = () => {
   const handleViewPurchase = (id: number) => {
     dispatch(resetItemsPurchase());
     history(`/purchase/view/${id}`);
+  };
+
+  const handleInfoPDF = async (setIsLoading: any, id: number) => {
+    dispatch(getIDPurchase(id)).then(async () => {
+      let {
+        purchase: { order }
+      } = store.getState();
+
+      if (order) await PDF(order, 'Purchase');
+      setIsLoading(false);
+    });
   };
 
   const columns = useMemo(
@@ -152,13 +163,23 @@ const PurchaseList = () => {
         className: 'cell-center',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          let dataPDF: any = {
-            ...row.original
-          };
-
+          const [isLoading, setIsLoading] = useState<boolean>(false);
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <PDF values={dataPDF} FileName="Purchase" />
+              <Tooltip title="PDF">
+                <IconButton
+                  color="primary"
+                  disabled={isLoading}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    setIsLoading(true);
+                    if (row?.values?.ID) handleInfoPDF(setIsLoading, row?.values?.ID);
+                  }}
+                >
+                  {!isLoading && <FilePdfOutlined twoToneColor={theme.palette.primary.main} />}
+                  {isLoading && <SyncOutlined spin twoToneColor={theme.palette.primary.main} />}
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
