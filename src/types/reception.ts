@@ -12,6 +12,7 @@ export type reception = {
 
 export interface ReceptionStateProps {
   reception: reception;
+  receptionAll: reception[];
   isLoading: boolean;
   error: object | string | null | any;
 }

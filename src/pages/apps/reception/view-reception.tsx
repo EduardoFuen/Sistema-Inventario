@@ -21,7 +21,7 @@ import { DATEFORMAT } from 'config';
 
 import { useSelector, useDispatch } from 'store';
 import { getIDPurchase, editPurchase } from 'store/reducers/purcharse';
-import { getByArticleId } from 'store/reducers/reception';
+import { getByArticleId, getAllReception } from 'store/reducers/reception';
 
 // ==============================|| VIEW RECEPTION - MAIN ||============================== //
 
@@ -59,6 +59,7 @@ function AddReception() {
 
   useEffect(() => {
     if (id) {
+      dispatch(getAllReception());
       dispatch(getIDPurchase(Number(id)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

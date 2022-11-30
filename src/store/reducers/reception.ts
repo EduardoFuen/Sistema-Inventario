@@ -12,7 +12,8 @@ import { ReceptionStateProps } from 'types/reception';
 const initialState: ReceptionStateProps = {
   error: null,
   reception: {},
-  isLoading: false
+  isLoading: false,
+  receptionAll: []
 };
 
 // ==============================||  RECEPCION  REDUCER ||============================== //
@@ -39,6 +40,11 @@ const slice = createSlice({
     getIDArticleSuccess(state, action) {
       state.reception = action.payload;
       state.isLoading = false;
+    },
+    // GET ALL RECEPTION
+    getAllReceptionSuccess(state, action) {
+      state.receptionAll = action.payload;
+      state.isLoading = false;
     }
   }
 });
@@ -47,6 +53,47 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
+export function getAllReception() {
+  return async () => {
+    dispatch(slice.actions.hasReset());
+    try {
+      const response = await axios.get(`${HOST}/recepcion`);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getAllReceptionSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getByArticleId(id: number) {
+  return async () => {
+    dispatch(slice.actions.hasReset());
+    try {
+      const response = await axios.get(`${HOST}/recepcion?ArticleID=${id}`);
+      let data: any = response.data.map((item: any) => ({
+        ...item,
+        CountItemReception: item?.Count
+      }));
+
+      const TotalItemsCountReception = data.reduce((accumulator: any, obj: any) => accumulator + obj.CountItemReception, 0);
+
+      let dataResponse: any = {
+        Missing: data[0].Missing,
+        Refund: data[0].Refund,
+        Reason: data[0].Reason,
+        Articles: data,
+        TotalItemsCountReception,
+        ArticleID: id
+      };
+
+      dispatch(slice.actions.getIDArticleSuccess(dataResponse));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
 export function createRecepctionArticles(data: any) {
   return async () => {
@@ -90,33 +137,7 @@ export function UpdateRecepctionArticles(data: any, id: number) {
     }
   };
 }
-export function getByArticleId(id: number) {
-  return async () => {
-    dispatch(slice.actions.hasReset());
-    try {
-      const response = await axios.get(`${HOST}/recepcion?ArticleID=${id}`);
-      let data: any = response.data.map((item: any) => ({
-        ...item,
-        CountItemReception: item?.Count
-      }));
 
-      const TotalItemsCountReception = data.reduce((accumulator: any, obj: any) => accumulator + obj.CountItemReception, 0);
-
-      let dataResponse: any = {
-        Missing: data[0].Missing,
-        Refund: data[0].Refund,
-        Reason: data[0].Reason,
-        Articles: data,
-        TotalItemsCountReception,
-        ArticleID: id
-      };
-
-      dispatch(slice.actions.getIDArticleSuccess(dataResponse));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
 export function deleteItemsRecepction(id: number) {
   return async () => {
     try {

@@ -27,12 +27,18 @@ interface PropsProduct {
 
 const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
   const theme = useTheme();
-  const { reception: itemReception }: any = useSelector((state) => state.reception);
+  const { receptionAll }: any = useSelector((state) => state.reception);
 
-  const TotalItemsCountReception =
-    itemReception &&
-    itemReception?.Articles?.length > 0 &&
-    itemReception?.Articles?.reduce((accumulator: any, obj: any) => accumulator || 0 + obj.CountItemReception, 0);
+  const ItemsReception = (id: number) => {
+    let TotalCount: number = 0;
+    receptionAll.map((item: any) => {
+      if (item.ArticleID === id) {
+        TotalCount = TotalCount + item.Count;
+      }
+      return false;
+    });
+    return TotalCount;
+  };
 
   const columns = useMemo(
     () => [
@@ -97,7 +103,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         Cell: ({ row }: any) => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {TotalItemsCountReception || 0}
+              {ItemsReception(row.original?.ArticleID) || 0}
             </Stack>
           );
         }
@@ -109,8 +115,8 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
           const { original } = row;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {(TotalItemsCountReception && (
-                <NumberFormat value={TotalItemsCountReception * original?.BasePrice} displayType="text" prefix="$" />
+              {(ItemsReception(row.original?.ArticleID) && (
+                <NumberFormat value={original?.BasePrice * ItemsReception(row.original?.ArticleID)} displayType="text" prefix="$" />
               )) ||
                 0}
             </Stack>
@@ -122,10 +128,16 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         accessor: '2',
         Cell: ({ row }: any) => {
           const { original } = row;
+          console.log(original);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              {(TotalItemsCountReception && (
-                <NumberFormat value={TotalItemsCountReception * original?.BasePrice + original?.Tax} displayType="text" prefix="$" />
+              {(ItemsReception(row.original?.ArticleID) && (
+                <NumberFormat
+                  value={(original?.BasePrice + original?.Tax) * ItemsReception(row.original?.ArticleID)}
+                  displayType="text"
+                  prefix="$"
+                />
               )) ||
                 0}
             </Stack>
