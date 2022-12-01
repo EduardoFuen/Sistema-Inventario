@@ -169,6 +169,7 @@ export function getIDPurchase(id: number) {
               Name: products.find((e) => e.ID === item.ProductID)?.Name,
               Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
               Ean: products.find((e) => e.ID === item.ProductID)?.Ean,
+              DiscountNegotiated: item?.Discount,
               isSelected: true
             };
           });

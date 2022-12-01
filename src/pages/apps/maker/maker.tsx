@@ -117,6 +117,7 @@ const MakersList = () => {
           handleAdd={handleAdd}
           handleImport={handleImport}
           TitleButton="Agregar Makers"
+          dataExport={makerList as []}
           FileName="Makers"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />

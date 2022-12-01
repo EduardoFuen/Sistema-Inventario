@@ -125,6 +125,7 @@ const WarehouseList = () => {
           columns={columns}
           handleImport={handleImport}
           data={warehouseList as []}
+          dataExport={warehouseList as []}
           handleAdd={handleAdd}
           TitleButton="Agregar Bodega"
           FileName="Bodegas"

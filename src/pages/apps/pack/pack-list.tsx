@@ -114,6 +114,7 @@ const PackList = () => {
           handleAdd={handleAdd}
           handleImport={handleImport}
           data={packList as []}
+          dataExport={packList as []}
           TitleButton="Agregar Envase"
           FileName="Envase"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}

@@ -30,11 +30,11 @@ const Import = ({ onCancel }: Props) => {
         let Total = SubTotal + (item?.Quantity * item?.BasePrice * Tax) / 100 || 0;
 
         return {
-          ProductID: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.ID || 0,
+          ProductID: SearchNameToArray(products, String(item?.Sku) || String(item?.Ean) || item?.Name)?.ID || 0,
           Sku: item?.Sku,
           Ean: item?.Ean,
-          ID: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.ID || 0,
-          Name: SearchNameToArray(products, item?.Sku || item?.Ean || item?.Name)?.Name || '',
+          ID: SearchNameToArray(products, String(item?.Sku) || String(item?.Ean) || item?.Name)?.ID || 0,
+          Name: SearchNameToArray(products, String(item?.Sku) || String(item?.Ean) || item?.Name)?.Name || '',
           isSelected: true,
           Count: Number(item?.Quantity || 0),
           BasePrice: Number.parseFloat(item?.BasePrice) || 0,

@@ -293,6 +293,7 @@ const CategoriesList = () => {
           <ReactTable
             columns={columns().filter((item) => item !== false)}
             data={categoryListOne as []}
+            dataExport={categoryListOne as []}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handleImport={handleImport}
             TitleButton="Agregar Grupo"

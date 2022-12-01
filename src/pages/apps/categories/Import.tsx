@@ -32,22 +32,25 @@ const ImportPack = ({ onCancel, value }: Props) => {
         case 0:
           newData = data.map((item: CategoryOne) => ({
             Name: item?.Name,
+            ID: item?.ID || 0,
             Status: item?.Status
           }));
           break;
         case 1:
           newData = data.map((item: CategoryTwo | any) => ({
             Name: item?.Name,
-            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
-            Status: item?.Status
+            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
+            Status: item?.Status,
+            ID: item?.ID || 0
           }));
           break;
 
         default:
           newData = data.map((item: CategoryThree | any) => ({
             Name: item?.Name,
-            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID.toString() || '0',
-            CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID.toString() || '0',
+            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
+            CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID || 0,
+            ID: item?.ID || 0,
             Status: item?.Status
           }));
           break;

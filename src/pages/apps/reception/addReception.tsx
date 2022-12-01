@@ -27,7 +27,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-// import { getIDPurchase } from 'store/reducers/purcharse';
+import { getIDPurchase } from 'store/reducers/purcharse';
 import { UpdateRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
 import { Products } from 'types/products';
 // assets
@@ -146,8 +146,9 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
         let ArticleID: number = product?.ArticleID;
 
         await dispatch(UpdateRecepctionArticles(data, ArticleID));
-        await onCancel();
-        await setSubmitting(false);
+        await dispatch(getIDPurchase(Number(id)));
+        onCancel();
+        setSubmitting(false);
       } catch (error) {
         console.error(error);
       }

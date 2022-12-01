@@ -130,6 +130,7 @@ export function UpdateRecepctionArticles(data: any, id: number) {
 
       const response = await axios.post(`${HOST}/recepcion`, newData);
       if (response.data && id) {
+        dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
     } catch (error) {

@@ -128,8 +128,6 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         accessor: '2',
         Cell: ({ row }: any) => {
           const { original } = row;
-          console.log(original);
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               {(ItemsReception(row.original?.ArticleID) && (

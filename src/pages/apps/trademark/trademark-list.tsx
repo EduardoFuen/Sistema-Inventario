@@ -135,6 +135,7 @@ const TradeMarkList = () => {
         <ReactTable
           columns={columns}
           data={tradeMarkList as []}
+          dataExport={tradeMarkList as []}
           handleAdd={handleAdd}
           handleImport={handleImport}
           TitleButton="Agregar Trademark"
