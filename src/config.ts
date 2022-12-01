@@ -52,6 +52,8 @@ export const ProductDefault: any = [
     Trademark: '',
     Type_Product: '',
     Variation: '',
+    HandlesBaq: '',
+    HandlesBog: '',
     Grupo: '',
     CategoryOne: '',
     CategoryTwo: '',
