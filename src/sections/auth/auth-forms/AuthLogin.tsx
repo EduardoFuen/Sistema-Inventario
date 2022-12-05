@@ -1,8 +1,6 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
+import { SyntheticEvent, useState, FocusEvent } from 'react';
 // material-ui
-import { Button, FormHelperText, Grid, Link, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
+import { Button, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -20,17 +18,18 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================||  LOGIN ||============================ //
 
 const AuthLogin = () => {
-  const [capsWarning, setCapsWarning] = React.useState(false);
+  const [capsWarning, setCapsWarning] = useState(false);
 
-  const { isLoggedIn, firebaseEmailPasswordSignIn } = useAuth();
+  const { login, error } = useAuth();
+
   const scriptedRef = useScriptRef();
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleMouseDownPassword = (event: React.SyntheticEvent) => {
+  const handleMouseDownPassword = (event: SyntheticEvent) => {
     event.preventDefault();
   };
 
@@ -46,8 +45,10 @@ const AuthLogin = () => {
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
+          email: 'davidguarisma@gmail.com',
           password: '123456',
+          /*       email: 'info@codedthemes.com',
+          password: '123456', */
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -56,7 +57,7 @@ const AuthLogin = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await firebaseEmailPasswordSignIn(values.email, values.password).then(
+            await login(values.email, values.password).then(
               () => {
                 // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
                 // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
@@ -70,7 +71,6 @@ const AuthLogin = () => {
               }
             );
           } catch (err: any) {
-            console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });
@@ -114,7 +114,7 @@ const AuthLogin = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={values.password}
                     name="password"
-                    onBlur={(event: React.FocusEvent<any, Element>) => {
+                    onBlur={(event: FocusEvent<any, Element>) => {
                       setCapsWarning(false);
                       handleBlur(event);
                     }}
@@ -148,21 +148,9 @@ const AuthLogin = () => {
                 </Stack>
               </Grid>
 
-              <Grid item xs={12} sx={{ mt: -1 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                  <Link
-                    variant="h6"
-                    component={RouterLink}
-                    to={isLoggedIn ? '/auth/forgot-password' : '/forgot-password'}
-                    color="text.primary"
-                  >
-                    ¿Has olvidado tu contraseña?
-                  </Link>
-                </Stack>
-              </Grid>
-              {errors.submit && (
+              {error && (
                 <Grid item xs={12}>
-                  <FormHelperText error>{errors.submit}</FormHelperText>
+                  <FormHelperText error>{error}</FormHelperText>
                 </Grid>
               )}
               <Grid item xs={12}>

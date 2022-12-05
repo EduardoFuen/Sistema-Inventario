@@ -24,6 +24,7 @@ export interface AuthProps {
   isInitialized?: boolean;
   user?: UserProfile | null;
   token?: string | null;
+  error?: object | string | null;
 }
 
 export interface AuthActionProps {
@@ -50,9 +51,11 @@ export type AWSCognitoContextType = {
   isLoggedIn: boolean;
   isInitialized?: boolean;
   user?: UserProfile | null | undefined;
+  error?: object | string | null;
   logout: () => void;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<unknown>;
+  // register: (email: string, password: string, firstName: string, lastName: string) => Promise<unknown>;
+  register: (email: string, password: string) => Promise<unknown>;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: VoidFunction;
 };
@@ -61,6 +64,7 @@ export interface InitialLoginContextProps {
   isLoggedIn: boolean;
   isInitialized?: boolean;
   user?: UserProfile | null | undefined;
+  error?: object | string | null;
 }
 
 export interface JWTDataProps {

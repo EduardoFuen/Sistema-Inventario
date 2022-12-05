@@ -7,7 +7,7 @@ import ScrollTop from 'components/ScrollTop';
 import Snackbar from 'components/@extended/Snackbar';
 
 // auth provider
-import { FirebaseProvider as AuthProvider } from 'contexts/FirebaseContext';
+import { AWSCognitoProvider as AuthProvider } from 'contexts/AWSCognitoContext';
 
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 

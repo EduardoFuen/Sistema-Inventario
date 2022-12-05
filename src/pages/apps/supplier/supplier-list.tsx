@@ -190,7 +190,7 @@ const SupplierListPage = () => {
       Status: ''
     }
   ];
-  const renderRowSubComponent = useCallback(({ row }) => <SupplierView data={supplierList[row.id]} />, [supplierList]);
+  const renderRowSubComponent = useCallback(({ row }: any) => <SupplierView data={supplierList[row.id]} />, [supplierList]);
 
   return (
     <MainCard content={false}>

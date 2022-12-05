@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { CognitoUser, CognitoUserPool, CognitoUserSession, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // action - state management
-import { LOGIN, LOGOUT } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, FAILED_LOGIN } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project imports
@@ -16,7 +16,8 @@ import { AWSCognitoContextType, InitialLoginContextProps } from 'types/auth';
 const initialState: InitialLoginContextProps = {
   isLoggedIn: false,
   isInitialized: false,
-  user: null
+  user: null,
+  error: null
 };
 
 export const userPool = new CognitoUserPool({
@@ -50,7 +51,7 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
             payload: {
               isLoggedIn: true,
               user: {
-                name: 'Betty'
+                name: ''
               }
             }
           });
@@ -75,7 +76,6 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
       Username: email,
       Pool: userPool
     });
-
     const authData = new AuthenticationDetails({
       Username: email,
       Password: password
@@ -84,7 +84,6 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
     usr.authenticateUser(authData, {
       onSuccess: (session: CognitoUserSession) => {
         setSession(session.getAccessToken().getJwtToken());
-
         dispatch({
           type: LOGIN,
           payload: {
@@ -96,8 +95,17 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
           }
         });
       },
-      onFailure: (_err) => {},
+      onFailure: (_err) => {
+        dispatch({
+          type: FAILED_LOGIN,
+          payload: {
+            isLoggedIn: true,
+            error: _err.message
+          }
+        });
+      },
       newPasswordRequired: (userAttributes, requiredAttributes) => {
+        console.log(userAttributes);
         // // User was signed up by an admin and must provide new
         // // password and required attributes, if any, to complete
         // // authentication.
@@ -111,14 +119,14 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
     });
   };
 
-  const register = (email: string, password: string, firstName: string, lastName: string) =>
+  const register = (email: string, password: string) =>
     new Promise((success, rej) => {
       userPool.signUp(
         email,
         password,
         [
-          new CognitoUserAttribute({ Name: 'email', Value: email }),
-          new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` })
+          new CognitoUserAttribute({ Name: 'email', Value: email })
+          //  new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` })
         ],
         [],
         async (err, result) => {

@@ -37,7 +37,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================||  REGISTER ||============================ //
 
 const AuthRegister = () => {
-  const { firebaseRegister } = useAuth();
+  const { register } = useAuth();
   const scriptedRef = useScriptRef();
 
   const [level, setLevel] = useState<StringColorProps>();
@@ -78,7 +78,7 @@ const AuthRegister = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await firebaseRegister(values.email, values.password).then(
+            await register(values.email, values.password).then(
               () => {
                 // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
                 // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
