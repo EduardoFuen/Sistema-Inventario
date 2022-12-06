@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, Stack, Tooltip, Typography } from '@mui/material';
-
 // project import
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
@@ -90,8 +89,8 @@ const Profile = () => {
                 sx={{
                   boxShadow: theme.customShadows.z1,
                   width: 290,
-                  minWidth: 240,
-                  maxWidth: 290,
+                  minWidth: 200,
+                  maxWidth: 200,
                   [theme.breakpoints.down('md')]: {
                     maxWidth: 250
                   }
@@ -102,18 +101,16 @@ const Profile = () => {
                     <CardContent sx={{ px: 2.5, pt: 3 }}>
                       <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
-                          <Stack direction="row" spacing={1.25} alignItems="center">
+                          <Stack direction="row" spacing={1.25} alignItems="center" onClick={handleLogout}>
                             <Stack>
-                              <Typography variant="h6">{user?.name}</Typography>
+                              <Typography variant="h6">Cerrar sesión</Typography>
                             </Stack>
+                            <Tooltip title="Logout">
+                              <IconButton sx={{ color: 'text.primary' }}>
+                                <LogoutOutlined />
+                              </IconButton>
+                            </Tooltip>
                           </Stack>
-                        </Grid>
-                        <Grid item>
-                          <Tooltip title="Logout">
-                            <IconButton size="large" sx={{ color: 'text.primary' }} onClick={handleLogout}>
-                              <LogoutOutlined />
-                            </IconButton>
-                          </Tooltip>
                         </Grid>
                       </Grid>
                     </CardContent>

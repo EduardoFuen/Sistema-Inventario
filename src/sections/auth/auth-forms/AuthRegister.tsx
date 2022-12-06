@@ -1,11 +1,11 @@
 import { useEffect, useState, SyntheticEvent } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // material-ui
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -27,6 +27,7 @@ import useScriptRef from 'hooks/useScriptRef';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // types
 import { StringColorProps } from 'types/password';
@@ -34,11 +35,13 @@ import { StringColorProps } from 'types/password';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
-// ============================||  REGISTER ||============================ //
+// ============================|| AWS CONGNITO - REGISTER ||============================ //
 
 const AuthRegister = () => {
   const { register } = useAuth();
   const scriptedRef = useScriptRef();
+  const dispatch = useDispatch();
+  /*   const navigate = useNavigate(); */
 
   const [level, setLevel] = useState<StringColorProps>();
   const [showPassword, setShowPassword] = useState(false);
@@ -78,19 +81,26 @@ const AuthRegister = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await register(values.email, values.password).then(
-              () => {
-                // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
-                // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
-                // To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-                // github issue: https://github.com/formium/formik/issues/2430
-              },
-              (err: any) => {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            );
+            await register(values.email, values.password, values.firstname, values.lastname);
+            if (scriptedRef.current) {
+              setStatus({ success: true });
+              setSubmitting(false);
+              dispatch(
+                openSnackbar({
+                  open: true,
+                  message: 'Your registration has been successfully completed.',
+                  variant: 'alert',
+                  alert: {
+                    color: 'success'
+                  },
+                  close: false
+                })
+              );
+
+              /*     setTimeout(() => {
+                navigate('/login', { replace: true });
+              }, 1500); */
+            }
           } catch (err: any) {
             console.error(err);
             if (scriptedRef.current) {
@@ -263,11 +273,6 @@ const AuthRegister = () => {
                     Create Account
                   </Button>
                 </AnimateButton>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider>
-                  <Typography variant="caption">Sign up with</Typography>
-                </Divider>
               </Grid>
             </Grid>
           </form>

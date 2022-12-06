@@ -20,7 +20,7 @@ const initialState: InitialLoginContextProps = {
   error: null
 };
 
-export const userPool = new CognitoUserPool({
+export const userPool: any = new CognitoUserPool({
   UserPoolId: AWS_API.poolId || '',
   ClientId: AWS_API.appClientId || ''
 });
@@ -44,14 +44,14 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
     const init = async () => {
       try {
         const serviceToken = window.localStorage.getItem('serviceToken');
-        if (serviceToken) {
+        if (serviceToken && userPool.getCurrentUser() && userPool.getCurrentUser()?.username) {
           setSession(serviceToken);
           dispatch({
             type: LOGIN,
             payload: {
               isLoggedIn: true,
               user: {
-                name: ''
+                name: userPool.getCurrentUser()?.username
               }
             }
           });
@@ -90,7 +90,7 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
             isLoggedIn: true,
             user: {
               email: authData.getUsername(),
-              name: 'John AWS'
+              name: authData.getUsername()
             }
           }
         });
@@ -119,17 +119,17 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
     });
   };
 
-  const register = (email: string, password: string) =>
+  const register = (email: string, password: string, firstName: string, lastName: string) =>
     new Promise((success, rej) => {
       userPool.signUp(
         email,
         password,
         [
-          new CognitoUserAttribute({ Name: 'email', Value: email })
-          //  new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` })
+          new CognitoUserAttribute({ Name: 'email', Value: email }),
+          new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` })
         ],
         [],
-        async (err, result) => {
+        async (err: any, result: any) => {
           if (err) {
             rej(err);
             return;

@@ -16,14 +16,10 @@ export const FIREBASE_API = {
   appId: '',
   measurementId: ''
 };
-/* export const AWS_API = {
-  poolId: 'us-east-1_AOfOTXLvD',
-  appClientId: '3eau2osduslvb7vks3vsh9t7b0'
-}; */
 
 export const AWS_API = {
-  poolId: 'us-east-1_yDdVmHJcs',
-  appClientId: '13jejkalajo3459h7s7f3pabbf'
+  poolId: 'us-east-1_aM1PPjbsx',
+  appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
 };
 
 export const AUTH0_API = {

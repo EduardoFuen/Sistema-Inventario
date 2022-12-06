@@ -31,6 +31,7 @@ const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-cat
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
 const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-password')));
 const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
+const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
 
 const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/404')));
 const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500')));
@@ -57,6 +58,10 @@ const MainRoutes = {
         {
           path: '',
           children: [
+            {
+              path: 'reception',
+              element: <AppReceptionList />
+            },
             {
               path: 'reception',
               element: <AppReceptionList />
@@ -158,12 +163,20 @@ const MainRoutes = {
           element: <AuthLogin />
         },
         {
+          path: 'login',
+          element: <AuthLogin />
+        },
+        {
           path: 'forgot-password',
           element: <AuthForgotPassword />
         },
         {
           path: 'reset-password',
           element: <AuthResetPassword />
+        },
+        {
+          path: 'register',
+          element: <AuthRegister />
         }
       ]
     }
