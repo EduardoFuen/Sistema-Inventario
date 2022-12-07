@@ -49,6 +49,7 @@ export const ProductDefault: any = [
     Variation: '',
     HandlesBaq: '',
     HandlesBog: '',
+    IDProduct: '',
     Grupo: '',
     CategoryOne: '',
     CategoryTwo: '',

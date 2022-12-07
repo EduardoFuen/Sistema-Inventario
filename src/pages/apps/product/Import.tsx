@@ -65,6 +65,7 @@ const Import = ({ onCancel }: Props) => {
         HandlesBaq: item?.HandlesBaq?.toString() || '',
         HandlesBog: item?.HandlesBog?.toString() || '',
         iva: item?.Tax?.toString(),
+        IDFloorProduct: item?.IDProduct?.toString(),
         Taxed: item?.IsTaxed
       }));
 

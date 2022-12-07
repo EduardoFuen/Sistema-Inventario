@@ -1,5 +1,6 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
+
 // project imports
 import axios from 'axios';
 import { HOST } from 'config';
@@ -11,7 +12,6 @@ import { getTypeProductList } from './typeProduct';
 // types
 import { DefaultRootStateProps } from 'types/products';
 
-// initial state
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
   products: [],
