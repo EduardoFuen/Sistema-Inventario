@@ -120,8 +120,8 @@ export const DayPayment: any = [
     id: '45'
   },
   {
-    title: '2 Meses',
-    id: '2 Meses'
+    title: '60 Días',
+    id: '60'
   }
 ];
 
