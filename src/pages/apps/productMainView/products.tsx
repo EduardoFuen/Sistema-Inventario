@@ -12,12 +12,12 @@ import ScrollX from 'components/ScrollX';
 
 const PackList = Loadable(lazy(() => import('../pack/pack-list')));
 const WarehouseList = Loadable(lazy(() => import('../warehouse/warehouse-list')));
-const ProductList = Loadable(lazy(() => import('../product/products-list')));
 const MakerList = Loadable(lazy(() => import('../maker/maker')));
 const TrademarkList = Loadable(lazy(() => import('../trademark/trademark-list')));
 const Categories = Loadable(lazy(() => import('../categories/categories-list')));
 const TypeProduct = Loadable(lazy(() => import('../typeProduct/typeProduct-list')));
 const ActiveSubstances = Loadable(lazy(() => import('../activeSubstances/activeSubstances-list')));
+const ProductList = Loadable(lazy(() => import('../product/products-list')));
 
 // ==============================|| TAB ||============================== //
 

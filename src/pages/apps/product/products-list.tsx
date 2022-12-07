@@ -32,19 +32,18 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
-
-  useEffect(() => {
-    dispatch(getProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const { products, error } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { makerList } = useSelector((state) => state.maker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
-    if (error?.response?.data?.Error && error?.response?.status !== 404) {
+    dispatch(getProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (error && error?.response?.data?.Error && error?.response?.status !== 404) {
       dispatch(
         openSnackbar({
           open: true,
@@ -115,6 +114,9 @@ const ProductList = () => {
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
       Warehouse,
+      HandlesBaq: item?.HandlesBaq,
+      HandlesBog: item?.HandlesBog,
+      IDProduct: item?.IDFloorProduct,
       Substance,
       Substitutes,
       Status: item?.Status,
@@ -253,16 +255,16 @@ const ProductList = () => {
         <ReactTable
           columns={columnsProducts}
           data={products as []}
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
           handleImport={handleImport}
           handleAdd={handleAddProduct}
           TitleButton="Agregar Producto"
           FileNameTemplate="Descargar Plantilla"
-          dataExport={newDataExport}
+          dataExport={newDataExport as []}
           download
-          dataTemplate={ProductDefault}
+          dataTemplate={ProductDefault as []}
           FileName="Productos"
+          getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
