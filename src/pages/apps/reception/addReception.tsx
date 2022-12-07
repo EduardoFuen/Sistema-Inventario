@@ -61,7 +61,6 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
   }
 
   const [inputList, setInputList] = useState(Items);
-  const [value, setValue] = useState<Date | null>();
   const [validationQuantity, setValidationQuantity] = useState<boolean>(true);
 
   useEffect(() => {
@@ -70,10 +69,6 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
 
   const handleRemoveClick = (index: number) => {
     const list = [...inputList];
@@ -122,11 +117,11 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
       if (name === 'Batch') {
         list[index]['Batch'] = value;
       }
-      validationQty(list);
-      setInputList(list);
     } else {
       list[index]['Date'] = e;
     }
+    validationQty(list);
+    setInputList(list);
   };
 
   const formik = useFormik({
@@ -261,11 +256,10 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                             <DesktopDatePicker
                               label=""
                               inputFormat="MM/dd/yyyy"
-                              value={value || x.Date}
+                              value={x.Date}
                               // disabled={validationItems || x.edit === false}
                               onChange={(value: any) => {
                                 handleInputChange(value, i);
-                                handleChange(value);
                               }}
                               renderInput={(params) => <TextField {...params} />}
                             />

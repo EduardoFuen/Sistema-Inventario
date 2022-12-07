@@ -6,8 +6,7 @@ import {
   Divider,
   List,
   ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
+  /*   ListItemSecondaryAction, */
   Stack,
   TableCell,
   TableRow,
@@ -42,7 +41,7 @@ const UserView = ({ data }: any) => {
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{capitalize(data?.BusinessName)}</Typography>
                       <Typography variant="h6" color="secondary">
-                        {data.nit}
+                        NIT: {data.Nit}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -51,26 +50,17 @@ const UserView = ({ data }: any) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
-                  <List component="nav" aria-label="main mailbox folders" sx={{ py: 0 }}>
-                    <ListItem>
-                      <ListItemIcon>
-                        <MailOutlined />
-                      </ListItemIcon>
-                      <ListItemSecondaryAction>
-                        <Typography align="right">{data?.EmailContact}</Typography>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <PhoneOutlined />
-                      </ListItemIcon>
-                      <ListItemSecondaryAction>
-                        <Typography align="right">
-                          <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={data?.PhoneContact} />
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
+                  <Stack spacing={2.5} alignItems="center">
+                    <Stack spacing={0.5} alignItems="center">
+                      <Typography variant="h6">
+                        <MailOutlined /> {data?.EmailContact}
+                      </Typography>
+                      <Typography align="right">
+                        <PhoneOutlined />{' '}
+                        <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={data?.PhoneContact} />
+                      </Typography>
+                    </Stack>
+                  </Stack>
                 </Grid>
               </Grid>
             </MainCard>
