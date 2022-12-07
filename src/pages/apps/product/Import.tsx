@@ -61,12 +61,12 @@ const Import = ({ onCancel }: Props) => {
         SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
         WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
         SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
-        Status: item?.Status,
+        Status: Boolean(item?.Status),
         HandlesBaq: item?.HandlesBaq?.toString() || '',
         HandlesBog: item?.HandlesBog?.toString() || '',
         iva: item?.Tax?.toString(),
         IDFloorProduct: item?.IDProduct?.toString(),
-        Taxed: item?.IsTaxed
+        Taxed: Boolean(item?.IsTaxed)
       }));
 
       await dispatch(addExcel(newData));

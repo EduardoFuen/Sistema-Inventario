@@ -26,7 +26,7 @@ const ImportMarker = ({ onCancel }: Props) => {
       const newData = data?.map((item: Maker) => ({
         Name: item?.Name,
         ID: item?.ID || 0,
-        Status: item?.Status
+        Status: Boolean(item?.Status)
       }));
       await dispatch(addMakerExcel(newData));
       onCancel();

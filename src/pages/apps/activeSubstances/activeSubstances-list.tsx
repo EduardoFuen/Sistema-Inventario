@@ -48,7 +48,7 @@ const ActiveSubstancesList = () => {
     return {
       ID: item?.ID,
       Name: item?.Name,
-      Status: item?.Status
+      Status: Boolean(item?.Status)
     };
   });
 

@@ -22,18 +22,18 @@ const ImporSupplier = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data?.map((item: any) => ({
-        EmailContact: item?.EmailContact.toString(),
-        Nit: item?.Nit.toString(),
+        EmailContact: item?.EmailContact?.toString(),
+        Nit: item?.Nit?.toString(),
         BusinessName: item?.BusinessName,
-        PhoneContact: item?.PhoneContact.toString(),
-        Status: item?.Status,
-        LeadTimeBog: item?.LeadTimeBog,
-        PaymenTerm: item?.PaymenTerm,
-        leadTimeBaq: item?.leadTimeBaq,
-        Discount: item?.Discount,
-        DaysPayment: item?.DaysPayment.toString(),
-        Cupo: item?.Cupo,
-        NameContact: item?.NameContact.toString(),
+        PhoneContact: item?.PhoneContact?.toString(),
+        Status: Boolean(item?.Status),
+        PaymenTerm: item?.PaymenTerm?.toString(),
+        leadTimeBaq: Number(item?.leadTimeBaq),
+        LeadTimeBog: Number(item?.LeadTimeBog),
+        Discount: Number(item?.Discount) || 0,
+        DaysPayment: item?.DaysPayment?.toString(),
+        Cupo: Number(item?.Cupo) || 0,
+        NameContact: item?.NameContact?.toString(),
         ID: item?.ID || 0
       }));
       await dispatch(addExcel(newData));

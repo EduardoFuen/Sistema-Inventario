@@ -27,7 +27,7 @@ const ImportPack = ({ onCancel }: Props) => {
       const newData = data;
       filter((item: Packs) => item.ID !== '').map((item: Packs) => ({
         Name: item?.Name,
-        Status: item?.Status,
+        Status: Boolean(item?.Status),
         ID: item?.ID || 0
       }));
 

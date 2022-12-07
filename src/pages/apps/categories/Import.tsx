@@ -33,14 +33,14 @@ const ImportPack = ({ onCancel, value }: Props) => {
           newData = data.map((item: CategoryOne) => ({
             Name: item?.Name,
             ID: item?.ID || 0,
-            Status: item?.Status
+            Status: Boolean(item?.Status)
           }));
           break;
         case 1:
           newData = data.map((item: CategoryTwo | any) => ({
             Name: item?.Name,
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
-            Status: item?.Status,
+            Status: Boolean(item?.Status),
             ID: item?.ID || 0
           }));
           break;
@@ -51,7 +51,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
             CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID || 0,
             ID: item?.ID || 0,
-            Status: item?.Status
+            Status: Boolean(item?.Status)
           }));
           break;
       }

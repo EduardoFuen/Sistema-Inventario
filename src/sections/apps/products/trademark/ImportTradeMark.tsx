@@ -27,7 +27,7 @@ const ImportTradeMark = ({ onCancel }: Props) => {
         Name: item?.Name,
         MakerID: item?.MakerID,
         ID: item?.ID || 0,
-        Status: item?.Status
+        Status: Boolean(item?.Status)
       }));
       await dispatch(addExcel(newData));
       onCancel();

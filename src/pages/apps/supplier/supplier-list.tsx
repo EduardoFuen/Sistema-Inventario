@@ -170,7 +170,7 @@ const SupplierListPage = () => {
     NameContact: item?.NameContact,
     EmailContact: item?.EmailContact,
     PhoneContact: item?.PhoneContact,
-    Status: item?.Status
+    Status: Boolean(item?.Status)
   }));
 
   const Template: any = [

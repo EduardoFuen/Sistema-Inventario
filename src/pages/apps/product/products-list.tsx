@@ -119,7 +119,7 @@ const ProductList = () => {
       IDProduct: item?.IDFloorProduct,
       Substance,
       Substitutes,
-      Status: item?.Status,
+      Status: Boolean(item?.Status),
       Keywords: item?.Keywords,
       Tax: item?.iva,
       IsTaxed: item?.Taxed

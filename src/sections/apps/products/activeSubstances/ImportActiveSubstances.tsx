@@ -25,7 +25,7 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
     try {
       const newData = data?.map((item: Substances) => ({
         Name: item?.Name,
-        Status: item?.Status,
+        Status: Boolean(item?.Status),
         ID: item?.ID || 0
       }));
       await dispatch(addExcel(newData));
