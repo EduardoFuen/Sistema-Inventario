@@ -194,19 +194,20 @@ const PurchaseList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              {row.original.Status === 0 && (
-                <Tooltip title="Cancelar">
-                  <IconButton
-                    color="error"
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
-                    }}
-                  >
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  </IconButton>
-                </Tooltip>
-              )}
+              {row.original.Status === 0 ||
+                (row.original.Status === 1 && (
+                  <Tooltip title="Cancelar">
+                    <IconButton
+                      color="error"
+                      onClick={(e: any) => {
+                        e.stopPropagation();
+                        dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
+                      }}
+                    >
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    </IconButton>
+                  </Tooltip>
+                ))}
             </Stack>
           );
         }
