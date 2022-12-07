@@ -125,12 +125,6 @@ const PurchaseList = () => {
         className: 'cell-center',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
-      /* {
-        Header: 'Subtotal con Descuento',
-        accessor: 'SubtotalWithDiscount',
-        className: 'cell-center',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
-      }, */
       {
         Header: 'IVA',
         accessor: 'Tax',

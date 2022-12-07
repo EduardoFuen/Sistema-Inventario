@@ -1,8 +1,8 @@
 import { pdf, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
-// project import
 
+// project import
 import Farmu from 'assets/images/home/logoAzulFarmu.png';
 import { DATEFORMAT } from 'config';
 
