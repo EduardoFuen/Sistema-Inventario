@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
+import { DayPayment } from 'config';
 
 // types
 import { Supplier } from 'types/supplier';
@@ -243,14 +244,13 @@ function UpdateSuplier() {
                           Seleccionar Plazo de pago
                         </MenuItem>
                         <MenuItem value="Pago inmediato">Pago inmediato</MenuItem>
-                        <MenuItem value="Pago inmediato 1">1 Día</MenuItem>
-                        <MenuItem value="Pago inmediato 2">2 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 3">3 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 5">15 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 21">21 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 30">30 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 45">45 Días</MenuItem>
-                        <MenuItem value="Pago inmediato 2 Meses">2 Meses</MenuItem>
+                        {DayPayment.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
                       </Select>
                       {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
                     </Grid>

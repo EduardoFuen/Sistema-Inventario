@@ -85,6 +85,46 @@ export const ProductPurchaseDefault: any = [
     Bonus: ''
   }
 ];
+
+export const DayPayment: any = [
+  {
+    title: 'Pago inmediato',
+    id: '0'
+  },
+  {
+    title: '1 Día',
+    id: '1'
+  },
+  {
+    title: '2 Días',
+    id: '2'
+  },
+  {
+    title: '3 Días',
+    id: '3'
+  },
+  {
+    title: '15 Días',
+    id: '15'
+  },
+  {
+    title: '21 Días',
+    id: '21'
+  },
+  {
+    title: '30 Días',
+    id: '30'
+  },
+  {
+    title: '45 Días',
+    id: '45'
+  },
+  {
+    title: '2 Meses',
+    id: '2 Meses'
+  }
+];
+
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config: DefaultConfigProps = {
