@@ -37,38 +37,39 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       setSubmitting(true);
-      const newData: Products = data?.map((item: any) => ({
-        Name: item?.Name,
-        Sku: item?.Sku.toString(),
-        Ean: item?.Ean.toString(),
-        MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
-        TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
-        TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
-        Variation: item?.Variation?.toString(),
-        CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() || '',
-        CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() || '',
-        CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() || '',
-        PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
-        Quantity: item?.Quantity?.toString(),
-        MakerUnit: item?.MakerUnit?.toString(),
-        Weight: item?.Weight?.toString(),
-        Width: item?.Width?.toString(),
-        Height: item?.Height?.toString(),
-        Depth: item?.Depth?.toString(),
-        Wrapper: item?.PackInfo?.toString(),
-        WrapperUnit: item?.WrapperUnit?.toString(),
-        Keywords: item?.Keywords?.toString(),
-        SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
-        WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
-        SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
-        Status: Boolean(item?.Status),
-        HandlesBaq: item?.HandlesBaq?.toString() || '',
-        HandlesBog: item?.HandlesBog?.toString() || '',
-        iva: item?.Tax?.toString(),
-        IDFloorProduct: item?.IDProduct?.toString(),
-        Taxed: Boolean(item?.IsTaxed)
-      }));
-
+      const newData: Products = data?.map((item: any) => {
+        return {
+          Name: item?.Name,
+          Sku: item?.Sku?.toString(),
+          Ean: item?.Ean?.toString(),
+          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
+          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
+          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
+          Variation: item?.Variation?.toString(),
+          CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() || '',
+          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() || '',
+          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() || '',
+          PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
+          Quantity: item?.Quantity?.toString()?.trim(),
+          MakerUnit: item?.MakerUnit?.toString()?.trim(),
+          Weight: item?.Weight?.toString()?.trim(),
+          Width: item?.Width?.toString()?.trim(),
+          Height: item?.Height?.toString()?.trim(),
+          Depth: item?.Depth?.toString()?.trim(),
+          Wrapper: item?.PackInfo?.toString()?.trim(),
+          WrapperUnit: item?.WrapperUnit?.toString()?.trim(),
+          Keywords: item?.Keywords?.toString(),
+          SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
+          WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
+          SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
+          Status: item?.Status,
+          HandlesBaq: item?.id_baq?.toString() || '',
+          HandlesBog: item?.id_bog?.toString() || '',
+          iva: item?.Tax?.toString(),
+          IDFloorProduct: item?.IDProduct?.toString(),
+          Taxed: item?.IsTaxed
+        };
+      });
       await dispatch(addExcel(newData));
       onCancel();
       setSubmitting(false);

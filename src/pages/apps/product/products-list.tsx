@@ -94,6 +94,8 @@ const ProductList = () => {
 
     return {
       ID: item?.ID,
+      HandlesBaq: item?.HandlesBaq,
+      HandlesBog: item?.HandlesBog,
       Name: item?.Name,
       Sku: item?.Sku,
       Ean: item?.Ean,
@@ -114,8 +116,6 @@ const ProductList = () => {
       WrapperUnit: item?.WrapperUnit,
       Depth: item?.Depth,
       Warehouse,
-      HandlesBaq: item?.HandlesBaq,
-      HandlesBog: item?.HandlesBog,
       IDProduct: item?.IDFloorProduct,
       Substance,
       Substitutes,

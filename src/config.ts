@@ -39,6 +39,8 @@ export const DATEFORMAT = 'dd-MM-yyyy';
 
 export const ProductDefault: any = [
   {
+    HandlesBaq: '',
+    HandlesBog: '',
     ID: '',
     Name: '',
     Sku: '',
@@ -47,8 +49,6 @@ export const ProductDefault: any = [
     Trademark: '',
     Type_Product: '',
     Variation: '',
-    HandlesBaq: '',
-    HandlesBog: '',
     IDProduct: '',
     Grupo: '',
     CategoryOne: '',
