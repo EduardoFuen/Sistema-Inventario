@@ -57,17 +57,17 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
       {
         Header: 'ID',
         accessor: 'ID',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'SKU',
         accessor: 'Sku',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'EAN',
         accessor: 'Ean',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Nombre Producto',

@@ -77,7 +77,7 @@ const ReceptionList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{format(new Date(value), DATEFORMAT)}</Typography>
+                <Typography className="font-size">{format(new Date(value), DATEFORMAT)}</Typography>
               </Stack>
             </Stack>
           );
@@ -118,25 +118,19 @@ const ReceptionList = () => {
       {
         Header: 'Subtotal',
         accessor: 'SubTotal',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
-      /*   {
-        Header: 'Subtotal con Descuento',
-        accessor: 'SubtotalWithDiscount',
-        className: 'cell-center',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
-      }, */
       {
         Header: 'IVA',
         accessor: 'Tax',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
         Header: 'Total',
         accessor: 'Total',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
@@ -157,7 +151,7 @@ const ReceptionList = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const [isLoading, setIsLoading] = useState<boolean>(false);

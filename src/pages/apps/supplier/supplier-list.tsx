@@ -57,17 +57,17 @@ const SupplierListPage = () => {
       {
         Header: 'ID',
         accessor: 'ID',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'NIT',
         accessor: 'Nit',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Razón social',
         accessor: 'BusinessName',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         Cell: ({ value }: any) => (
           <Typography variant="h6" key={value}>
             {capitalize(value)}
@@ -76,18 +76,18 @@ const SupplierListPage = () => {
       },
       {
         Header: 'Email',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         accessor: 'EmailContact'
       },
       {
         Header: 'Teléfono',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         accessor: 'PhoneContact',
         Cell: ({ value }) => <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={value} />
       },
       {
         Header: 'Nombre Contacto',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         accessor: 'NameContact'
       },
       {
@@ -105,7 +105,7 @@ const SupplierListPage = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const collapseIcon = row.isExpanded ? (

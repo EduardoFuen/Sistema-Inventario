@@ -131,17 +131,17 @@ const ProductList = () => {
       {
         Header: 'ID',
         accessor: 'ID',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'SKU',
         accessor: 'Sku',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'EAN',
         accessor: 'Ean',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Nombre Producto',
@@ -152,7 +152,7 @@ const ProductList = () => {
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Avatar variant="rounded" alt={original?.Name} color="secondary" size="sm" src={original?.UrlImage} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original?.Name}</Typography>
+                <Typography className="cell-center font-size">{original?.Name}</Typography>
               </Stack>
             </Stack>
           );
@@ -164,7 +164,7 @@ const ProductList = () => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography variant="subtitle1">{getMaker(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getMaker(value)}</Typography>}</Stack>
             </Stack>
           );
         }
@@ -175,7 +175,7 @@ const ProductList = () => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography variant="subtitle1">{getTradeMark(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getTradeMark(value)}</Typography>}</Stack>
             </Stack>
           );
         }
@@ -195,7 +195,7 @@ const ProductList = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const collapseIcon = row.isExpanded ? (

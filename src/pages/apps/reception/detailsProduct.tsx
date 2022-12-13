@@ -145,7 +145,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
 
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           return (

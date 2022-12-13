@@ -72,7 +72,7 @@ const TradeMarkList = () => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography variant="subtitle1">{getMaker(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getMaker(value)}</Typography>}</Stack>
             </Stack>
           );
         }
@@ -92,7 +92,7 @@ const TradeMarkList = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           return (

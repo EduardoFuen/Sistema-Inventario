@@ -1,6 +1,9 @@
 .cell-center {
   text-align: center;
 }
+.font-size{
+  font-size: .8rem;
+}
 .cell-center > * {
   margin: 0 auto;
 }

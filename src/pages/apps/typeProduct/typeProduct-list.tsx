@@ -58,17 +58,17 @@ const PackList = () => {
       {
         Header: 'ID',
         accessor: 'ID',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Tipo de Producto',
         accessor: 'Name',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Estado',
         accessor: 'Status',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         Cell: ({ value }: any) => {
           switch (value) {
             case false:
@@ -81,7 +81,7 @@ const PackList = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           return (

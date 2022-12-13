@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState, ReactNode } from 'react';
+import React, { forwardRef, useEffect, useRef, useState, ReactNode, ChangeEvent } from 'react';
 
 // third-party
 import { useDrop, useDrag, useDragLayer } from 'react-dnd';
@@ -82,7 +82,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
     setOpen(true);
   };
 
-  const handleChangePagination = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePagination = (event: ChangeEvent<unknown>, value: number) => {
     gotoPage(value - 1);
   };
 
@@ -96,7 +96,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
         <Stack direction="row" spacing={1} alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
             <Typography variant="caption" color="secondary">
-              Row per page
+              Fila por página
             </Typography>
             <FormControl sx={{ m: 1 }}>
               <Select
@@ -110,7 +110,6 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
                 size="small"
                 sx={{ '& .MuiSelect-select': { py: 0.75, px: 1.25 } }}
               >
-                <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={25}>25</MenuItem>
                 <MenuItem value={50}>50</MenuItem>

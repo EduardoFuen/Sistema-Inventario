@@ -83,7 +83,7 @@ const ReactTable = ({
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 5, sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
     },
     useGlobalFilter,
     useFilters,

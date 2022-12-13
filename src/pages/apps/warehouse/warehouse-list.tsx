@@ -47,7 +47,7 @@ const WarehouseList = () => {
       {
         Header: 'ID',
         accessor: 'ID',
-        className: 'cell-center'
+        className: 'cell-center font-size'
       },
       {
         Header: 'Bodega',
@@ -80,7 +80,7 @@ const WarehouseList = () => {
       },
       {
         Header: 'Acciones',
-        className: 'cell-center',
+        className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const { original } = row;

@@ -64,10 +64,10 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getProducts() {
+export function getProducts(limit = 2500, page = 1) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/productos?limit=2500`);
+      const response = await axios.get(`${HOST}/productos?limit=${limit}&page=${page}`);
       if (response.data instanceof Object) {
         const { Rows }: any = response.data;
         dispatch(getTrademarkList());

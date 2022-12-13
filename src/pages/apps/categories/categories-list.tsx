@@ -106,7 +106,7 @@ const CategoriesList = () => {
   const [columnsValue, setColumnsValue] = useState<any>({
     Header: 'Grupo',
     accessor: 'Name',
-    className: 'cell-center'
+    className: 'cell-center font-size'
   });
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -117,7 +117,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{value || ''}</Typography>
+              <Typography className="cell-center font-size">{value || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -130,7 +130,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{value || ''}</Typography>
+              <Typography className="cell-center font-size">{value || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -150,7 +150,7 @@ const CategoriesList = () => {
     {
       Header: 'ID',
       accessor: 'ID',
-      className: 'cell-center'
+      className: 'cell-center font-size'
     },
     value !== 2 && columnsValue,
 
@@ -161,7 +161,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{getObject(categoryListOne, value)?.Name || ''}</Typography>
+              <Typography className="cell-center font-size">{getObject(categoryListOne, value)?.Name || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -174,7 +174,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{getObject(categoryListOne, value)?.Name || ''}</Typography>
+              <Typography className="cell-center font-size">{getObject(categoryListOne, value)?.Name || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -187,7 +187,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{getObject(categoryListTwo, value)?.Name || ''}</Typography>
+              <Typography className="cell-center font-size">{getObject(categoryListTwo, value)?.Name || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -200,7 +200,7 @@ const CategoriesList = () => {
         return (
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Stack spacing={0}>
-              <Typography variant="subtitle1">{value || ''}</Typography>
+              <Typography className="cell-center font-size">{value || ''}</Typography>
             </Stack>
           </Stack>
         );
@@ -221,7 +221,7 @@ const CategoriesList = () => {
     },
     {
       Header: 'Acciones',
-      className: 'cell-center',
+      className: 'cell-center font-size',
       disableSortBy: true,
       Cell: ({ row }: any) => {
         return (
