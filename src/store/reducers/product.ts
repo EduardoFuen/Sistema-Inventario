@@ -67,11 +67,13 @@ export default slice.reducer;
 export function getProducts() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/productos`);
-      if (response.data instanceof Array) {
+      const response = await axios.get(`${HOST}/productos?limit=2500`);
+      if (response.data instanceof Object) {
+        const { Rows }: any = response.data;
         dispatch(getTrademarkList());
         dispatch(getTypeProductList());
-        dispatch(slice.actions.getProductsSuccess(response.data));
+
+        dispatch(slice.actions.getProductsSuccess(Rows));
         dispatch(slice.actions.hasError(null));
       }
     } catch (error: any) {
