@@ -33,6 +33,7 @@ const Import = ({ onCancel }: Props) => {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { todoListSubs } = useSelector((state) => state.substances);
   const { products } = useSelector((state) => state.product);
+  console.log(warehouseList);
 
   const onSubmit = async () => {
     try {
@@ -42,14 +43,14 @@ const Import = ({ onCancel }: Props) => {
           Name: item?.Name,
           Sku: item?.Sku?.toString(),
           Ean: item?.Ean?.toString(),
-          MakerID: SearchNameToArray(makerList, item?.Maker)?.ID?.toString() || '',
-          TrademarkID: SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() || '',
-          TypesProductID: SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() || '',
+          MakerID: item?.Maker ? SearchNameToArray(makerList, item?.Maker)?.ID?.toString() : '',
+          TrademarkID: item?.Trademark ? SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() : '',
+          TypesProductID: item?.Type_Product ? SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() : '',
           Variation: item?.Variation?.toString(),
-          CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() || '',
-          CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() || '',
-          CategoryThreeID: SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() || '',
-          PackID: SearchNameToArray(packList, item?.Pack)?.ID.toString() || '',
+          CategoryOneID: item?.Grupo ? SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() : '',
+          CategoryTwoID: item?.CategoryOne ? SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() : '',
+          CategoryThreeID: item?.CategoryThree ? SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() : '',
+          PackID: item?.Pack ? SearchNameToArray(packList, item?.Pack)?.ID.toString() : '',
           Quantity: item?.Quantity?.toString()?.trim(),
           MakerUnit: item?.MakerUnit?.toString()?.trim(),
           Weight: item?.Weight?.toString()?.trim(),
@@ -59,9 +60,9 @@ const Import = ({ onCancel }: Props) => {
           Wrapper: item?.PackInfo?.toString()?.trim(),
           WrapperUnit: item?.WrapperUnit?.toString()?.trim(),
           Keywords: item?.Keywords?.toString(),
-          SubstancesIDS: ConvertToArray(item?.Substance?.toString(), todoListSubs) || '',
-          WarehouseIDS: ConvertToArray(item?.Warehouse?.toString(), warehouseList) || '',
-          SubstitutesIDS: ConvertToArray(item?.Substitutes?.toString(), products) || '',
+          SubstancesIDS: item?.Substance ? ConvertToArray(item?.Substance?.toString(), todoListSubs) : '',
+          WarehouseIDS: item?.Warehouse ? ConvertToArray(item?.Warehouse?.toString(), warehouseList) : '',
+          SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',
           Status: item?.Status,
           HandlesBaq: item?.id_baq?.toString() || '',
           HandlesBog: item?.id_bog?.toString() || '',
@@ -70,6 +71,9 @@ const Import = ({ onCancel }: Props) => {
           Taxed: item?.IsTaxed
         };
       });
+
+      console.log(newData);
+
       await dispatch(addExcel(newData));
       onCancel();
       setSubmitting(false);
