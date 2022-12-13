@@ -100,12 +100,12 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell component="th" scope="row">
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <Stack spacing={0}>
-                      <Typography variant="subtitle1">{x.Name}</Typography>
+                      <Typography className="font-size">{x.Name}</Typography>
                       <Typography variant="caption" color="textSecondary">
                         Sku {x.Sku}
                       </Typography>
                       <Typography variant="caption" color="textSecondary">
-                        Ean :{x.Ean}
+                        Ean {x.Ean}
                       </Typography>
                     </Stack>
                   </Stack>

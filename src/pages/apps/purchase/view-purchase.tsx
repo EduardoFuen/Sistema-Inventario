@@ -283,8 +283,7 @@ function ViewPurchase() {
                               <TableCell component="th" scope="row">
                                 <Stack direction="row" spacing={1.5} alignItems="center">
                                   <Stack spacing={0}>
-                                    <Typography variant="subtitle1">ID {x.ID}</Typography>
-                                    <Typography variant="subtitle1">{x.Name}</Typography>
+                                    <Typography className="font-size cell-custom">{x.Name}</Typography>
                                     <Typography variant="caption" color="textSecondary">
                                       SKU {x.Sku}
                                     </Typography>

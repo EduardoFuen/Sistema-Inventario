@@ -50,12 +50,12 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original?.Name}</Typography>
+                <Typography className="font-size cell-custom">{original?.Name}</Typography>
                 <Typography variant="caption" color="textSecondary">
                   Sku {original?.Sku}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  Ean :{original?.Ean}
+                  Ean {original?.Ean}
                 </Typography>
               </Stack>
             </Stack>

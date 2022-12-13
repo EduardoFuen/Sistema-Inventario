@@ -194,8 +194,10 @@ const PurchaseList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              {row.original.Status === 0 ||
-                (row.original.Status === 1 && (
+              {row.original?.Status === 0 ||
+                row.original?.ReceptionStatus === 1 ||
+                row.original?.ReceptionStatus === 2 ||
+                (row.original?.Status === 1 && (
                   <Tooltip title="Cancelar">
                     <IconButton
                       color="error"
