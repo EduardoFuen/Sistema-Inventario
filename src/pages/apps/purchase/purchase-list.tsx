@@ -164,6 +164,7 @@ const PurchaseList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="PDF">
@@ -194,22 +195,19 @@ const PurchaseList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              {row.original?.Status === 0 ||
-                row.original?.ReceptionStatus === 1 ||
-                row.original?.ReceptionStatus === 2 ||
-                (row.original?.Status === 1 && (
-                  <Tooltip title="Cancelar">
-                    <IconButton
-                      color="error"
-                      onClick={(e: any) => {
-                        e.stopPropagation();
-                        dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
-                      }}
-                    >
-                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                    </IconButton>
-                  </Tooltip>
-                ))}
+              {(row.original?.ReceptionStatus === 0 || row.values?.Status === 0) && (
+                <Tooltip title="Cancelar">
+                  <IconButton
+                    color="error"
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
+                    }}
+                  >
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           );
         }

@@ -97,6 +97,12 @@ function ViewPurchase() {
           ...values,
           Articles: detailsPurchase?.map((item: any) => ({
             ...item,
+            DiscountNegotiated: item.DiscountNegotiated || 0,
+            DiscountAdditional: item?.DiscountAdditional || 0,
+            Bonus: item?.Bonus || 0,
+            Count: item?.Count || 0,
+            Tax: item?.Tax || 0,
+            BasePrice: item?.BasePrice || 0,
             ID: 0
           }))
         };
@@ -348,7 +354,7 @@ function ViewPurchase() {
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        Guardar
+                        Guardar Compra
                       </Button>
                     )}
                   </Stack>

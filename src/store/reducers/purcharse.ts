@@ -209,7 +209,6 @@ export function editPurchase(id: number, data: any) {
             })
           );
         } else {
-          /// await dispatch(createRecepctionArticles(response.data?.Articles));
           dispatch(
             openSnackbar({
               open: true,
@@ -232,7 +231,6 @@ export function editPurchase(id: number, data: any) {
 export function deletePurchase(id: number, data: any) {
   return async () => {
     try {
-      //const response = await axios.delete(`${HOST}/compras`, { data: { ID: id } });
       const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
       if (response) {
         dispatch(getPurchaseList());

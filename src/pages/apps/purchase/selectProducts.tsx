@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -32,18 +31,18 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
   const handleSelect = (row: any) => {
+    const index = itemsNew.findIndex((obj) => obj?.ID === row?.original?.ID);
+    if (index > -1) {
+      itemsNew.splice(index, 1);
+    }
     let newRow = {
-      ...row.original,
-      isSelected: true
+      ...row?.original,
+      isSelected: !row?.isSelected
     };
-    setItems((prevArray) => [...prevArray, newRow]);
+    setItems([...itemsNew, newRow]);
   };
 
-  useEffect(() => {}, [itemsNew]);
-
-  let detailsPurchase: any = itemsNew.filter((element, index) => {
-    return itemsNew.indexOf(element) === index;
-  });
+  let detailsPurchase: any = itemsNew.filter((item: any) => item.isSelected === true);
 
   const columns = useMemo(
     () => [
@@ -60,16 +59,6 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
         className: 'cell-center font-size'
       },
       {
-        Header: 'SKU',
-        accessor: 'Sku',
-        className: 'cell-center font-size'
-      },
-      {
-        Header: 'EAN',
-        accessor: 'Ean',
-        className: 'cell-center font-size'
-      },
-      {
         Header: 'Nombre Producto',
         accessor: 'Name',
         Cell: ({ row }: any) => {
@@ -78,7 +67,13 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Avatar variant="rounded" alt={original.Name} color="secondary" size="sm" src={original.UrlImage} />
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{original.Name}</Typography>
+                <Typography className="font-size">{original?.Name}</Typography>
+                <Typography variant="caption" color="textSecondary">
+                  Sku {original?.Sku}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  Ean {original?.Ean}
+                </Typography>
               </Stack>
             </Stack>
           );
@@ -91,7 +86,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{value?.Name}</Typography>
+                <Typography>{value?.Name}</Typography>
               </Stack>
             </Stack>
           );
@@ -103,7 +98,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography variant="subtitle1">{TradeMark(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography>{TradeMark(value)}</Typography>}</Stack>
             </Stack>
           );
         }
@@ -133,6 +128,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
       </Button>
       <Button
         variant="contained"
+        disabled={detailsPurchase && detailsPurchase.length === 0}
         onClick={() => {
           dispatch(
             openSnackbar({

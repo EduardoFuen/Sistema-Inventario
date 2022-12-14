@@ -31,6 +31,7 @@ interface Props {
   handleSelect: (row: any) => void;
   FileNameTemplate: string;
   FontSize: boolean;
+  setRowSelection: any;
 }
 
 const ReactTable = ({
@@ -48,7 +49,8 @@ const ReactTable = ({
   dataTemplate,
   handleSelect,
   FileNameTemplate,
-  FontSize
+  FontSize,
+  setRowSelection
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -83,7 +85,8 @@ const ReactTable = ({
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] },
+      onRowSelectionChange: setRowSelection
     },
     useGlobalFilter,
     useFilters,
@@ -178,6 +181,7 @@ ReactTable.defaultProps = {
   handleSelect: () => {},
   handleAdd: () => {},
   handleImport: () => {},
+  setRowSelection: () => {},
   dataExport: [],
   dataTemplate: [],
   hideButton: true,

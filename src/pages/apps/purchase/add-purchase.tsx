@@ -261,7 +261,7 @@ function AddPurchase() {
                     Cancel
                   </Button>
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Guardar Comprar
+                    Guardar Compra
                   </Button>
                 </Stack>
               </Grid>
