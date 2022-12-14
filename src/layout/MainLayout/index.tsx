@@ -9,7 +9,6 @@ import { useMediaQuery, Box, Container, Toolbar } from '@mui/material';
 // project import
 import Drawer from './Drawer';
 import Header from './Header';
-import Footer from './Footer';
 import navigation from 'menu-items';
 import useConfig from 'hooks/useConfig';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
@@ -43,13 +42,11 @@ const MainLayout = () => {
       setOpen(!matchDownLG);
       dispatch(openDrawer({ drawerOpen: !matchDownLG }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchDownLG]);
+  }, [dispatch, matchDownLG, miniDrawer]);
 
   useEffect(() => {
     if (open !== drawerOpen) setOpen(drawerOpen);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [drawerOpen]);
+  }, [drawerOpen, open]);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
@@ -64,14 +61,12 @@ const MainLayout = () => {
           >
             <Breadcrumbs navigation={navigation} title card={false} divider={false} />
             <Outlet />
-            <Footer />
           </Container>
         )}
         {!container && (
           <Box sx={{ position: 'relative', minHeight: 'calc(100vh - 110px)', display: 'flex', flexDirection: 'column' }}>
             <Breadcrumbs navigation={navigation} title card={false} divider={false} />
             <Outlet />
-            <Footer />
           </Box>
         )}
       </Box>

@@ -23,19 +23,14 @@ const ThemeFont = () => {
 
   const fonts = [
     {
-      id: 'inter',
-      value: `'Inter', sans-serif`,
-      label: 'Inter'
+      id: 'Montserrat',
+      value: `'Montserrat', sans-serif`,
+      label: 'Montserrat'
     },
     {
       id: 'roboto',
       value: `'Roboto', sans-serif`,
       label: 'Roboto'
-    },
-    {
-      id: 'poppins',
-      value: `'Poppins', sans-serif`,
-      label: 'Poppins'
     },
     {
       id: 'public-sans',

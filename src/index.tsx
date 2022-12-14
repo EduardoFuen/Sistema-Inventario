@@ -11,7 +11,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 // apex-chart
-import 'assets/third-party/apex-chart.css';
 import 'assets/third-party/react-table.css';
 
 // project import

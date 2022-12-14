@@ -17,6 +17,9 @@ import { getMakerList, deleteMaker } from 'store/reducers/maker';
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
+// types
+import { Maker } from 'types/products';
+
 // ==============================|| MAKER - MAKER LIST ||============================== //
 
 const MakersList = () => {
@@ -42,6 +45,13 @@ const MakersList = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
+  const newDataExport: any = makerList.map((item: Maker) => {
+    return {
+      ID: item?.ID,
+      Name: item?.Name,
+      Status: Boolean(item?.Status)
+    };
+  });
 
   const columns = useMemo(
     () => [
@@ -117,7 +127,7 @@ const MakersList = () => {
           handleAdd={handleAdd}
           handleImport={handleImport}
           TitleButton="Agregar Makers"
-          dataExport={makerList as []}
+          dataExport={newDataExport as []}
           FileName="Makers"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />

@@ -105,7 +105,6 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
         });
       },
       newPasswordRequired: (userAttributes, requiredAttributes) => {
-        console.log(userAttributes);
         // // User was signed up by an admin and must provide new
         // // password and required attributes, if any, to complete
         // // authentication.

@@ -2,7 +2,6 @@ import { lazy } from 'react';
 
 // project import
 import MainLayout from 'layout/MainLayout';
-import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
@@ -134,7 +133,6 @@ const MainRoutes = {
     },
     {
       path: '/maintenance',
-      element: <CommonLayout />,
       children: [
         {
           path: '404',
@@ -156,7 +154,6 @@ const MainRoutes = {
     },
     {
       path: '/auth',
-      element: <CommonLayout />,
       children: [
         {
           path: 'login',

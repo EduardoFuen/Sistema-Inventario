@@ -102,12 +102,14 @@ const Profile = () => {
                       <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
                           <Stack direction="row" spacing={1.25} alignItems="center" onClick={handleLogout}>
-                            <Stack>
-                              <Typography variant="h6">Cerrar sesión</Typography>
-                            </Stack>
                             <Tooltip title="Logout">
-                              <IconButton sx={{ color: 'text.primary' }}>
-                                <LogoutOutlined />
+                              <IconButton sx={{ color: 'text.primary', width: 100 }}>
+                                <LogoutOutlined
+                                  style={{
+                                    marginRight: 20
+                                  }}
+                                />
+                                <Typography variant="h6">Cerrar sesión </Typography>
                               </IconButton>
                             </Tooltip>
                           </Stack>
