@@ -267,52 +267,53 @@ function ViewPurchase() {
                     <DetailsPurchase product={detailsPurchase} />
                   )}
 
-                  {orderPurchase?.Status === 1 && orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (
-                    <Table sx={{ minWidth: 650 }} size="small">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>PRODUCTO</TableCell>
-                          <TableCell align="center">CANTIDAD</TableCell>
-                          <TableCell align="center">PRECIO BASE</TableCell>
-                          <TableCell align="center">IVA</TableCell>
-                          <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
-                          <TableCell align="center">DESCUENTO ADICIONAL %</TableCell>
-                          <TableCell align="center">BONIFICACIÓN</TableCell>
-                          <TableCell align="center">SUBTOTAL</TableCell>
-                          <TableCell align="center">TOTAL</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {orderPurchase?.Articles?.map((x: any, i: number) => {
-                          return (
-                            <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                              <TableCell component="th" scope="row">
-                                <Stack direction="row" spacing={1.5} alignItems="center">
-                                  <Stack spacing={0}>
-                                    <Typography className="font-size cell-custom">{x.Name}</Typography>
-                                    <Typography variant="caption" color="textSecondary">
-                                      SKU {x.Sku}
-                                    </Typography>
-                                    <Typography variant="caption" color="textSecondary">
-                                      EAN :{x.Ean}
-                                    </Typography>
+                  {orderPurchase?.Status === 1 ||
+                    (orderPurchase?.Status === 2 && orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (
+                      <Table sx={{ minWidth: 650 }} size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>PRODUCTO</TableCell>
+                            <TableCell align="center">CANTIDAD</TableCell>
+                            <TableCell align="center">PRECIO BASE</TableCell>
+                            <TableCell align="center">IVA</TableCell>
+                            <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
+                            <TableCell align="center">DESCUENTO ADICIONAL %</TableCell>
+                            <TableCell align="center">BONIFICACIÓN</TableCell>
+                            <TableCell align="center">SUBTOTAL</TableCell>
+                            <TableCell align="center">TOTAL</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {orderPurchase?.Articles?.map((x: any, i: number) => {
+                            return (
+                              <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <TableCell component="th" scope="row">
+                                  <Stack direction="row" spacing={1.5} alignItems="center">
+                                    <Stack spacing={0}>
+                                      <Typography className="font-size cell-custom">{x.Name}</Typography>
+                                      <Typography variant="caption" color="textSecondary">
+                                        SKU {x.Sku}
+                                      </Typography>
+                                      <Typography variant="caption" color="textSecondary">
+                                        EAN :{x.Ean}
+                                      </Typography>
+                                    </Stack>
                                   </Stack>
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="center">{x.Count}</TableCell>
-                              <TableCell align="center">{x.Tax}</TableCell>
-                              <TableCell align="center">{x.BasePrice}</TableCell>
-                              <TableCell align="center">{x.Discount}</TableCell>
-                              <TableCell align="center">{x.DiscountAdditional}</TableCell>
-                              <TableCell align="center">{x.Bonus}</TableCell>
-                              <TableCell align="center">{x.SubTotal}</TableCell>
-                              <TableCell align="center">{x.Total}</TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  )}
+                                </TableCell>
+                                <TableCell align="center">{x.Count}</TableCell>
+                                <TableCell align="center">{x.Tax}</TableCell>
+                                <TableCell align="center">{x.BasePrice}</TableCell>
+                                <TableCell align="center">{x.Discount}</TableCell>
+                                <TableCell align="center">{x.DiscountAdditional}</TableCell>
+                                <TableCell align="center">{x.Bonus}</TableCell>
+                                <TableCell align="center">{x.SubTotal}</TableCell>
+                                <TableCell align="center">{x.Total}</TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    ))}
                 </Grid>
                 <Grid item xs={12}>
                   {orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (

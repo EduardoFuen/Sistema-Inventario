@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { CognitoUser, CognitoUserPool, CognitoUserSession, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // action - state management
-import { LOGIN, LOGOUT, FAILED_LOGIN } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, FAILED_LOGIN, LOADING } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project imports
@@ -17,7 +17,8 @@ const initialState: InitialLoginContextProps = {
   isLoggedIn: false,
   isInitialized: false,
   user: null,
-  error: null
+  error: null,
+  isLoading: false
 };
 
 export const userPool: any = new CognitoUserPool({
@@ -72,6 +73,14 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
   }, []);
 
   const login = async (email: string, password: string) => {
+    dispatch({
+      type: LOADING,
+      payload: {
+        isLoggedIn: false,
+        isLoading: true
+      }
+    });
+
     const usr = new CognitoUser({
       Username: email,
       Pool: userPool
@@ -94,13 +103,27 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
             }
           }
         });
+        dispatch({
+          type: LOADING,
+          payload: {
+            isLoggedIn: true,
+            isLoading: false
+          }
+        });
       },
       onFailure: (_err) => {
         dispatch({
           type: FAILED_LOGIN,
           payload: {
-            isLoggedIn: true,
+            isLoggedIn: false,
             error: _err.message
+          }
+        });
+        dispatch({
+          type: LOADING,
+          payload: {
+            isLoggedIn: true,
+            isLoading: false
           }
         });
       },

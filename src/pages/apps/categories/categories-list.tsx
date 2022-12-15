@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Box, Tab, Tabs, Dialog, Typography } from '@mui/material';
+import { Chip, Stack, Tooltip, Box, Tab, Tabs, Dialog, Typography, CircularProgress } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -224,6 +224,8 @@ const CategoriesList = () => {
       className: 'cell-center font-size',
       disableSortBy: true,
       Cell: ({ row }: any) => {
+        const [isLoading, setIsLoading] = useState<boolean>(false);
+
         return (
           <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
             <Tooltip title="Edit">
@@ -253,8 +255,10 @@ const CategoriesList = () => {
             <Tooltip title="Delete">
               <IconButton
                 color="error"
-                onClick={(e: any) => {
+                onClick={async (e: any) => {
                   e.stopPropagation();
+                  setIsLoading(true);
+
                   let type: string = '';
                   switch (value) {
                     case 0:
@@ -267,10 +271,17 @@ const CategoriesList = () => {
                       type = CATEGORY.CategoryThree;
                       break;
                   }
-                  dispatch(deleteCategory(row.original?.ID, type));
+                  await dispatch(deleteCategory(row.original?.ID, type));
+                  setIsLoading(false);
                 }}
               >
-                <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                {!isLoading ? (
+                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                ) : (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress color="success" size={20} />
+                  </Box>
+                )}
               </IconButton>
             </Tooltip>
           </Stack>

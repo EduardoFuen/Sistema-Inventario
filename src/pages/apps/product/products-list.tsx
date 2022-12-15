@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, Dialog } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, Dialog, Box, CircularProgress } from '@mui/material';
 
 // project import
 import ProductView from './ProductView';
@@ -16,10 +16,13 @@ import Import from './Import';
 
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
+import { getMakerList } from 'store/reducers/maker';
+import { getTrademarkList } from 'store/reducers/trademark';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { SearchIDToArray } from 'utils/findName';
-import { ArrayToString } from 'utils/convertToObject';
+import { productExport } from 'utils/transformeProductExport';
+
 import { ProductDefault } from 'config';
 
 // assets
@@ -32,13 +35,15 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
-  const { products, error } = useSelector((state) => state.product);
+  const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { makerList } = useSelector((state) => state.maker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getTrademarkList());
+    dispatch(getMakerList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -60,6 +65,7 @@ const ProductList = () => {
 
   const getMaker = (id: number) => SearchIDToArray(makerList, id)?.Name || '';
   const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
+  const productsExport: any = productExport(products, typeProductList);
 
   const handleAddProduct = () => {
     history(`/product-list/add-new-product`);
@@ -72,59 +78,6 @@ const ProductList = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
-
-  const newDataExport: any = products.map((item: any) => {
-    let Warehouse: string = '';
-    let Substitutes: string = '';
-    let Substance: string = '';
-    let TypesProduct: string = '';
-
-    if (item?.Substance) {
-      Substance = ArrayToString(item?.Substance);
-    }
-    if (item?.Warehouses) {
-      Warehouse = ArrayToString(item?.Warehouses);
-    }
-    if (item?.Substitutes) {
-      Substitutes = item?.Substitutes.map((e: any) => e.Sku).join();
-    }
-    if (item?.TypesProductID) {
-      TypesProduct = SearchIDToArray(typeProductList, item?.TypesProductID)?.Name || '';
-    }
-
-    return {
-      ID: item?.ID,
-      HandlesBaq: item?.HandlesBaq,
-      HandlesBog: item?.HandlesBog,
-      Name: item?.Name,
-      Sku: item?.Sku,
-      Ean: item?.Ean,
-      Maker: item?.Maker?.Name,
-      Trademark: item?.Trademark,
-      Type_Product: TypesProduct,
-      Variation: item?.Variation,
-      Grupo: item?.CategoryOne?.Name,
-      CategoryOne: item?.CategoryTwo?.Name,
-      CategoryTwo: item?.CategoryThree?.Name,
-      Pack: item?.Pack?.Name,
-      Quantity: item?.Quantity,
-      MakerUnit: item?.MakerUnit,
-      Weight: item?.Weight,
-      Width: item?.Width,
-      PackInfo: item?.Wrapper,
-      Height: item?.Height,
-      WrapperUnit: item?.WrapperUnit,
-      Depth: item?.Depth,
-      Warehouse,
-      IDProduct: item?.IDFloorProduct,
-      Substance,
-      Substitutes,
-      Status: Boolean(item?.Status),
-      Keywords: item?.Keywords,
-      Tax: item?.iva,
-      IsTaxed: item?.Taxed
-    };
-  });
 
   const columnsProducts = useMemo(
     () => [
@@ -198,6 +151,8 @@ const ProductList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           const collapseIcon = row.isExpanded ? (
             <CloseOutlined style={{ color: theme.palette.error.main }} />
           ) : (
@@ -230,12 +185,20 @@ const ProductList = () => {
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e: any) => {
+                  onClick={async (e: any) => {
                     e.stopPropagation();
-                    dispatch(deleteProduct(row?.values?.ID));
+                    setIsLoading(true);
+                    await dispatch(deleteProduct(row?.values?.ID));
+                    setIsLoading(false);
                   }}
                 >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
                 </IconButton>
               </Tooltip>
             </Stack>
@@ -259,12 +222,25 @@ const ProductList = () => {
           handleAdd={handleAddProduct}
           TitleButton="Agregar Producto"
           FileNameTemplate="Descargar Plantilla"
-          dataExport={newDataExport as []}
+          dataExport={productsExport}
           download
           dataTemplate={ProductDefault as []}
           FileName="Productos"
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
+          handlePagination={(page: number) => {
+            dispatch(getProducts(30, page + 1));
+          }}
+          handleSearch={(value: any) => {
+            if (value) {
+              dispatch(getProducts(30, 1, value));
+            } else {
+              dispatch(getProducts(30, 1));
+            }
+          }}
+          isLoading={isLoading}
+          numberPage={page}
+          totalRows={totalPages}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

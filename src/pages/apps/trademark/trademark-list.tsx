@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Dialog, Stack, Tooltip, Typography } from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip, Typography, Box, CircularProgress } from '@mui/material';
 
 // project import
 import AddTrademark from 'sections/apps/products/trademark/AddTrademark';
@@ -95,6 +95,8 @@ const TradeMarkList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -112,12 +114,20 @@ const TradeMarkList = () => {
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e: any) => {
+                  onClick={async (e: any) => {
                     e.stopPropagation();
-                    dispatch(deleteTrademark(row?.original?.ID));
+                    setIsLoading(true);
+                    await dispatch(deleteTrademark(row?.original?.ID));
+                    setIsLoading(false);
                   }}
                 >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
                 </IconButton>
               </Tooltip>
             </Stack>

@@ -70,19 +70,6 @@ function AddCategoryThree({ categoryThree: category }: any) {
                         Categoria 2
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
-                          <InputLabel>Nombre de Categoria 2</InputLabel>
-                        </Grid>
-                        <Grid item xs={12} sm={7}>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            placeholder="Ingresar Nombre Categoria"
-                            fullWidth
-                            {...getFieldProps('Name')}
-                            error={Boolean(touched.Name && errors.Name)}
-                            helperText={touched.Name && errors.Name}
-                          />
-                        </Grid>
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
                           <InputLabel>Grupo</InputLabel>
                         </Grid>
@@ -124,6 +111,19 @@ function AddCategoryThree({ categoryThree: category }: any) {
                                 </MenuItem>
                               ))}
                           </TextField>
+                        </Grid>
+                        <Grid item xs={12} sm={5} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
+                          <InputLabel>Nombre de Categoria 2</InputLabel>
+                        </Grid>
+                        <Grid item xs={12} sm={7}>
+                          <TextField
+                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                            placeholder="Ingresar Nombre Categoria"
+                            fullWidth
+                            {...getFieldProps('Name')}
+                            error={Boolean(touched.Name && errors.Name)}
+                            helperText={touched.Name && errors.Name}
+                          />
                         </Grid>
                         <Grid item xs={12} sm={3} sx={{ pt: { xs: 2, sm: '0 !important' } }}>
                           <InputLabel>Estado</InputLabel>

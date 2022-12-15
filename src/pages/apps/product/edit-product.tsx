@@ -237,6 +237,8 @@ function UpdateProduct() {
                         helperText={touched.Name && errors.Name}
                         placeholder="Ingresar Nombre"
                         fullWidth
+                        rows={2}
+                        multiline
                       />
                     </Grid>
                     <Grid item xs={6}>

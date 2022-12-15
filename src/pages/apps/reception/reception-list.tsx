@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, Box, CircularProgress } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 // project import
@@ -21,7 +21,7 @@ import { useSelector, useDispatch, store } from 'store';
 import { getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // assets
-import { PlusCircleOutlined, FilePdfOutlined, SyncOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
 
@@ -170,7 +170,9 @@ const ReceptionList = () => {
                   {!isLoading ? (
                     <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
                   ) : (
-                    <SyncOutlined spin twoToneColor={theme.palette.primary.main} />
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
                   )}
                 </IconButton>
               </Tooltip>

@@ -13,10 +13,16 @@ import IconButton from 'components/@extended/IconButton';
 // assets
 import { CloseOutlined, LineOutlined, SearchOutlined } from '@ant-design/icons';
 
-export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter, ...other }: any) {
+export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter, handleSearch, ...other }: any) {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
+    if (value.length >= 5) {
+      handleSearch(value);
+    } else {
+      handleSearch(value);
+    }
+
     setGlobalFilter(value || undefined);
   }, 200);
 
@@ -28,7 +34,7 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
         onChange(e.target.value);
       }}
       placeholder={`Buscar ${count} registros...`}
-      id="start-adornment-email"
+      id="start-adornment"
       startAdornment={<SearchOutlined />}
       {...other}
     />

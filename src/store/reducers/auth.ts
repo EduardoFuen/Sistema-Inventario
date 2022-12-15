@@ -1,5 +1,5 @@
 // action - state management
-import { REGISTER, LOGIN, LOGOUT, FAILED_LOGIN } from './actions';
+import { REGISTER, LOGIN, LOGOUT, FAILED_LOGIN, LOADING } from './actions';
 
 // types
 import { AuthProps, AuthActionProps } from 'types/auth';
@@ -9,7 +9,8 @@ export const initialState: AuthProps = {
   isLoggedIn: false,
   isInitialized: false,
   user: null,
-  error: null
+  error: null,
+  isLoading: false
 };
 
 // ==============================|| AUTH REDUCER ||============================== //
@@ -21,6 +22,13 @@ const auth = (state = initialState, action: AuthActionProps) => {
       return {
         ...state,
         user
+      };
+    }
+    case LOADING: {
+      const { isLoading } = action.payload!;
+      return {
+        ...state,
+        isLoading
       };
     }
     case LOGIN: {

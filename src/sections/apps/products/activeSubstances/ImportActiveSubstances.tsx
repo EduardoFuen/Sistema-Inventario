@@ -24,7 +24,7 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data?.map((item: Substances) => ({
-        Name: item?.Name,
+        Name: item?.Name?.toString(),
         Status: Boolean(item?.Status),
         ID: item?.ID || 0
       }));

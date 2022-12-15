@@ -31,14 +31,14 @@ const ImportPack = ({ onCancel, value }: Props) => {
       switch (value) {
         case 0:
           newData = data.map((item: CategoryOne) => ({
-            Name: item?.Name,
+            Name: item?.Name?.toString(),
             ID: item?.ID || 0,
             Status: Boolean(item?.Status)
           }));
           break;
         case 1:
           newData = data.map((item: CategoryTwo | any) => ({
-            Name: item?.Name,
+            Name: item?.Name?.toString(),
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
             Status: Boolean(item?.Status),
             ID: item?.ID || 0
@@ -47,7 +47,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
 
         default:
           newData = data.map((item: CategoryThree | any) => ({
-            Name: item?.Name,
+            Name: item?.Name?.toString(),
             CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
             CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID || 0,
             ID: item?.ID || 0,

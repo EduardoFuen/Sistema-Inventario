@@ -79,9 +79,12 @@ const RenderDocument = ({ data }: any) => {
         <Image src={Farmu} style={styles.image} />
         {data && data?.CreatedAt && (
           <Text style={styles.header} fixed>
-            Fecha {format(new Date(data?.CreatedAt), DATEFORMAT)} # Order Farmu-{data?.ID}
+            Fecha {format(new Date(data?.CreatedAt), DATEFORMAT)}
           </Text>
         )}
+        <Text style={styles.header} fixed>
+          # Order Farmu-{data?.ID}
+        </Text>
         {data && data?.Warehouse && (
           <Text style={styles.header} fixed>
             Bodega {data?.Warehouse?.Name}
@@ -158,7 +161,7 @@ const RenderDocument = ({ data }: any) => {
           ))}
         <Text style={styles.summary}>Subtotal: {data?.SubTotal}</Text>
         {data?.Tax > 0 && <Text style={styles.summary}>IVA: {data?.Tax}</Text>}
-        <Text style={styles.summary}>Descuento: {data?.Discount}</Text>
+        <Text style={styles.summary}>Descuento: {data?.DiscountGlobal}</Text>
         <Text style={styles.summary}>Total: {data?.Total}</Text>
       </Page>
     </Document>

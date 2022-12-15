@@ -122,6 +122,13 @@ function AddPurchase() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                       <Autocomplete
                         id="supplier-list"
+                        renderOption={(props, option) => {
+                          return (
+                            <li {...props} key={option.ID}>
+                              {option.BusinessName}
+                            </li>
+                          );
+                        }}
                         options={supplierList.filter((item: Supplier) => item.Status === true)}
                         getOptionLabel={(option: Supplier) => option.BusinessName ?? ''}
                         onChange={(event, newValue) => {

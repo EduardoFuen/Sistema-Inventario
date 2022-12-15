@@ -33,14 +33,13 @@ const Import = ({ onCancel }: Props) => {
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { todoListSubs } = useSelector((state) => state.substances);
   const { products } = useSelector((state) => state.product);
-  console.log(warehouseList);
 
   const onSubmit = async () => {
     try {
       setSubmitting(true);
       const newData: Products = data?.map((item: any) => {
         return {
-          Name: item?.Name,
+          Name: item?.Name?.toString(),
           Sku: item?.Sku?.toString(),
           Ean: item?.Ean?.toString(),
           MakerID: item?.Maker ? SearchNameToArray(makerList, item?.Maker)?.ID?.toString() : '',
@@ -71,8 +70,6 @@ const Import = ({ onCancel }: Props) => {
           Taxed: item?.IsTaxed
         };
       });
-
-      console.log(newData);
 
       await dispatch(addExcel(newData));
       onCancel();

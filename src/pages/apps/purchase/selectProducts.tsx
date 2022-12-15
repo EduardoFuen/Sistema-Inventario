@@ -15,6 +15,7 @@ import { addItemsPurchase } from 'store/reducers/purcharse';
 import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
 import { SearchIDToArray } from 'utils/findName';
 
+import { getProducts } from 'store/reducers/product';
 // ==============================|| SELECT PRODUCT PURCHASE - LIST VIEW ||============================== //
 
 export interface PropsSelect {
@@ -25,7 +26,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [itemsNew, setItems] = useState<any[]>([]);
-  const { products } = useSelector((state) => state.product);
+  const { products, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
 
   const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
@@ -168,6 +169,19 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
             hideButton={false}
             handleSelect={(row: any) => handleSelect(row)}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
+            handlePagination={(page: number) => {
+              dispatch(getProducts(30, page + 1));
+            }}
+            handleSearch={(value: any) => {
+              if (value) {
+                dispatch(getProducts(30, 1, value));
+              } else {
+                dispatch(getProducts(30, 1));
+              }
+            }}
+            isLoading={isLoading}
+            numberPage={page}
+            totalRows={totalPages}
           />
         </DialogContent>
         <DialogActions sx={{ p: 2.5 }}>

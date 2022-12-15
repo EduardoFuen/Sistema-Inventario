@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Dialog, Stack, Tooltip } from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip, Box, CircularProgress } from '@mui/material';
 
 // project import
 import AddWarehouse from 'sections/apps/products/warehouse/AddWarehouse';
@@ -34,6 +34,11 @@ const WarehouseList = () => {
   const handleAdd = () => {
     setAdd(!add);
     if (warehouse && !add) setWarehouse(null);
+  };
+
+  const deleteHandler = async (setIsLoading: any, id: number) => {
+    await dispatch(deleteWarehouse(id));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -84,6 +89,8 @@ const WarehouseList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const { original } = row;
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -103,10 +110,17 @@ const WarehouseList = () => {
                   color="error"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    dispatch(deleteWarehouse(original?.ID));
+                    setIsLoading(true);
+                    deleteHandler(setIsLoading, original.ID);
                   }}
                 >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
                 </IconButton>
               </Tooltip>
             </Stack>

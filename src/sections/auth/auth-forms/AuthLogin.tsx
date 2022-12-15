@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState, FocusEvent } from 'react';
 // material-ui
-import { Button, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
+import { FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -9,8 +9,8 @@ import { Formik } from 'formik';
 // project import
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
+import LoadingButton from 'components/@extended/LoadingButton';
 import IconButton from 'components/@extended/IconButton';
-import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -20,8 +20,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 const AuthLogin = () => {
   const [capsWarning, setCapsWarning] = useState(false);
 
-  const { login, error } = useAuth();
-
+  const { login, error, isLoading } = useAuth();
   const scriptedRef = useScriptRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -151,12 +150,24 @@ const AuthLogin = () => {
                   <FormHelperText error>{error}</FormHelperText>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Ingresar
-                  </Button>
-                </AnimateButton>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  textAlign: 'center'
+                }}
+              >
+                <LoadingButton
+                  disabled={isSubmitting}
+                  loading={isLoading}
+                  fullWidth
+                  variant="contained"
+                  type="submit"
+                  size="large"
+                  color="primary"
+                >
+                  Ingresar
+                </LoadingButton>
               </Grid>
             </Grid>
           </form>

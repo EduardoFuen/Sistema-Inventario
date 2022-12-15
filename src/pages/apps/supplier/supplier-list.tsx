@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, capitalize, Typography, Dialog } from '@mui/material';
+import { Chip, Stack, Tooltip, capitalize, Typography, Dialog, Box, CircularProgress } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -108,11 +108,14 @@ const SupplierListPage = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           const collapseIcon = row.isExpanded ? (
             <CloseOutlined style={{ color: theme.palette.error.main }} />
           ) : (
             <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
           );
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="View">
@@ -140,12 +143,20 @@ const SupplierListPage = () => {
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e: any) => {
+                  onClick={async (e: any) => {
                     e.stopPropagation();
-                    dispatch(deleteSupplier(row?.original?.ID));
+                    setIsLoading(true);
+                    await dispatch(deleteSupplier(row?.original?.ID));
+                    setIsLoading(false);
                   }}
                 >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
                 </IconButton>
               </Tooltip>
             </Stack>

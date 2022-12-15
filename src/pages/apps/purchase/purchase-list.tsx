@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
 
 // third-party
 import NumberFormat from 'react-number-format';
@@ -22,7 +22,7 @@ import { useSelector, useDispatch, store } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // assets
-import { DeleteTwoTone, EditTwoTone, FilePdfOutlined, SyncOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, FilePdfOutlined } from '@ant-design/icons';
 
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
@@ -164,6 +164,7 @@ const PurchaseList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const [isLoading, setIsLoading] = useState<boolean>(false);
+          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
 
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -180,7 +181,9 @@ const PurchaseList = () => {
                   {!isLoading ? (
                     <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
                   ) : (
-                    <SyncOutlined spin twoToneColor={theme.palette.primary.main} />
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
                   )}
                 </IconButton>
               </Tooltip>
@@ -195,16 +198,24 @@ const PurchaseList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              {(row.original?.ReceptionStatus === 0 || row.values?.Status === 0 || row.values?.Status === 2) && (
+              {row.original?.ReceptionStatus === 0 && row.original?.Status === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton
                     color="error"
-                    onClick={(e: any) => {
+                    onClick={async (e: any) => {
                       e.stopPropagation();
-                      dispatch(deletePurchase(Number(row?.values?.ID), { ...row.original, Status: 2 }));
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.values?.ID)));
+                      setIsLoadingDelete(false);
                     }}
                   >
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
                   </IconButton>
                 </Tooltip>
               )}

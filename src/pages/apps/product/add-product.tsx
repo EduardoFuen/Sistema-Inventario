@@ -31,9 +31,9 @@ import { idsToString } from 'utils/convertToObject';
 
 import { addProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { getMakerList } from 'store/reducers/maker';
 import { getTrademarkList } from 'store/reducers/trademark';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree } from 'store/reducers/category';
-import { getMakerList } from 'store/reducers/maker';
 import { getPackList } from 'store/reducers/pack';
 import { getSubsList } from 'store/reducers/activeSubst';
 import { getWarehouseList } from 'store/reducers/warehouse';
@@ -216,6 +216,8 @@ function AddNewProduct() {
                         helperText={touched.Name && errors.Name}
                         placeholder="Ingresar Nombre"
                         fullWidth
+                        rows={2}
+                        multiline
                       />
                     </Grid>
                     <Grid item xs={6}>

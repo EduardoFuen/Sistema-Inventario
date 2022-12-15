@@ -15,7 +15,11 @@ import { DefaultRootStateProps } from 'types/products';
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
   products: [],
-  product: null
+  product: null,
+  page: 0,
+  totalRows: 0,
+  totalPages: 0,
+  isLoading: false
 };
 
 // ==============================||  PRODUCT  REDUCER ||============================== //
@@ -28,9 +32,21 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
+    //LOADER
+    loading(state) {
+      state.isLoading = true;
+    },
+    loadingIs(state) {
+      state.isLoading = false;
+    },
     // GET PRODUCTS
     getProductsSuccess(state, action) {
-      state.products = action.payload;
+      const { Rows, totalRows, totalPages, page } = action.payload;
+      state.products = Rows;
+      state.page = page;
+      state.totalRows = totalRows;
+      state.totalPages = totalPages;
+      state.isLoading = false;
     },
     // GET ID PRODUCT
     getProductIDSuccess(state, action) {
@@ -64,23 +80,41 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getProducts(limit = 2500, page = 1) {
+export function getProducts(limit = 30, page = 1, sku = '') {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/productos?limit=${limit}&page=${page}`);
+      dispatch(slice.actions.loading());
+      let queryParams: string = '';
+      queryParams = `limit=${limit}&page=${page}`;
+      if (sku !== '') {
+        if (sku.length <= 9) {
+          queryParams = `sku=${sku?.trim()}`;
+        }
+        if (sku.length >= 9) {
+          queryParams = `name=${sku?.trim()}`;
+        }
+      }
+
+      const response = await axios.get(`${HOST}/productos?${queryParams}`);
       if (response.data instanceof Object) {
-        const { Rows }: any = response.data;
+        const { Rows, totalRows, totalPages, page }: any = response.data;
         dispatch(getTrademarkList());
         dispatch(getTypeProductList());
-
-        dispatch(slice.actions.getProductsSuccess(Rows));
-        dispatch(slice.actions.hasError(null));
+        dispatch(
+          slice.actions.getProductsSuccess({
+            totalRows,
+            totalPages,
+            page,
+            Rows
+          })
+        );
       }
     } catch (error: any) {
-      if (error?.response?.status === 404) {
+      if (!sku && error?.response?.status === 404) {
         dispatch(slice.actions.getProductsSuccess([]));
+        dispatch(slice.actions.hasError(error));
       }
-      dispatch(slice.actions.hasError(error));
+      dispatch(slice.actions.loadingIs());
     }
   };
 }

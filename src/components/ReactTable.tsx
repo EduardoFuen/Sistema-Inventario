@@ -2,7 +2,7 @@ import { useMemo, Fragment } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Button, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 // project import
@@ -32,14 +32,22 @@ interface Props {
   FileNameTemplate: string;
   FontSize: boolean;
   setRowSelection: any;
+  handlePagination: (value: number) => void;
+  totalRows: number;
+  numberPage: number;
+  isLoading: boolean;
+  handleSearch: (value: any) => void;
 }
 
 const ReactTable = ({
   columns,
   data,
+  handlePagination,
   getHeaderProps,
-  handleAdd,
   handleImport,
+  handleSearch,
+  handleSelect,
+  handleAdd,
   TitleButton,
   FileName,
   renderRowSubComponent,
@@ -47,10 +55,12 @@ const ReactTable = ({
   hideButton,
   download,
   dataTemplate,
-  handleSelect,
   FileNameTemplate,
   FontSize,
-  setRowSelection
+  setRowSelection,
+  totalRows,
+  numberPage,
+  isLoading
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -85,7 +95,7 @@ const ReactTable = ({
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] },
+      initialState: { pageIndex: numberPage > 0 ? numberPage - 1 : 0, pageSize: 10, sortBy: [sortBy] },
       onRowSelectionChange: setRowSelection
     },
     useGlobalFilter,
@@ -95,6 +105,9 @@ const ReactTable = ({
     usePagination,
     useRowSelect
   );
+
+  let NewRows: any = numberPage > 0 ? rows : page;
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
@@ -106,6 +119,7 @@ const ReactTable = ({
               globalFilter={globalFilter}
               setGlobalFilter={setGlobalFilter}
               size="small"
+              handleSearch={handleSearch}
             />
             {download && dataTemplate.length > 0 && <Export excelData={dataTemplate} fileName={FileName} title={FileNameTemplate} />}
             {dataExport && dataExport.length > 0 && (
@@ -142,30 +156,48 @@ const ReactTable = ({
               ))}
             </TableHead>
             <TableBody {...getTableBodyProps()}>
-              {page.map((row: any, i: number) => {
-                prepareRow(row);
-                const rowProps = row.getRowProps();
-                return (
-                  <Fragment key={i}>
-                    <TableRow
-                      {...row.getRowProps()}
-                      onClick={() => {
-                        handleSelect(row);
-                        row.toggleRowSelected();
-                      }}
-                      sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                    >
-                      {row.cells.map((cell: any) => (
-                        <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                      ))}
-                    </TableRow>
-                    {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
-                  </Fragment>
-                );
-              })}
+              {!isLoading &&
+                NewRows.map((row: any, i: number) => {
+                  prepareRow(row);
+                  const rowProps = row.getRowProps();
+                  return (
+                    <Fragment key={i}>
+                      <TableRow
+                        {...row.getRowProps()}
+                        onClick={() => {
+                          handleSelect(row);
+                          row.toggleRowSelected();
+                        }}
+                        sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
+                      >
+                        {row.cells.map((cell: any) => (
+                          <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                        ))}
+                      </TableRow>
+                      {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+                    </Fragment>
+                  );
+                })}
+              {isLoading && (
+                <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
+                  <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <CircularProgress color="success" size={40} />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              )}
               <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
                 <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                  <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
+                  <TablePagination
+                    gotoPage={gotoPage}
+                    rows={rows}
+                    setPageSize={setPageSize}
+                    pageSize={pageSize}
+                    pageIndex={numberPage > 0 ? numberPage - 1 : pageIndex}
+                    setPagination={handlePagination}
+                    totalRows={totalRows}
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -182,6 +214,8 @@ ReactTable.defaultProps = {
   handleAdd: () => {},
   handleImport: () => {},
   setRowSelection: () => {},
+  handlePagination: () => {},
+  handleSearch: () => {},
   dataExport: [],
   dataTemplate: [],
   hideButton: true,
@@ -189,7 +223,10 @@ ReactTable.defaultProps = {
   TitleButton: '',
   FileNameTemplate: '',
   FileName: '',
-  FontSize: false
+  FontSize: false,
+  isLoading: false,
+  totalRows: 0,
+  numberPage: 0
 };
 
 export default ReactTable;

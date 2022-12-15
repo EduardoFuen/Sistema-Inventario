@@ -64,7 +64,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                   <Grid container spacing={1} direction="column">
                     <Grid item xs={12}>
                       <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Categoria 2
+                        Categoria 1
                       </Typography>
                       <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4} sx={{ pt: { xs: 2, sm: '0 !important' } }}>

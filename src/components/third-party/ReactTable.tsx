@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState, ReactNode, ChangeEvent } from 'react';
+import { forwardRef, useEffect, useRef, useState, ReactNode, ChangeEvent } from 'react';
 
 // third-party
 import { useDrop, useDrag, useDragLayer } from 'react-dnd';
@@ -66,12 +66,14 @@ export const HeaderSort = ({ column, sort }: HeaderSortProps) => {
 interface TablePaginationProps {
   gotoPage: (value: number) => void;
   setPageSize: (value: number) => void;
+  setPagination: (page: number) => void;
   pageIndex: number;
   pageSize: number;
   rows: any[];
+  totalRows: number;
 }
 
-export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex }: TablePaginationProps) => {
+const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex, setPagination, totalRows }: TablePaginationProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -84,6 +86,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
 
   const handleChangePagination = (event: ChangeEvent<unknown>, value: number) => {
     gotoPage(value - 1);
+    setPagination(value - 1);
   };
 
   const handleChange = (event: SelectChangeEvent<number>) => {
@@ -136,7 +139,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
         <Pagination
           // @ts-ignore
-          count={Math.ceil(rows.length / pageSize)}
+          count={totalRows !== 0 ? totalRows : Math.ceil(rows.length / pageSize)}
           // @ts-ignore
           page={pageIndex + 1}
           onChange={handleChangePagination}
@@ -149,6 +152,13 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
     </Grid>
   );
 };
+
+TablePagination.defaultProps = {
+  setPagination: () => {},
+  totalRows: 0
+};
+
+export { TablePagination };
 
 // ==============================|| SELECTION - PREVIEW ||============================== //
 

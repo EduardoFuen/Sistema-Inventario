@@ -228,10 +228,14 @@ export function editPurchase(id: number, data: any) {
   };
 }
 
-export function deletePurchase(id: number, data: any) {
+export function deletePurchase(id: number) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/compras`, { ID: id, ...data });
+      await dispatch(getIDPurchase(id));
+      let {
+        purchase: { order }
+      } = store.getState();
+      const response = await axios.put(`${HOST}/compras`, { ID: id, ...order, status: 2 });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(

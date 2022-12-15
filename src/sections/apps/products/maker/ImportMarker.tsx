@@ -24,7 +24,7 @@ const ImportMarker = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data?.map((item: Maker) => ({
-        Name: item?.Name,
+        Name: item?.Name?.toString(),
         ID: item?.ID || 0,
         Status: Boolean(item?.Status)
       }));

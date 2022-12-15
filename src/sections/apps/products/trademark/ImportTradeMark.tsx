@@ -24,7 +24,7 @@ const ImportTradeMark = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data?.map((item: Trademark) => ({
-        Name: item?.Name,
+        Name: item?.Name?.toString(),
         MakerID: item?.MakerID,
         ID: item?.ID || 0,
         Status: Boolean(item?.Status)

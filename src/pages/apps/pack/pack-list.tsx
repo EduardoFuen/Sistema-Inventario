@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Dialog } from '@mui/material';
+import { Chip, Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -72,6 +72,8 @@ const PackList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -89,12 +91,20 @@ const PackList = () => {
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e: any) => {
+                  onClick={async (e: any) => {
                     e.stopPropagation();
-                    dispatch(deletePack(row?.original?.ID));
+                    setIsLoading(true);
+                    await dispatch(deletePack(row?.original?.ID));
+                    setIsLoading(false);
                   }}
                 >
-                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
                 </IconButton>
               </Tooltip>
             </Stack>

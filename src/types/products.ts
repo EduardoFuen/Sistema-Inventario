@@ -48,6 +48,10 @@ export interface ProductStateProps {
   products: Products[];
   product: Products | null;
   error: object | string | null | any;
+  page: number | undefined;
+  totalRows?: number | undefined;
+  totalPages?: number | undefined;
+  isLoading?: boolean;
 }
 
 export interface DefaultRootStateProps {

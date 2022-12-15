@@ -24,7 +24,7 @@ const ImportMarker = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       const newData = data?.map((item: Warehouses) => ({
-        Name: item?.Name,
+        Name: item?.Name?.toString(),
         Department: item?.Department,
         City: item?.City,
         Location: item?.Location,

@@ -16,12 +16,12 @@ export type UserProfile = {
   image?: string;
   name?: string;
   role?: string;
-  tier?: string;
 };
 
 export interface AuthProps {
   isLoggedIn: boolean;
   isInitialized?: boolean;
+  isLoading?: boolean;
   user?: UserProfile | null;
   token?: string | null;
   error?: object | string | null;
@@ -49,6 +49,7 @@ export type FirebaseContextType = {
 
 export type AWSCognitoContextType = {
   isLoggedIn: boolean;
+  isLoading?: boolean;
   isInitialized?: boolean;
   user?: UserProfile | null | undefined;
   error?: object | string | null;
@@ -63,6 +64,7 @@ export type AWSCognitoContextType = {
 export interface InitialLoginContextProps {
   isLoggedIn: boolean;
   isInitialized?: boolean;
+  isLoading?: boolean;
   user?: UserProfile | null | undefined;
   error?: object | string | null;
 }
