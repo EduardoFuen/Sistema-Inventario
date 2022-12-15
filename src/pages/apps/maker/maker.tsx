@@ -26,7 +26,7 @@ const MakersList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [maker, setWarehouse] = useState(null);
+  const [maker, setWarehouse] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

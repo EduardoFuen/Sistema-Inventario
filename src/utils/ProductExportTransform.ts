@@ -1,7 +1,7 @@
 import { ArrayToString } from 'utils/convertToObject';
 import { SearchIDToArray } from 'utils/findName';
 
-const productExport = (data: any, listTypeProduct: any) =>
+const productExport = (data: object[], listTypeProduct: object[]) =>
   data?.map((item: any) => {
     let Warehouse: string = '';
     let Substitutes: string = '';

@@ -22,7 +22,7 @@ import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 const PackList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [pack, setPack] = useState(null);
+  const [pack, setPack] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

@@ -18,7 +18,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import Import from './ImportSupplier';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
-
+import { DefaultSupplier } from 'config';
 // types
 import { Supplier } from 'types/supplier';
 
@@ -184,23 +184,6 @@ const SupplierListPage = () => {
     Status: Boolean(item?.Status)
   }));
 
-  const Template: any = [
-    {
-      ID: '',
-      BusinessName: '',
-      Nit: '',
-      Cupo: '',
-      DaysPayment: '',
-      LeadTimeBaq: '',
-      LeadTimeBog: '',
-      PaymenTerm: '',
-      Discount: '',
-      NameContact: '',
-      EmailContact: '',
-      PhoneContact: '',
-      Status: ''
-    }
-  ];
   const renderRowSubComponent = useCallback(({ row }: any) => <SupplierView data={supplierList[row.id]} />, [supplierList]);
 
   return (
@@ -218,7 +201,7 @@ const SupplierListPage = () => {
           dataExport={newDataExport}
           FileNameTemplate="Descargar Plantilla"
           download
-          dataTemplate={Template}
+          dataTemplate={DefaultSupplier}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

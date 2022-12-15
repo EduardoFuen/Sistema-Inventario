@@ -23,7 +23,7 @@ const WarehouseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [warehouse, setWarehouse] = useState(null);
+  const [warehouse, setWarehouse] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

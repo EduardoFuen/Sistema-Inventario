@@ -28,7 +28,7 @@ const TradeMarkList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [tradeMark, setTrademark] = useState(null);
+  const [tradeMark, setTrademark] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

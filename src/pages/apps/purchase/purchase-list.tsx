@@ -15,7 +15,7 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
-import { newDataExport } from 'utils/DataExportPurchase';
+import { newDataExport } from 'utils/PurchaseTransform';
 import { DATEFORMAT } from 'config';
 
 import { useSelector, useDispatch, store } from 'store';

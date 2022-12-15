@@ -8,14 +8,12 @@ interface Props {
 }
 
 const ImportFile = ({ setData }: Props) => {
-  const [__html, setHTML] = useState('');
+  const [__html, setHTML] = useState<any>('');
   const dispatch = useDispatch();
   useEffect(() => {
-    const csv = '';
-
+    const csv: string = '';
     const wb = XLSX.read(csv, { type: 'string' });
     const ws = wb.Sheets.Sheet1;
-
     setHTML(XLSX.utils.sheet_to_html(ws, { id: 'tabeller' }));
   }, []);
 

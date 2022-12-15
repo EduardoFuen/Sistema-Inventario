@@ -1,4 +1,4 @@
-export const newDataExport = (data: any) =>
+export const newDataExport = (data: object[]) =>
   data.map((item: any) => {
     return {
       Order: `Farmu-${item?.ID}`,

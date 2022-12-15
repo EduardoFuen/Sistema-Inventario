@@ -21,7 +21,7 @@ import { getTrademarkList } from 'store/reducers/trademark';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { SearchIDToArray } from 'utils/findName';
-import { productExport } from 'utils/transformeProductExport';
+import { productExport } from 'utils/ProductExportTransform';
 
 import { ProductDefault } from 'config';
 

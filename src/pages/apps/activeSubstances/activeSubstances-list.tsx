@@ -25,7 +25,7 @@ import { Substances } from 'types/products';
 const ActiveSubstancesList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [subst, setSubst] = useState(null);
+  const [subst, setSubst] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

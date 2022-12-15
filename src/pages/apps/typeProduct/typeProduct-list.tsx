@@ -25,7 +25,7 @@ import { TypeProduct } from 'types/products';
 const PackList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 

@@ -41,7 +41,7 @@ const UserView = ({ data }: any) => {
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{capitalize(data?.BusinessName)}</Typography>
                       <Typography variant="h6" color="secondary">
-                        NIT: {data.Nit}
+                        NIT {data.Nit}
                       </Typography>
                     </Stack>
                   </Stack>

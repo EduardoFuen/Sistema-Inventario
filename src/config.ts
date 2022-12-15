@@ -7,24 +7,9 @@ export const twitterColor = '#1DA1F2';
 export const facebookColor = '#3b5998';
 export const linkedInColor = '#0e76a8';
 
-export const FIREBASE_API = {
-  apiKey: '',
-  authDomain: '',
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: '',
-  appId: '',
-  measurementId: ''
-};
-
 export const AWS_API = {
   poolId: 'us-east-1_aM1PPjbsx',
   appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
-};
-
-export const AUTH0_API = {
-  client_id: '',
-  domain: ''
 };
 
 export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';
@@ -83,6 +68,24 @@ export const ProductPurchaseDefault: any = [
     DiscountNegotiated: '',
     DiscountAdditional: '',
     Bonus: ''
+  }
+];
+
+export const DefaultSupplier: any = [
+  {
+    ID: '',
+    BusinessName: '',
+    Nit: '',
+    Cupo: '',
+    DaysPayment: '',
+    LeadTimeBaq: '',
+    LeadTimeBog: '',
+    PaymenTerm: '',
+    Discount: '',
+    NameContact: '',
+    EmailContact: '',
+    PhoneContact: '',
+    Status: ''
   }
 ];
 
