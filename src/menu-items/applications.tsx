@@ -24,7 +24,7 @@ const applications: NavItemType = {
       id: 'AddProduct',
       type: 'item',
       title: 'Agregar Producto',
-      url: '/product-list/add-new-product',
+      url: '/product-list/add',
       hide: true,
       mainTitle: 'Productos',
       mainUrl: '/product-list'
@@ -33,7 +33,7 @@ const applications: NavItemType = {
       id: 'AddCategory',
       type: 'item',
       title: 'Agregar Categorias',
-      url: '/product-list/add-category',
+      url: '/product-list/category/add',
       hide: true,
       mainTitle: 'Productos',
       mainUrl: '/product-list'
@@ -55,8 +55,8 @@ const applications: NavItemType = {
       mainUrl: '/supplier'
     },
     {
-      id: 'Compras',
-      title: 'Compras',
+      id: 'compras',
+      title: 'compras',
       type: 'item',
       url: '/purchase',
       icon: icons.ReconciliationOutlined
@@ -88,7 +88,7 @@ const applications: NavItemType = {
       id: 'edit',
       type: 'item',
       title: 'Editar Producto',
-      url: '/product-list/product-edit/:id',
+      url: '/product-list/edit/:id',
       hide: true,
       mainTitle: 'Productos',
       mainUrl: '/product-list'
@@ -117,7 +117,7 @@ const applications: NavItemType = {
       id: 'edit',
       type: 'item',
       title: 'Editar Categorias',
-      url: '/product-list/edit-category/:id/:index',
+      url: '/product-list/category/edit/:id/:index',
       hide: true,
       param: true,
       mainTitle: 'Productos',

@@ -19,8 +19,7 @@ import ScrollX from 'components/ScrollX';
 import Import from './ImportSupplier';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
 import { DefaultSupplier } from 'config';
-// types
-import { Supplier } from 'types/supplier';
+import { SupplierExport } from 'utils/SupplierTransform';
 
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -38,6 +37,9 @@ const SupplierListPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { supplierList } = useSelector((state) => state.supplier);
+  const data = (supplierList.length >= 0 && SupplierExport(supplierList)) || [];
+
   const handleEditSupplier = (id: any) => {
     history(`/supplier/edit/${id}`);
   };
@@ -49,8 +51,6 @@ const SupplierListPage = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
-
-  const { supplierList } = useSelector((state) => state.supplier);
 
   const columns = useMemo(
     () => [
@@ -168,22 +168,6 @@ const SupplierListPage = () => {
     [theme]
   );
 
-  const newDataExport: any = supplierList.map((item: Supplier) => ({
-    ID: item?.ID,
-    BusinessName: item?.BusinessName,
-    Nit: item?.Nit,
-    Cupo: item?.Cupo,
-    DaysPayment: item?.DaysPayment,
-    LeadTimeBaq: item?.LeadTimeBaq,
-    LeadTimeBog: item?.LeadTimeBog,
-    PaymenTerm: item?.PaymenTerm,
-    Discount: item?.Discount,
-    NameContact: item?.NameContact,
-    EmailContact: item?.EmailContact,
-    PhoneContact: item?.PhoneContact,
-    Status: Boolean(item?.Status)
-  }));
-
   const renderRowSubComponent = useCallback(({ row }: any) => <SupplierView data={supplierList[row.id]} />, [supplierList]);
 
   return (
@@ -198,7 +182,7 @@ const SupplierListPage = () => {
           renderRowSubComponent={renderRowSubComponent}
           TitleButton="Agregar Proveedor"
           FileName="Proveedores"
-          dataExport={newDataExport}
+          dataExport={data as []}
           FileNameTemplate="Descargar Plantilla"
           download
           dataTemplate={DefaultSupplier}

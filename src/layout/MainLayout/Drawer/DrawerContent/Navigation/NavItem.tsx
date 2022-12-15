@@ -47,14 +47,26 @@ const NavItem = ({ item, level }: Props) => {
 
   const { pathname } = useLocation();
 
+  const actions = pathname.includes('add') || pathname.includes('edit') || pathname.includes('view');
+
+  const itemActive = () => {
+    if (pathname && pathname.includes('product-list') && actions) {
+      dispatch(activeItem({ openItem: ['products'] }));
+    }
+    if (pathname && pathname.includes('supplier') && actions) {
+      dispatch(activeItem({ openItem: ['supplier'] }));
+    }
+    if (pathname && pathname.includes('purchase') && actions) {
+      dispatch(activeItem({ openItem: ['compras'] }));
+    }
+    if (pathname && pathname.includes('reception') && actions) {
+      dispatch(activeItem({ openItem: ['recepcion'] }));
+    }
+  };
+
   // active menu item on page load
   useEffect(() => {
-    if (pathname && pathname.includes('product-details')) {
-      if (item.url && item.url.includes('product-details')) {
-        dispatch(activeItem({ openItem: [item.id] }));
-      }
-    }
-
+    itemActive();
     if (pathname === item.url) {
       dispatch(activeItem({ openItem: [item.id] }));
     }

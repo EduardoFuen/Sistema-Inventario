@@ -68,11 +68,11 @@ const ProductList = () => {
   const productsExport: any = productExport(products, typeProductList);
 
   const handleAddProduct = () => {
-    history(`/product-list/add-new-product`);
+    history(`/product-list/add`);
   };
 
   const handleEditProduct = (id: any) => {
-    history(`/product-list/product-edit/${id}`);
+    history(`/product-list/edit/${id}`);
   };
 
   const handleImport = () => {

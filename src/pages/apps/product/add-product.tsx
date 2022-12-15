@@ -145,6 +145,7 @@ function AddNewProduct() {
     };
     reader.readAsDataURL(file);
   };
+
   useEffect(() => {
     if (error?.response?.data?.Error) {
       dispatch(

@@ -63,10 +63,10 @@ const CategoriesList = () => {
   }, []);
 
   const handleEditCategory = (id: number, index: number) => {
-    history(`/product-list/edit-category/${id}/${index}`);
+    history(`/product-list/category/edit/${id}/${index}`);
   };
   const handleAddCategory = () => {
-    history(`/product-list/add-category`);
+    history(`/product-list/category/add`);
   };
 
   const handleImport = () => {

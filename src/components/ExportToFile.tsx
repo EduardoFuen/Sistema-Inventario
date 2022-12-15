@@ -23,9 +23,14 @@ const Export = ({ excelData, fileName, title }: Props) => {
 
     FileSaver.saveAs(data, fileName + fileExtension);
   };
-
   return (
-    <Button variant="contained" onClick={(e) => exportToCSV(excelData, fileName)}>
+    <Button
+      variant="contained"
+      onClick={(e) => {
+        e.stopPropagation();
+        exportToCSV(excelData, fileName);
+      }}
+    >
       {title}
     </Button>
   );

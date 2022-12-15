@@ -110,19 +110,19 @@ const MainRoutes = {
                   element: <AppProductList />
                 },
                 {
-                  path: 'product-list/add-new-product',
+                  path: 'product-list/add',
                   element: <AppAddProduct />
                 },
                 {
-                  path: 'product-list/product-edit/:id',
+                  path: 'product-list/edit/:id',
                   element: <AppEditProduct />
                 },
                 {
-                  path: 'product-list/add-category',
+                  path: 'product-list/category/add',
                   element: <AppAddCategory />
                 },
                 {
-                  path: 'product-list/edit-category/:id/:index',
+                  path: 'product-list/category/edit/:id/:index',
                   element: <AppAddCategory />
                 }
               ]

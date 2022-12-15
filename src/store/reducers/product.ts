@@ -94,8 +94,8 @@ export function getProducts(limit = 30, page = 1, sku = '') {
           queryParams = `name=${sku?.trim()}`;
         }
       }
-
       const response = await axios.get(`${HOST}/productos?${queryParams}`);
+
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;
         dispatch(getTrademarkList());
@@ -145,7 +145,7 @@ export function addProduct(data: any) {
           close: false
         })
       );
-      window.location.href = `/product-list/product-edit/${response.data.ID}`;
+      window.location.href = `//product-list/edit/${response.data.ID}`;
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

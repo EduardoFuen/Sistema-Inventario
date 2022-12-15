@@ -28,7 +28,6 @@ import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { editProduct } from 'store/reducers/product';
 import { idsToString } from 'utils/convertToObject';
-import { openSnackbar } from 'store/reducers/snackbar';
 import { getTrademarkList } from 'store/reducers/trademark';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree } from 'store/reducers/category';
 import { getMakerList } from 'store/reducers/maker';
@@ -91,6 +90,8 @@ const getInitialValues = (product: FormikValues | null) => {
 
 function UpdateProduct() {
   const history = useNavigate();
+  const dispatch = useDispatch();
+
   const theme = useTheme();
   const { id } = useParams();
 
@@ -118,7 +119,6 @@ function UpdateProduct() {
   }, [selectedImage]);
 
   const { makerList } = useSelector((state) => state.maker);
-  const dispatch = useDispatch();
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
@@ -126,12 +126,6 @@ function UpdateProduct() {
   const { todoListSubs } = useSelector((state) => state.substances);
   const { warehouseList } = useSelector((state) => state.warehouse);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
-
-  useEffect(() => {
-    if (selectedImage) {
-      setAvatar(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
 
   const product = useMemo(() => {
     if (id) {
@@ -141,20 +135,6 @@ function UpdateProduct() {
   }, []);
 
   useEffect(() => {
-    if ((error && Object.keys(error).length !== 0) || error?.response?.data?.Error) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: error?.response?.data?.Error || error?.message,
-          variant: 'alert',
-          alert: {
-            color: 'error'
-          },
-          close: false
-        })
-      );
-    }
-
     if (product) {
       setIsTaxed(product?.Taxed);
       setAvatar(product?.UrlImage);
