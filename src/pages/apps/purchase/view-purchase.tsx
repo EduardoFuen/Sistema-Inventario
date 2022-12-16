@@ -267,8 +267,9 @@ function ViewPurchase() {
                     <DetailsPurchase product={detailsPurchase} />
                   )}
 
-                  {orderPurchase?.Status === 1 ||
-                    (orderPurchase?.Status === 2 && orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (
+                  {(orderPurchase?.Status === 1 || orderPurchase?.Status === 2) &&
+                    orderPurchase?.Articles &&
+                    orderPurchase?.Articles?.length > 0 && (
                       <Table sx={{ minWidth: 650 }} size="small">
                         <TableHead>
                           <TableRow>
@@ -313,7 +314,7 @@ function ViewPurchase() {
                           })}
                         </TableBody>
                       </Table>
-                    ))}
+                    )}
                 </Grid>
                 <Grid item xs={12}>
                   {orderPurchase?.Articles && orderPurchase?.Articles?.length > 0 && (

@@ -156,24 +156,18 @@ export function getIDPurchase(id: number) {
       if (response.data) {
         let Articles: any;
         let dataNew: any;
-        let {
-          product: { products }
-        } = store.getState();
-
-        if (products && products.length > 0) {
-          Articles = response.data?.Articles?.map((item: Products | any) => {
-            return {
-              ...item,
-              ID: item?.ID,
-              ArticleID: item?.ID,
-              Name: products.find((e) => e.ID === item.ProductID)?.Name,
-              Sku: products.find((e) => e.ID === item.ProductID)?.Sku,
-              Ean: products.find((e) => e.ID === item.ProductID)?.Ean,
-              DiscountNegotiated: item?.Discount,
-              isSelected: true
-            };
-          });
-        }
+        Articles = response.data?.Articles?.map((item: Products | any) => {
+          return {
+            ...item,
+            ID: item?.ID,
+            ArticleID: item?.ID,
+            Name: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Name,
+            Sku: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Sku,
+            Ean: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Ean,
+            DiscountNegotiated: item?.Discount,
+            isSelected: true
+          };
+        });
 
         dataNew = {
           ...response.data,
