@@ -6,6 +6,13 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { FILE_TYPE } from 'config';
 
+/**
+ * It takes an array of objects and a file name, converts the array to a workbook, converts the
+ * workbook to a blob, and then saves the blob to the user's computer
+ * @param {Props}  - excelData - the data you want to export
+ * @returns A function that returns a button
+ */
+
 type Props = {
   excelData: Object[];
   fileName: string;
