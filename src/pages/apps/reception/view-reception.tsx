@@ -125,7 +125,7 @@ function AddReception() {
                     <Grid container spacing={1} direction="row">
                       <Grid item xs={2} alignSelf="center">
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
-                        <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
+                        <TextField placeholder="Seleccionar Proveedor" fullWidth select {...getFieldProps('SupplierID')} disabled>
                           {supplierList
                             .filter((item: any) => item.Status === true)
                             .map((option: any) => (
@@ -137,7 +137,7 @@ function AddReception() {
                       </Grid>
                       <Grid item xs={2} alignSelf="center">
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                        <TextField placeholder="Seleccionar Bodega" fullWidth disabled select {...getFieldProps('WarehouseID')}>
+                        <TextField placeholder="Seleccionar Bodega" fullWidth select {...getFieldProps('WarehouseID')} disabled>
                           {warehouseList
                             .filter((item: any) => item.Status === true)
                             .map((option: any) => (
@@ -150,9 +150,9 @@ function AddReception() {
                       <Grid item xs={2} alignSelf="center">
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
                         <TextField
-                          disabled
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                           {...getFieldProps('Discount')}
+                          disabled
                           placeholder="Ingresa Descuento %"
                           fullWidth
                         />
@@ -247,8 +247,7 @@ function AddReception() {
                             onChange={(value: any) => {
                               setFieldValue('DateExpireInvoice', value);
                             }}
-                            disabled={order?.DateExpireInvoice}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(params) => <TextField {...params} disabled={order?.DateExpireInvoice || false} />}
                           />
                         </LocalizationProvider>
                       </Grid>
@@ -299,7 +298,7 @@ function AddReception() {
                         variant="contained"
                         sx={{ textTransform: 'none' }}
                         type="submit"
-                        disabled={isSubmitting || (order?.DateExpireInvoice && order?.InvoiceNumber)}
+                        disabled={!isSubmitting || (order?.DateExpireInvoice && order?.InvoiceNumber)}
                       >
                         Confirmar/Cerrar Recepción
                       </Button>
