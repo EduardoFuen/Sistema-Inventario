@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/trademark';
 import ImportToFile from 'components/ImportToFile';
+import getStatus from 'utils/getStatus';
 
 // types
 import { Trademark } from 'types/products';
@@ -27,7 +28,7 @@ const ImportTradeMark = ({ onCancel }: Props) => {
         Name: item?.Name?.toString(),
         MakerID: item?.MakerID,
         ID: item?.ID || 0,
-        Status: Boolean(item?.Status)
+        Status: item?.Status ? getStatus(item?.Status) : false
       }));
       await dispatch(addExcel(newData));
       onCancel();

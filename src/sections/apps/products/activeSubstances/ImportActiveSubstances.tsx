@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/activeSubst';
 import ImportToFile from 'components/ImportToFile';
+import getStatus from 'utils/getStatus';
 
 // types
 import { Substances } from 'types/products';
@@ -25,7 +26,7 @@ const ImportActiveSubstances = ({ onCancel }: Props) => {
     try {
       const newData = data?.map((item: Substances) => ({
         Name: item?.Name?.toString(),
-        Status: Boolean(item?.Status),
+        Status: item?.Status ? getStatus(item?.Status) : false,
         ID: item?.ID || 0
       }));
       await dispatch(addExcel(newData));

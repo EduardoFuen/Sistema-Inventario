@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/warehouse';
 import ImportToFile from 'components/ImportToFile';
+import getStatus from 'utils/getStatus';
 
 // types
 import { Warehouses } from 'types/products';
@@ -28,7 +29,7 @@ const ImportMarker = ({ onCancel }: Props) => {
         Department: item?.Department,
         City: item?.City,
         Location: item?.Location,
-        Status: Boolean(item?.Status),
+        Status: item?.Status ? getStatus(item?.Status) : false,
         ID: item?.ID || 0
       }));
       await dispatch(addExcel(newData));

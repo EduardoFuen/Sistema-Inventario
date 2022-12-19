@@ -8,6 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addExcel } from 'store/reducers/pack';
 import ImportToFile from 'components/ImportToFile';
 import { filter } from 'lodash';
+import getStatus from 'utils/getStatus';
 
 // types
 import { Packs } from 'types/products';
@@ -27,7 +28,7 @@ const ImportPack = ({ onCancel }: Props) => {
       const newData = data;
       filter((item: Packs) => item.ID !== '').map((item: Packs) => ({
         Name: item?.Name?.toString(),
-        Status: Boolean(item?.Status),
+        Status: item?.Status ? getStatus(item?.Status) : false,
         ID: item?.ID || 0
       }));
 

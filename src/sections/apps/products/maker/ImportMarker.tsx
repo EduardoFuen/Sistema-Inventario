@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addMakerExcel } from 'store/reducers/maker';
 import ImportToFile from 'components/ImportToFile';
+import getStatus from 'utils/getStatus';
 
 // types
 import { Maker } from 'types/products';
@@ -26,7 +27,7 @@ const ImportMarker = ({ onCancel }: Props) => {
       const newData = data?.map((item: Maker) => ({
         Name: item?.Name?.toString(),
         ID: item?.ID || 0,
-        Status: Boolean(item?.Status)
+        Status: item?.Status ? getStatus(item?.Status) : false
       }));
       await dispatch(addMakerExcel(newData));
       onCancel();

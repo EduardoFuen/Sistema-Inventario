@@ -2,7 +2,7 @@ export type ThemeDirection = 'ltr' | 'rtl';
 export type ThemeMode = 'light' | 'dark';
 export type FontFamily = `'Montserrat', sans-serif` | `'Roboto', sans-serif` | `'Public Sans', sans-serif`;
 export type PresetColor = 'default' | 'theme1' | 'theme2';
-export type I18n = 'en' | 'fr' | 'ro' | 'zh'; // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese
+export type I18n = 'en';
 
 // ==============================|| CONFIG TYPES  ||============================== //
 
