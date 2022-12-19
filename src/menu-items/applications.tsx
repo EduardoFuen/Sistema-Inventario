@@ -56,7 +56,7 @@ const applications: NavItemType = {
     },
     {
       id: 'compras',
-      title: 'compras',
+      title: 'Compras',
       type: 'item',
       url: '/purchase',
       icon: icons.ReconciliationOutlined

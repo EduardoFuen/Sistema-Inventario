@@ -7,8 +7,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 // scroll bar
 import 'simplebar/src/simplebar.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 // apex-chart
 import 'assets/third-party/react-table.css';

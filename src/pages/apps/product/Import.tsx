@@ -38,6 +38,7 @@ const Import = ({ onCancel }: Props) => {
     try {
       setSubmitting(true);
       const newData: Products = data?.map((item: any) => {
+        const status = item?.Status.includes('Verdadero') || item?.Status.includes('VERDADERO') || item?.Status.includes('verdadero');
         return {
           Name: item?.Name?.toString(),
           Sku: item?.Sku?.toString(),
@@ -62,7 +63,7 @@ const Import = ({ onCancel }: Props) => {
           SubstancesIDS: item?.Substance ? ConvertToArray(item?.Substance?.toString(), todoListSubs) : '',
           WarehouseIDS: item?.Warehouse ? ConvertToArray(item?.Warehouse?.toString(), warehouseList) : '',
           SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',
-          Status: item?.Status,
+          Status: status,
           HandlesBaq: item?.id_baq?.toString() || '',
           HandlesBog: item?.id_bog?.toString() || '',
           iva: item?.Tax?.toString(),

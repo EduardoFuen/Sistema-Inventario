@@ -39,11 +39,10 @@ export interface PropsSelect {
   onCancel: () => void;
   reception: any;
   product: Products | any;
-  status: boolean;
   id: number;
 }
 
-const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSelect) => {
+const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -297,7 +296,7 @@ const AddReceptionLot = ({ onCancel, reception, product, status, id }: PropsSele
                     <Button color="error" onClick={onCancel}>
                       Cancelar
                     </Button>
-                    <Button variant="contained" type="submit" disabled={validationQuantity || status || isSubmitting}>
+                    <Button variant="contained" type="submit" disabled={validationQuantity || isSubmitting}>
                       Confirmar
                     </Button>
                   </Stack>

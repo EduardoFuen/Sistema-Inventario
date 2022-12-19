@@ -313,15 +313,7 @@ function AddReception() {
       )}
       {/* add lot dialog */}
       <Dialog maxWidth="md" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && (
-          <AddReceptionModal
-            onCancel={handleAdd}
-            reception={itemReception}
-            product={product}
-            id={Number(id)}
-            status={(order?.DateExpireInvoice && order?.InvoiceNumber) || false}
-          />
-        )}
+        {add && <AddReceptionModal onCancel={handleAdd} reception={itemReception} product={product} id={Number(id)} />}
       </Dialog>
     </>
   );

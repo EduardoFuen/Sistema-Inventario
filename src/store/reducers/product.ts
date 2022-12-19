@@ -145,7 +145,7 @@ export function addProduct(data: any) {
           close: false
         })
       );
-      window.location.href = `//product-list/edit/${response.data.ID}`;
+      window.location.href = `/product-list`;
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

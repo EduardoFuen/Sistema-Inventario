@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 // third-party
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { FILE_TYPE } from 'config';
 
 type Props = {
   excelData: Object[];
@@ -12,14 +13,13 @@ type Props = {
 };
 
 const Export = ({ excelData, fileName, title }: Props) => {
-  const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   const fileExtension = '.xlsx';
 
   const exportToCSV = (excelData: Object[], fileName: string) => {
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { type: fileType });
+    const data = new Blob([excelBuffer], { type: FILE_TYPE });
 
     FileSaver.saveAs(data, fileName + fileExtension);
   };

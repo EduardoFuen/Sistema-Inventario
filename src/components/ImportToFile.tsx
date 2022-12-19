@@ -10,6 +10,7 @@ interface Props {
 const ImportFile = ({ setData }: Props) => {
   const [__html, setHTML] = useState<any>('');
   const dispatch = useDispatch();
+
   useEffect(() => {
     const csv: string = '';
     const wb = XLSX.read(csv, { type: 'string' });

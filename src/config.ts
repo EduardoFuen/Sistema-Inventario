@@ -14,6 +14,8 @@ export const AWS_API = {
 
 export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';
 
+export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
 export const CATEGORY = {
   CategoryOne: 'CategoryOne',
   CategoryTwo: 'CategoryTwo',
