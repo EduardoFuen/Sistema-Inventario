@@ -66,12 +66,6 @@ const slice = createSlice({
       const index = state.products.findIndex((item) => item.ID === id);
       state.products[index] = data;
     },
-    // DELETE PRODUCT
-    deleteProductSuccess(state, action) {
-      const { name } = action.payload;
-      const index = state.products.findIndex((item) => item.ID === name);
-      state.products.splice(index, 1);
-    },
     // ADD EXCEL PRODUCT
     excelSuccess(state, action) {
       state.products = [...state.products, ...action.payload];
