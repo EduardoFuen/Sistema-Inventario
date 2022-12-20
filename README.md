@@ -74,7 +74,6 @@ Proyecto para gestión de inventarios con integración a shopify
         "@types/file-saver": "^2.0.2",
         "amazon-cognito-identity-js": "^5.2.9",
         "axios": "^0.27.2",
-        "compress-create-react-app": "^1.3.1",
         "date-fns": "^2.28.0",
         "file-saver": "^2.0.5",
         "firebase": "^9.8.3",
@@ -89,7 +88,6 @@ Proyecto para gestión de inventarios con integración a shopify
         "react-dnd": "^15.1.1",
         "react-dnd-html5-backend": "^15.1.2",
         "react-dom": "^17.0.2",
-        "react-dropzone": "^14.2.1",
         "react-intl": "^5.25.1",
         "react-number-format": "^4.9.3",
         "react-redux": "^7.2.6",
@@ -97,10 +95,8 @@ Proyecto para gestión de inventarios con integración a shopify
         "react-scripts": "^4.0.3",
         "react-syntax-highlighter": "^15.5.0",
         "react-table": "^7.8.0",
-        "react-timer-hook": "^3.0.5",
         "redux-persist": "^6.0.0",
         "simplebar": "^5.3.8",
-        "simplebar-react": "^2.4.1",
         "stylis-plugin-rtl": "^2.1.1",
         "typescript": "^4.5.5",
         "web-vitals": "^2.1.4",
@@ -159,7 +155,9 @@ Proyecto para gestión de inventarios con integración a shopify
         "eslint-plugin-react": "^7.30.0",
         "@types/webpack-env": "^1.17.0",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "compress-create-react-app": "^1.3.1"
+
       }
     }
     
