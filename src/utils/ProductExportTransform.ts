@@ -1,5 +1,10 @@
 import { ArrayToString } from 'utils/convertToObject';
 import { SearchIDToArray } from 'utils/findName';
+/**
+ * It takes an array of objects and an array of objects and returns an array of objects
+ * @param {object[]} data - object[] = the data you want to export
+ * @param {object[]} listTypeProduct - list of types of products
+ */
 
 const productExport = (data: object[], listTypeProduct: object[]) =>
   data?.map((item: any) => {

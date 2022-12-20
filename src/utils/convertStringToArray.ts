@@ -1,4 +1,10 @@
 import { SearchNameToArray } from 'utils/findName';
+/**
+ * ConvertToArray takes a string of names and a data array and returns a string of IDs
+ * @param {string} ToString - The string you want to convert to an array.
+ * @param {any} data - This is the data that you want to search in.
+ * @returns an array of strings.
+ */
 
 export const ConvertToArray = (ToString: string, data: any) => {
   let IDS: any = [];

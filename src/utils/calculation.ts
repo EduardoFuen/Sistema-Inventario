@@ -1,3 +1,9 @@
+/**
+ * It takes an array of objects and a number, and returns an object with the subtotal, tax, discount,
+ * subtotal with discount, and total
+ * @param {any} details - an array of objects that contain the following properties:
+ * @param {number} discount - number
+ */
 const summary = (details: any, discount: number) =>
   details.reduce(
     (acc: any = {}, item: any) => {

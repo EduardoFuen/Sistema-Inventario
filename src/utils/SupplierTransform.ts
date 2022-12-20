@@ -1,5 +1,10 @@
 // types
 import { Supplier } from 'types/supplier';
+/**
+ * It takes an array of objects and returns an array of objects with the same properties but with the
+ * values converted to the types specified in the function
+ * @param {object[]} data - object[]
+ */
 
 export const SupplierExport = (data: object[]) =>
   data?.map((item: Supplier) => ({
