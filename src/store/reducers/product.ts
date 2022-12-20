@@ -52,6 +52,10 @@ const slice = createSlice({
     getProductIDSuccess(state, action) {
       state.product = action.payload;
     },
+    // GET SKU PRODUCT
+    getProductSKUSuccess(state, action) {
+      state.products = [...state.products, ...action.payload];
+    },
     // ADD PRODUCT
     addProductSuccess(state, action) {
       state.products.push(action.payload);
@@ -123,6 +127,16 @@ export function getProductID(id: number) {
     try {
       const response = await axios.get(`${HOST}/productos?ID=${id}`);
       dispatch(slice.actions.getProductIDSuccess(response.data));
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function getProductSKU(sku: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/productos?sku=${sku}`);
+      dispatch(slice.actions.getProductSKUSuccess(response?.data?.Rows));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }

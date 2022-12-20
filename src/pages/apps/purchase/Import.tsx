@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addItemsPurchase } from 'store/reducers/purcharse';
+import { getProductSKU } from 'store/reducers/product';
 import { useDispatch, useSelector } from 'store';
 import ImportToFile from 'components/ImportToFile';
 import { SearchNameToArray } from 'utils/findName';
@@ -21,14 +22,20 @@ const Import = ({ onCancel }: Props) => {
   const [data, setData] = useState<any>([]);
   const { products } = useSelector((state) => state.product);
 
-  const onSubmit = () => {
+  useEffect(() => {
+    data?.map(async (item: any) => {
+      return await dispatch(getProductSKU(item?.Sku));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  const onSubmit = async () => {
     try {
       const newData = data?.map((item: any) => {
         let TotalDiscountNegotiated = Number((100 - item?.DiscountNegotiated) / 100);
         let SubTotal = item?.Quantity * item?.BasePrice * TotalDiscountNegotiated || 0;
         let Tax = Number.parseFloat(item?.Tax) || 0;
         let Total = SubTotal + (item?.Quantity * item?.BasePrice * Tax) / 100 || 0;
-
         return {
           ProductID: SearchNameToArray(products, String(item?.Sku) || String(item?.Ean) || item?.Name)?.ID || 0,
           Sku: item?.Sku,
@@ -50,7 +57,7 @@ const Import = ({ onCancel }: Props) => {
       let detailsPurchase = newData.filter((element: any, index: number) => {
         return newData.indexOf(element) === index;
       });
-      dispatch(addItemsPurchase(detailsPurchase));
+      await dispatch(addItemsPurchase(detailsPurchase));
       onCancel();
     } catch (error) {
       console.error(error);

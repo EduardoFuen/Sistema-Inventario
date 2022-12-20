@@ -61,9 +61,7 @@ export const ProductDefault: any = [
 
 export const ProductPurchaseDefault: any = [
   {
-    Name: '',
     Sku: '',
-    Ean: '',
     Quantity: '',
     BasePrice: '',
     Tax: '',
