@@ -57,6 +57,7 @@ const Import = ({ onCancel }: Props) => {
       let detailsPurchase = newData.filter((element: any, index: number) => {
         return newData.indexOf(element) === index;
       });
+
       await dispatch(addItemsPurchase(detailsPurchase));
       onCancel();
     } catch (error) {
