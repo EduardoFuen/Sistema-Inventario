@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -19,16 +20,18 @@ import { ConfigProvider } from 'contexts/ConfigContext';
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
 ReactDOM.render(
-  <ReduxProvider store={store}>
-    <PersistGate loading={null} persistor={persister}>
-      <ConfigProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ConfigProvider>
-    </PersistGate>
-  </ReduxProvider>,
-  document.getElementById('root')
+  <StrictMode>
+    <ReduxProvider store={store}>
+      <PersistGate loading={null} persistor={persister}>
+        <ConfigProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConfigProvider>
+      </PersistGate>
+    </ReduxProvider>
+  </StrictMode>,
+  document.getElementById('root') as HTMLElement
 );
 
 // If you want to start measuring performance in your app, pass a function
