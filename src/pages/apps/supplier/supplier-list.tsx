@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'store';
 
 // project import
 import ReactTable from 'components/ReactTable';
-import SupplierView from './supplirView';
+import SupplierView from './viewSupplir';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';

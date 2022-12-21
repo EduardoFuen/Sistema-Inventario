@@ -14,7 +14,7 @@ import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
 import MainCard from 'components/MainCard';
 import SummaryTemplate from 'components/SummaryTemplate';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
-import AddReceptionModal from './add-reception';
+import AddReceptionModal from './addReception';
 import summary from 'utils/calculation';
 import DetailsReception from './detailsProduct';
 import { DATEFORMAT } from 'config';

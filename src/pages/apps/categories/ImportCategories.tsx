@@ -1,13 +1,10 @@
 import { useState } from 'react';
-// material-ui
-import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { useDispatch, useSelector } from 'store';
 
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// project import
+import { useDispatch, useSelector } from 'store';
+import ContainerModal from 'components/ContainerModal';
 import { addExcel } from 'store/reducers/category';
 import { SearchNameToArray } from 'utils/findName';
-import ImportToFile from 'components/ImportToFile';
 
 // types
 import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
@@ -19,7 +16,7 @@ export interface Props {
   value: number;
 }
 
-const ImportPack = ({ onCancel, value }: Props) => {
+const ImportCategories = ({ onCancel, value }: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<any>([]);
   const { categoryListOne, categoryListTwo } = useSelector((state) => state.category);
@@ -63,34 +60,7 @@ const ImportPack = ({ onCancel, value }: Props) => {
     }
   };
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DialogTitle>Importar Registro</DialogTitle>
-      <Divider />
-      <DialogContent sx={{ p: 2.5 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
-            <ImportToFile setData={setData} />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <Divider />
-      <DialogActions sx={{ p: 2.5 }}>
-        <Grid container justifyContent="right" alignItems="center">
-          <Grid item>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Button color="error" onClick={onCancel}>
-                Cancelar
-              </Button>
-              <Button type="submit" variant="contained" onClick={onSubmit} disabled={data.length < 0}>
-                Confirmar
-              </Button>
-            </Stack>
-          </Grid>
-        </Grid>
-      </DialogActions>
-    </LocalizationProvider>
-  );
+  return <ContainerModal onSubmit={onSubmit} setData={setData} onCancel={onCancel} data={data} />;
 };
 
-export default ImportPack;
+export default ImportCategories;

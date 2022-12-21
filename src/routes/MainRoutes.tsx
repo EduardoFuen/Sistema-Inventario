@@ -10,21 +10,21 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 
 // render - applications
 const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase-list')));
-const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/add-purchase')));
-const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/view-purchase')));
+const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/addPurchase')));
+const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/viewPurchase')));
 
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
-const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/view-reception')));
+const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/viewReception')));
 const AppInventoryList = Loadable(lazy(() => import('pages/apps/inventory/inventory-list')));
 
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
-const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/add-supplier')));
-const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/edit-supplier')));
+const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/addSupplier')));
+const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/editSupplier')));
 
-const AppProductList = Loadable(lazy(() => import('pages/apps/productMainView/products')));
-const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/add-product')));
-const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/edit-product')));
-const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/add-category')));
+const AppProductList = Loadable(lazy(() => import('pages/apps/productMainView/productsMainView')));
+const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/addProduct')));
+const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/editProduct')));
+const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/addCategory')));
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));

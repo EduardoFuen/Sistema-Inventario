@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { Chip, Stack, Tooltip, Typography, Dialog, Box, CircularProgress } from '@mui/material';
 
 // project import
-import ProductView from './ProductView';
+import ProductView from './viewProduct';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';

@@ -9,8 +9,8 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
-import AddTypeProduct from 'sections/apps/products/type-product/AddTypeProduct';
-import Import from 'sections/apps/products/type-product/ImportTypeProduct';
+import AddTypeProduct from 'sections/apps/products/typeProduct/AddTypeProduct';
+import Import from 'sections/apps/products/typeProduct/ImportTypeProduct';
 import { useDispatch, useSelector } from 'store';
 import { getTypeProductList, deleteTypeProduct } from 'store/reducers/typeProduct';
 

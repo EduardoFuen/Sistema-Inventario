@@ -10,7 +10,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
-import Import from './Import';
+import Import from './ImportCategories';
 import { getObject } from 'utils/Global';
 import { useDispatch, useSelector } from 'store';
 import { CATEGORY } from 'config';
