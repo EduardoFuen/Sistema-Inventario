@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 
-// material-ui
-import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// project import
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { getProductSKU } from 'store/reducers/product';
 import { useDispatch, useSelector } from 'store';
-import ImportToFile from 'components/ImportToFile';
+import ContainerModal from 'components/ContainerModal';
 import { SearchNameToArray } from 'utils/findName';
 
 // ==============================|| PURCHASE PRODUCT IMPORT ||============================== //
@@ -65,34 +61,7 @@ const Import = ({ onCancel }: Props) => {
     }
   };
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DialogTitle>Importar Registro</DialogTitle>
-      <Divider />
-      <DialogContent sx={{ p: 2.5 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
-            <ImportToFile setData={setData} />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <Divider />
-      <DialogActions sx={{ p: 2.5 }}>
-        <Grid container justifyContent="right" alignItems="center">
-          <Grid item>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Button color="error" onClick={onCancel}>
-                Cancelar
-              </Button>
-              <Button type="submit" variant="contained" onClick={onSubmit} disabled={data.length < 0}>
-                Confirmar
-              </Button>
-            </Stack>
-          </Grid>
-        </Grid>
-      </DialogActions>
-    </LocalizationProvider>
-  );
+  return <ContainerModal onSubmit={onSubmit} setData={setData} onCancel={onCancel} data={data} />;
 };
 
 export default Import;

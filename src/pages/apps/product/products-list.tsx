@@ -12,7 +12,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
-import Import from './Import';
+import Import from './ImportProducts';
 
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
@@ -20,7 +20,6 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 import { SearchIDToArray } from 'utils/findName';
 import { productExport } from 'utils/ProductExportTransform';
-
 import { ProductDefault } from 'config';
 
 // assets

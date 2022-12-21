@@ -11,7 +11,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import MainCard from 'components/MainCard';
 import summary from 'utils/calculation';
-import Import from './Import';
+import Import from './ImportDetailsProduct';
 import AddSelectProduct from './selectProducts';
 import Export from 'components/ExportToFile';
 import SummaryTemplate from 'components/SummaryTemplate';
