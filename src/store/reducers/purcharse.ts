@@ -8,7 +8,6 @@ import summary from 'utils/calculation';
 import { openSnackbar } from './snackbar';
 import { getSupplierList } from './supplier';
 import { getWarehouseList } from './warehouse';
-import { getProducts } from './product';
 import { resetViewReception } from './reception';
 
 // types
@@ -87,7 +86,6 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
-      await dispatch(getProducts());
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPurchaseSuccess(response.data));

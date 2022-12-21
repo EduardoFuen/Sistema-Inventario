@@ -16,8 +16,6 @@ import Import from './Import';
 
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
-import { getMakerList } from 'store/reducers/maker';
-import { getTrademarkList } from 'store/reducers/trademark';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { SearchIDToArray } from 'utils/findName';
@@ -37,13 +35,10 @@ const ProductList = () => {
   const [addImport, setActiveImport] = useState<boolean>(false);
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
-  const { makerList } = useSelector((state) => state.maker);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
     dispatch(getProducts());
-    dispatch(getTrademarkList());
-    dispatch(getMakerList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,7 +58,6 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
-  const getMaker = (id: number) => SearchIDToArray(makerList, id)?.Name || '';
   const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
   const productsExport: any = productExport(products, typeProductList);
 
@@ -113,11 +107,11 @@ const ProductList = () => {
       },
       {
         Header: 'Maker',
-        accessor: 'MakerID',
+        accessor: 'Maker',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getMaker(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{value.Name}</Typography>}</Stack>
             </Stack>
           );
         }
