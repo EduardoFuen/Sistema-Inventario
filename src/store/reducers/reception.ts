@@ -95,21 +95,26 @@ export function getByArticleId(id: number) {
   };
 }
 
-export function UpdateRecepctionArticles(data: any, id: number) {
+export function AddRecepctionArticles(data: any, id: number) {
   return async () => {
     try {
-      let newData: any = data?.Articles.map((item: any) => ({
-        Reason: Number(data?.Reason),
-        Refund: Number(data?.Refund),
-        Missing: Number(data?.Missing),
-        Batch: item.Batch,
-        Count: Number(item?.CountItemReception),
-        Date: item.Date,
-        ArticleID: id
-      }));
+      let newData: any = await Promise.all(
+        data?.Articles.filter((item: any) => !item.ID).map(async (item: any) => {
+          let rows: any = {
+            Reason: Number(data?.Reason),
+            Refund: Number(data?.Refund),
+            Missing: Number(data?.Missing),
+            Batch: item.Batch,
+            Count: Number(item?.CountItemReception),
+            Date: item.Date,
+            ArticleID: id
+          };
+          const response = await axios.post(`${HOST}/recepcion`, rows);
+          return response;
+        })
+      );
 
-      const response = await axios.post(`${HOST}/recepcion`, newData[0]);
-      if (response.data && id) {
+      if (newData.length > 0) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }

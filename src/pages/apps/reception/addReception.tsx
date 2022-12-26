@@ -28,7 +28,7 @@ import ScrollX from 'components/ScrollX';
 import { useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { getIDPurchase } from 'store/reducers/purcharse';
-import { UpdateRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
+import { AddRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
 import { Products } from 'types/products';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
@@ -139,7 +139,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
 
         let ArticleID: number = product?.ArticleID;
 
-        await dispatch(UpdateRecepctionArticles(data, ArticleID));
+        await dispatch(AddRecepctionArticles(data, ArticleID));
         await dispatch(getIDPurchase(Number(id)));
         onCancel();
         setSubmitting(false);
