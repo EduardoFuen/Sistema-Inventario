@@ -86,6 +86,8 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
+      await dispatch(getSupplierList());
+      await dispatch(getWarehouseList());
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPurchaseSuccess(response.data));

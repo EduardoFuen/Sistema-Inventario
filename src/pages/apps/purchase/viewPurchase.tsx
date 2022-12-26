@@ -20,6 +20,8 @@ import {
 } from '@mui/material';
 
 import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
+// third-party
+import NumberFormat from 'react-number-format';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -291,7 +293,7 @@ function ViewPurchase() {
                                 <TableCell component="th" scope="row">
                                   <Stack direction="row" spacing={1.5} alignItems="center">
                                     <Stack spacing={0}>
-                                      <Typography className="font-size cell-custom">{x.Name}</Typography>
+                                      <Typography className="font-size">{x.Name}</Typography>
                                       <Typography variant="caption" color="textSecondary">
                                         SKU {x.Sku}
                                       </Typography>
@@ -302,13 +304,21 @@ function ViewPurchase() {
                                   </Stack>
                                 </TableCell>
                                 <TableCell align="center">{x.Count}</TableCell>
-                                <TableCell align="center">{x.Tax}</TableCell>
-                                <TableCell align="center">{x.BasePrice}</TableCell>
+                                <TableCell align="center">
+                                  <NumberFormat value={x.BasePrice} displayType="text" prefix="$" />
+                                </TableCell>
+                                <TableCell align="center">
+                                  <NumberFormat value={x.Tax} displayType="text" suffix="%" />
+                                </TableCell>
                                 <TableCell align="center">{x.Discount}</TableCell>
                                 <TableCell align="center">{x.DiscountAdditional}</TableCell>
                                 <TableCell align="center">{x.Bonus}</TableCell>
-                                <TableCell align="center">{x.SubTotal}</TableCell>
-                                <TableCell align="center">{x.Total}</TableCell>
+                                <TableCell align="center">
+                                  <NumberFormat value={x.SubTotal} displayType="text" prefix="$" />
+                                </TableCell>
+                                <TableCell align="center">
+                                  <NumberFormat value={x.Total} displayType="text" prefix="$" />
+                                </TableCell>
                               </TableRow>
                             );
                           })}

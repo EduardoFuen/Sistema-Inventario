@@ -45,17 +45,46 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
       {
         Header: 'PRODUCTO',
         accessor: 'Name',
+        className: 'custom-td',
         Cell: ({ row }: any) => {
           const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography className="font-size cell-custom">{original?.Name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Sku {original?.Sku}
+                <Typography className="font-size-6">{original?.Name}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
+        Header: 'Sku',
+        accessor: 'Sku',
+        className: 'custom-td',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography className="font-size-6" variant="caption" color="textSecondary">
+                  {original?.Sku}
                 </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Ean {original?.Ean}
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
+        Header: 'Ean',
+        accessor: 'Ean',
+        className: 'custom-td',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography className="font-size-6" variant="caption" color="textSecondary">
+                  {original?.Ean}
                 </Typography>
               </Stack>
             </Stack>
@@ -73,7 +102,8 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
       },
       {
         Header: 'IVA',
-        accessor: 'Tax'
+        accessor: 'Tax',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" suffix="%" />
       },
       {
         Header: 'Descuento Negociado',

@@ -95,25 +95,6 @@ export function getByArticleId(id: number) {
   };
 }
 
-export function createRecepctionArticles(data: any) {
-  return async () => {
-    try {
-      let newData: any = data.map((item: any) => ({
-        ArticleID: item.ID,
-        Missing: 0,
-        Refund: 0,
-        Reason: 0,
-        Count: 0,
-        Batch: '',
-        Date: new Date()
-      }));
-      const response = await axios.post(`${HOST}/recepcion`, newData);
-      return response;
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
 export function UpdateRecepctionArticles(data: any, id: number) {
   return async () => {
     try {
@@ -123,12 +104,11 @@ export function UpdateRecepctionArticles(data: any, id: number) {
         Missing: Number(data?.Missing),
         Batch: item.Batch,
         Count: Number(item?.CountItemReception),
-        ID: item?.ID || 0,
         Date: item.Date,
         ArticleID: id
       }));
 
-      const response = await axios.post(`${HOST}/recepcion`, newData);
+      const response = await axios.post(`${HOST}/recepcion`, newData[0]);
       if (response.data && id) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));

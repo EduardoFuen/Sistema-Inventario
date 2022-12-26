@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -6,17 +6,26 @@ import { Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 
 // project import
+
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
-import { useSelector } from 'store';
+import { useSelector, useDispatch } from 'store';
+import { getWarehouseList } from 'store/reducers/warehouse';
 
 import { DATEFORMAT } from 'config';
 // ==============================|| INVENTORY - LIST VIEW ||============================== //
 const InventoryList = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getWarehouseList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { listPurchase } = useSelector((state) => state.purchase);
+  const { warehouseList } = useSelector((state) => state.warehouse);
 
   const columns = useMemo(
     () => [
@@ -199,6 +208,12 @@ const InventoryList = () => {
           hideButton={false}
           dataExport={listPurchase as []}
           FileName="ReporteInventario"
+          searchActive={false}
+          warehouses={warehouseList as []}
+          defaultWarehouse={Number(warehouseList[0]?.ID) || 0}
+          handleChangeWareHouse={(value: number) => {
+            console.log(value);
+          }}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>

@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
     margin: 12,
     fontWeight: 600
   },
+  note: {
+    fontSize: 14,
+    margin: 12,
+    fontWeight: 600,
+    textAlign: 'left'
+  },
   text: {
     margin: 12,
     fontSize: 14,
@@ -94,6 +100,7 @@ const RenderDocument = ({ data }: any) => {
         <Text style={styles.author}>NIT: {data?.Supplier?.Nit}</Text>
         <Text style={styles.author}>Email: {data?.Supplier?.EmailContact}</Text>
         <Text style={styles.author}>Teléfono: {data?.Supplier?.PhoneContact}</Text>
+        <Text style={styles.note}>Notas: {data?.Notes}</Text>
         {data?.Articles && data?.Articles.length > 0 && (
           <Text style={styles.subtitle} x="10" y="30">
             Detalles de Compra

@@ -464,3 +464,41 @@ export const SortingSelect = ({ sortBy, setSortBy, allColumns }: any) => {
     </FormControl>
   );
 };
+
+// ==============================|| CUSTOM WAREHOUSE- SELECT ||============================== //
+
+interface Props {
+  handleChange: (value: any) => void;
+  data: [];
+  defaultWarehouse: number;
+}
+
+export const WareHouseSelect = ({ data, handleChange, defaultWarehouse }: Props) => {
+  const [value, setValue] = useState<any>(defaultWarehouse);
+  return (
+    <FormControl sx={{ width: 200 }}>
+      <Select
+        id="column-hiding"
+        displayEmpty
+        value={value}
+        onChange={(event: SelectChangeEvent<number>) => {
+          const {
+            target: { value }
+          } = event;
+          handleChange(value);
+          setValue(value);
+        }}
+        input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
+        size="small"
+      >
+        {data
+          .filter((item: any) => item.Status === true)
+          .map((option: any) => (
+            <MenuItem key={option.ID} value={option.ID}>
+              <ListItemText primary={option.Name} />
+            </MenuItem>
+          ))}
+      </Select>
+    </FormControl>
+  );
+};

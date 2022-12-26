@@ -8,7 +8,7 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 // project import
 import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
-import { HeaderSort, SortingSelect, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, SortingSelect, TablePagination, TableRowSelection, WareHouseSelect } from 'components/third-party/ReactTable';
 // assets
 import { PlusOutlined, ImportOutlined } from '@ant-design/icons';
 import { initial } from 'lodash';
@@ -36,6 +36,10 @@ interface Props {
   totalRows: number;
   numberPage: number;
   isLoading: boolean;
+  searchActive: boolean;
+  warehouses: [];
+  defaultWarehouse: number;
+  handleChangeWareHouse: (value: number) => void;
   handleSearch: (value: any) => void;
 }
 
@@ -60,7 +64,11 @@ const ReactTable = ({
   setRowSelection,
   totalRows,
   numberPage,
-  isLoading
+  isLoading,
+  searchActive,
+  warehouses,
+  defaultWarehouse,
+  handleChangeWareHouse
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -114,13 +122,20 @@ const ReactTable = ({
         <TableRowSelection selected={Object.keys(selectedRowIds).length} />
         <Stack spacing={3}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 0 }}>
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              size="small"
-              handleSearch={handleSearch}
-            />
+            {searchActive && (
+              <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                size="small"
+                handleSearch={handleSearch}
+              />
+            )}
+            {!searchActive && (
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <WareHouseSelect data={warehouses} handleChange={handleChangeWareHouse} defaultWarehouse={defaultWarehouse} />
+              </Stack>
+            )}
             {download && dataTemplate.length > 0 && <Export excelData={dataTemplate} fileName={FileName} title={FileNameTemplate} />}
             {dataExport && dataExport.length > 0 && (
               <Export excelData={dataExport && dataExport.length > 0 ? dataExport : data} fileName={FileName} />
@@ -216,8 +231,11 @@ ReactTable.defaultProps = {
   setRowSelection: () => {},
   handlePagination: () => {},
   handleSearch: () => {},
+  handleChangeWareHouse: () => {},
   dataExport: [],
   dataTemplate: [],
+  warehouses: [],
+  defaultWarehouse: 0,
   hideButton: true,
   download: false,
   TitleButton: '',
@@ -225,6 +243,7 @@ ReactTable.defaultProps = {
   FileName: '',
   FontSize: false,
   isLoading: false,
+  searchActive: true,
   totalRows: 0,
   numberPage: 0
 };
