@@ -1,6 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,7 +15,6 @@ import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
 import { newDataExport } from 'utils/PurchaseTransform';
-import { DATEFORMAT } from 'config';
 
 import { useSelector, useDispatch, store } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
@@ -62,14 +60,18 @@ const PurchaseList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: '#',
-        accessor: 'ID',
+        Header: () => (
+          <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="center" sx={{ textAlign: 'center', width: 90 }}>
+            #
+          </Stack>
+        ),
+        accessor: 'NumberOrder',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1" className="cell-center font-size">
-                  Farmu-{value}
+                <Typography variant="subtitle1" className="font-size">
+                  {value || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -83,7 +85,7 @@ const PurchaseList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography className="cell-center font-size">{format(new Date(value), DATEFORMAT)}</Typography>
+                <Typography className="cell-center font-size">{value || ''}</Typography>
               </Stack>
             </Stack>
           );
@@ -91,19 +93,20 @@ const PurchaseList = () => {
       },
       {
         Header: 'Proveedor',
-        accessor: 'Supplier',
-        Cell: ({ value }: any) => {
+        accessor: 'BusinessName',
+        Cell: ({ row }: any) => {
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography variant="subtitle1" className="font-size">
-                  {value?.BusinessName || ''}
+                  {original?.Supplier?.BusinessName || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {value?.Nit || ''}
+                  {original?.Supplier?.Nit || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {value?.EmailContact || ''}
+                  {original?.Supplier?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -118,7 +121,7 @@ const PurchaseList = () => {
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography variant="subtitle1" className="font-size">
-                  {value?.Name || ''}
+                  {value || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -175,7 +178,7 @@ const PurchaseList = () => {
                   onClick={(e: any) => {
                     e.stopPropagation();
                     setIsLoading(true);
-                    if (row?.values?.ID) handleInfoPDF(setIsLoading, row?.values?.ID);
+                    if (row?.original?.ID) handleInfoPDF(setIsLoading, row?.original?.ID);
                   }}
                 >
                   {!isLoading ? (
@@ -192,7 +195,7 @@ const PurchaseList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    if (row?.values?.ID) handleViewPurchase(row?.values?.ID);
+                    if (row?.original?.ID) handleViewPurchase(row?.original?.ID);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -205,7 +208,7 @@ const PurchaseList = () => {
                     onClick={async (e: any) => {
                       e.stopPropagation();
                       setIsLoadingDelete(true);
-                      await dispatch(deletePurchase(Number(row?.values?.ID)));
+                      await dispatch(deletePurchase(Number(row?.original?.ID)));
                       setIsLoadingDelete(false);
                     }}
                   >

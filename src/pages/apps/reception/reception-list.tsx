@@ -1,6 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -9,13 +8,11 @@ import { Chip, Stack, Tooltip, Typography, Box, CircularProgress } from '@mui/ma
 import NumberFormat from 'react-number-format';
 // project import
 import PDF from 'components/PDF';
-import { getObject } from 'utils/Global';
 import ReactTable from 'components/ReactTable';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { newDataExport } from 'utils/PurchaseTransform';
-import { DATEFORMAT } from 'config';
 
 import { useSelector, useDispatch, store } from 'store';
 import { getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
@@ -41,8 +38,6 @@ const ReceptionList = () => {
   };
 
   const { listPurchase } = useSelector((state) => state.purchase);
-  const { supplierList } = useSelector((state) => state.supplier);
-  const { warehouseList } = useSelector((state) => state.warehouse);
 
   const handleInfoPDF = async (setIsLoading: any, id: number) => {
     dispatch(getIDPurchase(id)).then(async () => {
@@ -58,13 +53,19 @@ const ReceptionList = () => {
   const columns = useMemo(
     () => [
       {
-        Header: '#',
-        accessor: 'ID',
+        Header: () => (
+          <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="center" sx={{ textAlign: 'center', width: 90 }}>
+            #
+          </Stack>
+        ),
+        accessor: 'NumberOrder',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">Farmu-{value}</Typography>
+                <Typography variant="subtitle1" className="font-size">
+                  {value || ''}
+                </Typography>
               </Stack>
             </Stack>
           );
@@ -77,7 +78,7 @@ const ReceptionList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography className="font-size">{format(new Date(value), DATEFORMAT)}</Typography>
+                <Typography className="cell-center font-size">{value || ''}</Typography>
               </Stack>
             </Stack>
           );
@@ -85,17 +86,20 @@ const ReceptionList = () => {
       },
       {
         Header: 'Proveedor',
-        accessor: 'SupplierID',
-        Cell: ({ value }: any) => {
+        accessor: 'BusinessName',
+        Cell: ({ row }: any) => {
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getObject(supplierList, value)?.BusinessName || ''}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {getObject(supplierList, value)?.Nit || ''}
+                <Typography variant="subtitle1" className="font-size">
+                  {original?.Supplier?.BusinessName || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {getObject(supplierList, value)?.EmailContact || ''}
+                  {original?.Supplier?.Nit || ''}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  {original?.Supplier?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
@@ -104,12 +108,14 @@ const ReceptionList = () => {
       },
       {
         Header: 'Bodega',
-        accessor: 'WarehouseID',
+        accessor: 'Warehouse',
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{getObject(warehouseList, value)?.Name || ''}</Typography>
+                <Typography variant="subtitle1" className="font-size">
+                  {value || ''}
+                </Typography>
               </Stack>
             </Stack>
           );
@@ -164,7 +170,7 @@ const ReceptionList = () => {
                   onClick={(e: any) => {
                     e.stopPropagation();
                     setIsLoading(true);
-                    if (row?.values?.ID) handleInfoPDF(setIsLoading, row?.values?.ID);
+                    if (row?.original?.ID) handleInfoPDF(setIsLoading, row?.original?.ID);
                   }}
                 >
                   {!isLoading ? (
@@ -181,7 +187,7 @@ const ReceptionList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleViewReception(row.values.ID);
+                    handleViewReception(row?.original?.ID);
                   }}
                 >
                   <PlusCircleOutlined twoToneColor={theme.palette.primary.main} />

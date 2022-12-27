@@ -3,7 +3,6 @@ import { useMemo, useEffect } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
-import { format } from 'date-fns';
 
 // project import
 
@@ -13,7 +12,6 @@ import ReactTable from 'components/ReactTable';
 import { useSelector, useDispatch } from 'store';
 import { getWarehouseList } from 'store/reducers/warehouse';
 
-import { DATEFORMAT } from 'config';
 // ==============================|| INVENTORY - LIST VIEW ||============================== //
 const InventoryList = () => {
   const theme = useTheme();
@@ -37,7 +35,7 @@ const InventoryList = () => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{format(new Date(value), DATEFORMAT)}</Typography>
+                <Typography variant="subtitle1">{value || ''}</Typography>
               </Stack>
             </Stack>
           );

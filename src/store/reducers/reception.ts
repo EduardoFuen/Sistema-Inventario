@@ -113,6 +113,8 @@ export function AddRecepctionArticles(data: any, id: number) {
           return response;
         })
       );
+      /*    const response = await axios.post(`${HOST}/recepcion`, newData);
+        console.log(response); */
 
       if (newData.length > 0) {
         dispatch(getAllReception());

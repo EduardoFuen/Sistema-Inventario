@@ -9,6 +9,8 @@ import { openSnackbar } from './snackbar';
 import { getSupplierList } from './supplier';
 import { getWarehouseList } from './warehouse';
 import { resetViewReception } from './reception';
+import { DATEFORMAT } from 'config';
+import { format } from 'date-fns';
 
 // types
 import { PurchaseStateProps } from 'types/purchase';
@@ -86,12 +88,21 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
-      await dispatch(getSupplierList());
-      await dispatch(getWarehouseList());
       const response = await axios.get(`${HOST}/compras`);
       if (response.data instanceof Array) {
-        dispatch(slice.actions.getPurchaseSuccess(response.data));
-        dispatch(slice.actions.hasError(null));
+        let responseData: any = response.data.map((item: any) => {
+          return {
+            ...item,
+            NumberOrder: `Farmu-${item.ID}`,
+            BusinessName: item?.Supplier?.BusinessName,
+            Warehouse: item?.Warehouse?.Name,
+            CreatedAt: format(new Date(item?.CreatedAt), DATEFORMAT)
+          };
+        });
+        if (responseData.length > 0) {
+          dispatch(slice.actions.getPurchaseSuccess(responseData));
+          dispatch(slice.actions.hasError(null));
+        }
       }
     } catch (error: any) {
       if (error?.response?.status === 404) {

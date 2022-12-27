@@ -298,7 +298,7 @@ function AddReception() {
                         variant="contained"
                         sx={{ textTransform: 'none' }}
                         type="submit"
-                        disabled={!isSubmitting || (order?.DateExpireInvoice && order?.InvoiceNumber)}
+                        disabled={isSubmitting || (order?.DateExpireInvoice && order?.InvoiceNumber)}
                       >
                         Confirmar/Cerrar Recepción
                       </Button>

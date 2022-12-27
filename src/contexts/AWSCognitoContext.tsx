@@ -166,6 +166,7 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
     if (loggedInUser) {
       setSession(null);
       loggedInUser.signOut();
+      localStorage.clear();
       dispatch({ type: LOGOUT });
     }
   };

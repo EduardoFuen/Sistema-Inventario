@@ -22,7 +22,6 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
     } else {
       handleSearch(value);
     }
-
     setGlobalFilter(value || undefined);
   }, 200);
 

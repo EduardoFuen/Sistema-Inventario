@@ -103,7 +103,7 @@ const Profile = () => {
                         <Grid item>
                           <Stack direction="row" spacing={1.25} alignItems="center" onClick={handleLogout}>
                             <Tooltip title="Logout">
-                              <IconButton sx={{ color: 'text.primary', width: 100 }}>
+                              <IconButton sx={{ color: 'text.primary', width: '100%' }}>
                                 <LogoutOutlined
                                   style={{
                                     marginRight: 20
