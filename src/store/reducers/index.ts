@@ -28,7 +28,7 @@ const reducers = combineReducers({
     {
       key: 'inventory',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     inventory
   ),
@@ -36,7 +36,7 @@ const reducers = combineReducers({
     {
       key: 'purchase',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     purchase
   ),
@@ -44,7 +44,7 @@ const reducers = combineReducers({
     {
       key: 'reception',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     reception
   ),
@@ -52,7 +52,7 @@ const reducers = combineReducers({
     {
       key: 'substances',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     activeSubst
   ),
@@ -60,7 +60,7 @@ const reducers = combineReducers({
     {
       key: 'supplier',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     supplier
   ),
@@ -68,7 +68,7 @@ const reducers = combineReducers({
     {
       key: 'typeProduct',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     typeProduct
   ),
@@ -76,7 +76,7 @@ const reducers = combineReducers({
     {
       key: 'categories',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     category
   ),
@@ -84,7 +84,7 @@ const reducers = combineReducers({
     {
       key: 'maker',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     maker
   ),
@@ -92,7 +92,7 @@ const reducers = combineReducers({
     {
       key: 'trademaker',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     trademaker
   ),
@@ -100,7 +100,7 @@ const reducers = combineReducers({
     {
       key: 'pack',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     pack
   ),
@@ -108,7 +108,7 @@ const reducers = combineReducers({
     {
       key: 'warehouse',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     warehouse
   ),
@@ -116,7 +116,7 @@ const reducers = combineReducers({
     {
       key: 'productReducer',
       storage,
-      keyPrefix: 'MidasV1-'
+      keyPrefix: 'MidasV2-'
     },
     productReducer
   )

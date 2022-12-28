@@ -99,24 +99,18 @@ export function AddRecepctionArticles(data: any, id: number) {
   return async () => {
     try {
       let newData: any = await Promise.all(
-        data?.Articles.filter((item: any) => !item.ID).map(async (item: any) => {
-          let rows: any = {
-            Reason: Number(data?.Reason),
-            Refund: Number(data?.Refund),
-            Missing: Number(data?.Missing),
-            Batch: item.Batch,
-            Count: Number(item?.CountItemReception),
-            Date: item.Date,
-            ArticleID: id
-          };
-          const response = await axios.post(`${HOST}/recepcion`, rows);
-          return response;
-        })
+        data?.Articles.filter((item: any) => !item.ID).map(async (item: any) => ({
+          Reason: Number(data?.Reason),
+          Refund: Number(data?.Refund),
+          Missing: Number(data?.Missing),
+          Batch: item.Batch,
+          Count: Number(item?.CountItemReception),
+          Date: item.Date,
+          ArticleID: id
+        }))
       );
-      /*    const response = await axios.post(`${HOST}/recepcion`, newData);
-        console.log(response); */
-
-      if (newData.length > 0) {
+      const response = await axios.post(`${HOST}/recepcion`, newData);
+      if (response.data.length > 0) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
@@ -130,7 +124,8 @@ export function deleteItemsRecepction(id: number) {
   return async () => {
     try {
       const response = await axios.delete(`${HOST}/recepcion`, { data: { ID: id } });
-      if (response.data) {
+      if (response) {
+        dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
     } catch (error) {

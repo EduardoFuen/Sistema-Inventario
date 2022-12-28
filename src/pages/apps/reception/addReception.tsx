@@ -183,20 +183,13 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                       type="number"
                       InputProps={{ inputProps: { min: 0 } }}
                       placeholder="Ingresar Cantidad Devolución"
-                      // disabled={validationItems}
                       fullWidth
                       {...getFieldProps('Refund')}
                     />
                   </Grid>
                   <Grid item xs={4}>
                     <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Motivo Devolución</InputLabel>
-                    <TextField
-                      placeholder="Seleccionar Tipo Producto"
-                      fullWidth
-                      select
-                      {...getFieldProps('Reason')}
-                      //  disabled={validationItems}
-                    >
+                    <TextField placeholder="Seleccionar Tipo Producto" fullWidth select {...getFieldProps('Reason')}>
                       <MenuItem value="1">Mal Estado</MenuItem>
                       <MenuItem value="2">Fecha Corta</MenuItem>
                       <MenuItem value="3">Excedente</MenuItem>
@@ -213,6 +206,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                     <Divider />
                   </Stack>
                   {inputList?.map((x: any, i: number) => {
+                    let disabled: boolean = x.ID ? true : false;
                     return (
                       <Grid
                         container
@@ -233,7 +227,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                             fullWidth
                             name="CountItemReception"
                             value={x.CountItemReception}
-                            // disabled={validationItems || x.edit === false}
+                            disabled={disabled}
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
@@ -246,7 +240,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                             fullWidth
                             name="Batch"
                             value={x.Batch}
-                            // disabled={validationItems || x.edit === false}
+                            disabled={disabled}
                           />
                         </Grid>
                         <Grid item xs={4}>
@@ -256,7 +250,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                               label=""
                               inputFormat="MM/dd/yyyy"
                               value={x.Date}
-                              // disabled={validationItems || x.edit === false}
+                              disabled={disabled}
                               onChange={(value: any) => {
                                 handleInputChange(value, i);
                               }}
@@ -264,15 +258,17 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
                             />
                           </LocalizationProvider>
                         </Grid>
-                        {inputList?.length > 1 && !validationQuantity && (
+                        {(inputList?.length > 1 || x.ID) && (
                           <Grid item xs={2} alignItems="end" alignSelf="center">
                             <Tooltip title="Delete">
                               <IconButton
                                 color="secondary"
-                                onClick={(e: any) => {
+                                onClick={async (e: any) => {
                                   e.stopPropagation();
                                   if (x.edit === false) {
-                                    dispatch(deleteItemsRecepction(x.ID));
+                                    await dispatch(deleteItemsRecepction(x.ID));
+                                    await dispatch(getIDPurchase(Number(id)));
+                                    onCancel();
                                   } else {
                                     handleRemoveClick(i);
                                   }
