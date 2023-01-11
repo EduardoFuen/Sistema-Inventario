@@ -15,15 +15,23 @@ export interface Props {
 
 const Import = ({ onCancel }: Props) => {
   const dispatch = useDispatch();
+  const [active, setActive] = useState<boolean>(true);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>([]);
   const { products } = useSelector((state) => state.product);
 
   useEffect(() => {
-    data?.map(async (item: any) => {
-      return await dispatch(getProductSKU(item?.Sku));
+    let newArray: any = [];
+    data.map(async (item: any) => {
+      setisLoading(true);
+      await dispatch(getProductSKU(item?.Sku));
+      newArray.push(item);
+      if (data.length === newArray.length) {
+        setActive(false);
+        setisLoading(false);
+      }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, dispatch]);
 
   const onSubmit = async () => {
     try {
@@ -61,7 +69,9 @@ const Import = ({ onCancel }: Props) => {
     }
   };
 
-  return <ContainerModal onSubmit={onSubmit} setData={setData} onCancel={onCancel} data={data} />;
+  return (
+    <ContainerModal onSubmit={onSubmit} setData={setData} onCancel={onCancel} data={data} Submitting={active} isLoading={!isLoading} />
+  );
 };
 
 export default Import;

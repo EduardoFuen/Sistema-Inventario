@@ -131,6 +131,7 @@ export function getProductSKU(sku: string) {
     try {
       const response = await axios.get(`${HOST}/productos?sku=${sku}`);
       dispatch(slice.actions.getProductSKUSuccess(response?.data?.Rows));
+      return response?.data?.Rows;
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }

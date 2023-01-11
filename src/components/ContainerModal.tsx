@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Stack, CircularProgress } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import ImportToFile from 'components/ImportToFile';
@@ -11,16 +11,39 @@ export interface Props {
   onSubmit: () => void;
   data: any;
   Submitting: boolean;
+  isLoading: boolean;
 }
 
-const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting }: Props) => {
+const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting, isLoading }: Props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DialogTitle>Importar Registro</DialogTitle>
       <Divider />
       <DialogContent sx={{ p: 2.5 }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
+          {!isLoading && (
+            <Grid
+              item
+              xs={12}
+              md={12}
+              justifyContent="center"
+              alignItems="center"
+              style={{
+                textAlign: 'center',
+                zIndex: 2
+              }}
+            >
+              <CircularProgress color="success" size={100} />
+            </Grid>
+          )}
+          <Grid
+            item
+            xs={12}
+            md={12}
+            style={{
+              display: isLoading ? 'block' : 'none'
+            }}
+          >
             <ImportToFile setData={setData} />
           </Grid>
         </Grid>
@@ -44,7 +67,8 @@ const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting }:
   );
 };
 ContainerModalImport.defaultProps = {
-  Submitting: false
+  Submitting: false,
+  isLoading: false
 };
 
 export default ContainerModalImport;
