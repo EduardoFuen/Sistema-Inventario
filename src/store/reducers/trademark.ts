@@ -82,7 +82,7 @@ export function addTrademark(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(tradeMark.actions.hasError(error));
     }
   };
@@ -103,7 +103,7 @@ export function editTrademark(id: number, data: any) {
         })
       );
       dispatch(tradeMark.actions.updateTrademarkSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(tradeMark.actions.hasError(error));
     }
   };
@@ -126,7 +126,7 @@ export function deleteTrademark(id: number) {
         );
         dispatch(getTrademarkList());
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(tradeMark.actions.hasError(error));
     }
   };
@@ -147,7 +147,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(tradeMark.actions.hasError(error));
     }
   };

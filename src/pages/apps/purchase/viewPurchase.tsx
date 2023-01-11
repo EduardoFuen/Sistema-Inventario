@@ -117,7 +117,7 @@ function ViewPurchase() {
           await dispatch(editPurchase(Number(id), { ...newValue, Status: 0 }));
         }
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getSubsList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/sustancias`);
+      const response = await axios.get(`${HOST}/subtance`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSubsSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getSubsList() {
 export function addSubs(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/sustancias`, { ...data });
+      const response = await axios.post(`${HOST}/subtance`, { ...data });
       dispatch(slice.actions.addSubsSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -82,7 +82,7 @@ export function addSubs(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -92,7 +92,7 @@ export function editSubs(id: number, data: any) {
   return async () => {
     dispatch(slice.actions.hasError(''));
     try {
-      const response = await axios.put(`${HOST}/sustancias`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/subtance`, { ID: id, ...data });
       dispatch(slice.actions.updateSubsSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -105,7 +105,7 @@ export function editSubs(id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -114,7 +114,7 @@ export function deleteSubs(id: number) {
   return async () => {
     dispatch(slice.actions.hasError(''));
     try {
-      const response = await axios.delete(`${HOST}/sustancias`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/subtance`, { data: { ID: id } });
       if (response) {
         dispatch(
           openSnackbar({
@@ -129,7 +129,7 @@ export function deleteSubs(id: number) {
         );
         dispatch(getSubsList());
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -137,7 +137,7 @@ export function deleteSubs(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/sustancias`, data);
+      const response = await axios.post(`${HOST}/subtance`, data);
       dispatch(
         openSnackbar({
           open: true,
@@ -150,7 +150,7 @@ export function addExcel(data: any) {
         })
       );
       dispatch(slice.actions.excelSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

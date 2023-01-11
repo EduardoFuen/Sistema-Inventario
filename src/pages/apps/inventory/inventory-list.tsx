@@ -11,6 +11,7 @@ import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import { useSelector, useDispatch } from 'store';
 import { getWarehouseList } from 'store/reducers/warehouse';
+import { getInventoryList } from 'store/reducers/inventory';
 
 // ==============================|| INVENTORY - LIST VIEW ||============================== //
 const InventoryList = () => {
@@ -19,17 +20,18 @@ const InventoryList = () => {
 
   useEffect(() => {
     dispatch(getWarehouseList());
+    dispatch(getInventoryList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { listPurchase } = useSelector((state) => state.purchase);
+  const { listInventory, isLoading } = useSelector((state) => state.inventory);
   const { warehouseList } = useSelector((state) => state.warehouse);
 
   const columns = useMemo(
     () => [
       {
         Header: 'Fecha Movimiento',
-        accessor: 'CreatedAt',
+        accessor: 'Date',
         disableSortBy: true,
         Cell: ({ value }: any) => {
           return (
@@ -44,16 +46,15 @@ const InventoryList = () => {
       {
         Header: 'Producto',
         accessor: 'Sku',
-        Cell: ({ value }: any) => {
+        Cell: ({ row }: any) => {
+          const { original } = row;
+
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography variant="subtitle1">{value?.Name}</Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Sku {value?.Sku}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Ean :{value?.Ean}
+                <Typography variant="subtitle1">{original?.ProductName}</Typography>
+                <Typography variant="subtitle1" color="textSecondary">
+                  Sku {original?.Sku}
                 </Typography>
               </Stack>
             </Stack>
@@ -71,7 +72,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'initialInvUnd'
+        accessor: 'InitInventory.Units',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -84,7 +94,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'initialInvCosto'
+        accessor: 'InitInventory.Cost',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -97,7 +116,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'purchaseInvUnd'
+        accessor: 'Purchase.Unids',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -110,7 +138,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'purchaseInvCosto'
+        accessor: 'Purchase.Cost',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -123,7 +160,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'availableInvUnd'
+        accessor: 'Available.Units',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -136,7 +182,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'availableInvCosto'
+        accessor: 'Available.Cost',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -149,7 +204,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'salesInvUnd'
+        accessor: 'Selled.Units',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -162,7 +226,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'salesInvCosto'
+        accessor: 'Selled.Cost',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -175,7 +248,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'endInvUnd'
+        accessor: 'EndInventory.Units',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: () => (
@@ -188,7 +270,16 @@ const InventoryList = () => {
             </Stack>
           </Stack>
         ),
-        accessor: 'endInvCosto'
+        accessor: 'EndInventory.Cost',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -199,18 +290,19 @@ const InventoryList = () => {
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={listPurchase as []}
+          data={listInventory as []}
           handleImport={() => {}}
           handleAdd={() => {}}
           TitleButton=""
           hideButton={false}
-          dataExport={listPurchase as []}
+          isLoading={isLoading}
+          dataExport={listInventory as []}
           FileName="ReporteInventario"
           searchActive={false}
           warehouses={warehouseList as []}
           defaultWarehouse={Number(warehouseList[0]?.ID) || 0}
           handleChangeWareHouse={(value: number) => {
-            console.log(value);
+            dispatch(getInventoryList(value));
           }}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />

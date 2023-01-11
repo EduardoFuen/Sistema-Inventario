@@ -28,7 +28,7 @@ const ImportMarker = ({ onCancel }: Props) => {
       }));
       await dispatch(addMakerExcel(newData));
       onCancel();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
     }
   };

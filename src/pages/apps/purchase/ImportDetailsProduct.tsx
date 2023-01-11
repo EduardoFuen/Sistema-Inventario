@@ -64,7 +64,7 @@ const Import = ({ onCancel }: Props) => {
 
       await dispatch(addItemsPurchase(detailsPurchase));
       onCancel();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
     }
   };

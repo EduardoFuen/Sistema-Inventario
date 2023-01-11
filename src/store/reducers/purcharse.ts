@@ -88,7 +88,7 @@ export default slice.reducer;
 export function getPurchaseList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/compras`);
+      const response = await axios.get(`${HOST}/purchase`);
       if (response.data instanceof Array) {
         let responseData: any = response.data.map((item: any) => {
           return {
@@ -134,7 +134,7 @@ export function addPurchase(data: any) {
           Total: Number(item?.Total) || 0
         }))
       };
-      const response = await axios.post(`${HOST}/compras`, { ...Newdata });
+      const response = await axios.post(`${HOST}/purchase`, { ...Newdata });
       dispatch(
         openSnackbar({
           open: true,
@@ -148,7 +148,7 @@ export function addPurchase(data: any) {
       );
       await dispatch(slice.actions.addPurchaseSuccess(response.data));
       window.location.href = `/purchase/view/${response.data.ID}`;
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -163,7 +163,7 @@ export function getIDPurchase(id: number) {
       await dispatch(getSupplierList());
       await dispatch(getWarehouseList());
 
-      const response = await axios.get(`${HOST}/compras?ID=${id}`);
+      const response = await axios.get(`${HOST}/purchase?ID=${id}`);
       if (response.data) {
         let Articles: any;
         let dataNew: any;
@@ -187,7 +187,7 @@ export function getIDPurchase(id: number) {
         await dispatch(addItemsPurchase(Articles));
         dispatch(slice.actions.getIDPurchaseSuccess(dataNew));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -196,7 +196,7 @@ export function getIDPurchase(id: number) {
 export function editPurchase(id: number, data: any) {
   return async () => {
     try {
-      const response: any = await axios.put(`${HOST}/compras`, { ...data, ID: id });
+      const response: any = await axios.put(`${HOST}/purchase`, { ...data, ID: id });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(getIDPurchase(id));
@@ -227,7 +227,7 @@ export function editPurchase(id: number, data: any) {
           );
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -240,7 +240,7 @@ export function deletePurchase(id: number) {
       let {
         purchase: { order }
       } = store.getState();
-      const response = await axios.put(`${HOST}/compras`, { ID: id, ...order, status: 2 });
+      const response = await axios.put(`${HOST}/purchase`, { ID: id, ...order, status: 2 });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(
@@ -256,7 +256,7 @@ export function deletePurchase(id: number) {
         );
         dispatch(slice.actions.hasError(null));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -266,7 +266,7 @@ export function addItemsPurchase(data: any) {
     try {
       let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -275,7 +275,7 @@ export function editItemsPurchase(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.editDetailsPurchaseSuccess(data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -284,7 +284,7 @@ export function deleteItemsPurchase(id: number) {
   return async () => {
     try {
       dispatch(slice.actions.deleteDetailsPurchaseSuccess({ id }));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -293,7 +293,7 @@ export function resetItemsPurchase() {
   return async () => {
     try {
       dispatch(slice.actions.resetDetailsPurchaseSuccess());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -302,7 +302,7 @@ export function resetOrder() {
   return async () => {
     try {
       dispatch(slice.actions.resetOrderSuccess());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

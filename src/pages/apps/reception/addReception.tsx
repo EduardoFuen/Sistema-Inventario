@@ -143,7 +143,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
         await dispatch(getIDPurchase(Number(id)));
         onCancel();
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

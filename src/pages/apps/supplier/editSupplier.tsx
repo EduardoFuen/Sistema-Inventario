@@ -97,7 +97,7 @@ function UpdateSuplier() {
         );
         history(`/supplier`);
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

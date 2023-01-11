@@ -39,7 +39,7 @@ const ImportFile = ({ setData }: Props) => {
             const ws = wb.Sheets[wb.SheetNames[0]];
             setHTML(XLSX.utils.sheet_to_html(ws, { id: 'tabeller' }));
             setData(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-          } catch (error) {
+          } catch (error: any) {
             dispatch(
               openSnackbar({
                 open: true,

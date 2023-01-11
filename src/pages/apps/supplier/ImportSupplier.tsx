@@ -21,7 +21,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
       const newData = SupplierExport(data);
       await dispatch(addExcel(newData));
       onCancel();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
     }
   };

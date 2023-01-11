@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getPackList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/packs`);
+      const response = await axios.get(`${HOST}/pack`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPackSuccess(response.data));
       }
@@ -68,7 +68,7 @@ export function getPackList() {
 export function addPack(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/packs`, { ...data });
+      const response = await axios.post(`${HOST}/pack`, { ...data });
       dispatch(slice.actions.addPackSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -81,7 +81,7 @@ export function addPack(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -89,7 +89,7 @@ export function addPack(data: any) {
 export function editPack(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/packs`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/pack`, { ID: id, ...data });
       dispatch(slice.actions.updatePackSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -102,7 +102,7 @@ export function editPack(id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -110,7 +110,7 @@ export function editPack(id: number, data: any) {
 export function deletePack(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/packs`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/pack`, { data: { ID: id } });
       if (response) {
         dispatch(getPackList());
         dispatch(
@@ -125,7 +125,7 @@ export function deletePack(id: number) {
           })
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -133,7 +133,7 @@ export function deletePack(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/packs`, data);
+      const response = await axios.post(`${HOST}/pack`, data);
       dispatch(slice.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -146,7 +146,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

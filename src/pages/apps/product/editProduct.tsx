@@ -188,7 +188,7 @@ function UpdateProduct() {
         };
         await dispatch(editProduct(Number(id), data));
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         setSubmitting(false);
       }
     }

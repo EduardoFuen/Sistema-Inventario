@@ -92,7 +92,7 @@ function AddPurchase() {
           await dispatch(addPurchase(newValue));
         }
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         setSubmitting(false);
         console.error(error);
       }
