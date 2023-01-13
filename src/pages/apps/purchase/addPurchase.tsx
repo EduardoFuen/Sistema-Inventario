@@ -52,8 +52,7 @@ function AddPurchase() {
     dispatch(getProducts());
     dispatch(getWarehouseList());
     dispatch(getSupplierList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleImport = () => {
     setActiveImport(!addImport);

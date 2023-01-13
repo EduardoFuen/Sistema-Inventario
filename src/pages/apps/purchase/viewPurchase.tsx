@@ -78,8 +78,7 @@ function ViewPurchase() {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, id]);
 
   const handleCancel = () => {
     history(`/purchase`);

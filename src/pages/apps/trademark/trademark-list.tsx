@@ -53,8 +53,7 @@ const TradeMarkList = () => {
   useEffect(() => {
     dispatch(getMakerList());
     dispatch(getTrademarkList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const columns = useMemo(
     () => [

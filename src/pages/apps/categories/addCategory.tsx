@@ -30,8 +30,7 @@ function AddNewCategories() {
     if (id && Number(index) === 2) {
       return categoryListThree.find((item: CategoryThree) => item?.ID === Number(id));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categoryListOne, categoryListThree, categoryListTwo, id, index]);
 
   return (
     <>

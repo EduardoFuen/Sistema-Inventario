@@ -21,7 +21,7 @@ const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting, i
       <Divider />
       <DialogContent sx={{ p: 2.5 }}>
         <Grid container spacing={3}>
-          {!isLoading && (
+          {!isLoading && isLoading !== null && (
             <Grid
               item
               xs={12}
@@ -41,7 +41,7 @@ const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting, i
             xs={12}
             md={12}
             style={{
-              display: isLoading ? 'block' : 'none'
+              display: (isLoading === null && 'block') || (isLoading ? 'block' : 'none')
             }}
           >
             <ImportToFile setData={setData} />
@@ -68,7 +68,7 @@ const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting, i
 };
 ContainerModalImport.defaultProps = {
   Submitting: false,
-  isLoading: false
+  isLoading: null
 };
 
 export default ContainerModalImport;

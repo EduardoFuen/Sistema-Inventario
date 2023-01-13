@@ -29,8 +29,7 @@ const ReceptionList = () => {
 
   useEffect(() => {
     dispatch(getPurchaseList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleViewReception = (id: any) => {
     dispatch(resetItemsPurchase());

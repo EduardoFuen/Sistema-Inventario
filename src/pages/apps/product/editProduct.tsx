@@ -109,8 +109,7 @@ function UpdateProduct() {
     dispatch(getMakerList());
     dispatch(getSubsList());
     dispatch(getWarehouseList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (selectedImage) {
@@ -131,8 +130,7 @@ function UpdateProduct() {
     if (id) {
       return products.find((item: Products) => item.ID === Number(id));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, products]);
 
   useEffect(() => {
     if (product) {

@@ -34,8 +34,7 @@ const MakersList = () => {
 
   useEffect(() => {
     dispatch(getMakerList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleAdd = () => {
     setAdd(!add);

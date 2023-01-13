@@ -21,8 +21,7 @@ const InventoryList = () => {
   useEffect(() => {
     dispatch(getWarehouseList());
     dispatch(getInventoryList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const { listInventory, isLoading } = useSelector((state) => state.inventory);
   const { warehouseList } = useSelector((state) => state.warehouse);

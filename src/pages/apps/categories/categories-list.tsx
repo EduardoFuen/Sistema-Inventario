@@ -59,8 +59,7 @@ const CategoriesList = () => {
     dispatch(getCategoryListOne());
     dispatch(getCategoryListTwo());
     dispatch(getCategoryListThree());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleEditCategory = (id: number, index: number) => {
     history(`/product-list/category/edit/${id}/${index}`);

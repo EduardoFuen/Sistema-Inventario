@@ -43,8 +43,7 @@ const WarehouseList = () => {
 
   useEffect(() => {
     dispatch(getWarehouseList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const { warehouseList } = useSelector((state) => state.warehouse);
   const columns = useMemo(

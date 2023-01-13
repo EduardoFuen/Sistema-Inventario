@@ -66,8 +66,7 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
     if (product?.Count === reception?.TotalItemsCountReception) {
       setValidationQuantity(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [product?.Count, reception?.TotalItemsCountReception]);
 
   const handleRemoveClick = (index: number) => {
     const list = [...inputList];

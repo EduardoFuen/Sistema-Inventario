@@ -109,8 +109,7 @@ function AddNewProduct() {
     dispatch(getMakerList());
     dispatch(getSubsList());
     dispatch(getWarehouseList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (selectedImage) {

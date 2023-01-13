@@ -30,8 +30,7 @@ const PackList = () => {
 
   useEffect(() => {
     dispatch(getPackList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleImport = () => {
     setActiveImport(!addImport);

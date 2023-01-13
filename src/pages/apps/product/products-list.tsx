@@ -38,8 +38,7 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(getProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (error && error?.response?.data?.Error && error?.response?.status !== 404) {
@@ -58,6 +57,7 @@ const ProductList = () => {
   }, [error, dispatch]);
 
   const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
+
   const productsExport: any = productExport(products, typeProductList);
 
   const handleAddProduct = () => {

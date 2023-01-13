@@ -41,8 +41,7 @@ const ActiveSubstancesList = () => {
   const { todoListSubs } = useSelector((state) => state.substances);
   useEffect(() => {
     dispatch(getSubsList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const newDataExport: any = todoListSubs.map((item: Substances) => {
     return {

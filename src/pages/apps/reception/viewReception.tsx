@@ -23,11 +23,16 @@ import { useSelector, useDispatch } from 'store';
 import { getIDPurchase, editPurchase } from 'store/reducers/purcharse';
 import { getByArticleId, getAllReception } from 'store/reducers/reception';
 
+// types
+import { Warehouses } from 'types/products';
+import { Supplier } from 'types/supplier';
+
 // ==============================|| VIEW RECEPTION - MAIN ||============================== //
 
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
+    UpdateAt: order?.updateAt ? format(new Date(order?.updateAt), DATEFORMAT) : '',
     Discount: order?.Discount || 0,
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
@@ -62,8 +67,7 @@ function AddReception() {
       dispatch(getAllReception());
       dispatch(getIDPurchase(Number(id)));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, id]);
 
   const handleCancel = () => {
     history(`/reception`);
@@ -127,8 +131,8 @@ function AddReception() {
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                         <TextField placeholder="Seleccionar Proveedor" fullWidth select {...getFieldProps('SupplierID')} disabled>
                           {supplierList
-                            .filter((item: any) => item.Status === true)
-                            .map((option: any) => (
+                            .filter((item: Supplier) => item.Status === true)
+                            .map((option: Supplier) => (
                               <MenuItem key={option.ID} value={option.ID}>
                                 {option.BusinessName}
                               </MenuItem>
@@ -139,8 +143,8 @@ function AddReception() {
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                         <TextField placeholder="Seleccionar Bodega" fullWidth select {...getFieldProps('WarehouseID')} disabled>
                           {warehouseList
-                            .filter((item: any) => item.Status === true)
-                            .map((option: any) => (
+                            .filter((item: Warehouses) => item.Status === true)
+                            .map((option: Warehouses) => (
                               <MenuItem key={option.ID} value={option.ID}>
                                 {option.Name}
                               </MenuItem>
@@ -193,7 +197,7 @@ function AddReception() {
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Recibo</InputLabel>
                         <TextField
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('CreatedAt')}
+                          {...getFieldProps('UpdateAt')}
                           fullWidth
                           disabled
                         />

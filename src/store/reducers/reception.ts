@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST } from 'config';
 import { dispatch } from '../index';
+import { openSnackbar } from './snackbar';
 
 // types
 import { ReceptionStateProps } from 'types/reception';
@@ -115,7 +116,22 @@ export function AddRecepctionArticles(data: any, id: number) {
         await dispatch(getByArticleId(id));
       }
     } catch (error: any) {
-      dispatch(slice.actions.hasError(error));
+      if (
+        error?.response?.data?.Error?.trim() ===
+        'ProductoId() Bodega(Barranquilla): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega'
+      ) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'El producto a ingresa a Shopify le falta handlea o ID´S',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+      }
     }
   };
 }

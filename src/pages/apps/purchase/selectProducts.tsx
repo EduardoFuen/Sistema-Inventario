@@ -32,7 +32,7 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
   const handleSelect = (row: any) => {
-    const index = itemsNew.findIndex((obj) => obj?.ID === row?.original?.ID);
+    const index = itemsNew.findIndex((item) => item?.ID === row?.original?.ID);
     if (index > -1) {
       itemsNew.splice(index, 1);
     }

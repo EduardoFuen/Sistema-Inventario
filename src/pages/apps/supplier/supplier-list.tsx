@@ -34,8 +34,7 @@ const SupplierListPage = () => {
 
   useEffect(() => {
     dispatch(getSupplierList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const { supplierList } = useSelector((state) => state.supplier);
   const data = (supplierList.length >= 0 && SupplierExport(supplierList)) || [];

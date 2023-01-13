@@ -42,8 +42,7 @@ const PackList = () => {
 
   useEffect(() => {
     dispatch(getTypeProductList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const newDataExport: any = typeProductList.map((item: TypeProduct) => {
     return {

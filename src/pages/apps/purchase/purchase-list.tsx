@@ -33,8 +33,7 @@ const PurchaseList = () => {
 
   useEffect(() => {
     dispatch(getPurchaseList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const handleAddPurchase = () => {
     dispatch(resetItemsPurchase());
