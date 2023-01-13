@@ -97,7 +97,7 @@ export default slice.reducer;
 export function getCategoryListOne() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categorias/one`);
+      const response = await axios.get(`${HOST}/categoryone`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryOneSuccess(response.data));
       }
@@ -113,7 +113,7 @@ export function getCategoryListOne() {
 export function getCategoryListTwo() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categorias/two`);
+      const response = await axios.get(`${HOST}/categorytwo`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryTwoSuccess(response.data));
       }
@@ -128,7 +128,7 @@ export function getCategoryListTwo() {
 export function getCategoryListThree() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categorias/three`);
+      const response = await axios.get(`${HOST}/categorythree`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryThreeSuccess(response.data));
       }
@@ -143,10 +143,10 @@ export function getCategoryListThree() {
 export function addCategoryOne(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categorias/one`, { ...data });
+      const response = await axios.post(`${HOST}/categoryone`, { ...data });
       dispatch(slice.actions.addCategoryOneSuccess(response.data));
       dispatch(Alert());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -155,10 +155,10 @@ export function addCategoryOne(data: any) {
 export function addCategoryTwo(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categorias/two`, { ...data });
+      const response = await axios.post(`${HOST}/categorytwo`, { ...data });
       dispatch(slice.actions.addCategoryTwoSuccess(response.data));
       dispatch(Alert());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -167,10 +167,10 @@ export function addCategoryTwo(data: any) {
 export function addCategoryThree(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categorias/three`, { ...data });
+      const response = await axios.post(`${HOST}/categorythree`, { ...data });
       dispatch(slice.actions.addCategoryThreeSuccess(response.data));
       dispatch(Alert());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -181,7 +181,7 @@ export function editCategory(type: string, id: number, data: any) {
     try {
       switch (type) {
         case CATEGORY.CategoryOne: {
-          const response = await axios.put(`${HOST}/categorias/one`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categoryone`, { ID: id, ...data });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -192,7 +192,7 @@ export function editCategory(type: string, id: number, data: any) {
           break;
         }
         case CATEGORY.CategoryTwo: {
-          const response = await axios.put(`${HOST}/categorias/two`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categorytwo`, { ID: id, ...data });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -203,7 +203,7 @@ export function editCategory(type: string, id: number, data: any) {
           break;
         }
         default:
-          const response = await axios.put(`${HOST}/categorias/three`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categorythree`, { ID: id, ...data });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -223,7 +223,7 @@ export function editCategory(type: string, id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -234,21 +234,21 @@ export function deleteCategory(id: number, type: string) {
     try {
       switch (type) {
         case CATEGORY.CategoryOne: {
-          const response = await axios.delete(`${HOST}/categorias/one`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categoryone`, { data: { ID: id } });
           if (response) {
             dispatch(getCategoryListOne());
           }
           break;
         }
         case CATEGORY.CategoryTwo: {
-          const response = await axios.delete(`${HOST}/categorias/two`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categorytwo`, { data: { ID: id } });
           if (response) {
             dispatch(getCategoryListTwo());
           }
           break;
         }
         default:
-          const response = await axios.delete(`${HOST}/categorias/three`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categorythree`, { data: { ID: id } });
           if (response) {
             dispatch(getCategoryListThree());
           }
@@ -264,7 +264,7 @@ export function deleteCategory(id: number, type: string) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -274,7 +274,7 @@ export function addExcel(data: any, index: number) {
     try {
       switch (index) {
         case 0: {
-          const response = await axios.post(`${HOST}/categorias/one`, data);
+          const response = await axios.post(`${HOST}/categoryone`, data);
           dispatch(
             slice.actions.excelSuccess({
               index,
@@ -284,7 +284,7 @@ export function addExcel(data: any, index: number) {
           break;
         }
         case 1: {
-          const response = await axios.post(`${HOST}/categorias/two`, data);
+          const response = await axios.post(`${HOST}/categorytwo`, data);
           dispatch(
             slice.actions.excelSuccess({
               index,
@@ -294,7 +294,7 @@ export function addExcel(data: any, index: number) {
           break;
         }
         default:
-          const response = await axios.post(`${HOST}/categorias/three`, data);
+          const response = await axios.post(`${HOST}/categorythree`, data);
           dispatch(
             slice.actions.excelSuccess({
               index,
@@ -313,7 +313,7 @@ export function addExcel(data: any, index: number) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

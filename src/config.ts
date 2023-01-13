@@ -12,7 +12,8 @@ export const AWS_API = {
   appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
 };
 
-export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';
+// export const HOST = 'https://qkzcpwgfgc.execute-api.us-east-1.amazonaws.com/v1';
+export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 

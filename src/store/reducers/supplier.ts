@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getSupplierList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/proveedores`);
+      const response = await axios.get(`${HOST}/supplier`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSupplierSuccess(response.data));
       }
@@ -68,9 +68,9 @@ export function getSupplierList() {
 export function getIdSupplier(id: number) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/proveedores?ID=${id}]`);
+      const response = await axios.get(`${HOST}/supplier?ID=${id}]`);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -78,9 +78,9 @@ export function getIdSupplier(id: number) {
 export function createSupplier(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/proveedores`, { ...data });
+      const response = await axios.post(`${HOST}/supplier`, { ...data });
       dispatch(slice.actions.addSupplierSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -89,9 +89,9 @@ export function createSupplier(data: any) {
 export function editSupplier(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/proveedores`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/supplier`, { ID: id, ...data });
       dispatch(slice.actions.updateSupplierSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -100,7 +100,7 @@ export function editSupplier(id: number, data: any) {
 export function deleteSupplier(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/proveedores`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/supplier`, { data: { ID: id } });
       if (response) {
         dispatch(getSupplierList());
         dispatch(
@@ -115,7 +115,7 @@ export function deleteSupplier(id: number) {
           })
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -123,7 +123,7 @@ export function deleteSupplier(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/proveedores`, data);
+      const response = await axios.post(`${HOST}/supplier`, data);
       dispatch(slice.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -136,7 +136,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

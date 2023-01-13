@@ -94,7 +94,7 @@ function AddReception() {
 
         history(`/reception`);
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

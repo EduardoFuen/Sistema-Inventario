@@ -61,7 +61,7 @@ export function getAllReception() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getAllReceptionSuccess(response.data));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -89,7 +89,7 @@ export function getByArticleId(id: number) {
       };
 
       dispatch(slice.actions.getIDArticleSuccess(dataResponse));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -114,7 +114,7 @@ export function AddRecepctionArticles(data: any, id: number) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -128,7 +128,7 @@ export function deleteItemsRecepction(id: number) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -138,7 +138,7 @@ export function resetViewReception() {
   return async () => {
     try {
       dispatch(slice.actions.hasReset());
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

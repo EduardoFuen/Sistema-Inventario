@@ -69,7 +69,7 @@ const Import = ({ onCancel }: Props) => {
       await dispatch(addExcel(newData));
       onCancel();
       setSubmitting(false);
-    } catch (error) {
+    } catch (error: any) {
       setSubmitting(false);
       console.error(error);
     }

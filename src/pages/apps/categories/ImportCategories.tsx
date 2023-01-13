@@ -55,7 +55,7 @@ const ImportCategories = ({ onCancel, value }: Props) => {
 
       dispatch(addExcel(newData, value));
       onCancel();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
     }
   };

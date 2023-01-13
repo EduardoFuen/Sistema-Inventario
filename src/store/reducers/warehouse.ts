@@ -53,7 +53,7 @@ export default wareHouse.reducer;
 export function getWarehouseList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/bodegas`);
+      const response = await axios.get(`${HOST}/warehouse`);
       if (response.data instanceof Array) {
         dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getWarehouseList() {
 export function addWarehouse(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, { ...data });
+      const response = await axios.post(`${HOST}/warehouse`, { ...data });
       dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -82,7 +82,7 @@ export function addWarehouse(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(wareHouse.actions.hasError(error));
     }
   };
@@ -91,7 +91,7 @@ export function addWarehouse(data: any) {
 export function editWarehouse(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/bodegas`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/warehouse`, { ID: id, ...data });
       dispatch(wareHouse.actions.updateWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -104,7 +104,7 @@ export function editWarehouse(id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(wareHouse.actions.hasError(error));
     }
   };
@@ -113,7 +113,7 @@ export function editWarehouse(id: number, data: any) {
 export function deleteWarehouse(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/bodegas`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/warehouse`, { data: { ID: id } });
       if (response) {
         dispatch(getWarehouseList());
         dispatch(
@@ -128,7 +128,7 @@ export function deleteWarehouse(id: number) {
           })
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(wareHouse.actions.hasError(error));
     }
   };
@@ -137,7 +137,7 @@ export function deleteWarehouse(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/bodegas`, data);
+      const response = await axios.post(`${HOST}/warehouse`, data);
       dispatch(wareHouse.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -150,7 +150,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(wareHouse.actions.hasError(error));
     }
   };

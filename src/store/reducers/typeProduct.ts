@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getTypeProductList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/tipodeproducto`);
+      const response = await axios.get(`${HOST}/typeproduct`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getTypeProductSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getTypeProductList() {
 export function addTypeProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/tipodeproducto`, { ...data });
+      const response = await axios.post(`${HOST}/typeproduct`, { ...data });
       dispatch(slice.actions.addTypeProductSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -82,7 +82,7 @@ export function addTypeProduct(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -90,7 +90,7 @@ export function addTypeProduct(data: any) {
 export function editTypeProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/tipodeproducto`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/typeproduct`, { ID: id, ...data });
       dispatch(slice.actions.updateTypeProductSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -103,7 +103,7 @@ export function editTypeProduct(id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -112,7 +112,7 @@ export function editTypeProduct(id: number, data: any) {
 export function deleteTypeProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/tipodeproducto`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/typeproduct`, { data: { ID: id } });
       if (response) {
         dispatch(
           openSnackbar({
@@ -127,7 +127,7 @@ export function deleteTypeProduct(id: number) {
         );
         dispatch(getTypeProductList());
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -135,7 +135,7 @@ export function deleteTypeProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/tipodeproducto`, data);
+      const response = await axios.post(`${HOST}/typeproduct`, data);
       dispatch(
         openSnackbar({
           open: true,
@@ -148,7 +148,7 @@ export function addExcel(data: any) {
         })
       );
       dispatch(slice.actions.excelSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

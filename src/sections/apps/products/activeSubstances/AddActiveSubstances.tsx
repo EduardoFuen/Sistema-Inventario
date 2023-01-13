@@ -86,7 +86,7 @@ const AddActiveSubstances = ({ subst, onCancel }: Props) => {
 
         setSubmitting(false);
         onCancel();
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

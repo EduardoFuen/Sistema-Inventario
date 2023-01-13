@@ -78,7 +78,7 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getProducts(limit = 30, page = 1, sku = '') {
+export function getProducts(limit: number = 30, page: number = 1, sku = '') {
   return async () => {
     try {
       dispatch(slice.actions.loading());
@@ -92,7 +92,7 @@ export function getProducts(limit = 30, page = 1, sku = '') {
           queryParams = `name=${sku?.trim()}`;
         }
       }
-      const response = await axios.get(`${HOST}/productos?${queryParams}`);
+      const response = await axios.get(`${HOST}/product?${queryParams}`);
 
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;
@@ -119,7 +119,7 @@ export function getProducts(limit = 30, page = 1, sku = '') {
 export function getProductID(id: number) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/productos?ID=${id}`);
+      const response = await axios.get(`${HOST}/product?ID=${id}`);
       dispatch(slice.actions.getProductIDSuccess(response.data));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
@@ -129,7 +129,7 @@ export function getProductID(id: number) {
 export function getProductSKU(sku: string) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/productos?sku=${sku}`);
+      const response = await axios.get(`${HOST}/product?sku=${sku}`);
       dispatch(slice.actions.getProductSKUSuccess(response?.data?.Rows));
       return response?.data?.Rows;
     } catch (error: any) {
@@ -140,7 +140,7 @@ export function getProductSKU(sku: string) {
 export function addProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/productos`, { ...data });
+      const response = await axios.post(`${HOST}/product`, { ...data });
       await dispatch(getProducts());
       await dispatch(slice.actions.addProductSuccess(response.data));
       dispatch(
@@ -155,7 +155,7 @@ export function addProduct(data: any) {
         })
       );
       window.location.href = `/product-list`;
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -163,7 +163,7 @@ export function addProduct(data: any) {
 export function editProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/productos`, { ID: id.toString(), ...data });
+      const response = await axios.put(`${HOST}/product`, { ID: id.toString(), ...data });
       dispatch(
         slice.actions.editProductsSuccess({
           id,
@@ -183,7 +183,7 @@ export function editProduct(id: number, data: any) {
       );
       dispatch(getProducts());
       dispatch(slice.actions.hasError(null));
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -191,7 +191,7 @@ export function editProduct(id: number, data: any) {
 export function deleteProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/productos`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/product`, { data: { ID: id } });
       if (response) {
         dispatch(getProducts());
         dispatch(
@@ -207,7 +207,7 @@ export function deleteProduct(id: number) {
         );
         dispatch(slice.actions.hasError(null));
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -215,7 +215,7 @@ export function deleteProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/productos`, data);
+      const response = await axios.post(`${HOST}/product`, data);
       dispatch(slice.actions.excelSuccess(response.data));
       dispatch(getProducts());
       dispatch(
@@ -229,7 +229,7 @@ export function addExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

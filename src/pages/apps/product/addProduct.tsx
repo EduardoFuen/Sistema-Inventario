@@ -188,7 +188,7 @@ function AddNewProduct() {
 
         await dispatch(addProduct(data));
         setSubmitting(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
         setSubmitting(false);
       }

@@ -86,7 +86,7 @@ const AddPackList = ({ product, onCancel }: Props) => {
 
         setSubmitting(false);
         onCancel();
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }

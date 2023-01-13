@@ -82,7 +82,7 @@ export function addMaker(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(maker.actions.hasError(error));
     }
   };
@@ -103,7 +103,7 @@ export function editMaker(id: number, data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(maker.actions.hasError(error));
     }
   };
@@ -127,7 +127,7 @@ export function deleteMaker(id: number) {
         );
         dispatch(getMakerList());
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(maker.actions.hasError(error));
     }
   };
@@ -148,7 +148,7 @@ export function addMakerExcel(data: any) {
           close: false
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       dispatch(maker.actions.hasError(error));
     }
   };

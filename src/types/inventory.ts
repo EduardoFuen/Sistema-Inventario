@@ -43,4 +43,5 @@ export type Inventory = {
 export interface InventoryStateProps {
   listInventory: Inventory[];
   error: object | string | null;
+  isLoading: boolean;
 }
