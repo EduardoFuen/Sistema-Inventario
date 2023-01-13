@@ -57,7 +57,7 @@ export function getAllReception() {
   return async () => {
     dispatch(slice.actions.hasReset());
     try {
-      const response = await axios.get(`${HOST}/recepcion`);
+      const response = await axios.get(`${HOST}/reception`);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getAllReceptionSuccess(response.data));
       }
@@ -71,7 +71,7 @@ export function getByArticleId(id: number) {
   return async () => {
     dispatch(slice.actions.hasReset());
     try {
-      const response = await axios.get(`${HOST}/recepcion?ArticleID=${id}`);
+      const response = await axios.get(`${HOST}/reception?ArticleID=${id}`);
       let data: any = response.data.map((item: any) => ({
         ...item,
         CountItemReception: item?.Count
@@ -109,7 +109,7 @@ export function AddRecepctionArticles(data: any, id: number) {
           ArticleID: id
         }))
       );
-      const response = await axios.post(`${HOST}/recepcion`, newData);
+      const response = await axios.post(`${HOST}/reception`, newData);
       if (response.data.length > 0) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
@@ -123,7 +123,7 @@ export function AddRecepctionArticles(data: any, id: number) {
 export function deleteItemsRecepction(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/recepcion`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/reception`, { data: { ID: id } });
       if (response) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
