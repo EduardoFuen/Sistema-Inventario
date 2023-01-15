@@ -5,6 +5,7 @@ import axios from 'axios';
 import { HOST } from 'config';
 import { dispatch, store } from '../index';
 import summary from 'utils/calculation';
+import { Articles, TransformsArticles } from 'utils/transformsArticles';
 import { openSnackbar } from './snackbar';
 import { getSupplierList } from './supplier';
 import { getWarehouseList } from './warehouse';
@@ -14,7 +15,7 @@ import { format } from 'date-fns';
 
 // types
 import { PurchaseStateProps } from 'types/purchase';
-import { Products } from 'types/products';
+import { Article } from 'types/purchase';
 
 // initial state
 const initialState: PurchaseStateProps = {
@@ -61,9 +62,9 @@ const slice = createSlice({
     },
     // UPDATE DETAILS PURCHASE
     editDetailsPurchaseSuccess(state, action) {
-      state.detailsPurchase = action.payload;
+      state.detailsPurchase = action.payload?.Articles;
+      state.order = action.payload;
     },
-
     // DELETE DETAILS PURCHASE
     deleteDetailsPurchaseSuccess(state, action) {
       const { id } = action.payload;
@@ -116,24 +117,17 @@ export function addPurchase(data: any) {
   return async () => {
     try {
       await dispatch(getPurchaseList());
-      let summaryOrder = summary(data.Articles, data?.Discount);
+
+      let summaryOrder = summary(Articles(data?.Articles), parseFloat(data?.Discount));
+
       const Newdata = {
         ...data,
         ...summaryOrder,
         Discount: parseFloat(data?.Discount) || 0,
         DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay) || 0,
-        Articles: data?.Articles.map((item: any) => ({
-          ProductID: item?.ProductID,
-          Count: Number(item?.Count) || 0,
-          BasePrice: parseFloat(item?.BasePrice) || 0,
-          Tax: Number(item?.Tax) || 0,
-          Discount: parseFloat(item?.DiscountNegotiated) || 0,
-          DiscountAdditional: parseFloat(item?.DiscountAdditional) || 0,
-          Bonus: Number(item?.Bonus) || 0,
-          SubTotal: Number(item?.SubTotal) || 0,
-          Total: Number(item?.Total) || 0
-        }))
+        Articles: Articles(data?.Articles)
       };
+
       const response = await axios.post(`${HOST}/purchase`, { ...Newdata });
       dispatch(
         openSnackbar({
@@ -165,22 +159,8 @@ export function getIDPurchase(id: number) {
 
       const response = await axios.get(`${HOST}/purchase?ID=${id}`);
       if (response.data) {
-        let Articles: any;
-        let dataNew: any;
-        Articles = response.data?.Articles?.map((item: Products | any) => {
-          return {
-            ...item,
-            ID: item?.ID,
-            ArticleID: item?.ID,
-            Name: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Name,
-            Sku: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Sku,
-            Ean: response.data?.Products.find((e: any) => e.ID === item.ProductID)?.Ean,
-            DiscountNegotiated: item?.Discount,
-            isSelected: true
-          };
-        });
-
-        dataNew = {
+        let Articles: Article[] = TransformsArticles(response.data?.Articles, response.data?.Products);
+        let dataNew: any = {
           ...response.data,
           Articles
         };
@@ -264,17 +244,27 @@ export function deletePurchase(id: number) {
 export function addItemsPurchase(data: any) {
   return async () => {
     try {
-      let products = data.filter((item: any) => item.isSelected === true).map((option: any) => option);
+      let products = data.filter((item: Article) => item.isSelected === true).map((option: Article) => option);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-export function editItemsPurchase(data: any) {
+export function editItemsPurchase(data: Article) {
   return async () => {
     try {
-      dispatch(slice.actions.editDetailsPurchaseSuccess(data));
+      let {
+        purchase: { order }
+      } = store.getState();
+
+      let summaryOrder = summary(data, parseFloat(order?.Discount));
+      let newData: any = {
+        ...order,
+        ...summaryOrder,
+        Articles: data
+      };
+      dispatch(slice.actions.editDetailsPurchaseSuccess(newData));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
@@ -283,7 +273,20 @@ export function editItemsPurchase(data: any) {
 export function deleteItemsPurchase(id: number) {
   return async () => {
     try {
-      dispatch(slice.actions.deleteDetailsPurchaseSuccess({ id }));
+      let {
+        purchase: { order, detailsPurchase }
+      } = store.getState();
+
+      let items: any = detailsPurchase.filter((item: Article) => item.ID !== id);
+
+      let summaryOrder = summary(items, parseFloat(order?.Discount));
+      let newData: any = {
+        ...order,
+        ...summaryOrder,
+        Articles: items
+      };
+
+      dispatch(slice.actions.editDetailsPurchaseSuccess(newData));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }

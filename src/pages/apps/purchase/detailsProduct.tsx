@@ -25,6 +25,9 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 import { useDispatch, useSelector } from 'store';
 
+// types
+import { Article } from 'types/purchase';
+
 const DetailsPurchase = ({ product }: any) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -34,7 +37,7 @@ const DetailsPurchase = ({ product }: any) => {
   const data = product && product?.length > 0 ? product : detailsPurchase;
 
   useEffect(() => {
-    let newData = data?.map((item: any) => ({
+    let newData = data?.map((item: Article) => ({
       Count: '',
       BasePrice: '',
       Tax: '',
@@ -50,7 +53,7 @@ const DetailsPurchase = ({ product }: any) => {
   }, [data]);
 
   const handleInputChange = (e: any, index: number) => {
-    const list = [...inputList];
+    const list: any = [...inputList];
     const { name, value } = e.target;
     if (name === 'Count') {
       list[index]['Count'] = Number(value);

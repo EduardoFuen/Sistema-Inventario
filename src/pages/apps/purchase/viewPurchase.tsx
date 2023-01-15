@@ -29,7 +29,7 @@ import PurchasePlaceholder from 'components/PurchasePlaceholder';
 import SummaryTemplate from 'components/SummaryTemplate';
 
 import DetailsPurchase from './detailsProduct';
-import summary from 'utils/calculation';
+// import summary from 'utils/calculation';
 import AddSelectProduct from './selectProducts';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
@@ -66,7 +66,7 @@ function ViewPurchase() {
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
   const [send, setSend] = useState<boolean>(false);
-  const [data, setData] = useState<any>();
+
   const { id } = useParams();
 
   const { supplierList } = useSelector((state) => state.supplier);
@@ -121,13 +121,6 @@ function ViewPurchase() {
       }
     }
   });
-
-  useEffect(() => {
-    const items = detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, orderPurchase?.Discount || 0);
-    if (items) {
-      setData(items);
-    }
-  }, [detailsPurchase, orderPurchase?.Discount]);
 
   const { handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -335,7 +328,7 @@ function ViewPurchase() {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  {data && orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && <SummaryTemplate data={data} />}
+                  {orderPurchase?.Articles && orderPurchase?.Articles.length > 0 && <SummaryTemplate data={orderPurchase} />}
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
