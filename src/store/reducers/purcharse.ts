@@ -65,12 +65,6 @@ const slice = createSlice({
       state.detailsPurchase = action.payload?.Articles;
       state.order = action.payload;
     },
-    // DELETE DETAILS PURCHASE
-    deleteDetailsPurchaseSuccess(state, action) {
-      const { id } = action.payload;
-      const index = state.detailsPurchase.findIndex((item) => item.ID === id);
-      state.detailsPurchase.splice(index, 1);
-    },
     // RESET DETAILS PURCHASE
     resetDetailsPurchaseSuccess(state) {
       state.detailsPurchase = [];
