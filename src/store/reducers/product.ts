@@ -86,10 +86,10 @@ export function getProducts(limit: number = 30, page: number = 1, sku = '') {
       queryParams = `limit=${limit}&page=${page}`;
       if (sku !== '') {
         if (sku.length <= 9) {
-          queryParams = `sku=${sku?.trim()}`;
+          queryParams = `Sku=${sku?.trim()}`;
         }
         if (sku.length >= 9) {
-          queryParams = `name=${sku?.trim()}`;
+          queryParams = `Name=${sku?.trim()}`;
         }
       }
       const response = await axios.get(`${HOST}/product?${queryParams}`);
@@ -129,7 +129,7 @@ export function getProductID(id: number) {
 export function getProductSKU(sku: string) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/product?sku=${sku}`);
+      const response = await axios.get(`${HOST}/product?Skus=${sku}`);
       dispatch(slice.actions.getProductSKUSuccess(response?.data?.Rows));
       return response?.data?.Rows;
     } catch (error: any) {

@@ -24,9 +24,9 @@ const Import = ({ onCancel }: Props) => {
     let newArray: any = [];
     data.map(async (item: any) => {
       setisLoading(true);
-      await dispatch(getProductSKU(item?.Sku));
-      newArray.push(item);
+      newArray.push(item?.Sku);
       if (data.length === newArray.length) {
+        await dispatch(getProductSKU(newArray?.join(',')));
         setActive(false);
         setisLoading(false);
       }
