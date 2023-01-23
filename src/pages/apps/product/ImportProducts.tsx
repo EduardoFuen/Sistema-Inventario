@@ -60,10 +60,9 @@ const Import = ({ onCancel }: Props) => {
         WarehouseIDS: item?.Warehouse ? ConvertToArray(item?.Warehouse?.toString(), warehouseList) : '',
         SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',
         Status: item?.Status ? getStatus(item?.Status) : false,
-        HandlesBaq: item?.id_baq?.toString() || '',
-        HandlesBog: item?.id_bog?.toString() || '',
+        HandlesBaq: item?.HandlesBaq?.toString() || '',
+        HandlesBog: item?.HandlesBog?.toString() || '',
         iva: item?.Tax?.toString(),
-        IDFloorProduct: item?.IDProduct?.toString(),
         Taxed: item?.IsTaxed
       }));
       await dispatch(addExcel(newData));

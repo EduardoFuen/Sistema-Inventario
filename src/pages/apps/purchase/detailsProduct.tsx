@@ -90,7 +90,7 @@ const DetailsPurchase = ({ product }: any) => {
               <TableCell align="center">PRECIO BASE</TableCell>
               <TableCell align="center">IVA</TableCell>
               <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
-              <TableCell align="center">DESCUENTO ADICIONAL %</TableCell>
+              <TableCell align="center">Descuento por nota credito %</TableCell>
               <TableCell align="center">BONIFICACIÓN</TableCell>
               <TableCell align="center">SUBTOTAL</TableCell>
               <TableCell align="center">TOTAL</TableCell>
@@ -166,7 +166,7 @@ const DetailsPurchase = ({ product }: any) => {
                     sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                     type="number"
                     InputProps={{ inputProps: { min: 0 } }}
-                    placeholder="Ingresar Descuento Adicional"
+                    placeholder="Ingresar Descuento por nota credito"
                     fullWidth
                     name="DiscountAdditional"
                     value={x.DiscountAdditional}

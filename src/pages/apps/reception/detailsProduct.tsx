@@ -110,7 +110,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         accessor: 'DiscountNegotiated'
       },
       {
-        Header: 'Descuento Adicional',
+        Header: 'Descuento por nota credito',
         accessor: 'DiscountAdditional'
       },
       {

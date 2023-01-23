@@ -272,7 +272,7 @@ function ViewPurchase() {
                             <TableCell align="center">PRECIO BASE</TableCell>
                             <TableCell align="center">IVA</TableCell>
                             <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
-                            <TableCell align="center">DESCUENTO ADICIONAL %</TableCell>
+                            <TableCell align="center">Descuento por nota credito %</TableCell>
                             <TableCell align="center">BONIFICACIÓN</TableCell>
                             <TableCell align="center">SUBTOTAL</TableCell>
                             <TableCell align="center">TOTAL</TableCell>
