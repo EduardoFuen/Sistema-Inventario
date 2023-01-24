@@ -103,7 +103,7 @@ export function getProducts(limit: number = 30, page: number = 1, sku = '') {
             totalRows,
             totalPages,
             page,
-            Rows
+            Rows: Rows && Rows.length > 0 ? Rows : response.data || []
           })
         );
       }

@@ -16,6 +16,7 @@ import 'assets/third-party/react-table.css';
 import App from './App';
 import { store, persister } from 'store';
 import { ConfigProvider } from 'contexts/ConfigContext';
+import { REDUCERVERSION } from 'config';
 
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
@@ -33,7 +34,7 @@ ReactDOM.render(
   </StrictMode>,
   document.getElementById('root') as HTMLElement
 );
-
+localStorage.setItem('reducerVersion', REDUCERVERSION);
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

@@ -5,6 +5,7 @@ import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 
 
 // project import
 import reducers from './reducers';
+import { REDUCERVERSION } from 'config';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
@@ -25,6 +26,15 @@ export type AppDispatch = typeof store.dispatch;
 const persister = persistStore(store);
 
 const { dispatch } = store;
+
+// Check to ensure latest reducer version
+const reducerVersion = localStorage.getItem('reducerVersion');
+
+if (reducerVersion !== REDUCERVERSION) {
+  localStorage.clear();
+  // Purge store
+  persistStore(store, null).purge();
+}
 
 const useDispatch = () => useAppDispatch<AppDispatch>();
 const useSelector: TypedUseSelectorHook<RootState> = useAppSelector;

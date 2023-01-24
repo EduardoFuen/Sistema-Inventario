@@ -19,6 +19,8 @@ import purchase from './purcharse';
 import inventory from './inventory';
 import reception from './reception';
 
+import { REDUCERVERSION } from 'config';
+
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -28,7 +30,7 @@ const reducers = combineReducers({
     {
       key: 'inventory',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     inventory
   ),
@@ -36,7 +38,7 @@ const reducers = combineReducers({
     {
       key: 'purchase',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     purchase
   ),
@@ -44,7 +46,7 @@ const reducers = combineReducers({
     {
       key: 'reception',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     reception
   ),
@@ -52,7 +54,7 @@ const reducers = combineReducers({
     {
       key: 'substances',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     activeSubst
   ),
@@ -60,7 +62,7 @@ const reducers = combineReducers({
     {
       key: 'supplier',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     supplier
   ),
@@ -68,7 +70,7 @@ const reducers = combineReducers({
     {
       key: 'typeProduct',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     typeProduct
   ),
@@ -76,7 +78,7 @@ const reducers = combineReducers({
     {
       key: 'categories',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     category
   ),
@@ -84,7 +86,7 @@ const reducers = combineReducers({
     {
       key: 'maker',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     maker
   ),
@@ -92,7 +94,7 @@ const reducers = combineReducers({
     {
       key: 'trademaker',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     trademaker
   ),
@@ -100,7 +102,7 @@ const reducers = combineReducers({
     {
       key: 'pack',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     pack
   ),
@@ -108,7 +110,7 @@ const reducers = combineReducers({
     {
       key: 'warehouse',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     warehouse
   ),
@@ -116,7 +118,7 @@ const reducers = combineReducers({
     {
       key: 'productReducer',
       storage,
-      keyPrefix: 'MidasV5-'
+      keyPrefix: REDUCERVERSION
     },
     productReducer
   )

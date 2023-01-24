@@ -58,7 +58,7 @@ const ProductList = () => {
 
   const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
-  const productsExport: any = productExport(products, typeProductList);
+  const productsExport: any = products && products.length > 0 ? productExport(products, typeProductList) : [];
 
   const handleAddProduct = () => {
     history(`/product-list/add`);
@@ -205,12 +205,14 @@ const ProductList = () => {
 
   const renderRowSubComponent = useCallback(({ row }) => <ProductView data={products[row.id]} />, [products]);
 
+  let listProducts = products && products.length > 0 ? products : [];
+
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columnsProducts}
-          data={products as []}
+          data={listProducts as []}
           handleImport={handleImport}
           handleAdd={handleAddProduct}
           TitleButton="Agregar Producto"
