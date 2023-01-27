@@ -130,8 +130,8 @@ export function getProductSKU(sku: string) {
   return async () => {
     try {
       const response = await axios.get(`${HOST}/product?Skus=${sku}`);
-      dispatch(slice.actions.getProductSKUSuccess(response?.data?.Rows));
-      return response?.data?.Rows;
+      dispatch(slice.actions.getProductSKUSuccess(response?.data));
+      return response?.data;
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }

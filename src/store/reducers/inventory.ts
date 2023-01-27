@@ -14,7 +14,10 @@ import { InventoryStateProps } from 'types/inventory';
 const initialState: InventoryStateProps = {
   error: null,
   listInventory: [],
-  isLoading: false
+  isLoading: false,
+  page: 0,
+  totalRows: 0,
+  totalPages: 0
 };
 
 const slice = createSlice({
@@ -34,7 +37,12 @@ const slice = createSlice({
     },
     // GET PURCHASES
     getInventorySuccess(state, action) {
-      state.listInventory = action.payload;
+      const { Rows, totalRows, totalPages, page } = action.payload;
+      state.listInventory = Rows;
+      state.page = page;
+      state.totalRows = totalRows;
+      state.totalPages = totalPages;
+      state.isLoading = false;
     }
   }
 });
@@ -44,15 +52,43 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getInventoryList(id: number = 21) {
+interface Props {
+  WarehouseID?: number;
+  limit?: number;
+  page?: number;
+  Sku?: string;
+  From?: string;
+  To?: string;
+}
+
+export function getInventoryList({ WarehouseID = 20, page = 1, Sku = '', From = '', To = '' }: Props) {
   return async () => {
     try {
       dispatch(slice.actions.loading());
+      let queryParams: string = '';
+      queryParams = `Page=${page}&`;
+      if (WarehouseID) {
+        queryParams += `WarehouseID=${WarehouseID}&`;
+      }
+      if (Sku !== '' && Sku.length <= 9) {
+        queryParams += `Sku=${Sku?.trim()}&`;
+      }
 
-      const response = await axios.get(`${HOST}/invetory?WarehouseID=${id}`);
-      if (response.data instanceof Array) {
-        dispatch(slice.actions.getInventorySuccess(response.data));
-        dispatch(slice.actions.loadingIs());
+      if (From !== '' && To !== '') {
+        queryParams += `From=${From}&To=${To}&`;
+      }
+
+      const response = await axios.get(`${HOST}/invetory?${queryParams}`);
+      if (response.data instanceof Object) {
+        const { Rows, totalRows, totalPages, page }: any = response.data;
+        dispatch(
+          slice.actions.getInventorySuccess({
+            totalRows,
+            totalPages,
+            page,
+            Rows
+          })
+        );
       }
     } catch (error: any) {
       dispatch(slice.actions.loadingIs());

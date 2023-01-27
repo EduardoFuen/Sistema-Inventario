@@ -37,6 +37,7 @@ interface Props {
   numberPage: number;
   isLoading: boolean;
   searchActive: boolean;
+  warehousesActive: boolean;
   warehouses: [];
   defaultWarehouse: number;
   handleChangeWareHouse: (value: number) => void;
@@ -68,6 +69,7 @@ const ReactTable = ({
   searchActive,
   warehouses,
   defaultWarehouse,
+  warehousesActive,
   handleChangeWareHouse
 }: Props) => {
   const theme = useTheme();
@@ -131,7 +133,7 @@ const ReactTable = ({
                 handleSearch={handleSearch}
               />
             )}
-            {!searchActive && (
+            {warehousesActive && (
               <Stack direction="row" alignItems="center" spacing={1}>
                 <WareHouseSelect data={warehouses} handleChange={handleChangeWareHouse} defaultWarehouse={defaultWarehouse} />
               </Stack>
@@ -244,6 +246,7 @@ ReactTable.defaultProps = {
   FontSize: false,
   isLoading: false,
   searchActive: true,
+  warehousesActive: false,
   totalRows: 0,
   numberPage: 0
 };

@@ -44,4 +44,7 @@ export interface InventoryStateProps {
   listInventory: Inventory[];
   error: object | string | null;
   isLoading: boolean;
+  page: number | undefined;
+  totalRows?: number | undefined;
+  totalPages?: number | undefined;
 }

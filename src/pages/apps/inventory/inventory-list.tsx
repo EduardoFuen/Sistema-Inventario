@@ -5,7 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
 
 // project import
-
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
@@ -20,10 +19,14 @@ const InventoryList = () => {
 
   useEffect(() => {
     dispatch(getWarehouseList());
-    dispatch(getInventoryList());
+    dispatch(
+      getInventoryList({
+        WarehouseID: 20
+      })
+    );
   }, [dispatch]);
 
-  const { listInventory, isLoading } = useSelector((state) => state.inventory);
+  const { listInventory, isLoading, page, totalPages } = useSelector((state) => state.inventory);
   const { warehouseList } = useSelector((state) => state.warehouse);
 
   const columns = useMemo(
@@ -47,7 +50,6 @@ const InventoryList = () => {
         accessor: 'Sku',
         Cell: ({ row }: any) => {
           const { original } = row;
-
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
@@ -297,12 +299,32 @@ const InventoryList = () => {
           isLoading={isLoading}
           dataExport={listInventory as []}
           FileName="ReporteInventario"
-          searchActive={false}
           warehouses={warehouseList as []}
+          warehousesActive={true}
           defaultWarehouse={Number(warehouseList[0]?.ID) || 0}
           handleChangeWareHouse={(value: number) => {
-            dispatch(getInventoryList(value));
+            dispatch(
+              getInventoryList({
+                WarehouseID: value
+              })
+            );
           }}
+          handleSearch={(value: any) => {
+            dispatch(
+              getInventoryList({
+                Sku: value
+              })
+            );
+          }}
+          handlePagination={(page: number) => {
+            dispatch(
+              getInventoryList({
+                page: page + 1
+              })
+            );
+          }}
+          numberPage={page}
+          totalRows={totalPages}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
         />
       </ScrollX>
