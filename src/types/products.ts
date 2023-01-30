@@ -1,5 +1,5 @@
 // product
-export type Products = {
+export type Product = {
   ID?: string | number | undefined;
   Name?: string;
   Quantity?: number | string;
@@ -45,8 +45,8 @@ export type Products = {
 };
 
 export interface ProductStateProps {
-  products: Products[];
-  product: Products | null;
+  products: Product[];
+  product: Product | null;
   error: object | string | null | any;
   page: number | undefined;
   totalRows?: number | undefined;
@@ -59,14 +59,14 @@ export interface DefaultRootStateProps {
 }
 
 // Pack
-export type Packs = {
+export type Pack = {
   ID?: string | number | undefined;
   Name?: string;
   Status?: boolean;
 };
 
 export interface PackStateProps {
-  packList: Packs[];
+  packList: Pack[];
   error: object | string | null;
 }
 

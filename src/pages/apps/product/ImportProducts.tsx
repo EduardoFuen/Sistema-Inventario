@@ -10,7 +10,7 @@ import getStatus from 'utils/getStatus';
 import { containsNumbers } from 'utils/containsNumbers';
 
 // types
-import { Products } from 'types/products';
+import { Product } from 'types/products';
 
 // ==============================|| PRODUCT IMPORT ||============================== //
 
@@ -35,7 +35,7 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       setSubmitting(true);
-      const newData: Products = data?.map((item: any) => ({
+      const newData: Product = data?.map((item: any) => ({
         Name: item?.Name?.toString(),
         Sku: item?.Sku?.toString(),
         Ean: item?.Ean?.toString(),

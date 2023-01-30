@@ -5,23 +5,34 @@ import { Stack, Typography } from '@mui/material';
 import MainCard from 'components/MainCard';
 
 // ==============================|| SUMMARY ORDER ||============================== //
+interface Value {
+  Total: number;
+  SubTotal: number;
+  Tax: number;
+  SubtotalWithDiscount: number;
+  DiscountGlobal: number;
+}
 
-const SummaryTemplate = ({ data }: any) => (
+interface Props {
+  data: Value;
+}
+
+const SummaryTemplate = ({ data }: Props) => (
   <MainCard>
     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 6 }}>
       <Typography variant="subtitle1">Subtotal: $ {data?.SubTotal || 0}</Typography>
     </Stack>
-    {data.DiscountGlobal !== 0 && (
+    {data?.DiscountGlobal !== 0 && (
       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
         <Typography variant="subtitle1">Descuento: $ {data?.DiscountGlobal || 0}</Typography>
       </Stack>
     )}
-    {data.SubtotalWithDiscount !== 0 && (
+    {data?.SubtotalWithDiscount !== 0 && (
       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
         <Typography variant="subtitle1">Subtotal con descuento: $ {data?.SubtotalWithDiscount || 0}</Typography>
       </Stack>
     )}
-    {data.Tax !== 0 && (
+    {data?.Tax !== 0 && (
       <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
         <Typography variant="subtitle1">IVA: $ {data?.Tax || 0}</Typography>
       </Stack>

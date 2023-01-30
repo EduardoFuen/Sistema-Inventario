@@ -10,14 +10,14 @@ import ScrollX from 'components/ScrollX';
 
 // assets
 
-const PackList = Loadable(lazy(() => import('../pack/pack-list')));
-const WarehouseList = Loadable(lazy(() => import('../warehouse/warehouse-list')));
-const MakerList = Loadable(lazy(() => import('../maker/maker')));
-const TrademarkList = Loadable(lazy(() => import('../trademark/trademark-list')));
-const Categories = Loadable(lazy(() => import('../categories/categories-list')));
-const TypeProduct = Loadable(lazy(() => import('../typeProduct/typeProduct-list')));
-const ActiveSubstances = Loadable(lazy(() => import('../activeSubstances/activeSubstances-list')));
-const ProductList = Loadable(lazy(() => import('../product/products-list')));
+const PackList = Loadable(lazy(() => import('../apps/pack/pack-list')));
+const WarehouseList = Loadable(lazy(() => import('../apps/warehouse/warehouse-list')));
+const MakerList = Loadable(lazy(() => import('../apps/maker/maker')));
+const TrademarkList = Loadable(lazy(() => import('../apps/trademark/trademark-list')));
+const Categories = Loadable(lazy(() => import('../apps/categories/categories-list')));
+const TypeProduct = Loadable(lazy(() => import('../apps/typeProduct/typeProduct-list')));
+const ActiveSubstances = Loadable(lazy(() => import('../apps/activeSubstances/activeSubstances-list')));
+const ProductList = Loadable(lazy(() => import('../apps/product/products-list')));
 
 // ==============================|| TAB ||============================== //
 

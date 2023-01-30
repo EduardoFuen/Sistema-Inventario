@@ -10,14 +10,14 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import AddPackList from 'sections/apps/products/pack-list/AddPackList';
-import Import from 'sections/apps/products/pack-list/ImportPackList';
+import Import from 'sections/apps/products/pack-list/ImportPack';
 import { useDispatch, useSelector } from 'store';
 import { getPackList, deletePack } from 'store/reducers/pack';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
-// ==============================|| PRODUCT LIST - MAIN ||============================== //
+// ==============================|| PACK LIST - MAIN ||============================== //
 
 const PackList = () => {
   const theme = useTheme();
@@ -133,7 +133,7 @@ const PackList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddPackList pack={pack} onCancel={handleAdd} />}
       </Dialog>
-      {/* add import Dialog */}
+      {/* add pack import Dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>

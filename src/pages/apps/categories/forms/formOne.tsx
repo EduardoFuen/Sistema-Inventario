@@ -13,9 +13,16 @@ import MainCard from 'components/MainCard';
 import { addCategoryOne, editCategory } from 'store/reducers/category';
 import { CATEGORY } from 'config';
 
+// types
+import { CategoryOne } from 'types/products';
+
 // ==============================|| ADD CATEGORY ONE - MAIN ||============================== //
 
-function AddCategoryOne({ categoryOne: category }: any) {
+interface Props {
+  data: CategoryOne;
+}
+
+function AddCategoryOne({ data }: Props) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,14 +36,14 @@ function AddCategoryOne({ categoryOne: category }: any) {
 
   const formik = useFormik({
     initialValues: {
-      Name: category?.Name || '',
-      Status: category?.Status || false
+      Name: data?.Name || '',
+      Status: data?.Status || false
     },
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.Name) {
-          await dispatch(editCategory(CATEGORY.CategoryOne, category?.ID, values));
+        if (data?.Name) {
+          await dispatch(editCategory(CATEGORY.CategoryOne, Number(data?.ID), values));
         } else {
           await dispatch(addCategoryOne(values));
           resetForm();
@@ -82,7 +89,7 @@ function AddCategoryOne({ categoryOne: category }: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={data?.Status} value={data?.Status} />}
                             label=""
                             labelPlacement="top"
                             {...getFieldProps('Status')}

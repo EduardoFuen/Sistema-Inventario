@@ -32,6 +32,7 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
+
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
   const { typeProductList } = useSelector((state) => state.typeProduct);

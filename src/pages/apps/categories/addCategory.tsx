@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom';
 
 // project import
 import MainCard from 'components/MainCard';
-import CategoryOneForms from './forms/categoryFormOne';
-import CategoryTwoForms from './forms/categoryFormTwo';
-import CategoryThreeForms from './forms/categoryFormOneThree';
+import FormOne from './forms/formOne';
+import FormTwo from './forms/formTwo';
+import FormThree from './forms/formThree';
 import { useSelector } from 'store';
 
 // types
@@ -18,32 +18,35 @@ import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
 
 function AddNewCategories() {
   const { id, index } = useParams();
+  const value = Number(index);
+  const ID = Number(id);
+
   const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
 
-  const category = useMemo(() => {
-    if (id && Number(index) === 0) {
-      return categoryListOne.find((item: CategoryOne) => item?.ID === Number(id));
+  const category: any = useMemo(() => {
+    if (ID && value === 0) {
+      return categoryListOne.find((item: CategoryOne) => item?.ID === ID);
     }
-    if (id && Number(index) === 1) {
-      return categoryListTwo.find((item: CategoryTwo) => item?.ID === Number(id));
+    if (ID && value === 1) {
+      return categoryListTwo.find((item: CategoryTwo) => item?.ID === ID);
     }
-    if (id && Number(index) === 2) {
-      return categoryListThree.find((item: CategoryThree) => item?.ID === Number(id));
+    if (ID && value === 2) {
+      return categoryListThree.find((item: CategoryThree) => item?.ID === ID);
     }
-  }, [categoryListOne, categoryListThree, categoryListTwo, id, index]);
+  }, [value, categoryListOne, ID, categoryListTwo, categoryListThree]);
 
   return (
     <>
       <MainCard>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <CategoryOneForms categoryOne={category} />
+            <FormOne data={category} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CategoryTwoForms categoryTwo={category} />
+            <FormTwo data={category} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CategoryThreeForms categoryThree={category} />
+            <FormThree data={category} />
           </Grid>
         </Grid>
       </MainCard>

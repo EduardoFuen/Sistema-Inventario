@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 interface Props {
   setData: ({ data }: any) => void;
 }
-/* A component that allows you to import an excel file and convert it to json. */
 
 const ImportFile = ({ setData }: Props) => {
   const [__html, setHTML] = useState<any>('');

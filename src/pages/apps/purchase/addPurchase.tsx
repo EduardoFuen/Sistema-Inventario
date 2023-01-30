@@ -11,7 +11,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project import
 import MainCard from 'components/MainCard';
 import summary from 'utils/calculation';
-import Import from './ImportDetailsProduct';
+import Import from './importLinePurchase';
 import AddSelectProduct from './selectProducts';
 import Export from 'components/ExportToFile';
 import SummaryTemplate from 'components/SummaryTemplate';
@@ -223,7 +223,7 @@ function AddPurchase() {
 
                     <Grid item xs={12} alignSelf="center">
                       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
-                        <Export excelData={ProductPurchaseDefault} fileName="Details Purchase" title="Descargar plantilla de productos" />
+                        <Export excelData={ProductPurchaseDefault} fileName="Line Purchase" title="Descargar plantilla de productos" />
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
                           Importar Productos
                         </Button>
@@ -279,6 +279,7 @@ function AddPurchase() {
       <Dialog maxWidth="lg" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {add && <AddSelectProduct onCancel={handleAdd} />}
       </Dialog>
+      {/* import product Purchase dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>

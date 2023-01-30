@@ -37,8 +37,8 @@ import { getWarehouseList } from 'store/reducers/warehouse';
 
 // types
 import {
-  Products,
-  Packs,
+  Product,
+  Pack,
   TypeProduct,
   Warehouses,
   Trademark,
@@ -55,7 +55,7 @@ import { CameraOutlined } from '@ant-design/icons';
 // ==============================|| EDIT PRODUCT - MAIN ||============================== //
 
 const getInitialValues = (product: FormikValues | null) => {
-  const newProduct: Products = {
+  const newProduct: Product = {
     Name: product?.Name,
     Sku: product?.Sku,
     Ean: product?.Ean,
@@ -128,7 +128,7 @@ function UpdateProduct() {
 
   const product = useMemo(() => {
     if (id) {
-      return products.find((item: Products) => item.ID === Number(id));
+      return products.find((item: Product) => item.ID === Number(id));
     }
   }, [id, products]);
 
@@ -163,7 +163,7 @@ function UpdateProduct() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let data: Products = {
+        let data: Product = {
           ...values,
           CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),
@@ -476,8 +476,8 @@ function UpdateProduct() {
                         fullWidth
                       >
                         {packList
-                          .filter((item: Packs) => item.Status === true)
-                          .map((option: Packs) => (
+                          .filter((item: Pack) => item.Status === true)
+                          .map((option: Pack) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -627,7 +627,7 @@ function UpdateProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products.filter((item: Products) => item.Status === true)}
+                        options={products.filter((item: Product) => item.Status === true)}
                         getOptionLabel={(option: string | any) => option.Name ?? option}
                         defaultValue={[...(product?.Substitutes || '')] as []}
                         filterSelectedOptions

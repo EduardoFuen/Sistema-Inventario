@@ -8,7 +8,7 @@ import { filter } from 'lodash';
 import getStatus from 'utils/getStatus';
 
 // types
-import { Packs } from 'types/products';
+import { Pack } from 'types/products';
 
 // ==============================|| PACK IMPORT ||============================== //
 
@@ -22,8 +22,8 @@ const ImportPack = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data;
-      filter((item: Packs) => item.ID !== '').map((item: Packs) => ({
+      const newData: Pack[] = data;
+      filter((item: Pack) => item.ID !== '').map((item: Pack) => ({
         Name: item?.Name?.toString(),
         Status: item?.Status ? getStatus(item?.Status) : false,
         ID: item?.ID || 0

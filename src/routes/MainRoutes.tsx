@@ -15,26 +15,21 @@ const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/viewPurc
 
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/viewReception')));
-const AppInventoryList = Loadable(lazy(() => import('pages/apps/inventory/inventory-list')));
 
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
-const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/addSupplier')));
-const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/editSupplier')));
+const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/add')));
+const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/edit')));
 
-const AppProductList = Loadable(lazy(() => import('pages/apps/productMainView/products')));
+const AppProductList = Loadable(lazy(() => import('pages/MainView/mainProduct')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/addProduct')));
 const AppEditProduct = Loadable(lazy(() => import('pages/apps/product/editProduct')));
 const AppAddCategory = Loadable(lazy(() => import('pages/apps/categories/addCategory')));
 
+const AppInventoryList = Loadable(lazy(() => import('pages/apps/inventory/inventory-list')));
+
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
-const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-password')));
-const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
 const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
-
-const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/404')));
-const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500')));
-const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -131,40 +126,11 @@ const MainRoutes = {
       ]
     },
     {
-      path: '/maintenance',
-      children: [
-        {
-          path: '404',
-          element: <MaintenanceError />
-        },
-        {
-          path: '500',
-          element: <MaintenanceError500 />
-        },
-        {
-          path: 'under-construction',
-          element: <MaintenanceUnderConstruction />
-        }
-      ]
-    },
-    {
       path: '/auth',
       children: [
         {
           path: 'login',
           element: <AuthLogin />
-        },
-        {
-          path: 'login',
-          element: <AuthLogin />
-        },
-        {
-          path: 'forgot-password',
-          element: <AuthForgotPassword />
-        },
-        {
-          path: 'reset-password',
-          element: <AuthResetPassword />
         },
         {
           path: 'register',

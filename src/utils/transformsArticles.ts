@@ -1,5 +1,5 @@
 // types
-import { Products } from 'types/products';
+import { Product } from 'types/products';
 
 /**
  * It takes an array of objects and returns an array of objects with the same keys but different values
@@ -22,9 +22,9 @@ export const Articles = (data: object[]) =>
 /**
  * It takes an array of objects and an array of objects and returns an array of objects
  * @param {object[]} data - object[] - this is the data that you want to transform
- * @param {Products[]} products - Products[]
+ * @param {Product[]} Product - Product[]
  */
-export const TransformsArticles = (data: object[], products: Products[]) =>
+export const TransformsArticles = (data: object[], products: Product[]) =>
   data.map((item: any) => ({
     ...item,
     ID: item?.ID,

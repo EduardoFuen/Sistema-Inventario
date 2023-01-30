@@ -18,7 +18,7 @@ import { useSelector } from 'store';
 // assets
 import { CheckSquareOutlined } from '@ant-design/icons';
 
-// ==============================|| DETAILS PRODUCT RECEPTION - LIST VIEW ||============================== //
+// ==============================|| LINE RECEPTION - LIST VIEW ||============================== //
 
 interface PropsProduct {
   products: [];

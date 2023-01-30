@@ -16,7 +16,7 @@ import SummaryTemplate from 'components/SummaryTemplate';
 import PurchasePlaceholder from 'components/PurchasePlaceholder';
 import AddReceptionModal from './addReception';
 import summary from 'utils/calculation';
-import DetailsReception from './detailsProduct';
+import DetailsReception from './lineRecepction';
 import { DATEFORMAT } from 'config';
 
 import { useSelector, useDispatch } from 'store';

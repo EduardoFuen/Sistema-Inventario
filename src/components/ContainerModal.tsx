@@ -17,7 +17,7 @@ export interface Props {
 const ContainerModalImport = ({ onCancel, onSubmit, setData, data, Submitting, isLoading }: Props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DialogTitle>Importar Registro</DialogTitle>
+      <DialogTitle>Importar Archivo</DialogTitle>
       <Divider />
       <DialogContent sx={{ p: 2.5 }}>
         <Grid container spacing={3}>

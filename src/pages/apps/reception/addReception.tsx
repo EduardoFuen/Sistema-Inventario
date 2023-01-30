@@ -29,7 +29,7 @@ import { useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { getIDPurchase } from 'store/reducers/purcharse';
 import { AddRecepctionArticles, deleteItemsRecepction } from 'store/reducers/reception';
-import { Products } from 'types/products';
+import { Product } from 'types/products';
 // assets
 import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 
@@ -38,11 +38,11 @@ import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 export interface PropsSelect {
   onCancel: () => void;
   reception: any;
-  product: Products | any;
+  product: Product | any;
   id: number;
 }
 
-const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
+const AddReception = ({ onCancel, reception, product, id }: PropsSelect) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -305,4 +305,4 @@ const AddReceptionLot = ({ onCancel, reception, product, id }: PropsSelect) => {
   );
 };
 
-export default AddReceptionLot;
+export default AddReception;

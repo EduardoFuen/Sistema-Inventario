@@ -40,8 +40,8 @@ import { getWarehouseList } from 'store/reducers/warehouse';
 
 // types
 import {
-  Products,
-  Packs,
+  Product,
+  Pack,
   TypeProduct,
   Warehouses,
   Trademark,
@@ -58,7 +58,7 @@ import { CameraOutlined } from '@ant-design/icons';
 // ==============================|| ADD NEW PRODUCT - MAIN ||============================== //
 
 const getInitialValues = () => {
-  const newProduct: Products = {
+  const newProduct: Product = {
     Name: '',
     Sku: '',
     Ean: '',
@@ -166,7 +166,7 @@ function AddNewProduct() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let data: Products = {
+        let data: Product = {
           ...values,
           CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),
@@ -475,8 +475,8 @@ function AddNewProduct() {
                         fullWidth
                       >
                         {packList
-                          .filter((item: Packs) => item.Status === true)
-                          .map((option: Packs) => (
+                          .filter((item: Pack) => item.Status === true)
+                          .map((option: Pack) => (
                             <MenuItem key={option.Name} value={option.ID}>
                               {option.Name}
                             </MenuItem>
@@ -627,8 +627,8 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products.filter((item: Products) => item.Status === true)}
-                        getOptionLabel={(option: Products) => option.Name ?? ''}
+                        options={products.filter((item: Product) => item.Status === true)}
+                        getOptionLabel={(option: Product) => option.Name ?? ''}
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {

@@ -16,6 +16,7 @@ import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
 import { SearchIDToArray } from 'utils/findName';
 
 import { getProducts } from 'store/reducers/product';
+
 // ==============================|| SELECT PRODUCT PURCHASE - LIST VIEW ||============================== //
 
 export interface PropsSelect {

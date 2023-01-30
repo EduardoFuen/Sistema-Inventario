@@ -14,9 +14,15 @@ import { addCategoryTwo, editCategory } from 'store/reducers/category';
 import { useSelector } from 'store';
 import { CATEGORY } from 'config';
 
-// ==============================|| ADD CATEGORY TWO - MAIN ||============================== //
+// types
+import { CategoryTwo } from 'types/products';
 
-function AddCategoryTwo({ categoryTwo: category }: any) {
+// ==============================|| ADD CATEGORY TWO - MAIN ||============================== //
+interface Props {
+  data: CategoryTwo;
+}
+
+function AddCategoryTwo({ data }: Props) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
@@ -31,15 +37,15 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
 
   const formik = useFormik({
     initialValues: {
-      Name: category?.Name || '',
-      Status: category?.status || false,
-      CategoryOneID: category?.CategoryOneID || ''
+      Name: data?.Name || '',
+      Status: data?.Status || false,
+      CategoryOneID: data?.CategoryOneID || ''
     },
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.Name) {
-          await dispatch(editCategory(CATEGORY.CategoryOne, category?.ID, values));
+        if (data?.Name) {
+          await dispatch(editCategory(CATEGORY.CategoryOne, Number(data?.ID), values));
         } else {
           await dispatch(addCategoryTwo(values));
           resetForm();
@@ -106,7 +112,7 @@ function AddCategoryTwo({ categoryTwo: category }: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={data?.Status} value={data?.Status} />}
                             label=""
                             labelPlacement="top"
                             {...getFieldProps('Status')}

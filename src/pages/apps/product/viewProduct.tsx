@@ -1,11 +1,17 @@
 // material-ui
 import Avatar from 'components/@extended/Avatar';
-
 import { Box, Grid, Stack, TableCell, TableRow, Typography } from '@mui/material';
+
+// types
+import { Product } from 'types/products';
 
 // ==============================||  PRODUCT - VIEW ||============================== //
 
-const ProductView = ({ data }: any) => {
+interface Props {
+  data: Product;
+}
+
+const ProductView = ({ data }: Props) => {
   return (
     <TableRow sx={{ '&:hover': { bgcolor: `transparent !important` } }}>
       <TableCell colSpan={8} sx={{ p: 2.5 }}>

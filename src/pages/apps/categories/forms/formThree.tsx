@@ -13,10 +13,16 @@ import MainCard from 'components/MainCard';
 import { addCategoryThree, editCategory } from 'store/reducers/category';
 import { useSelector } from 'store';
 import { CATEGORY } from 'config';
+// types
+import { CategoryThree } from 'types/products';
 
 // ==============================|| ADD CATEGORY THREE - MAIN ||============================== //
 
-function AddCategoryThree({ categoryThree: category }: any) {
+interface Props {
+  data: CategoryThree;
+}
+
+function AddCategoryThree({ data }: Props) {
   const history = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,16 +39,16 @@ function AddCategoryThree({ categoryThree: category }: any) {
 
   const formik = useFormik({
     initialValues: {
-      Name: category?.Name || '',
-      CategoryOneID: category?.CategoryOneID || '',
-      CategoryTwoID: category?.CategoryTwoID || '',
-      Status: category?.Status || false
+      Name: data?.Name || '',
+      CategoryOneID: data?.CategoryOneID || '',
+      CategoryTwoID: data?.CategoryTwoID || '',
+      Status: data?.Status || false
     },
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        if (category?.Name) {
-          await dispatch(editCategory(CATEGORY.CategoryThree, category?.ID, values));
+        if (data?.Name) {
+          await dispatch(editCategory(CATEGORY.CategoryThree, Number(data?.ID), values));
         } else {
           await dispatch(addCategoryThree(values));
           resetForm();
@@ -130,7 +136,7 @@ function AddCategoryThree({ categoryThree: category }: any) {
                         </Grid>
                         <Grid item xs={12} sm={9}>
                           <FormControlLabel
-                            control={<Switch sx={{ mt: 0 }} defaultChecked={category?.Status} value={category?.Status} />}
+                            control={<Switch sx={{ mt: 0 }} defaultChecked={data?.Status} value={data?.Status} />}
                             label=""
                             labelPlacement="top"
                             {...getFieldProps('Status')}
