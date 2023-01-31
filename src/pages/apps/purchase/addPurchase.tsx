@@ -12,7 +12,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import MainCard from 'components/MainCard';
 import summary from 'utils/calculation';
 import Import from './importLinePurchase';
-import AddSelectProduct from './selectProducts';
+import SelectLinePurchase from './selectLinePurchase';
 import Export from 'components/ExportToFile';
 import SummaryTemplate from 'components/SummaryTemplate';
 import DetailsPurchase from './detailsProduct';
@@ -277,7 +277,7 @@ function AddPurchase() {
       </MainCard>
       {/* add Product Purchase dialog */}
       <Dialog maxWidth="lg" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {add && <AddSelectProduct onCancel={handleAdd} />}
+        {add && <SelectLinePurchase onCancel={handleAdd} />}
       </Dialog>
       {/* import product Purchase dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

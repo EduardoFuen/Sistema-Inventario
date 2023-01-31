@@ -17,11 +17,7 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
-    if (value.length >= 5) {
-      handleSearch(value);
-    } else {
-      handleSearch(value);
-    }
+    handleSearch(value);
     setGlobalFilter(value || undefined);
   }, 200);
 

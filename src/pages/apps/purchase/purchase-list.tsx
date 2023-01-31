@@ -237,7 +237,7 @@ const PurchaseList = () => {
           data={listPurchase as []}
           handleImport={() => {}}
           handleAdd={handleAddPurchase}
-          TitleButton="Agregar Orden Compra"
+          TitleButton="Agregar"
           FileName="Purchase"
           hideButton={false}
           dataExport={newDataExport(listPurchase) as []}

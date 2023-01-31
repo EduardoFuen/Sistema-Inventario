@@ -179,7 +179,7 @@ const SupplierListPage = () => {
           data={supplierList as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
-          TitleButton="Agregar Proveedor"
+          TitleButton="Agregar"
           FileName="Proveedores"
           dataExport={data as []}
           FileNameTemplate="Descargar Plantilla"

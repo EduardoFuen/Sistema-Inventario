@@ -32,6 +32,8 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [typeSearch, setTypeSearch] = useState<any>('');
+  const [valueSearch, setvalueSearch] = useState<any>('');
 
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
@@ -216,22 +218,32 @@ const ProductList = () => {
           data={listProducts as []}
           handleImport={handleImport}
           handleAdd={handleAddProduct}
-          TitleButton="Agregar Producto"
+          TitleButton="Agregar"
           FileNameTemplate="Descargar Plantilla"
           dataExport={productsExport}
           download
           dataTemplate={ProductDefault as []}
           FileName="Productos"
+          activeSearchType
+          typeSearch={typeSearch}
+          setTypeSearch={(e: any) => {
+            setTypeSearch(e?.target?.value);
+            if (valueSearch && e?.target?.value) {
+              dispatch(getProducts(1, valueSearch, e?.target?.value));
+            }
+          }}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           renderRowSubComponent={renderRowSubComponent}
           handlePagination={(page: number) => {
-            dispatch(getProducts(30, page + 1));
+            dispatch(getProducts(page + 1));
           }}
           handleSearch={(value: any) => {
             if (value) {
-              dispatch(getProducts(30, 1, value));
+              setvalueSearch(value);
+              dispatch(getProducts(1, value, typeSearch));
             } else {
-              dispatch(getProducts(30, 1));
+              dispatch(getProducts(1));
+              setTypeSearch('');
             }
           }}
           isLoading={isLoading}

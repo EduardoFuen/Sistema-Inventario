@@ -23,7 +23,7 @@ export interface PropsSelect {
   onCancel: () => void;
 }
 
-const AddSelectProduct = ({ onCancel }: PropsSelect) => {
+const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [itemsNew, setItems] = useState<any[]>([]);
@@ -54,11 +54,6 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
           return <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
         },
         disableSortBy: true
-      },
-      {
-        Header: 'ID',
-        accessor: 'ID',
-        className: 'cell-center font-size'
       },
       {
         Header: 'Nombre Producto',
@@ -171,13 +166,13 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
             handleSelect={(row: any) => handleSelect(row)}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handlePagination={(page: number) => {
-              dispatch(getProducts(30, page + 1));
+              dispatch(getProducts(page + 1));
             }}
             handleSearch={(value: any) => {
               if (value) {
-                dispatch(getProducts(30, 1, value));
+                dispatch(getProducts(1, value));
               } else {
-                dispatch(getProducts(30, 1));
+                dispatch(getProducts(1));
               }
             }}
             isLoading={isLoading}
@@ -197,4 +192,4 @@ const AddSelectProduct = ({ onCancel }: PropsSelect) => {
   );
 };
 
-export default AddSelectProduct;
+export default SelectLinePurchase;

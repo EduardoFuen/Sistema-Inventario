@@ -78,20 +78,22 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function getProducts(limit: number = 30, page: number = 1, sku = '') {
+export function getProducts(page: number = 1, value: string = '', type: string = '') {
   return async () => {
     try {
       dispatch(slice.actions.loading());
       let queryParams: string = '';
-      queryParams = `limit=${limit}&page=${page}`;
-      if (sku !== '') {
-        if (sku.length <= 9) {
-          queryParams = `Sku=${sku?.trim()}`;
-        }
-        if (sku.length >= 9) {
-          queryParams = `Name=${sku?.trim()}`;
-        }
+      queryParams = `limit=30&page=${page}`;
+      if (value !== '' && type === '') {
+        queryParams += `&Name=${value?.trim()}`;
       }
+      if (type === 'Sku') {
+        queryParams += `&Sku=${value?.trim()}`;
+      }
+      if (type === 'Ean') {
+        queryParams += `&Ean=${value?.trim()}`;
+      }
+
       const response = await axios.get(`${HOST}/product?${queryParams}`);
 
       if (response.data instanceof Object) {
@@ -108,7 +110,7 @@ export function getProducts(limit: number = 30, page: number = 1, sku = '') {
         );
       }
     } catch (error: any) {
-      if (!sku && error?.response?.status === 404) {
+      if (error?.response?.status === 404) {
         dispatch(slice.actions.getProductsSuccess([]));
         dispatch(slice.actions.hasError(error));
       }

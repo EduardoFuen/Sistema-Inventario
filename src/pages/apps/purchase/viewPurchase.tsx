@@ -30,7 +30,7 @@ import SummaryTemplate from 'components/SummaryTemplate';
 
 import DetailsPurchase from './detailsProduct';
 // import summary from 'utils/calculation';
-import AddSelectProduct from './selectProducts';
+import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
 import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';

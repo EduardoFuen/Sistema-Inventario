@@ -2,7 +2,20 @@ import { useMemo, Fragment } from 'react';
 
 // material-ui
 import { alpha, useTheme } from '@mui/material/styles';
-import { Button, Box, Stack, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
+import {
+  Button,
+  Box,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  CircularProgress,
+  FormControl,
+  MenuItem,
+  Select
+} from '@mui/material';
 // third-party
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination, Column } from 'react-table';
 // project import
@@ -38,8 +51,11 @@ interface Props {
   isLoading: boolean;
   searchActive: boolean;
   warehousesActive: boolean;
+  activeSearchType: boolean;
+  setTypeSearch: (value: any) => void;
   warehouses: [];
   defaultWarehouse: number;
+  typeSearch: string;
   handleChangeWareHouse: (value: number) => void;
   handleSearch: (value: any) => void;
 }
@@ -70,7 +86,10 @@ const ReactTable = ({
   warehouses,
   defaultWarehouse,
   warehousesActive,
-  handleChangeWareHouse
+  handleChangeWareHouse,
+  activeSearchType,
+  typeSearch,
+  setTypeSearch
 }: Props) => {
   const theme = useTheme();
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -132,6 +151,16 @@ const ReactTable = ({
                 size="small"
                 handleSearch={handleSearch}
               />
+            )}
+
+            {activeSearchType && (
+              <FormControl sx={{ minWidth: 120 }}>
+                <Select value={typeSearch} onChange={setTypeSearch}>
+                  <MenuItem value="">---</MenuItem>
+                  <MenuItem value="Sku">SKU</MenuItem>
+                  <MenuItem value="Ean">Ean</MenuItem>
+                </Select>
+              </FormControl>
             )}
             {warehousesActive && (
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -234,6 +263,7 @@ ReactTable.defaultProps = {
   handlePagination: () => {},
   handleSearch: () => {},
   handleChangeWareHouse: () => {},
+  setTypeSearch: () => {},
   dataExport: [],
   dataTemplate: [],
   warehouses: [],
@@ -242,13 +272,15 @@ ReactTable.defaultProps = {
   download: false,
   TitleButton: '',
   FileNameTemplate: '',
+  typeSearch: '',
   FileName: '',
   FontSize: false,
   isLoading: false,
   searchActive: true,
   warehousesActive: false,
   totalRows: 0,
-  numberPage: 0
+  numberPage: 0,
+  activeSearchType: false
 };
 
 export default ReactTable;
