@@ -208,7 +208,7 @@ const ProductList = () => {
 
   const renderRowSubComponent = useCallback(({ row }) => <ProductView data={products[row.id]} />, [products]);
 
-  let listProducts = products && products.length > 0 ? products : [];
+  let listProducts: any = products && products.length > 0 ? products : [];
 
   return (
     <MainCard content={false}>

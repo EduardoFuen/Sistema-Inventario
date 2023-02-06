@@ -27,6 +27,9 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [itemsNew, setItems] = useState<any[]>([]);
+  const [typeSearch, setTypeSearch] = useState<any>('');
+  const [valueSearch, setvalueSearch] = useState<any>('');
+
   const { products, page, totalPages, isLoading } = useSelector((state) => state.product);
   const { tradeMarkList } = useSelector((state) => state.trademaker);
 
@@ -139,6 +142,7 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
             })
           );
           dispatch(addItemsPurchase(detailsPurchase));
+          dispatch(getProducts());
           onCancel();
         }}
       >
@@ -146,6 +150,8 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
       </Button>
     </Stack>
   );
+
+  let listProducts: any = products && products.length > 0 ? products : [];
 
   return (
     <ScrollX>
@@ -161,18 +167,28 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
         <DialogContent sx={{ p: 2.5 }}>
           <ReactTable
             columns={columns}
-            data={products as []}
+            data={listProducts as []}
             hideButton={false}
             handleSelect={(row: any) => handleSelect(row)}
             getHeaderProps={(column: any) => column.getSortByToggleProps()}
             handlePagination={(page: number) => {
               dispatch(getProducts(page + 1));
             }}
+            activeSearchType
+            typeSearch={typeSearch}
+            setTypeSearch={(e: any) => {
+              setTypeSearch(e?.target?.value);
+              if (valueSearch && e?.target?.value) {
+                dispatch(getProducts(1, valueSearch, e?.target?.value));
+              }
+            }}
             handleSearch={(value: any) => {
               if (value) {
                 dispatch(getProducts(1, value));
+                setvalueSearch(value);
               } else {
                 dispatch(getProducts(1));
+                setTypeSearch('');
               }
             }}
             isLoading={isLoading}
