@@ -36,7 +36,10 @@ const ReceptionList = () => {
     history(`/reception/view/${id}`);
   };
 
-  const { listPurchase } = useSelector((state) => state.purchase);
+  const {
+    listPurchase
+    /*  page, totalPages, isLoading  */
+  } = useSelector((state) => state.purchase);
 
   const handleInfoPDF = async (setIsLoading: any, id: number) => {
     dispatch(getIDPurchase(id)).then(async () => {
@@ -211,6 +214,12 @@ const ReceptionList = () => {
           FileName="Recepción"
           dataExport={newDataExport(listPurchase) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          /*      handlePagination={(page: number) => {
+            dispatch(getPurchaseList(page + 1));
+          }}
+          isLoading={isLoading}
+          numberPage={page}
+          totalRows={totalPages} */
         />
       </ScrollX>
     </MainCard>

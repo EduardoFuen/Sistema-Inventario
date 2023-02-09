@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getPackList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/pack`);
+      const response = await axios.get(`${HOST}/pack`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getPackSuccess(response.data));
       }
@@ -68,7 +68,7 @@ export function getPackList() {
 export function addPack(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/pack`, { ...data });
+      const response = await axios.post(`${HOST}/pack`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addPackSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -89,7 +89,7 @@ export function addPack(data: any) {
 export function editPack(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/pack`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/pack`, { ID: id, ...data }, { ...HEADER });
       dispatch(slice.actions.updatePackSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -110,7 +110,7 @@ export function editPack(id: number, data: any) {
 export function deletePack(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/pack`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/pack`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(getPackList());
         dispatch(
@@ -133,7 +133,7 @@ export function deletePack(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/pack`, data);
+      const response = await axios.post(`${HOST}/pack`, data, HEADER);
       dispatch(slice.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({

@@ -2,12 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { ReceptionStateProps } from 'types/reception';
+import { ReceptionStateProps, reception } from 'types/reception';
 
 // initial state
 const initialState: ReceptionStateProps = {
@@ -58,7 +58,7 @@ export function getAllReception() {
   return async () => {
     dispatch(slice.actions.hasReset());
     try {
-      const response = await axios.get(`${HOST}/reception`);
+      const response = await axios.get(`${HOST}/reception`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getAllReceptionSuccess(response.data));
       }
@@ -72,7 +72,7 @@ export function getByArticleId(id: number) {
   return async () => {
     dispatch(slice.actions.hasReset());
     try {
-      const response = await axios.get(`${HOST}/reception?ArticleID=${id}`);
+      const response = await axios.get(`${HOST}/reception?ArticleID=${id}`, HEADER);
       let data: any = response.data.map((item: any) => ({
         ...item,
         CountItemReception: item?.Count
@@ -100,17 +100,17 @@ export function AddRecepctionArticles(data: any, id: number) {
   return async () => {
     try {
       let newData: any = await Promise.all(
-        data?.Articles.filter((item: any) => !item.ID).map(async (item: any) => ({
+        data?.Articles.filter((item: reception) => !item.ID).map(async (item: reception) => ({
           Reason: Number(data?.Reason),
           Refund: Number(data?.Refund),
           Missing: Number(data?.Missing),
           Batch: item.Batch,
-          Count: Number(item?.CountItemReception),
+          Count: Number(item?.Count),
           Date: item.Date,
           ArticleID: id
         }))
       );
-      const response = await axios.post(`${HOST}/reception`, newData);
+      const response = await axios.post(`${HOST}/reception`, newData, { ...HEADER });
       if (response.data.length > 0) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));
@@ -118,7 +118,9 @@ export function AddRecepctionArticles(data: any, id: number) {
     } catch (error: any) {
       if (
         error?.response?.data?.Error?.trim() ===
-        'ProductoId() Bodega(Barranquilla): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega'
+          'ProductoId() Bodega(Barranquilla): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega' ||
+        error?.response?.data?.Error?.trim() ===
+          'ProductoId(CJS9UM8V) Bodega(Bogotá): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega'
       ) {
         dispatch(
           openSnackbar({
@@ -132,6 +134,7 @@ export function AddRecepctionArticles(data: any, id: number) {
           })
         );
       }
+      dispatch(slice.actions.hasError(error?.response?.data));
     }
   };
 }
@@ -139,7 +142,7 @@ export function AddRecepctionArticles(data: any, id: number) {
 export function deleteItemsRecepction(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/reception`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/reception`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(getAllReception());
         await dispatch(getByArticleId(id));

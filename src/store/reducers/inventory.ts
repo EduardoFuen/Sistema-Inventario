@@ -1,7 +1,7 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 
 // project imports
 import { dispatch } from '../index';
@@ -78,7 +78,7 @@ export function getInventoryList({ WarehouseID = 20, page = 1, Sku = '', From = 
         queryParams += `From=${From}&To=${To}&`;
       }
 
-      const response = await axios.get(`${HOST}/invetory?${queryParams}`);
+      const response = await axios.get(`${HOST}/inventory?${queryParams}`, HEADER);
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;
         dispatch(

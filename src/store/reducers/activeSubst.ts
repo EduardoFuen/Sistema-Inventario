@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getSubsList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/subtance`);
+      const response = await axios.get(`${HOST}/subtance`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getSubsSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getSubsList() {
 export function addSubs(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/subtance`, { ...data });
+      const response = await axios.post(`${HOST}/subtance`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addSubsSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -92,7 +92,7 @@ export function editSubs(id: number, data: any) {
   return async () => {
     dispatch(slice.actions.hasError(''));
     try {
-      const response = await axios.put(`${HOST}/subtance`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/subtance`, { ID: id, ...data }, { ...HEADER });
       dispatch(slice.actions.updateSubsSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -114,7 +114,10 @@ export function deleteSubs(id: number) {
   return async () => {
     dispatch(slice.actions.hasError(''));
     try {
-      const response = await axios.delete(`${HOST}/subtance`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/subtance`, {
+        ...HEADER,
+        data: { ID: id }
+      });
       if (response) {
         dispatch(
           openSnackbar({
@@ -137,7 +140,7 @@ export function deleteSubs(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/subtance`, data);
+      const response = await axios.post(`${HOST}/subtance`, data, { ...HEADER });
       dispatch(
         openSnackbar({
           open: true,

@@ -29,7 +29,6 @@ import PurchasePlaceholder from 'components/PurchasePlaceholder';
 import SummaryTemplate from 'components/SummaryTemplate';
 
 import DetailsPurchase from './detailsProduct';
-// import summary from 'utils/calculation';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';

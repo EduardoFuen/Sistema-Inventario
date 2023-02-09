@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default tradeMark.reducer;
 export function getTrademarkList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/trademark`);
+      const response = await axios.get(`${HOST}/trademark`, HEADER);
       if (response.data instanceof Array) {
         dispatch(tradeMark.actions.getTrademarkSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getTrademarkList() {
 export function addTrademark(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/trademark`, { ...data });
+      const response = await axios.post(`${HOST}/trademark`, { ...data }, { ...HEADER });
       dispatch(tradeMark.actions.addTrademarkSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -90,7 +90,7 @@ export function addTrademark(data: any) {
 export function editTrademark(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/trademark`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/trademark`, { ID: id, ...data }, { ...HEADER });
       dispatch(
         openSnackbar({
           open: true,
@@ -111,7 +111,7 @@ export function editTrademark(id: number, data: any) {
 export function deleteTrademark(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/trademark`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/trademark`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(
           openSnackbar({
@@ -134,7 +134,7 @@ export function deleteTrademark(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/trademark`, data);
+      const response = await axios.post(`${HOST}/trademark`, data, { ...HEADER });
       dispatch(tradeMark.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({

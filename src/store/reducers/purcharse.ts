@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch, store } from '../index';
 import summary from 'utils/calculation';
 import { Articles, TransformsArticles } from 'utils/transformsArticles';
@@ -24,7 +24,10 @@ const initialState: PurchaseStateProps = {
   listPurchase: [],
   detailsReption: [],
   order: {},
-  isLoading: false
+  isLoading: false,
+  page: 0,
+  totalRows: 0,
+  totalPages: 0
 };
 
 // ==============================||  PURCHASE  REDUCER ||============================== //
@@ -44,7 +47,12 @@ const slice = createSlice({
     },
     // GET PURCHASES
     getPurchaseSuccess(state, action) {
-      state.listPurchase = action.payload;
+      const { Rows, totalRows, totalPages, page } = action.payload;
+      state.listPurchase = Rows;
+      state.page = page;
+      state.totalRows = totalRows;
+      state.totalPages = totalPages;
+      state.isLoading = false;
       state.error = null;
     },
     // GET ID PURCHASE
@@ -80,22 +88,34 @@ const slice = createSlice({
 export default slice.reducer;
 
 // ----------------------------------------------------------------------
-export function getPurchaseList() {
+export function getPurchaseList(page: number = 1) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/purchase`);
-      if (response.data instanceof Array) {
-        let responseData: any = response.data.map((item: any) => {
-          return {
+      dispatch(slice.actions.loading());
+      // let queryParams: string = `limit=30&page=${page}`;
+      // const response = await axios.get(`${HOST}/purchase?${queryParams}`);
+      const response = await axios.get(`${HOST}/purchase`, HEADER);
+      if (response.data instanceof Object) {
+        //const { Rows, totalRows, totalPages, page }: any = response.data;
+
+        let rowsNew: any = response.data
+          .map((item: any) => ({
             ...item,
             NumberOrder: `Farmu-${item.ID}`,
             BusinessName: item?.Supplier?.BusinessName,
             Warehouse: item?.Warehouse?.Name,
             CreatedAt: format(new Date(item?.CreatedAt), DATEFORMAT)
+          }))
+          .sort((a: any, b: any) => a.ID - b.ID);
+
+        if (rowsNew.length > 0) {
+          let dataPurchase: any = {
+            Rows: rowsNew,
+            // totalRows,
+            // totalPages,
+            page
           };
-        });
-        if (responseData.length > 0) {
-          dispatch(slice.actions.getPurchaseSuccess(responseData));
+          dispatch(slice.actions.getPurchaseSuccess(dataPurchase));
           dispatch(slice.actions.hasError(null));
         }
       }
@@ -122,7 +142,7 @@ export function addPurchase(data: any) {
         Articles: Articles(data?.Articles)
       };
 
-      const response = await axios.post(`${HOST}/purchase`, { ...Newdata });
+      const response = await axios.post(`${HOST}/purchase`, { ...Newdata }, { ...HEADER });
       dispatch(
         openSnackbar({
           open: true,
@@ -151,7 +171,7 @@ export function getIDPurchase(id: number) {
       await dispatch(getSupplierList());
       await dispatch(getWarehouseList());
 
-      const response = await axios.get(`${HOST}/purchase?ID=${id}`);
+      const response = await axios.get(`${HOST}/purchase?ID=${id}`, HEADER);
       if (response.data) {
         let Articles: Article[] = TransformsArticles(response.data?.Articles, response.data?.Products);
         let dataNew: any = {
@@ -170,7 +190,7 @@ export function getIDPurchase(id: number) {
 export function editPurchase(id: number, data: any) {
   return async () => {
     try {
-      const response: any = await axios.put(`${HOST}/purchase`, { ...data, ID: id });
+      const response: any = await axios.put(`${HOST}/purchase`, { ...data, ID: id }, { ...HEADER });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(getIDPurchase(id));
@@ -214,7 +234,7 @@ export function deletePurchase(id: number) {
       let {
         purchase: { order }
       } = store.getState();
-      const response = await axios.put(`${HOST}/purchase`, { ID: id, ...order, status: 2 });
+      const response = await axios.put(`${HOST}/purchase`, { ID: id, ...order, status: 2 }, { ...HEADER });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(

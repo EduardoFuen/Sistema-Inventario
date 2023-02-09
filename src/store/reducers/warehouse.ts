@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default wareHouse.reducer;
 export function getWarehouseList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/warehouse`);
+      const response = await axios.get(`${HOST}/warehouse`, HEADER);
       if (response.data instanceof Array) {
         dispatch(wareHouse.actions.getWarehouseSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getWarehouseList() {
 export function addWarehouse(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/warehouse`, { ...data });
+      const response = await axios.post(`${HOST}/warehouse`, { ...data }, { ...HEADER });
       dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -91,7 +91,7 @@ export function addWarehouse(data: any) {
 export function editWarehouse(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/warehouse`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/warehouse`, { ID: id, ...data }, { ...HEADER });
       dispatch(wareHouse.actions.updateWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -113,7 +113,7 @@ export function editWarehouse(id: number, data: any) {
 export function deleteWarehouse(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/warehouse`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/warehouse`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(getWarehouseList());
         dispatch(
@@ -137,7 +137,7 @@ export function deleteWarehouse(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/warehouse`, data);
+      const response = await axios.post(`${HOST}/warehouse`, data, { ...HEADER });
       dispatch(wareHouse.actions.excelSuccess(response.data));
       dispatch(
         openSnackbar({

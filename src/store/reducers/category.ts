@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST, CATEGORY } from 'config';
+import { HOST, CATEGORY, HEADER } from 'config';
+
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -97,7 +98,7 @@ export default slice.reducer;
 export function getCategoryListOne() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categoryone`);
+      const response = await axios.get(`${HOST}/categoryone`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryOneSuccess(response.data));
       }
@@ -113,7 +114,7 @@ export function getCategoryListOne() {
 export function getCategoryListTwo() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categorytwo`);
+      const response = await axios.get(`${HOST}/categorytwo`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryTwoSuccess(response.data));
       }
@@ -128,7 +129,7 @@ export function getCategoryListTwo() {
 export function getCategoryListThree() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/categorythree`);
+      const response = await axios.get(`${HOST}/categorythree`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getCategoryThreeSuccess(response.data));
       }
@@ -143,7 +144,7 @@ export function getCategoryListThree() {
 export function addCategoryOne(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categoryone`, { ...data });
+      const response = await axios.post(`${HOST}/categoryone`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addCategoryOneSuccess(response.data));
       dispatch(Alert());
     } catch (error: any) {
@@ -155,7 +156,7 @@ export function addCategoryOne(data: any) {
 export function addCategoryTwo(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categorytwo`, { ...data });
+      const response = await axios.post(`${HOST}/categorytwo`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addCategoryTwoSuccess(response.data));
       dispatch(Alert());
     } catch (error: any) {
@@ -167,7 +168,7 @@ export function addCategoryTwo(data: any) {
 export function addCategoryThree(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/categorythree`, { ...data });
+      const response = await axios.post(`${HOST}/categorythree`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addCategoryThreeSuccess(response.data));
       dispatch(Alert());
     } catch (error: any) {
@@ -181,7 +182,7 @@ export function editCategory(type: string, id: number, data: any) {
     try {
       switch (type) {
         case CATEGORY.CategoryOne: {
-          const response = await axios.put(`${HOST}/categoryone`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categoryone`, { ID: id, ...data }, { ...HEADER });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -192,7 +193,7 @@ export function editCategory(type: string, id: number, data: any) {
           break;
         }
         case CATEGORY.CategoryTwo: {
-          const response = await axios.put(`${HOST}/categorytwo`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categorytwo`, { ID: id, ...data }, { ...HEADER });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -203,7 +204,7 @@ export function editCategory(type: string, id: number, data: any) {
           break;
         }
         default:
-          const response = await axios.put(`${HOST}/categorythree`, { ID: id, ...data });
+          const response = await axios.put(`${HOST}/categorythree`, { ID: id, ...data }, { ...HEADER });
           dispatch(
             slice.actions.updateCategorySuccess({
               type,
@@ -234,21 +235,21 @@ export function deleteCategory(id: number, type: string) {
     try {
       switch (type) {
         case CATEGORY.CategoryOne: {
-          const response = await axios.delete(`${HOST}/categoryone`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categoryone`, { ...HEADER, data: { ID: id } });
           if (response) {
             dispatch(getCategoryListOne());
           }
           break;
         }
         case CATEGORY.CategoryTwo: {
-          const response = await axios.delete(`${HOST}/categorytwo`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categorytwo`, { ...HEADER, data: { ID: id } });
           if (response) {
             dispatch(getCategoryListTwo());
           }
           break;
         }
         default:
-          const response = await axios.delete(`${HOST}/categorythree`, { data: { ID: id } });
+          const response = await axios.delete(`${HOST}/categorythree`, { ...HEADER, data: { ID: id } });
           if (response) {
             dispatch(getCategoryListThree());
           }
@@ -274,7 +275,7 @@ export function addExcel(data: any, index: number) {
     try {
       switch (index) {
         case 0: {
-          const response = await axios.post(`${HOST}/categoryone`, data);
+          const response = await axios.post(`${HOST}/categoryone`, data, { ...HEADER });
           dispatch(
             slice.actions.excelSuccess({
               index,
@@ -284,7 +285,7 @@ export function addExcel(data: any, index: number) {
           break;
         }
         case 1: {
-          const response = await axios.post(`${HOST}/categorytwo`, data);
+          const response = await axios.post(`${HOST}/categorytwo`, data, { ...HEADER });
           dispatch(
             slice.actions.excelSuccess({
               index,
@@ -294,7 +295,7 @@ export function addExcel(data: any, index: number) {
           break;
         }
         default:
-          const response = await axios.post(`${HOST}/categorythree`, data);
+          const response = await axios.post(`${HOST}/categorythree`, data, { ...HEADER });
           dispatch(
             slice.actions.excelSuccess({
               index,

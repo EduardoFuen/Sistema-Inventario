@@ -137,6 +137,14 @@ const MainRoutes = {
           element: <AuthRegister />
         }
       ]
+    },
+    {
+      path: '/*',
+      element: (
+        <AuthGuard>
+          <MainLayout />
+        </AuthGuard>
+      )
     }
   ]
 };

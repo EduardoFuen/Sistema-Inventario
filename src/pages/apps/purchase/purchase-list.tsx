@@ -229,19 +229,28 @@ const PurchaseList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
+
+  let list: any = listPurchase && listPurchase.length > 0 ? listPurchase : [];
+
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={listPurchase as []}
+          data={list as []}
           handleImport={() => {}}
           handleAdd={handleAddPurchase}
           TitleButton="Agregar"
           FileName="Purchase"
           hideButton={false}
           dataExport={newDataExport(listPurchase) as []}
+          /*     handlePagination={(page: number) => {
+            dispatch(getPurchaseList(page + 1));
+          }} */
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          /*        isLoading={isLoading}
+          numberPage={page}
+          totalRows={totalPages} */
         />
       </ScrollX>
     </MainCard>

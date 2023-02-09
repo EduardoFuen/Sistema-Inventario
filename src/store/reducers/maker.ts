@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default maker.reducer;
 export function getMakerList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/maker`);
+      const response = await axios.get(`${HOST}/maker`, HEADER);
       if (response.data instanceof Array) {
         dispatch(maker.actions.getMakerSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getMakerList() {
 export function addMaker(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/maker`, { ...data });
+      const response = await axios.post(`${HOST}/maker`, { ...data }, { ...HEADER });
       dispatch(maker.actions.addMakerSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -90,7 +90,7 @@ export function addMaker(data: any) {
 export function editMaker(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/maker`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/maker`, { ID: id, ...data }, { ...HEADER });
       dispatch(maker.actions.updateMakerSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -112,7 +112,7 @@ export function editMaker(id: number, data: any) {
 export function deleteMaker(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/maker`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/maker`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(
           openSnackbar({
@@ -135,7 +135,7 @@ export function deleteMaker(id: number) {
 export function addMakerExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/maker`, data);
+      const response = await axios.post(`${HOST}/maker`, data, { ...HEADER });
       dispatch(maker.actions.addMakerExcelSuccess(response.data));
       dispatch(
         openSnackbar({

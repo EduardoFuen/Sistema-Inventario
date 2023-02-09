@@ -11,9 +11,16 @@ export const AWS_API = {
   poolId: 'us-east-1_aM1PPjbsx',
   appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
 };
+export const AMZSECURITYTOKEN = 'DQYAAHNGJOMNHYYBXRGWCYLAURP';
+
+export const HEADER = {
+  headers: {
+    'X-Amz-Security-Token': 'DQYAAHNGJOMNHYYBXRGWCYLAURP'
+  }
+};
 
 export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV05-';
+export const REDUCERVERSION = 'MidasV002-';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 import { getTrademarkList } from './trademark';
@@ -94,7 +94,7 @@ export function getProducts(page: number = 1, value: string = '', type: string =
         queryParams += `&Ean=${value?.trim()}`;
       }
 
-      const response = await axios.get(`${HOST}/product?${queryParams}`);
+      const response = await axios.get(`${HOST}/product?${queryParams}`, HEADER);
 
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;
@@ -121,7 +121,7 @@ export function getProducts(page: number = 1, value: string = '', type: string =
 export function getProductID(id: number) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/product?ID=${id}`);
+      const response = await axios.get(`${HOST}/product?ID=${id}`, HEADER);
       dispatch(slice.actions.getProductIDSuccess(response.data));
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
@@ -131,7 +131,7 @@ export function getProductID(id: number) {
 export function getProductSKU(sku: string) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/product?Skus=${sku}`);
+      const response = await axios.get(`${HOST}/product?Skus=${sku}`, HEADER);
       dispatch(slice.actions.getProductSKUSuccess(response?.data));
       return response?.data;
     } catch (error: any) {
@@ -142,7 +142,7 @@ export function getProductSKU(sku: string) {
 export function addProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/product`, { ...data });
+      const response = await axios.post(`${HOST}/product`, { ...data }, { ...HEADER });
       await dispatch(getProducts());
       await dispatch(slice.actions.addProductSuccess(response.data));
       dispatch(
@@ -165,7 +165,7 @@ export function addProduct(data: any) {
 export function editProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/product`, { ID: id.toString(), ...data });
+      const response = await axios.put(`${HOST}/product`, { ID: id.toString(), ...data }, { ...HEADER });
       dispatch(
         slice.actions.editProductsSuccess({
           id,
@@ -193,7 +193,7 @@ export function editProduct(id: number, data: any) {
 export function deleteProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/product`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/product`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(getProducts());
         dispatch(
@@ -217,7 +217,7 @@ export function deleteProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/product`, data);
+      const response = await axios.post(`${HOST}/product`, data, { ...HEADER });
       dispatch(slice.actions.excelSuccess(response.data));
       dispatch(getProducts());
       dispatch(

@@ -20,7 +20,7 @@ export type reception = {
   Reason?: number;
   Count?: number;
   Batch?: number;
-  Date?: string;
+  Date?: Date;
 };
 
 export interface ReceptionStateProps {

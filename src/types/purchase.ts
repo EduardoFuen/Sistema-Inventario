@@ -40,4 +40,7 @@ export interface PurchaseStateProps {
   order: any;
   isLoading: boolean;
   error: object | string | null;
+  page: number | undefined;
+  totalRows?: number | undefined;
+  totalPages?: number | undefined;
 }

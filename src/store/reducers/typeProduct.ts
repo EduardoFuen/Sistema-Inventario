@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project imports
 import axios from 'axios';
-import { HOST } from 'config';
+import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
@@ -53,7 +53,7 @@ export default slice.reducer;
 export function getTypeProductList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/typeproduct`);
+      const response = await axios.get(`${HOST}/typeproduct`, HEADER);
       if (response.data instanceof Array) {
         dispatch(slice.actions.getTypeProductSuccess(response.data));
       }
@@ -69,7 +69,7 @@ export function getTypeProductList() {
 export function addTypeProduct(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/typeproduct`, { ...data });
+      const response = await axios.post(`${HOST}/typeproduct`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addTypeProductSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -90,7 +90,7 @@ export function addTypeProduct(data: any) {
 export function editTypeProduct(id: number, data: any) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/typeproduct`, { ID: id, ...data });
+      const response = await axios.put(`${HOST}/typeproduct`, { ID: id, ...data }, { ...HEADER });
       dispatch(slice.actions.updateTypeProductSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -112,7 +112,7 @@ export function editTypeProduct(id: number, data: any) {
 export function deleteTypeProduct(id: number) {
   return async () => {
     try {
-      const response = await axios.delete(`${HOST}/typeproduct`, { data: { ID: id } });
+      const response = await axios.delete(`${HOST}/typeproduct`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(
           openSnackbar({
@@ -135,7 +135,7 @@ export function deleteTypeProduct(id: number) {
 export function addExcel(data: any) {
   return async () => {
     try {
-      const response = await axios.post(`${HOST}/typeproduct`, data);
+      const response = await axios.post(`${HOST}/typeproduct`, data, { ...HEADER });
       dispatch(
         openSnackbar({
           open: true,
