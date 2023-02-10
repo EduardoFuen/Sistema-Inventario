@@ -40,7 +40,7 @@ import {
   Product,
   Pack,
   TypeProduct,
-  Warehouses,
+  Warehouse,
   Trademark,
   Maker,
   Substances,
@@ -118,7 +118,7 @@ function UpdateProduct() {
   }, [selectedImage]);
 
   const { makerList } = useSelector((state) => state.maker);
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
   const { products, error } = useSelector((state) => state.product);
@@ -191,6 +191,8 @@ function UpdateProduct() {
       }
     }
   });
+
+  let dataProduct: any = products.filter((item: Product) => item.Status === true);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
@@ -383,8 +385,8 @@ function UpdateProduct() {
                       <Autocomplete
                         multiple
                         id="warehouse-list"
-                        options={warehouseList.filter((item: Warehouses) => item.Status === true)}
-                        getOptionLabel={(option: Warehouses) => option.Name ?? ''}
+                        options={warehouseList.filter((item: Warehouse) => item.Status === true)}
+                        getOptionLabel={(option: Warehouse) => option.Name ?? ''}
                         defaultValue={[...(product?.Warehouses || '')] as []}
                         filterSelectedOptions
                         onChange={(event, newValue) => {
@@ -627,7 +629,7 @@ function UpdateProduct() {
                       <Autocomplete
                         multiple
                         id="list-product"
-                        options={products.filter((item: Product) => item.Status === true)}
+                        options={dataProduct}
                         getOptionLabel={(option: string | any) => option.Name ?? option}
                         defaultValue={[...(product?.Substitutes || '')] as []}
                         filterSelectedOptions

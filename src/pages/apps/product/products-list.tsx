@@ -24,6 +24,7 @@ import { ProductDefault } from 'config';
 
 // assets
 import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { Product } from 'types/products';
 
 // ==============================|| PRODUCT LIST - MAIN ||============================== //
 
@@ -36,7 +37,7 @@ const ProductList = () => {
   const [valueSearch, setvalueSearch] = useState<any>('');
 
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
   const { typeProductList } = useSelector((state) => state.typeProduct);
 
   useEffect(() => {
@@ -206,9 +207,9 @@ const ProductList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <ProductView data={products[row.id]} />, [products]);
+  const renderRowSubComponent = useCallback(({ row }: any) => <ProductView data={products[row.id]} />, [products]);
 
-  let listProducts: any = products && products.length > 0 ? products : [];
+  let listProducts: Product[] = products && products.length > 0 ? products : [];
 
   return (
     <MainCard content={false}>

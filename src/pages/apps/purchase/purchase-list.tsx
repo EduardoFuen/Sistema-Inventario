@@ -1,13 +1,10 @@
 import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
-
 // third-party
 import NumberFormat from 'react-number-format';
-
 // project import
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
@@ -19,6 +16,8 @@ import { newDataExport } from 'utils/PurchaseTransform';
 import { useSelector, useDispatch, store } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
+// types
+import { Purchase } from 'types/purchase';
 // assets
 import { DeleteTwoTone, EditTwoTone, FilePdfOutlined } from '@ant-design/icons';
 
@@ -230,7 +229,7 @@ const PurchaseList = () => {
     [theme]
   );
 
-  let list: any = listPurchase && listPurchase.length > 0 ? listPurchase : [];
+  let list: Purchase[] = listPurchase && listPurchase.length > 0 ? listPurchase : [];
 
   return (
     <MainCard content={false}>
@@ -243,7 +242,7 @@ const PurchaseList = () => {
           TitleButton="Agregar"
           FileName="Purchase"
           hideButton={false}
-          dataExport={newDataExport(listPurchase) as []}
+          dataExport={newDataExport(list) as []}
           /*     handlePagination={(page: number) => {
             dispatch(getPurchaseList(page + 1));
           }} */

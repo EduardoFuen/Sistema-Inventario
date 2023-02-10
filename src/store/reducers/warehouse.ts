@@ -8,8 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { WarehouseStateProps } from 'types/products';
-
+import { WarehouseStateProps, Warehouse } from 'types/products';
 // initial state
 const initialState: WarehouseStateProps = {
   error: null,
@@ -66,7 +65,7 @@ export function getWarehouseList() {
   };
 }
 
-export function addWarehouse(data: any) {
+export function addWarehouse(data: Warehouse) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/warehouse`, { ...data }, { ...HEADER });
@@ -88,7 +87,7 @@ export function addWarehouse(data: any) {
   };
 }
 
-export function editWarehouse(id: number, data: any) {
+export function editWarehouse(id: number, data: Warehouse) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/warehouse`, { ID: id, ...data }, { ...HEADER });
@@ -134,7 +133,7 @@ export function deleteWarehouse(id: number) {
   };
 }
 
-export function addExcel(data: any) {
+export function addExcel(data: Warehouse[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/warehouse`, data, { ...HEADER });

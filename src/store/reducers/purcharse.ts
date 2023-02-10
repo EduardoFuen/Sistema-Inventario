@@ -14,8 +14,7 @@ import { DATEFORMAT } from 'config';
 import { format } from 'date-fns';
 
 // types
-import { PurchaseStateProps } from 'types/purchase';
-import { Article } from 'types/purchase';
+import { PurchaseStateProps, Article, Purchase } from 'types/purchase';
 
 // initial state
 const initialState: PurchaseStateProps = {
@@ -97,7 +96,6 @@ export function getPurchaseList(page: number = 1) {
       const response = await axios.get(`${HOST}/purchase`, HEADER);
       if (response.data instanceof Object) {
         //const { Rows, totalRows, totalPages, page }: any = response.data;
-
         let rowsNew: any = response.data
           .map((item: any) => ({
             ...item,
@@ -127,18 +125,17 @@ export function getPurchaseList(page: number = 1) {
     }
   };
 }
-export function addPurchase(data: any) {
+export function addPurchase(data: Purchase) {
   return async () => {
     try {
       await dispatch(getPurchaseList());
-
-      let summaryOrder = summary(Articles(data?.Articles), parseFloat(data?.Discount));
+      let summaryOrder = summary(Articles(data?.Articles), Number(data?.Discount));
 
       const Newdata = {
         ...data,
         ...summaryOrder,
-        Discount: parseFloat(data?.Discount) || 0,
-        DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay) || 0,
+        Discount: data?.Discount || 0,
+        DiscountEarliyPay: data?.DiscountEarliyPay || 0,
         Articles: Articles(data?.Articles)
       };
 
@@ -187,7 +184,7 @@ export function getIDPurchase(id: number) {
   };
 }
 
-export function editPurchase(id: number, data: any) {
+export function editPurchase(id: number, data: Purchase) {
   return async () => {
     try {
       const response: any = await axios.put(`${HOST}/purchase`, { ...data, ID: id }, { ...HEADER });

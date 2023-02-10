@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { pdf, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
@@ -79,9 +80,12 @@ const styles = StyleSheet.create({
 });
 
 const RenderDocument = ({ data }: any) => {
+  const DocumentPDF: ReactNode | any = Document;
+  const PagePDF: ReactNode | any = Page;
+
   return (
-    <Document>
-      <Page style={styles.body}>
+    <DocumentPDF>
+      <PagePDF style={styles.body}>
         <Image src={Farmu} style={styles.image} />
         {data && data?.CreatedAt && (
           <Text style={styles.header} fixed>
@@ -170,8 +174,8 @@ const RenderDocument = ({ data }: any) => {
         {data?.Tax > 0 && <Text style={styles.summary}>IVA: {data?.Tax}</Text>}
         {data?.DiscountGlobal > 0 && <Text style={styles.summary}>Descuento: {data?.DiscountGlobal}</Text>}
         <Text style={styles.summary}>Total: {data?.Total}</Text>
-      </Page>
-    </Document>
+      </PagePDF>
+    </DocumentPDF>
   );
 };
 

@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { SupplierStateProps } from 'types/supplier';
+import { SupplierStateProps, Supplier } from 'types/supplier';
 
 // initial state
 const initialState: SupplierStateProps = {
@@ -66,7 +66,7 @@ export function getSupplierList() {
   };
 }
 
-export function createSupplier(data: any) {
+export function createSupplier(data: Supplier) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/supplier`, { ...data }, { ...HEADER });
@@ -77,7 +77,7 @@ export function createSupplier(data: any) {
   };
 }
 
-export function editSupplier(id: number, data: any) {
+export function editSupplier(id: number, data: Supplier) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/supplier`, { ID: id, ...data }, { ...HEADER });
@@ -111,7 +111,7 @@ export function deleteSupplier(id: number) {
     }
   };
 }
-export function addExcel(data: any) {
+export function addExcel(data: Supplier[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/supplier`, data, { ...HEADER });

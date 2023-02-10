@@ -121,11 +121,13 @@ function UpdateSuplier() {
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Razón Social</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('BusinessName')}
                         error={Boolean(touched.BusinessName && errors.BusinessName)}
-                        helperText={touched.BusinessName && errors.BusinessName}
+                        helperText={
+                          !Boolean(touched.BusinessName && errors.BusinessName) ? '' : String(touched.BusinessName && errors.BusinessName)
+                        }
                         placeholder="Ingresar Razón Social"
                         fullWidth
+                        {...getFieldProps('BusinessName')}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -134,7 +136,7 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Nit')}
                         error={Boolean(touched.Nit && errors.Nit)}
-                        helperText={touched.Nit && errors.Nit}
+                        helperText={Boolean(touched.Nit && errors.Nit) ? String(touched.Nit && errors.Nit) : ''}
                         placeholder="Ingresar NIT"
                         fullWidth
                       />
@@ -155,7 +157,9 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('NameContact')}
                         error={Boolean(touched.NameContact && errors.NameContact)}
-                        helperText={touched.NameContact && errors.NameContact}
+                        helperText={
+                          Boolean(touched.NameContact && errors.NameContact) ? String(touched.NameContact && errors.NameContact) : ''
+                        }
                         placeholder="Ingresar Nombre de Contacto"
                         fullWidth
                       />
@@ -166,7 +170,9 @@ function UpdateSuplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('PhoneContact')}
                         error={Boolean(touched.PhoneContact && errors.PhoneContact)}
-                        helperText={touched.PhoneContact && errors.PhoneContact}
+                        helperText={
+                          Boolean(touched.PhoneContact && errors.PhoneContact) ? String(touched.PhoneContact && errors.PhoneContact) : ''
+                        }
                         placeholder="Ingresar Teléfono"
                         fullWidth
                       />
@@ -180,7 +186,9 @@ function UpdateSuplier() {
                         fullWidth
                         {...getFieldProps('EmailContact')}
                         error={Boolean(touched.EmailContact && errors.EmailContact)}
-                        helperText={touched.EmailContact && errors.EmailContact}
+                        helperText={
+                          Boolean(touched.EmailContact && errors.EmailContact) ? String(touched.EmailContact && errors.EmailContact) : ''
+                        }
                       />
                     </Grid>
                   </Grid>
@@ -203,7 +211,9 @@ function UpdateSuplier() {
                             type="number"
                             InputProps={{ inputProps: { min: 0 } }}
                             error={Boolean(touched.LeadTimeBog && errors.LeadTimeBog)}
-                            helperText={touched.LeadTimeBog && errors.LeadTimeBog}
+                            helperText={
+                              Boolean(touched.LeadTimeBog && errors.LeadTimeBog) ? String(touched.LeadTimeBog && errors.LeadTimeBog) : ''
+                            }
                             placeholder="Ingresar Lead Time Bogota"
                             fullWidth
                           />
@@ -218,7 +228,9 @@ function UpdateSuplier() {
                             fullWidth
                             {...getFieldProps('LeadTimeBaq')}
                             error={Boolean(touched.LeadTimeBog && errors.LeadTimeBog)}
-                            helperText={touched.LeadTimeBog && errors.LeadTimeBog}
+                            helperText={
+                              Boolean(touched.LeadTimeBog && errors.LeadTimeBog) ? String(touched.LeadTimeBog && errors.LeadTimeBog) : ''
+                            }
                           />
                         </Grid>
                       </Grid>
@@ -252,7 +264,11 @@ function UpdateSuplier() {
                           );
                         })}
                       </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                      {touched?.PaymenTerm && formik.errors.PaymenTerm && (
+                        <FormHelperText error id="ErrorPaymenTerm">
+                          {String(errors?.PaymenTerm)}
+                        </FormHelperText>
+                      )}
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cupo</InputLabel>
@@ -264,7 +280,7 @@ function UpdateSuplier() {
                         fullWidth
                         {...getFieldProps('Cupo')}
                         error={Boolean(touched.Cupo && errors.Cupo)}
-                        helperText={touched.Cupo && errors.Cupo}
+                        helperText={Boolean(touched.Cupo && errors.Cupo) ? String(touched.Cupo && errors.Cupo) : ''}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -275,7 +291,9 @@ function UpdateSuplier() {
                         fullWidth
                         {...getFieldProps('DaysPayment')}
                         error={Boolean(touched.DaysPayment && errors.DaysPayment)}
-                        helperText={touched.DaysPayment && errors.DaysPayment}
+                        helperText={
+                          Boolean(touched.DaysPayment && errors.DaysPayment) ? String(touched.DaysPayment && errors.DaysPayment) : ''
+                        }
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -287,7 +305,7 @@ function UpdateSuplier() {
                         type="number"
                         {...getFieldProps('Discount')}
                         error={Boolean(touched.Discount && errors.Discount)}
-                        helperText={touched.Discount && errors.Discount}
+                        helperText={Boolean(touched.Discount && errors.Discount) ? String(touched.Discount && errors.Discount) : ''}
                       />
                     </Grid>
                   </Grid>

@@ -5,7 +5,7 @@ import Loader, { LoaderProps } from './Loader';
 
 // ==============================|| LOADABLE - LAZY LOADING ||============================== //
 
-const Loadable = (Component: LazyExoticComponent<() => JSX.Element> | ComponentType<ReactNode>) => (props: LoaderProps) =>
+const Loadable = (Component: LazyExoticComponent<() => JSX.Element> | ComponentType<ReactNode> | any) => (props: LoaderProps) =>
   (
     <Suspense fallback={<Loader />}>
       <Component {...props} />

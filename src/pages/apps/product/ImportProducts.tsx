@@ -24,7 +24,7 @@ const Import = ({ onCancel }: Props) => {
   const [Submitting, setSubmitting] = useState<boolean>(false);
 
   const { makerList } = useSelector((state) => state.maker);
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
   const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
@@ -35,17 +35,17 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       setSubmitting(true);
-      const newData: Product = data?.map((item: any) => ({
+      const newData: Product[] = data?.map((item: any) => ({
         Name: item?.Name?.toString(),
         Sku: item?.Sku?.toString(),
         Ean: item?.Ean?.toString(),
         MakerID: item?.Maker ? SearchNameToArray(makerList, item?.Maker)?.ID?.toString() : '',
-        TrademarkID: item?.Trademark ? SearchNameToArray(tradeMarkList, item?.Trademark)?.ID?.toString() : '',
-        TypesProductID: item?.Type_Product ? SearchNameToArray(typeProductList, item?.Type_Product)?.ID?.toString() : '',
+        TrademarkID: item?.TrademarkID ? SearchNameToArray(tradeMarkList, item?.TrademarkID)?.ID?.toString() : '',
+        TypesProductID: item?.TypesProductID ? SearchNameToArray(typeProductList, item?.TypesProductID)?.ID?.toString() : '',
         Variation: item?.Variation?.toString(),
         CategoryOneID: item?.Grupo ? SearchNameToArray(categoryListOne, item?.Grupo)?.ID?.toString() : '',
-        CategoryTwoID: item?.CategoryOne ? SearchNameToArray(categoryListTwo, item?.CategoryOne)?.ID?.toString() : '',
-        CategoryThreeID: item?.CategoryThree ? SearchNameToArray(categoryListThree, item?.CategoryThree)?.ID?.toString() : '',
+        CategoryTwoID: item?.CategoryOneID ? SearchNameToArray(categoryListTwo, item?.CategoryOneID)?.ID?.toString() : '',
+        CategoryThreeID: item?.CategoryTwoID ? SearchNameToArray(categoryListThree, item?.CategoryTwoID)?.ID?.toString() : '',
         PackID: item?.Pack ? SearchNameToArray(packList, item?.Pack)?.ID.toString() : '',
         Quantity: item?.Quantity ? containsNumbers(item?.Quantity?.toString()?.trim()) : '',
         MakerUnit: item?.MakerUnit?.toString()?.trim(),

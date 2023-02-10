@@ -49,7 +49,9 @@
   },
   "resolutions": {
     "@react-pdf/font": "2.2.1",
-    "@react-pdf/pdfkit": "2.1.0"
+    "@react-pdf/pdfkit": "2.1.0",
+    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "react-error-overlay": "6.0.9"
   },
   "scripts": {
     "start": "react-scripts start",

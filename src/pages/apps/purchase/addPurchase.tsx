@@ -25,9 +25,9 @@ import { getWarehouseList } from 'store/reducers/warehouse';
 import { getSupplierList } from 'store/reducers/supplier';
 
 // types
-import { Warehouses } from 'types/products';
+import { Warehouse } from 'types/products';
 import { Supplier } from 'types/supplier';
-
+import { Purchase } from 'types/purchase';
 // ==============================|| ADD NEW PURCHASE - MAIN ||============================== //
 
 const getInitialValues = () => {
@@ -83,10 +83,12 @@ function AddPurchase() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (detailsPurchase.length > 0) {
-          const newValue = {
+          const newValue: Purchase = {
             ...values,
             Status: 0,
-            Articles: detailsPurchase
+            Articles: detailsPurchase,
+            Discount: parseFloat(data?.Discount),
+            DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay)
           };
           await dispatch(addPurchase(newValue));
         }
@@ -168,8 +170,8 @@ function AddPurchase() {
                         helperText={touched.WarehouseID && errors.WarehouseID}
                       >
                         {warehouseList
-                          .filter((item: Warehouses) => item.Status === true)
-                          .map((option: Warehouses) => (
+                          .filter((item: Warehouse) => item.Status === true)
+                          .map((option: Warehouse) => (
                             <MenuItem key={option.ID} value={option.ID}>
                               {option.Name}
                             </MenuItem>

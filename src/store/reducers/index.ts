@@ -10,7 +10,7 @@ import productReducer from './product';
 import pack from './pack';
 import warehouse from './warehouse';
 import maker from './maker';
-import trademaker from './trademark';
+import trademark from './trademark';
 import category from './category';
 import supplier from './supplier';
 import typeProduct from './typeProduct';
@@ -90,13 +90,13 @@ const reducers = combineReducers({
     },
     maker
   ),
-  trademaker: persistReducer(
+  trademark: persistReducer(
     {
-      key: 'trademaker',
+      key: 'trademark',
       storage,
       keyPrefix: REDUCERVERSION
     },
-    trademaker
+    trademark
   ),
   pack: persistReducer(
     {

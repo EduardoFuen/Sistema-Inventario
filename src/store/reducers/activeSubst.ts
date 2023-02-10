@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { SubstancesStateProps } from 'types/products';
+import { SubstancesStateProps, Substances } from 'types/products';
 
 // initial state
 const initialState: SubstancesStateProps = {
@@ -66,7 +66,7 @@ export function getSubsList() {
   };
 }
 
-export function addSubs(data: any) {
+export function addSubs(data: Substances) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/subtance`, { ...data }, { ...HEADER });
@@ -88,7 +88,7 @@ export function addSubs(data: any) {
   };
 }
 
-export function editSubs(id: number, data: any) {
+export function editSubs(id: number, data: Substances) {
   return async () => {
     dispatch(slice.actions.hasError(''));
     try {
@@ -137,7 +137,7 @@ export function deleteSubs(id: number) {
     }
   };
 }
-export function addExcel(data: any) {
+export function addExcel(data: Substances[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/subtance`, data, { ...HEADER });

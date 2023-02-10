@@ -1,11 +1,11 @@
 /**
- * Country is an object with an id, a department, and cities.
+ * Country is an object with an id, a department, and an array of cities.
  * @property {string | number | undefined} id - The id of the country.
  * @property {string} department - The name of the department.
- * @property {any} cities - any;
+ * @property {string[]} cities - An array of strings.
  */
 export type Country = {
-  id: string | number | undefined;
+  id: number;
   department: string;
-  cities: any;
+  cities: string[];
 };

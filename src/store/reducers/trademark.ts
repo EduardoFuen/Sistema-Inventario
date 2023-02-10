@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { TrademarkStateProps } from 'types/products';
+import { TrademarkStateProps, Trademark } from 'types/products';
 
 // initial state
 const initialState: TrademarkStateProps = {
@@ -19,7 +19,7 @@ const initialState: TrademarkStateProps = {
 // ==============================||  TRADEMARK REDUCER ||============================== //
 
 const tradeMark = createSlice({
-  name: 'trademaker',
+  name: 'trademark',
   initialState,
   reducers: {
     // HAS ERROR
@@ -87,7 +87,7 @@ export function addTrademark(data: any) {
     }
   };
 }
-export function editTrademark(id: number, data: any) {
+export function editTrademark(id: number, data: Trademark) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/trademark`, { ID: id, ...data }, { ...HEADER });
@@ -131,7 +131,7 @@ export function deleteTrademark(id: number) {
     }
   };
 }
-export function addExcel(data: any) {
+export function addExcel(data: Trademark[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/trademark`, data, { ...HEADER });

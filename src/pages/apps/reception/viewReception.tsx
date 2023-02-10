@@ -24,7 +24,7 @@ import { getIDPurchase, editPurchase } from 'store/reducers/purcharse';
 import { getByArticleId, getAllReception } from 'store/reducers/reception';
 
 // types
-import { Warehouses } from 'types/products';
+import { Warehouse } from 'types/products';
 import { Supplier } from 'types/supplier';
 
 // ==============================|| VIEW RECEPTION - MAIN ||============================== //
@@ -143,8 +143,8 @@ function AddReception() {
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                         <TextField placeholder="Seleccionar Bodega" fullWidth select {...getFieldProps('WarehouseID')} disabled>
                           {warehouseList
-                            .filter((item: Warehouses) => item.Status === true)
-                            .map((option: Warehouses) => (
+                            .filter((item: Warehouse) => item.Status === true)
+                            .map((option: Warehouse) => (
                               <MenuItem key={option.ID} value={option.ID}>
                                 {option.Name}
                               </MenuItem>
@@ -264,7 +264,7 @@ function AddReception() {
                           fullWidth
                           disabled={order?.InvoiceNumber !== ''}
                           error={Boolean(touched.InvoiceNumber && errors.InvoiceNumber)}
-                          helperText={touched.InvoiceNumber && errors.InvoiceNumber}
+                          helperText={String(touched.InvoiceNumber && errors.InvoiceNumber)}
                         />
                       </Grid>
                     </Grid>

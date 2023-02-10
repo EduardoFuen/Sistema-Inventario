@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { MakerStateProps } from 'types/products';
+import { MakerStateProps, Maker } from 'types/products';
 
 // initial state
 const initialState: MakerStateProps = {
@@ -66,7 +66,7 @@ export function getMakerList() {
   };
 }
 
-export function addMaker(data: any) {
+export function addMaker(data: Maker) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/maker`, { ...data }, { ...HEADER });
@@ -87,7 +87,7 @@ export function addMaker(data: any) {
     }
   };
 }
-export function editMaker(id: number, data: any) {
+export function editMaker(id: number, data: Maker) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/maker`, { ID: id, ...data }, { ...HEADER });
@@ -132,7 +132,7 @@ export function deleteMaker(id: number) {
     }
   };
 }
-export function addMakerExcel(data: any) {
+export function addMakerExcel(data: Maker[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/maker`, data, { ...HEADER });

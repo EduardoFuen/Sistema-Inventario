@@ -1,3 +1,13 @@
+export type DefaultArticle = {
+  Sku?: string;
+  Quantity?: number;
+  BasePrice?: number;
+  Tax?: number;
+  DiscountNegotiated?: number;
+  DiscountAdditional?: number;
+  Bonus?: number;
+};
+
 export type Article = {
   ID?: string | number | undefined;
   ProductID?: number;
@@ -20,7 +30,7 @@ export type Purchase = {
   SupplierID?: number;
   WarehouseID?: number;
   Notes?: string;
-  Discount?: number;
+  Discount?: string | number | undefined;
   DiscountEarliyPay?: number;
   SubTotal?: number;
   DiscountGlobal?: number;

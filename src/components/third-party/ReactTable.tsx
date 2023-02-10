@@ -239,9 +239,9 @@ export const DraggableHeader = ({ children, column, index, reorder, sort }: Drag
   if (isOverCurrent) {
     borderColor = theme.palette.primary.main;
   }
-
+  let isDraggingBox: any = isDragging;
   return (
-    <Box sx={{ cursor: 'move', opacity: isDragging ? 0.5 : 1, color: borderColor }} ref={ref} {...isDragging}>
+    <Box sx={{ cursor: 'move', opacity: isDragging ? 0.5 : 1, color: borderColor }} ref={ref} {...isDraggingBox}>
       {children}
     </Box>
   );

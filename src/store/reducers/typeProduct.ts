@@ -8,7 +8,7 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { TypeProductStateProps } from 'types/products';
+import { TypeProductStateProps, TypeProduct } from 'types/products';
 
 // initial state
 const initialState: TypeProductStateProps = {
@@ -66,7 +66,7 @@ export function getTypeProductList() {
   };
 }
 
-export function addTypeProduct(data: any) {
+export function addTypeProduct(data: TypeProduct) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/typeproduct`, { ...data }, { ...HEADER });
@@ -87,7 +87,7 @@ export function addTypeProduct(data: any) {
     }
   };
 }
-export function editTypeProduct(id: number, data: any) {
+export function editTypeProduct(id: number, data: TypeProduct) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/typeproduct`, { ID: id, ...data }, { ...HEADER });
@@ -132,7 +132,7 @@ export function deleteTypeProduct(id: number) {
     }
   };
 }
-export function addExcel(data: any) {
+export function addExcel(data: TypeProduct[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/typeproduct`, data, { ...HEADER });

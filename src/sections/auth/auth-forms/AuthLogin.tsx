@@ -147,7 +147,7 @@ const AuthLogin = () => {
 
               {error && (
                 <Grid item xs={12}>
-                  <FormHelperText error>{error}</FormHelperText>
+                  <FormHelperText error>{String(error)}</FormHelperText>
                 </Grid>
               )}
               <Grid

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { addExcel } from 'store/reducers/supplier';
 import ContainerModal from 'components/ContainerModal';
 import { SupplierExport } from 'utils/SupplierTransform';
+import { Supplier } from 'types/supplier';
 
 // ==============================|| SUPPLIER IMPORT ||============================== //
 
@@ -18,7 +19,7 @@ const ImporSupplier = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = SupplierExport(data);
+      const newData: Supplier[] = SupplierExport(data);
       await dispatch(addExcel(newData));
       onCancel();
     } catch (error: any) {

@@ -1,5 +1,8 @@
 // types
-import { DefaultConfigProps } from 'types/config';
+import { DefaultConfigProps, DayPaymentPropsOption } from 'types/config';
+import { Supplier } from 'types/supplier';
+import { Product } from 'types/products';
+import { DefaultArticle } from 'types/purchase';
 
 export const drawerWidth = 260;
 
@@ -20,7 +23,7 @@ export const HEADER = {
 };
 
 export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV002-';
+export const REDUCERVERSION = 'MidasV004-';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
@@ -32,7 +35,7 @@ export const CATEGORY = {
 
 export const DATEFORMAT = 'dd-MM-yyyy';
 
-export const ProductDefault: any = [
+export const ProductDefault: Product[] = [
   {
     HandlesBaq: '',
     HandlesBog: '',
@@ -41,13 +44,12 @@ export const ProductDefault: any = [
     Sku: '',
     Ean: '',
     Maker: '',
-    Trademark: '',
-    Type_Product: '',
+    TrademarkID: '',
+    TypesProductID: '',
     Variation: '',
-    IDProduct: '',
     Grupo: '',
-    CategoryOne: '',
-    CategoryTwo: '',
+    CategoryOneID: '',
+    CategoryTwoID: '',
     Pack: '',
     Quantity: '',
     MakerUnit: '',
@@ -57,47 +59,47 @@ export const ProductDefault: any = [
     Height: '',
     WrapperUnit: '',
     Depth: '',
-    Warehouse: '',
+    Warehouses: '',
     Substance: '',
     Substitutes: '',
-    Status: false,
     Keywords: '',
-    Tax: '',
+    Tax: 0,
+    Status: false,
     IsTaxed: false
   }
 ];
 
-export const ProductPurchaseDefault: any = [
+export const ProductPurchaseDefault: DefaultArticle[] = [
   {
     Sku: '',
-    Quantity: '',
-    BasePrice: '',
-    Tax: '',
-    DiscountNegotiated: '',
-    DiscountAdditional: '',
-    Bonus: ''
+    Quantity: 0,
+    BasePrice: 0,
+    Tax: 0,
+    DiscountNegotiated: 0,
+    DiscountAdditional: 0,
+    Bonus: 0
   }
 ];
 
-export const DefaultSupplier: any = [
+export const DefaultSupplier: Supplier[] = [
   {
     ID: '',
     BusinessName: '',
     Nit: '',
-    Cupo: '',
+    Cupo: 0,
     DaysPayment: '',
-    LeadTimeBaq: '',
-    LeadTimeBog: '',
+    LeadTimeBaq: 0,
+    LeadTimeBog: 0,
     PaymenTerm: '',
-    Discount: '',
+    Discount: 0,
     NameContact: '',
     EmailContact: '',
-    PhoneContact: '',
-    Status: ''
+    PhoneContact: 0,
+    Status: false
   }
 ];
 
-export const DayPayment: any = [
+export const DayPayment: DayPaymentPropsOption[] = [
   {
     title: 'Pago inmediato',
     id: '0'

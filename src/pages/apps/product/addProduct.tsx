@@ -43,7 +43,7 @@ import {
   Product,
   Pack,
   TypeProduct,
-  Warehouses,
+  Warehouse,
   Trademark,
   Maker,
   Substances,
@@ -118,7 +118,7 @@ function AddNewProduct() {
   }, [selectedImage]);
 
   const { makerList } = useSelector((state) => state.maker);
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
   const { packList } = useSelector((state) => state.pack);
   const { typeProductList } = useSelector((state) => state.typeProduct);
   const { products, error } = useSelector((state) => state.product);
@@ -136,13 +136,14 @@ function AddNewProduct() {
     Ean: Yup.string().max(255).required('Ean es requerido')
   });
 
-  const onChange = (e: any) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target as HTMLInputElement;
+    const selectedFiles = files as FileList;
     let reader = new FileReader();
-    let file = e.target.files[0];
     reader.onloadend = () => {
       setFieldValue('UrlImage', reader.result);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(selectedFiles?.[0]);
   };
 
   useEffect(() => {
@@ -383,8 +384,8 @@ function AddNewProduct() {
                       <Autocomplete
                         multiple
                         id="warehouse-list"
-                        options={warehouseList.filter((item: Warehouses) => item.Status === true)}
-                        getOptionLabel={(option: Warehouses) => option.Name ?? ''}
+                        options={warehouseList.filter((item: Warehouse) => item.Status === true)}
+                        getOptionLabel={(option: Warehouse) => option.Name ?? ''}
                         defaultValue={[]}
                         filterSelectedOptions
                         onChange={(event, newValue) => {

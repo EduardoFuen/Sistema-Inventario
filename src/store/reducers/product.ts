@@ -10,7 +10,7 @@ import { getTrademarkList } from './trademark';
 import { getTypeProductList } from './typeProduct';
 
 // types
-import { DefaultRootStateProps } from 'types/products';
+import { DefaultRootStateProps, Product } from 'types/products';
 
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
@@ -139,7 +139,7 @@ export function getProductSKU(sku: string) {
     }
   };
 }
-export function addProduct(data: any) {
+export function addProduct(data: Product) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/product`, { ...data }, { ...HEADER });
@@ -162,7 +162,7 @@ export function addProduct(data: any) {
     }
   };
 }
-export function editProduct(id: number, data: any) {
+export function editProduct(id: number, data: Product) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/product`, { ID: id.toString(), ...data }, { ...HEADER });
@@ -214,7 +214,7 @@ export function deleteProduct(id: number) {
     }
   };
 }
-export function addExcel(data: any) {
+export function addExcel(data: Product[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/product`, data, { ...HEADER });

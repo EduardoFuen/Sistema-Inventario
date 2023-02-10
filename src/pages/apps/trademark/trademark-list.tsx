@@ -40,7 +40,7 @@ const TradeMarkList = () => {
     setActiveImport(!addImport);
   };
 
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
   const { makerList } = useSelector((state) => state.maker);
 
   const getMaker = (id: number) => {

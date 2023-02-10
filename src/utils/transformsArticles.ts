@@ -3,10 +3,10 @@ import { Product } from 'types/products';
 
 /**
  * It takes an array of objects and returns an array of objects with the same keys but different values
- * @param {object[]} data - object[] - this is the data that you want to map
+ * @param {object[]} data - any[] - this is the data that you want to map
  */
 
-export const Articles = (data: object[]) =>
+export const Articles = (data: any) =>
   data.map((item: any) => ({
     ProductID: item?.ProductID,
     Count: Number(item?.Count) || 0,

@@ -41,7 +41,8 @@ import { countrys } from 'data/countries';
 import { DeleteFilled } from '@ant-design/icons';
 
 // types
-import { Warehouses } from 'types/products';
+import { Warehouse } from 'types/products';
+import { Country } from 'types/country';
 
 // constant
 const getInitialValues = (warehouse: FormikValues | null) => {
@@ -72,7 +73,7 @@ export interface Props {
 const AddWarehouse = ({ warehouse, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !warehouse;
-  const [citys, setCities] = useState([]);
+  const [citys, setCities] = useState<string[]>([]);
 
   const UserSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
@@ -86,10 +87,10 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
     onCancel();
   };
 
-  const changeHandler = (item: any) => {
+  const changeHandler = (item: string) => {
     setCities([]);
     const index = countrys.findIndex((d) => d.department === item);
-    setCities(countrys[index].cities);
+    setCities(countrys[index]?.cities);
   };
 
   const formik = useFormik({
@@ -97,7 +98,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
     validationSchema: UserSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newWarehouse: Warehouses = {
+        const newWarehouse: Warehouse = {
           Name: values.Name,
           Department: values.Department,
           City: values.City,
@@ -165,7 +166,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                             return <Typography variant="subtitle2">{selected}</Typography>;
                           }}
                         >
-                          {countrys.map((column: any) => (
+                          {countrys.map((column: Country) => (
                             <MenuItem key={column.id} value={column.department}>
                               <ListItemText primary={column.department} />
                             </MenuItem>
@@ -197,7 +198,7 @@ const AddWarehouse = ({ warehouse, onCancel }: Props) => {
                             return <Typography variant="subtitle2">{selected}</Typography>;
                           }}
                         >
-                          {citys.map((column: any) => (
+                          {citys.map((column: string) => (
                             <MenuItem key={column} value={column}>
                               <ListItemText primary={column} />
                             </MenuItem>

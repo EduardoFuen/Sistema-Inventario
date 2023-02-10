@@ -30,6 +30,7 @@ export type Product = {
   WrapperUnit?: string;
   TrademarkID?: string;
   TypesProductID?: string;
+  Grupo?: string;
   CategoryOneID?: string;
   CategoryThreeID?: string;
   SubstitutesIDS?: string;
@@ -71,7 +72,7 @@ export interface PackStateProps {
 }
 
 // Warehouse
-export type Warehouses = {
+export type Warehouse = {
   ID?: string | number | undefined;
   Name?: string;
   Department?: string;
@@ -81,7 +82,7 @@ export type Warehouses = {
 };
 
 export interface WarehouseStateProps {
-  warehouseList: Warehouses[];
+  warehouseList: Warehouse[];
   error: object | string | null;
 }
 

@@ -92,7 +92,6 @@ export function getInventoryList({ WarehouseID = 20, page = 1, Sku = '', From = 
       }
     } catch (error: any) {
       dispatch(slice.actions.loadingIs());
-
       dispatch(slice.actions.hasError(error));
     }
   };

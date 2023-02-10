@@ -184,7 +184,7 @@ const SupplierListPage = () => {
           dataExport={data as []}
           FileNameTemplate="Descargar Plantilla"
           download
-          dataTemplate={DefaultSupplier}
+          dataTemplate={DefaultSupplier as []}
         />
       </ScrollX>
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

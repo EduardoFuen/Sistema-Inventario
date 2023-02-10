@@ -73,18 +73,13 @@ export function getByArticleId(id: number) {
     dispatch(slice.actions.hasReset());
     try {
       const response = await axios.get(`${HOST}/reception?ArticleID=${id}`, HEADER);
-      let data: any = response.data.map((item: any) => ({
-        ...item,
-        CountItemReception: item?.Count
-      }));
-
-      const TotalItemsCountReception = data.reduce((accumulator: any, obj: any) => accumulator + obj.CountItemReception, 0);
+      const TotalItemsCountReception = response.data.reduce((acc: any, obj: any) => acc + obj.Count, 0);
 
       let dataResponse: any = {
-        Missing: data[0].Missing,
-        Refund: data[0].Refund,
-        Reason: data[0].Reason,
-        Articles: data,
+        Missing: response.data[0].Missing,
+        Refund: response.data[0].Refund,
+        Reason: response.data[0].Reason,
+        Articles: response.data,
         TotalItemsCountReception,
         ArticleID: id
       };

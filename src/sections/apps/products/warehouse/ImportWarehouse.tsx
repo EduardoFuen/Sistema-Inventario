@@ -7,7 +7,7 @@ import { addExcel } from 'store/reducers/warehouse';
 import getStatus from 'utils/getStatus';
 
 // types
-import { Warehouses } from 'types/products';
+import { Warehouse } from 'types/products';
 
 // ==============================|| WAREHOUSE IMPORT ||============================== //
 
@@ -21,7 +21,7 @@ const ImportMarker = ({ onCancel }: Props) => {
 
   const onSubmit = async () => {
     try {
-      const newData = data?.map((item: Warehouses) => ({
+      const newData = data?.map((item: Warehouse) => ({
         Name: item?.Name?.toString(),
         Department: item?.Department,
         City: item?.City,

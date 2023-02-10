@@ -35,7 +35,7 @@ import { useSelector, useDispatch } from 'store';
 import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // types
-import { Warehouses } from 'types/products';
+import { Warehouse } from 'types/products';
 import { Supplier } from 'types/supplier';
 
 // assets
@@ -154,8 +154,8 @@ function ViewPurchase() {
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                         <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('WarehouseID')}>
                           {warehouseList
-                            .filter((item: Warehouses) => item.Status === true)
-                            .map((option: Warehouses) => (
+                            .filter((item: Warehouse) => item.Status === true)
+                            .map((option: Warehouse) => (
                               <MenuItem key={option.ID} value={option.ID}>
                                 {option.Name}
                               </MenuItem>

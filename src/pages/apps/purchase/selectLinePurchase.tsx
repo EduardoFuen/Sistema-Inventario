@@ -31,7 +31,7 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
   const [valueSearch, setvalueSearch] = useState<any>('');
 
   const { products, page, totalPages, isLoading } = useSelector((state) => state.product);
-  const { tradeMarkList } = useSelector((state) => state.trademaker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
 
   const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 

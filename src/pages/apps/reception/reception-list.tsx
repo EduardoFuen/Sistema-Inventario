@@ -13,10 +13,10 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { newDataExport } from 'utils/PurchaseTransform';
-
 import { useSelector, useDispatch, store } from 'store';
 import { getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
-
+// types
+import { Purchase } from 'types/purchase';
 // assets
 import { PlusCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 
@@ -203,16 +203,19 @@ const ReceptionList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
+
+  let list: Purchase[] = listPurchase && listPurchase.length > 0 ? listPurchase.filter((item) => item.Status === 1) : [];
+
   return (
     <MainCard content={false}>
       <ScrollX>
         <ReactTable
           columns={columns}
-          data={listPurchase.filter((item) => item.Status === 1) as []}
+          data={list as []}
           handleImport={() => {}}
           hideButton={false}
           FileName="Recepción"
-          dataExport={newDataExport(listPurchase) as []}
+          dataExport={newDataExport(list) as []}
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
           /*      handlePagination={(page: number) => {
             dispatch(getPurchaseList(page + 1));

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 // material-ui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Theme } from '@mui/material';
@@ -38,7 +39,7 @@ const SimpleBarStyle = styled(SimpleBar)(({ theme }) => ({
 
 // ==============================|| SIMPLE SCROLL BAR  ||============================== //
 
-export default function SimpleBarScroll({ children, sx, ...other }: MUIStyledCommonProps<Theme> & Props) {
+export default function SimpleBarScroll({ children, sx, ...other }: MUIStyledCommonProps<Theme> & Props & ReactNode & any) {
   return (
     <>
       <RootStyle>

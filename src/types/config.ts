@@ -39,3 +39,8 @@ export type CustomizationProps = {
   onChangeMiniDrawer: (miniDrawer: boolean) => void;
   onChangeFontFamily: (fontFamily: FontFamily) => void;
 };
+
+export type DayPaymentPropsOption = {
+  title: string;
+  id: string;
+};
