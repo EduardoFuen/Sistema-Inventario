@@ -19,15 +19,15 @@ export const HEADER = {
 };
 
 export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV007-';
+export const REDUCERVERSION = 'MidasV0010-';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
-export const CATEGORY = {
-  CategoryOne: 1,
-  CategoryTwo: 2,
-  CategoryThree: 3
-};
+export enum CATEGORY {
+  CategoryOne = 1,
+  CategoryTwo = 2,
+  CategoryThree = 3
+}
 
 export const DATEFORMAT = 'dd-MM-yyyy';
 

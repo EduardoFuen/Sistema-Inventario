@@ -242,7 +242,6 @@ const CategoriesList = () => {
                     case 1:
                       ID = row.original?.ID;
                       break;
-
                     default:
                       ID = row.original?.ID;
                       break;
