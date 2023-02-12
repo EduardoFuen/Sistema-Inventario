@@ -17,6 +17,9 @@ const InventoryList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const { listInventory, isLoading, page, totalPages } = useSelector((state) => state.inventory);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+
   useEffect(() => {
     dispatch(getWarehouseList());
     dispatch(
@@ -25,9 +28,6 @@ const InventoryList = () => {
       })
     );
   }, [dispatch]);
-
-  const { listInventory, isLoading, page, totalPages } = useSelector((state) => state.inventory);
-  const { warehouseList } = useSelector((state) => state.warehouse);
 
   const columns = useMemo(
     () => [

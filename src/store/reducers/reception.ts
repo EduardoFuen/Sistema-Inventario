@@ -107,7 +107,7 @@ export function AddRecepctionArticles(data: any, id: number) {
       );
       const response = await axios.post(`${HOST}/reception`, newData, { ...HEADER });
       if (response.data.length > 0) {
-        dispatch(getAllReception());
+        await dispatch(getAllReception());
         await dispatch(getByArticleId(id));
       }
     } catch (error: any) {

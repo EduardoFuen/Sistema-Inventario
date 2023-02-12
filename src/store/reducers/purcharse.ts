@@ -62,6 +62,7 @@ const slice = createSlice({
     // ADD PURCHASE
     addPurchaseSuccess(state, action) {
       state.listPurchase.push(action.payload);
+      state.isLoading = false;
     },
     // ADD DETAILS PURCHASE
     addDetailsPurchaseSuccess(state, action) {
@@ -128,12 +129,10 @@ export function getPurchaseList(page: number = 1) {
 export function addPurchase(data: Purchase) {
   return async () => {
     try {
+      dispatch(slice.actions.loading());
       await dispatch(getPurchaseList());
-      let summaryOrder = summary(Articles(data?.Articles), Number(data?.Discount));
-
       const Newdata = {
         ...data,
-        ...summaryOrder,
         Discount: data?.Discount || 0,
         DiscountEarliyPay: data?.DiscountEarliyPay || 0,
         Articles: Articles(data?.Articles)
@@ -161,12 +160,14 @@ export function addPurchase(data: Purchase) {
 export function getIDPurchase(id: number) {
   return async () => {
     dispatch(slice.actions.loading());
-    dispatch(resetViewReception());
-    dispatch(resetOrder());
     try {
-      dispatch(resetItemsPurchase());
-      await dispatch(getSupplierList());
-      await dispatch(getWarehouseList());
+      await Promise.all([
+        dispatch(resetViewReception()),
+        dispatch(resetOrder()),
+        dispatch(resetItemsPurchase()),
+        dispatch(getSupplierList()),
+        dispatch(getWarehouseList())
+      ]);
 
       const response = await axios.get(`${HOST}/purchase?ID=${id}`, HEADER);
       if (response.data) {
@@ -187,7 +188,7 @@ export function getIDPurchase(id: number) {
 export function editPurchase(id: number, data: Purchase) {
   return async () => {
     try {
-      const response: any = await axios.put(`${HOST}/purchase`, { ...data, ID: id }, { ...HEADER });
+      const response = await axios.put(`${HOST}/purchase`, { ...data, ID: id }, { ...HEADER });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(getIDPurchase(id));
@@ -306,6 +307,7 @@ export function deleteItemsPurchase(id: number) {
 export function resetItemsPurchase() {
   return async () => {
     try {
+      dispatch(slice.actions.loading());
       dispatch(slice.actions.resetDetailsPurchaseSuccess());
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));

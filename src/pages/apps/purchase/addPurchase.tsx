@@ -77,6 +77,11 @@ function AddPurchase() {
     SupplierID: Yup.number().required('Proveedor es requerido')
   });
 
+  const data = useMemo(
+    () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, Number(discount) || 0),
+    [detailsPurchase, discount]
+  );
+
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
@@ -86,6 +91,7 @@ function AddPurchase() {
           const newValue: Purchase = {
             ...values,
             Status: 0,
+            ...data,
             Articles: detailsPurchase,
             Discount: parseFloat(data?.Discount),
             DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay)
@@ -101,11 +107,6 @@ function AddPurchase() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
-  const data = useMemo(
-    () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, Number(discount) || 0),
-    [detailsPurchase, discount]
-  );
 
   return (
     <>

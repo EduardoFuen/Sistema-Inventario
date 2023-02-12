@@ -23,36 +23,28 @@ const ImportCategories = ({ onCancel, value }: Props) => {
 
   const onSubmit = () => {
     try {
-      let newData: any;
+      let newData: CategoryOne[] | CategoryTwo[] | CategoryThree[] = [];
 
       switch (value) {
-        case 0:
+        case 1:
           newData = data.map((item: CategoryOne) => ({
             Name: item?.Name?.toString(),
             ID: item?.ID || 0,
             Status: Boolean(item?.Status)
           }));
           break;
-        case 1:
-          newData = data.map((item: CategoryTwo | any) => ({
-            Name: item?.Name?.toString(),
-            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
-            Status: Boolean(item?.Status),
-            ID: item?.ID || 0
-          }));
-          break;
 
-        default:
-          newData = data.map((item: CategoryThree | any) => ({
+        case 2:
+        case 3:
+          newData = data.map((item: CategoryTwo | CategoryThree | any) => ({
             Name: item?.Name?.toString(),
-            CategoryOneID: SearchNameToArray(categoryListOne, item?.CategoryOne)?.ID || 0,
-            CategoryTwoID: SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID || 0,
+            CategoryOneID: SearchNameToArray(categoryListOne, item?.Grupo)?.ID || 0,
+            CategoryTwoID: value === 2 ? SearchNameToArray(categoryListTwo, item?.CategoryTwo)?.ID || 0 : 0,
             ID: item?.ID || 0,
             Status: Boolean(item?.Status)
           }));
           break;
       }
-
       dispatch(addExcel(newData, value));
       onCancel();
     } catch (error: any) {

@@ -39,7 +39,7 @@ function AddCategoryTwo({ data }: Props) {
     initialValues: {
       Name: data?.Name || '',
       Status: data?.Status || false,
-      CategoryOneID: data?.CategoryOneID || ''
+      CategoryOneID: data?.CategoryOneID || 0
     },
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {

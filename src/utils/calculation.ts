@@ -1,29 +1,36 @@
-/**
- * It takes an array of objects and a number, and returns an object with the subtotal, tax, discount,
- * subtotal with discount, and total
- * @param {any} details - an array of objects that contain the following properties:
- * @param {number} discount - number
- */
-const summary = (details: any, discount: number) =>
-  details.reduce(
-    (acc: any = {}, item: any) => {
-      const itemTotal = parseFloat(item?.SubTotal) || 0;
-      const tax = (item?.BasePrice * item?.Count * item?.Tax) / 100 || 0;
-      acc.SubTotal = parseFloat((acc.SubTotal + itemTotal).toFixed(2));
-      acc.Tax = parseFloat((acc.Tax + tax).toFixed(2));
-      acc.DiscountGlobal = parseFloat((acc.SubTotal - acc.SubTotal * ((100 - discount) / 100)).toFixed(0)) || 0;
-      acc.SubtotalWithDiscount = parseFloat((Number(acc.SubTotal) - Number(acc.DiscountGlobal)).toFixed(0)) || 0;
-      const SubtotalReal = acc.SubTotal - acc.DiscountGlobal || 0;
-      acc.Total = parseFloat((SubtotalReal + acc.Tax).toFixed(2) || 0);
-      return acc;
-    },
-    {
-      SubTotal: 0,
-      Tax: 0,
-      DiscountGlobal: 0,
-      SubtotalWithDiscount: 0,
-      Total: 0
-    }
-  );
+import { Article } from 'types/purchase';
 
+/**
+ * It takes an array of objects and a number, and returns an object with the total, tax, discount, and
+ * subtotal
+ * @param {Article | any} details - Article | any
+ * @param {number} discount - number
+ * @returns An object with the following properties:
+ * SubTotal: 0,
+ * Tax: 0,
+ * DiscountGlobal: 0,
+ * SubtotalWithDiscount: 0,
+ * Total: 0
+ */
+const summary = (details: Article | any, discount: number) => {
+  const initAcc = { SubTotal: 0, Tax: 0, DiscountGlobal: 0, SubtotalWithDiscount: 0, Total: 0 };
+
+  return details.reduce((acc = initAcc, item: any) => {
+    const itemTotal = item?.SubTotal || 0;
+    const tax = (item?.BasePrice * item?.Count * item?.Tax) / 100 || 0;
+
+    acc.SubTotal += itemTotal;
+    acc.Tax += tax;
+
+    acc.DiscountGlobal = acc.SubTotal - acc.SubTotal * ((100 - discount) / 100);
+
+    acc.SubtotalWithDiscount = Number(acc.SubTotal) - Number(acc.DiscountGlobal);
+
+    const SubtotalReal = acc.SubTotal - acc.DiscountGlobal;
+
+    acc.Total = SubtotalReal + acc.Tax;
+
+    return acc;
+  }, initAcc);
+};
 export default summary;

@@ -1,4 +1,4 @@
-import { ArrayToString } from 'utils/convertToObject';
+import { arrayToString } from 'utils/convertToObject';
 import { SearchIDToArray } from 'utils/findName';
 /**
  * It takes an array of objects and an array of objects and returns an array of objects
@@ -8,24 +8,10 @@ import { SearchIDToArray } from 'utils/findName';
 
 const productExport = (data: object[], listTypeProduct: object[]) =>
   data?.map((item: any) => {
-    let Warehouse: string = '';
-    let Substitutes: string = '';
-    let Substance: string = '';
-    let TypesProduct: string = '';
-
-    if (item?.Substance) {
-      Substance = ArrayToString(item?.Substance);
-    }
-    if (item?.Warehouses) {
-      Warehouse = ArrayToString(item?.Warehouses);
-    }
-    if (item?.Substitutes) {
-      Substitutes = item?.Substitutes.map((e: any) => e.Sku).join();
-    }
-    if (item?.TypesProductID) {
-      TypesProduct = SearchIDToArray(listTypeProduct, item?.TypesProductID)?.Name || '';
-    }
-
+    const Warehouse = item?.Warehouses ? arrayToString(item?.Warehouses) : '';
+    const Substitutes = item?.Substitutes ? item?.Substitutes.map((e: { Sku: string }) => e.Sku).join() : '';
+    const Substance = item?.Substance ? arrayToString(item?.Substance) : '';
+    const TypesProduct = item?.TypesProductID ? SearchIDToArray(listTypeProduct, item?.TypesProductID)?.Name || '' : '';
     return {
       ID: item?.ID,
       HandlesBaq: item?.HandlesBaq,

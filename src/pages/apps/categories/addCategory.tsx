@@ -10,7 +10,6 @@ import FormOne from './forms/formOne';
 import FormTwo from './forms/formTwo';
 import FormThree from './forms/formThree';
 import { useSelector } from 'store';
-
 // types
 import { CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
 
@@ -23,17 +22,23 @@ function AddNewCategories() {
 
   const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
 
-  const category: any = useMemo(() => {
-    if (ID && value === 0) {
-      return categoryListOne.find((item: CategoryOne) => item?.ID === ID);
-    }
-    if (ID && value === 1) {
-      return categoryListTwo.find((item: CategoryTwo) => item?.ID === ID);
-    }
-    if (ID && value === 2) {
-      return categoryListThree.find((item: CategoryThree) => item?.ID === ID);
-    }
-  }, [value, categoryListOne, ID, categoryListTwo, categoryListThree]);
+  const category: CategoryOne | CategoryTwo | CategoryThree =
+    useMemo(() => {
+      if (!ID && !value) return;
+      let categoryList: CategoryOne[] | CategoryTwo[] | CategoryThree[] = [];
+      switch (value) {
+        case 0:
+          categoryList = categoryListOne;
+          break;
+        case 1:
+          categoryList = categoryListTwo;
+          break;
+        case 2:
+          categoryList = categoryListThree;
+          break;
+      }
+      return categoryList.find((item) => item?.ID === ID);
+    }, [value, categoryListOne, ID, categoryListTwo, categoryListThree]) || {};
 
   return (
     <>

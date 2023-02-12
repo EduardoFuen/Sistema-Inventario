@@ -5,7 +5,6 @@
  * "TRUE"
  * @param {any} item - any
  */
-const getStatus = (item: any) =>
-  item.includes('Verdadero') || item.includes('VERDADERO') || item.includes('verdadero') || item.includes('TRUE');
+const getStatus = (item: any) => item.toLowerCase().includes('true');
 
 export default getStatus;

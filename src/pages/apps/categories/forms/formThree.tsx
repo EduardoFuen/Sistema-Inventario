@@ -40,8 +40,8 @@ function AddCategoryThree({ data }: Props) {
   const formik = useFormik({
     initialValues: {
       Name: data?.Name || '',
-      CategoryOneID: data?.CategoryOneID || '',
-      CategoryTwoID: data?.CategoryTwoID || '',
+      CategoryOneID: data?.CategoryOneID || 0,
+      CategoryTwoID: data?.CategoryTwoID || 0,
       Status: data?.Status || false
     },
     validationSchema: SubstSchema,

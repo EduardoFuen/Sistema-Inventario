@@ -35,7 +35,7 @@ const Import = ({ onCancel }: Props) => {
   const onSubmit = async () => {
     try {
       setSubmitting(true);
-      const newData: Product[] = data?.map((item: any) => ({
+      const newData: Product[] = data?.map((item: Product) => ({
         Name: item?.Name?.toString(),
         Sku: item?.Sku?.toString(),
         Ean: item?.Ean?.toString(),
@@ -57,7 +57,7 @@ const Import = ({ onCancel }: Props) => {
         WrapperUnit: item?.WrapperUnit?.toString()?.trim(),
         Keywords: item?.Keywords?.toString(),
         SubstancesIDS: item?.Substance ? ConvertToArray(item?.Substance?.toString(), todoListSubs) : '',
-        WarehouseIDS: item?.Warehouse ? ConvertToArray(item?.Warehouse?.toString(), warehouseList) : '',
+        WarehouseIDS: item?.WarehouseIDS ? ConvertToArray(item?.WarehouseIDS?.toString(), warehouseList) : '',
         SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',
         Status: item?.Status ? getStatus(item?.Status) : false,
         HandlesBaq: item?.HandlesBaq?.toString() || '',

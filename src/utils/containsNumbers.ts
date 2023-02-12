@@ -1,14 +1,10 @@
 // ==============================|| CUSTOM FUNCTION - CONTAINS NUMBERS ||============================== //
 /**
- * It takes a string and returns the first number found in the string
- * @param {any} str - any - This is the string that we are going to be checking for numbers.
- * @returns The first number in the string.
+ * It returns the first number in a string, or the string itself if it doesn't contain any numbers
+ * @param {string} str - string - The string to be tested.
+ * @returns the first number in the string.
  */
-
-export const containsNumbers = (str: any) => {
+export const containsNumbers = (str: string) => {
   let value = /[0-9]/.test(str);
-  if (value) {
-    return str.match(/\d+/g)?.[0];
-  }
-  return str;
+  return value ? str.match(/\d+/g)?.[0] : str;
 };

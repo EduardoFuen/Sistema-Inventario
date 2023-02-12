@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Chip, Dialog, Stack, Tooltip, Box, CircularProgress } from '@mui/material';
@@ -16,7 +15,6 @@ import { getMakerList, deleteMaker } from 'store/reducers/maker';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-
 // types
 import { Maker } from 'types/products';
 
@@ -44,7 +42,7 @@ const MakersList = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
-  const newDataExport: any = makerList.map((item: Maker) => {
+  const newDataExport: Maker[] = makerList.map((item: Maker) => {
     return {
       ID: item?.ID,
       Name: item?.Name,

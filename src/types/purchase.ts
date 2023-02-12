@@ -1,3 +1,4 @@
+import { Supplier } from './supplier';
 export type DefaultArticle = {
   Sku?: string;
   Quantity?: number;
@@ -28,6 +29,8 @@ export type Article = {
 export type Purchase = {
   ID?: string | number | undefined;
   SupplierID?: number;
+  Supplier?: Supplier;
+  Warehouse?: object;
   WarehouseID?: number;
   Notes?: string;
   Discount?: string | number | undefined;

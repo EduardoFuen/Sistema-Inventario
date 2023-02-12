@@ -6,10 +6,6 @@ import { DefaultArticle } from 'types/purchase';
 
 export const drawerWidth = 260;
 
-export const twitterColor = '#1DA1F2';
-export const facebookColor = '#3b5998';
-export const linkedInColor = '#0e76a8';
-
 export const AWS_API = {
   poolId: 'us-east-1_aM1PPjbsx',
   appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
@@ -23,14 +19,14 @@ export const HEADER = {
 };
 
 export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV004-';
+export const REDUCERVERSION = 'MidasV007-';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
 export const CATEGORY = {
-  CategoryOne: 'CategoryOne',
-  CategoryTwo: 'CategoryTwo',
-  CategoryThree: 'CategoryThree'
+  CategoryOne: 1,
+  CategoryTwo: 2,
+  CategoryThree: 3
 };
 
 export const DATEFORMAT = 'dd-MM-yyyy';
@@ -59,7 +55,7 @@ export const ProductDefault: Product[] = [
     Height: '',
     WrapperUnit: '',
     Depth: '',
-    Warehouses: '',
+    WarehouseIDS: '',
     Substance: '',
     Substitutes: '',
     Keywords: '',

@@ -64,8 +64,11 @@ function AddReception() {
 
   useEffect(() => {
     if (id) {
-      dispatch(getAllReception());
-      dispatch(getIDPurchase(Number(id)));
+      let get = async () => {
+        await dispatch(getAllReception());
+        await dispatch(getIDPurchase(Number(id)));
+      };
+      get();
     }
   }, [dispatch, id]);
 

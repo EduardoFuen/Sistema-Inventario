@@ -72,13 +72,13 @@ const CategoriesList = () => {
     setActiveImport(!addImport);
   };
 
-  let CategoryOne: string = '';
+  let Grupo: string = '';
 
   const exportCategoryThre: any = categoryListThree.map((item: CategoryThree) => {
     let CategoryTwo: string = '';
 
     if (item?.CategoryOneID) {
-      CategoryOne = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
+      Grupo = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
     }
     if (item?.CategoryTwoID) {
       CategoryTwo = SearchIDToArray(categoryListTwo, item?.CategoryTwoID)?.Name || '';
@@ -87,18 +87,20 @@ const CategoriesList = () => {
       ID: item?.ID,
       Name: item?.Name,
       CategoryTwo,
-      CategoryOne
+      Grupo,
+      Status: item?.Status
     };
   });
 
   const exportCategoryTwo: any = categoryListTwo.map((item: CategoryTwo) => {
     if (item?.CategoryOneID) {
-      CategoryOne = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
+      Grupo = SearchIDToArray(categoryListOne, item?.CategoryOneID)?.Name || '';
     }
     return {
       ID: item?.ID,
       Name: item?.Name,
-      CategoryOne
+      Grupo,
+      Status: item?.Status
     };
   });
 
@@ -257,20 +259,19 @@ const CategoriesList = () => {
                 onClick={async (e: any) => {
                   e.stopPropagation();
                   setIsLoading(true);
-
-                  let type: string = '';
+                  let index: number = 0;
                   switch (value) {
                     case 0:
-                      type = CATEGORY.CategoryOne;
+                      index = CATEGORY.CategoryOne;
                       break;
                     case 1:
-                      type = CATEGORY.CategoryTwo;
+                      index = CATEGORY.CategoryTwo;
                       break;
-                    default:
-                      type = CATEGORY.CategoryThree;
+                    case 2:
+                      index = CATEGORY.CategoryThree;
                       break;
                   }
-                  await dispatch(deleteCategory(row.original?.ID, type));
+                  await dispatch(deleteCategory(row.original?.ID, index));
                   setIsLoading(false);
                 }}
               >

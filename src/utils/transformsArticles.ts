@@ -25,13 +25,16 @@ export const Articles = (data: any) =>
  * @param {Product[]} Product - Product[]
  */
 export const TransformsArticles = (data: object[], products: Product[]) =>
-  data.map((item: any) => ({
-    ...item,
-    ID: item?.ID,
-    ArticleID: item?.ID,
-    DiscountNegotiated: item?.Discount,
-    Name: products.find((e: any) => e.ID === item.ProductID)?.Name,
-    Sku: products.find((e: any) => e.ID === item.ProductID)?.Sku,
-    Ean: products.find((e: any) => e.ID === item.ProductID)?.Ean,
-    isSelected: true
-  }));
+  data.map((item: any) => {
+    const product = products.find((e: any) => e.ID === item.ProductID);
+    return {
+      ...item,
+      ID: item?.ID,
+      ArticleID: item?.ID,
+      DiscountNegotiated: item?.Discount,
+      Name: product?.Name,
+      Sku: product?.Sku,
+      Ean: product?.Ean,
+      isSelected: true
+    };
+  });

@@ -7,9 +7,9 @@ import { HOST, CATEGORY, HEADER } from 'config';
 
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
-
+import { numberAletters } from 'utils/numberAletters';
 // types
-import { CategoryOneStateProps } from 'types/products';
+import { CategoryOneStateProps, CategoryOne, CategoryTwo, CategoryThree } from 'types/products';
 
 // initial state
 const initialState: CategoryOneStateProps = {
@@ -55,31 +55,26 @@ const slice = createSlice({
     },
     // UPDATE CATEGORIES
     updateCategorySuccess(state, action) {
-      const { type, id, data } = action.payload;
-      switch (type) {
-        case CATEGORY.CategoryOne: {
-          let index: number = state.categoryListOne.findIndex((item) => item.ID === id);
-          state.categoryListOne[index] = data;
+      const { index, id, data } = action.payload;
+      switch (index) {
+        case CATEGORY.CategoryOne:
+          state.categoryListOne = state.categoryListOne.map((item) => (item.ID === id ? data : item));
           break;
-        }
-        case CATEGORY.CategoryTwo: {
-          let index: number = state.categoryListTwo.findIndex((item) => item.ID === id);
-          state.categoryListTwo[index] = data;
+        case CATEGORY.CategoryTwo:
+          state.categoryListTwo = state.categoryListTwo.map((item) => (item.ID === id ? data : item));
           break;
-        }
         default:
-          let index: number = state.categoryListThree.findIndex((item) => item.ID === id);
-          state.categoryListThree[index] = data;
+          state.categoryListThree = state.categoryListThree.map((item) => (item.ID === id ? data : item));
       }
     },
     // ADD EXCEL CATEGORIES
     excelSuccess(state, action) {
       const { index, data } = action.payload;
       switch (index) {
-        case 0:
+        case CATEGORY.CategoryOne:
           state.categoryListOne = [...state.categoryListOne, ...data];
           break;
-        case 1:
+        case CATEGORY.CategoryTwo:
           state.categoryListTwo = [...state.categoryListTwo, ...data];
           break;
         default:
@@ -141,7 +136,7 @@ export function getCategoryListThree() {
     }
   };
 }
-export function addCategoryOne(data: any) {
+export function addCategoryOne(data: CategoryOne) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categoryone`, { ...data }, { ...HEADER });
@@ -153,7 +148,7 @@ export function addCategoryOne(data: any) {
   };
 }
 
-export function addCategoryTwo(data: any) {
+export function addCategoryTwo(data: CategoryTwo) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categorytwo`, { ...data }, { ...HEADER });
@@ -165,7 +160,7 @@ export function addCategoryTwo(data: any) {
   };
 }
 
-export function addCategoryThree(data: any) {
+export function addCategoryThree(data: CategoryThree) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/categorythree`, { ...data }, { ...HEADER });
@@ -177,42 +172,18 @@ export function addCategoryThree(data: any) {
   };
 }
 
-export function editCategory(type: string, id: number, data: any) {
+export function editCategory(index: number, id: number, data: CategoryOne | CategoryTwo | CategoryThree) {
   return async () => {
     try {
-      switch (type) {
-        case CATEGORY.CategoryOne: {
-          const response = await axios.put(`${HOST}/categoryone`, { ID: id, ...data }, { ...HEADER });
-          dispatch(
-            slice.actions.updateCategorySuccess({
-              type,
-              id,
-              data: response.data
-            })
-          );
-          break;
-        }
-        case CATEGORY.CategoryTwo: {
-          const response = await axios.put(`${HOST}/categorytwo`, { ID: id, ...data }, { ...HEADER });
-          dispatch(
-            slice.actions.updateCategorySuccess({
-              type,
-              id,
-              data: response.data
-            })
-          );
-          break;
-        }
-        default:
-          const response = await axios.put(`${HOST}/categorythree`, { ID: id, ...data }, { ...HEADER });
-          dispatch(
-            slice.actions.updateCategorySuccess({
-              type,
-              id,
-              data: response.data
-            })
-          );
-      }
+      if (!numberAletters(index)) return;
+      const response = await axios.put(`${HOST}/category${numberAletters(index)}`, { ID: id, ...data }, { ...HEADER });
+      dispatch(
+        slice.actions.updateCategorySuccess({
+          index,
+          id,
+          data: response.data
+        })
+      );
       dispatch(
         openSnackbar({
           open: true,
@@ -224,35 +195,36 @@ export function editCategory(type: string, id: number, data: any) {
           close: false
         })
       );
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function deleteCategory(id: number, type: string) {
+export function deleteCategory(id: number, index: number) {
   return async () => {
     try {
-      switch (type) {
+      if (!numberAletters(index)) return;
+      const response = await axios.delete(`${HOST}/category${numberAletters(index)}`, { ...HEADER, data: { ID: id } });
+      switch (index) {
         case CATEGORY.CategoryOne: {
-          const response = await axios.delete(`${HOST}/categoryone`, { ...HEADER, data: { ID: id } });
           if (response) {
             dispatch(getCategoryListOne());
           }
           break;
         }
         case CATEGORY.CategoryTwo: {
-          const response = await axios.delete(`${HOST}/categorytwo`, { ...HEADER, data: { ID: id } });
           if (response) {
             dispatch(getCategoryListTwo());
           }
           break;
         }
-        default:
-          const response = await axios.delete(`${HOST}/categorythree`, { ...HEADER, data: { ID: id } });
+        case CATEGORY.CategoryThree: {
           if (response) {
             dispatch(getCategoryListThree());
           }
+          break;
+        }
       }
       dispatch(
         openSnackbar({
@@ -270,39 +242,17 @@ export function deleteCategory(id: number, type: string) {
     }
   };
 }
-export function addExcel(data: any, index: number) {
+export function addExcel(data: CategoryOne[] | CategoryTwo[] | CategoryThree[], index: number) {
   return async () => {
     try {
-      switch (index) {
-        case 0: {
-          const response = await axios.post(`${HOST}/categoryone`, data, { ...HEADER });
-          dispatch(
-            slice.actions.excelSuccess({
-              index,
-              data: response.data
-            })
-          );
-          break;
-        }
-        case 1: {
-          const response = await axios.post(`${HOST}/categorytwo`, data, { ...HEADER });
-          dispatch(
-            slice.actions.excelSuccess({
-              index,
-              data: response.data
-            })
-          );
-          break;
-        }
-        default:
-          const response = await axios.post(`${HOST}/categorythree`, data, { ...HEADER });
-          dispatch(
-            slice.actions.excelSuccess({
-              index,
-              data: response.data
-            })
-          );
-      }
+      if (!numberAletters(index)) return;
+      const response = await axios.post(`${HOST}/category${numberAletters(index)}`, data, { ...HEADER });
+      dispatch(
+        slice.actions.excelSuccess({
+          index,
+          data: response.data
+        })
+      );
       dispatch(
         openSnackbar({
           open: true,
@@ -314,7 +264,7 @@ export function addExcel(data: any, index: number) {
           close: false
         })
       );
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
