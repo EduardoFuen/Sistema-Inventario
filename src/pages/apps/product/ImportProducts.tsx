@@ -59,7 +59,7 @@ const Import = ({ onCancel }: Props) => {
         SubstancesIDS: item?.Substance ? ConvertToArray(item?.Substance?.toString(), todoListSubs) : '',
         WarehouseIDS: item?.WarehouseIDS ? ConvertToArray(item?.WarehouseIDS?.toString(), warehouseList) : '',
         SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',
-        Status: item?.Status ? getStatus(item?.Status) : false,
+        Status: item?.Status && getStatus(item?.Status),
         HandlesBaq: item?.HandlesBaq?.toString() || '',
         HandlesBog: item?.HandlesBog?.toString() || '',
         iva: item?.Tax?.toString(),

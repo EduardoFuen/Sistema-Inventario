@@ -95,6 +95,15 @@ function AddNewProduct() {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const { makerList } = useSelector((state) => state.maker);
+  const { tradeMarkList } = useSelector((state) => state.trademark);
+  const { packList } = useSelector((state) => state.pack);
+  const { typeProductList } = useSelector((state) => state.typeProduct);
+  const { products, error } = useSelector((state) => state.product);
+  const { todoListSubs } = useSelector((state) => state.substances);
+  const { warehouseList } = useSelector((state) => state.warehouse);
+  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
+
   const [avatar, setAvatar] = useState<string | undefined>();
   const [istaxed, setIsTaxed] = useState<boolean>(false);
   const [maker_ID, setIsMakerID] = useState<string | number>();
@@ -117,35 +126,6 @@ function AddNewProduct() {
     }
   }, [selectedImage]);
 
-  const { makerList } = useSelector((state) => state.maker);
-  const { tradeMarkList } = useSelector((state) => state.trademark);
-  const { packList } = useSelector((state) => state.pack);
-  const { typeProductList } = useSelector((state) => state.typeProduct);
-  const { products, error } = useSelector((state) => state.product);
-  const { todoListSubs } = useSelector((state) => state.substances);
-  const { warehouseList } = useSelector((state) => state.warehouse);
-  const { categoryListThree, categoryListOne, categoryListTwo } = useSelector((state) => state.category);
-
-  const handleCancel = () => {
-    history(`/product-list`);
-  };
-
-  const SubstSchema = Yup.object().shape({
-    Name: Yup.string().max(255).required('Nombre es requerido'),
-    Sku: Yup.string().max(255).required('Sku es requerido'),
-    Ean: Yup.string().max(255).required('Ean es requerido')
-  });
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target as HTMLInputElement;
-    const selectedFiles = files as FileList;
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      setFieldValue('UrlImage', reader.result);
-    };
-    reader.readAsDataURL(selectedFiles?.[0]);
-  };
-
   useEffect(() => {
     if (error?.response?.data?.Error) {
       dispatch(
@@ -161,6 +141,26 @@ function AddNewProduct() {
       );
     }
   }, [error, dispatch]);
+
+  const handleCancel = () => {
+    history(`/product-list`);
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target as HTMLInputElement;
+    const selectedFiles = files as FileList;
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      setFieldValue('UrlImage', reader.result);
+    };
+    reader.readAsDataURL(selectedFiles?.[0]);
+  };
+
+  const SubstSchema = Yup.object().shape({
+    Name: Yup.string().max(255).required('Nombre es requerido'),
+    Sku: Yup.string().max(255).required('Sku es requerido'),
+    Ean: Yup.string().max(255).required('Ean es requerido')
+  });
 
   const formik = useFormik({
     initialValues: getInitialValues(),

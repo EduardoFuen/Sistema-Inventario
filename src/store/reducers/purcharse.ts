@@ -172,14 +172,15 @@ export function getIDPurchase(id: number) {
       const response = await axios.get(`${HOST}/purchase?ID=${id}`, HEADER);
       if (response.data) {
         let Articles: Article[] = TransformsArticles(response.data?.Articles, response.data?.Products);
-        let dataNew: any = {
-          ...response.data,
-          Articles
-        };
         await dispatch(addItemsPurchase(Articles));
-        dispatch(slice.actions.getIDPurchaseSuccess(dataNew));
+        dispatch(
+          slice.actions.getIDPurchaseSuccess({
+            ...response.data,
+            Articles
+          })
+        );
       }
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -219,7 +220,7 @@ export function editPurchase(id: number, data: Purchase) {
           );
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -248,17 +249,17 @@ export function deletePurchase(id: number) {
         );
         dispatch(slice.actions.hasError(null));
       }
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-export function addItemsPurchase(data: any) {
+export function addItemsPurchase(data: Article[]) {
   return async () => {
     try {
       let products = data.filter((item: Article) => item.isSelected === true).map((option: Article) => option);
       dispatch(slice.actions.addDetailsPurchaseSuccess(products));
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -271,13 +272,35 @@ export function editItemsPurchase(data: Article) {
       } = store.getState();
 
       let summaryOrder = summary(data, parseFloat(order?.Discount));
-      let newData: any = {
-        ...order,
-        ...summaryOrder,
-        Articles: data
-      };
-      dispatch(slice.actions.editDetailsPurchaseSuccess(newData));
-    } catch (error: any) {
+
+      dispatch(
+        slice.actions.editDetailsPurchaseSuccess({
+          ...order,
+          ...summaryOrder,
+          Articles: data
+        })
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function updateSummaryPurchase(discount: number) {
+  return async () => {
+    try {
+      let {
+        purchase: { order }
+      } = store.getState();
+
+      let summaryOrder = summary(order?.Articles, discount);
+      dispatch(
+        slice.actions.getIDPurchaseSuccess({
+          ...order,
+          ...summaryOrder,
+          Discount: discount
+        })
+      );
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -299,7 +322,7 @@ export function deleteItemsPurchase(id: number) {
       };
 
       dispatch(slice.actions.editDetailsPurchaseSuccess(newData));
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -309,7 +332,7 @@ export function resetItemsPurchase() {
     try {
       dispatch(slice.actions.loading());
       dispatch(slice.actions.resetDetailsPurchaseSuccess());
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -318,7 +341,7 @@ export function resetOrder() {
   return async () => {
     try {
       dispatch(slice.actions.resetOrderSuccess());
-    } catch (error: any) {
+    } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };

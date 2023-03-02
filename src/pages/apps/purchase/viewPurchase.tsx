@@ -32,7 +32,7 @@ import DetailsPurchase from './detailsProduct';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
-import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import { editPurchase, getIDPurchase, updateSummaryPurchase } from 'store/reducers/purcharse';
 
 // types
 import { Warehouse } from 'types/products';
@@ -65,7 +65,6 @@ function ViewPurchase() {
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
   const [send, setSend] = useState<boolean>(false);
-
   const { id } = useParams();
 
   const { supplierList } = useSelector((state) => state.supplier);
@@ -121,7 +120,7 @@ function ViewPurchase() {
     }
   });
 
-  const { handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   return (
     <>
@@ -152,7 +151,13 @@ function ViewPurchase() {
                       </Grid>
                       <Grid item xs={3}>
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                        <TextField placeholder="Seleccionar Bodega" fullWidth select disabled {...getFieldProps('WarehouseID')}>
+                        <TextField
+                          placeholder="Seleccionar Bodega"
+                          fullWidth
+                          select
+                          disabled={orderPurchase?.Status !== 0}
+                          {...getFieldProps('WarehouseID')}
+                        >
                           {warehouseList
                             .filter((item: Warehouse) => item.Status === true)
                             .map((option: Warehouse) => (
@@ -169,7 +174,14 @@ function ViewPurchase() {
                           {...getFieldProps('Discount')}
                           placeholder="Ingresa Descuento %"
                           fullWidth
-                          disabled
+                          type="number"
+                          InputProps={{ inputProps: { min: 0 } }}
+                          disabled={orderPurchase?.Status !== 0}
+                          onChange={(e) => {
+                            let discount = Number(e.target.value);
+                            setFieldValue('Discount', discount);
+                            dispatch(updateSummaryPurchase(discount));
+                          }}
                         />
                       </Grid>
                       <Grid item xs={3}>
@@ -199,7 +211,7 @@ function ViewPurchase() {
                           rows={2}
                           placeholder="Ingresar Nota de compras"
                           fullWidth
-                          disabled={orderPurchase.Status === 1}
+                          disabled={orderPurchase?.Status !== 0}
                           {...getFieldProps('Notes')}
                         />
                       </Grid>
@@ -210,7 +222,7 @@ function ViewPurchase() {
                           {...getFieldProps('DiscountEarliyPay')}
                           placeholder="Descuento pronto Pago %"
                           fullWidth
-                          disabled
+                          disabled={orderPurchase?.Status !== 0}
                         />
                       </Grid>
                       <Grid item xs={3} alignSelf="center">
@@ -220,7 +232,7 @@ function ViewPurchase() {
                           {...getFieldProps('DaysPayment')}
                           placeholder=""
                           fullWidth
-                          disabled
+                          disabled={orderPurchase?.Status !== 0}
                         />
                       </Grid>
                       <Grid item xs={3} alignSelf="center">

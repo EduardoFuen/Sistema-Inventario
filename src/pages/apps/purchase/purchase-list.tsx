@@ -12,7 +12,7 @@ import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
 import { newDataExport } from 'utils/PurchaseTransform';
-
+import { getProducts } from 'store/reducers/product';
 import { useSelector, useDispatch, store } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
@@ -32,6 +32,7 @@ const PurchaseList = () => {
 
   useEffect(() => {
     dispatch(getPurchaseList());
+    dispatch(getProducts());
   }, [dispatch]);
 
   const handleAddPurchase = () => {

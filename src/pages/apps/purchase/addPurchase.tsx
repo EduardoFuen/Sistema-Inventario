@@ -45,7 +45,7 @@ function AddPurchase() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
-  const [discount, setDiscount] = useState<any>();
+  const [discount, setDiscount] = useState<number>();
   const [addImport, setActiveImport] = useState<boolean>(false);
 
   useEffect(() => {
@@ -73,8 +73,8 @@ function AddPurchase() {
   };
 
   const SubstSchema = Yup.object().shape({
-    WarehouseID: Yup.string().max(255).required('Bodega es requerido'),
-    SupplierID: Yup.number().required('Proveedor es requerido')
+    WarehouseID: Yup.string().required('Bodega es requerido'),
+    SupplierID: Yup.string().required('Proveedor es requerido')
   });
 
   const data = useMemo(
@@ -87,14 +87,15 @@ function AddPurchase() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        setSubmitting(true);
         if (detailsPurchase.length > 0) {
           const newValue: Purchase = {
             ...values,
             Status: 0,
             ...data,
             Articles: detailsPurchase,
-            Discount: parseFloat(data?.Discount),
-            DiscountEarliyPay: parseFloat(data?.DiscountEarliyPay)
+            Discount: values?.Discount,
+            DiscountEarliyPay: Number(values?.DiscountEarliyPay)
           };
           await dispatch(addPurchase(newValue));
         }
@@ -163,12 +164,15 @@ function AddPurchase() {
                     <Grid item xs={3}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
                       <TextField
-                        placeholder="Seleccionar Bodega"
-                        fullWidth
-                        select
                         {...getFieldProps('WarehouseID')}
+                        select
+                        fullWidth
+                        placeholder="Seleccionar Bodega"
                         error={Boolean(touched.WarehouseID && errors.WarehouseID)}
                         helperText={touched.WarehouseID && errors.WarehouseID}
+                        onChange={(e) => {
+                          setFieldValue('WarehouseID', e.target.value);
+                        }}
                       >
                         {warehouseList
                           .filter((item: Warehouse) => item.Status === true)
@@ -186,10 +190,12 @@ function AddPurchase() {
                         {...getFieldProps('Discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
+                        InputProps={{ inputProps: { min: 0 } }}
                         type="number"
                         onChange={(e) => {
-                          setDiscount(e.target.value);
-                          setFieldValue('Discount', e.target.value);
+                          let discount = Number(e.target.value);
+                          setDiscount(discount);
+                          setFieldValue('Discount', discount);
                         }}
                       />
                     </Grid>

@@ -163,7 +163,7 @@ function UpdateProduct() {
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let data: Product = {
+        let data = {
           ...values,
           CategoryOneID: values?.CategoryOneID?.toString(),
           CategoryTwoID: values?.CategoryTwoID?.toString(),
@@ -180,9 +180,9 @@ function UpdateProduct() {
           Width: values?.Width?.toString(),
           Height: values?.Height?.toString(),
           Depth: values?.Depth?.toString(),
-          SubstitutesIDS: idsToString(values.SubstitutesIDS),
-          WarehouseIDS: idsToString(values.WarehouseIDS),
-          SubstancesIDS: idsToString(values.SubstancesIDS)
+          SubstitutesIDS: values.SubstitutesIDS ? idsToString(values.SubstitutesIDS) : '',
+          WarehouseIDS: values.WarehouseIDS ? idsToString(values.WarehouseIDS) : '',
+          SubstancesIDS: values.SubstancesIDS ? idsToString(values.SubstancesIDS) : ''
         };
         await dispatch(editProduct(Number(id), data));
         setSubmitting(false);
@@ -193,7 +193,6 @@ function UpdateProduct() {
   });
 
   let dataProduct: any = products.filter((item: Product) => item.Status === true);
-
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   return (
