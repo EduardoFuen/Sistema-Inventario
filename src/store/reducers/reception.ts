@@ -112,10 +112,12 @@ export function AddRecepctionArticles(data: any, id: number) {
       }
     } catch (error: any) {
       if (
-        error?.response?.data?.Error?.trim() ===
-          'ProductoId() Bodega(Barranquilla): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega' ||
-        error?.response?.data?.Error?.trim() ===
-          'ProductoId(CJS9UM8V) Bodega(Bogotá): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega'
+        error?.response?.data?.Error?.includes(
+          `Bodega(Barranquilla): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega`
+        ) ||
+        error?.response?.data?.Error?.includes(
+          `Bodega(Bogotá): error:hubo un error en la peticion seguramente este ProductId no corresponde a la bodega`
+        )
       ) {
         dispatch(
           openSnackbar({
