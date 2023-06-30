@@ -94,6 +94,11 @@ const ProductList = () => {
         className: 'cell-center font-size'
       },
       {
+        Header: 'Registro Sanitario',
+        accessor: '',
+        className: 'cell-center font-size'
+      },
+      {
         Header: 'Nombre Producto',
         accessor: 'Name',
         Cell: ({ row }: any) => {

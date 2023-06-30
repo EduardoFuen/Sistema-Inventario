@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
@@ -33,10 +33,10 @@ import { Purchase } from 'types/purchase';
 const getInitialValues = () => {
   const newSubstance = {
     Notes: '',
-    Discount: 0,
-    SupplierID: 0,
-    WarehouseID: 0,
-    DiscountEarliyPay: 0
+    Discount: '',
+    SupplierID: '',
+    WarehouseID: '',
+    DiscountEarliyPay: ''
   };
   return newSubstance;
 };
@@ -46,6 +46,7 @@ function AddPurchase() {
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
   const [discount, setDiscount] = useState<number>();
+  const [discountEarliyPay, setDiscountEarliyPay] = useState<number>();
   const [addImport, setActiveImport] = useState<boolean>(false);
 
   useEffect(() => {
@@ -74,7 +75,9 @@ function AddPurchase() {
 
   const SubstSchema = Yup.object().shape({
     WarehouseID: Yup.string().required('Bodega es requerido'),
-    SupplierID: Yup.string().required('Proveedor es requerido')
+    SupplierID: Yup.string().required('Proveedor es requerido'),
+    Discount: Yup.number().required('Descuento es requerido'),
+    DiscountEarliyPay: Yup.number().required('Descuento pronto Pago es requerido')
   });
 
   const data = useMemo(
@@ -167,7 +170,6 @@ function AddPurchase() {
                         {...getFieldProps('WarehouseID')}
                         select
                         fullWidth
-                        placeholder="Seleccionar Bodega"
                         error={Boolean(touched.WarehouseID && errors.WarehouseID)}
                         helperText={touched.WarehouseID && errors.WarehouseID}
                         onChange={(e) => {
@@ -184,18 +186,40 @@ function AddPurchase() {
                       </TextField>
                     </Grid>
                     <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
+                        Descuento
+                        <Typography
+                          color="error"
+                          sx={{ display: 'inline-block', fontSize: 15, fontWeight: 600, paddingLeft: 1, height: 0 }}
+                        >
+                          *
+                        </Typography>
+                      </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Discount')}
                         placeholder="Ingresa Descuento %"
                         fullWidth
-                        InputProps={{ inputProps: { min: 0 } }}
+                        InputProps={{
+                          inputProps: { min: 0 },
+                          required: true
+                        }}
                         type="number"
-                        onChange={(e) => {
+                        error={Boolean(touched.Discount && errors.Discount)}
+                        helperText={touched.Discount && errors.Discount}
+                        onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                          const target = e.target as HTMLInputElement;
+                          if (e.key === 'Delete' || (e.key === 'Backspace' && target.value === '0')) {
+                            target.value = '';
+                            setFieldValue('Discount', '');
+                          }
+                        }}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
                           let discount = Number(e.target.value);
-                          setDiscount(discount);
-                          setFieldValue('Discount', discount);
+                          if (discount >= 0) {
+                            setDiscount(discount);
+                            setFieldValue('Discount', discount);
+                          }
                         }}
                       />
                     </Grid>
@@ -220,13 +244,37 @@ function AddPurchase() {
                       />
                     </Grid>
                     <Grid item xs={4} alignSelf="center">
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
+                        Descuento pronto Pago
+                        <Typography
+                          color="error"
+                          sx={{ display: 'inline-block', fontSize: 15, fontWeight: 600, paddingLeft: 1, height: 0 }}
+                        >
+                          *
+                        </Typography>
+                      </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('DiscountEarliyPay')}
                         placeholder="Descuento pronto Pago %"
                         type="number"
                         fullWidth
+                        error={Boolean(touched.DiscountEarliyPay && errors.DiscountEarliyPay)}
+                        helperText={touched.DiscountEarliyPay && errors.DiscountEarliyPay}
+                        onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                          const target = e.target as HTMLInputElement;
+                          if (e.key === 'Delete' || (e.key === 'Backspace' && target.value === '0')) {
+                            target.value = '';
+                            setFieldValue('DiscountEarliyPay', '');
+                          }
+                        }}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          let discount = Number(e.target.value);
+                          if (discount >= 0) {
+                            setDiscountEarliyPay(discountEarliyPay);
+                            setFieldValue('DiscountEarliyPay', discount);
+                          }
+                        }}
                       />
                     </Grid>
 

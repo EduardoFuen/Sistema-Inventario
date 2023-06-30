@@ -96,6 +96,10 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         accessor: 'Count'
       },
       {
+        Header: 'Registro Sanitario',
+        accessor: ''
+      },
+      {
         Header: 'Precio base',
         accessor: 'BasePrice',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />

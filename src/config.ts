@@ -19,7 +19,7 @@ export const HEADER = {
 };
 
 export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV0018-';
+export const REDUCERVERSION = 'MidasV0019-';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
@@ -111,6 +111,10 @@ export const DayPayment: DayPaymentPropsOption[] = [
   {
     title: '3 Días',
     id: '3'
+  },
+  {
+    title: '8 Días',
+    id: '8'
   },
   {
     title: '15 Días',
