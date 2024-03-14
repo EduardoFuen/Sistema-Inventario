@@ -174,13 +174,15 @@ function ViewPurchase() {
                           {...getFieldProps('Discount')}
                           placeholder="Ingresa Descuento %"
                           fullWidth
-                          type="number"
+                          type="text"
                           InputProps={{ inputProps: { min: 0 } }}
                           disabled={orderPurchase?.Status !== 0}
                           onChange={(e) => {
                             let discount = Number(e.target.value);
-                            setFieldValue('Discount', discount);
-                            dispatch(updateSummaryPurchase(discount));
+                            if (!isNaN(discount)) {
+                              setFieldValue('Discount', discount);
+                              dispatch(updateSummaryPurchase(discount));
+                            }
                           }}
                         />
                       </Grid>

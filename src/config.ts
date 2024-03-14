@@ -7,19 +7,19 @@ import { DefaultArticle } from 'types/purchase';
 export const drawerWidth = 260;
 
 export const AWS_API = {
-  poolId: 'us-east-1_aM1PPjbsx',
-  appClientId: '1vf0bfpo5705b5fntre5jfkhf1'
+  poolId: '',
+  appClientId: ''
 };
-export const AMZSECURITYTOKEN = 'DQYAAHNGJOMNHYYBXRGWCYLAURP';
+export const AMZSECURITYTOKEN = '';
 
 export const HEADER = {
   headers: {
-    'X-Amz-Security-Token': 'DQYAAHNGJOMNHYYBXRGWCYLAURP'
+    'X-Amz-Security-Token': ''
   }
 };
 
-export const HOST = 'https://8uj4s9f9hc.execute-api.sa-east-1.amazonaws.com/default';
-export const REDUCERVERSION = 'MidasV0019-';
+export const HOST = '';
+export const REDUCERVERSION = '';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 

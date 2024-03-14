@@ -26,6 +26,7 @@ export type Product = {
   HandlesBog?: string;
   HandlesBaq?: string;
   UrlImage?: string;
+  Healt?: string;
   Wrapper?: string;
   WrapperUnit?: string;
   TrademarkID?: string;

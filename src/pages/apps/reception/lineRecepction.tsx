@@ -96,7 +96,7 @@ const DetailsPurchase = ({ products, handleAdd }: PropsProduct) => {
         accessor: 'Count'
       },
       {
-        Header: 'Registro Sanitario',
+        Header: 'Registro Sanitario (INVIMA)',
         accessor: ''
       },
       {

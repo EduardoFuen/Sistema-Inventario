@@ -26,6 +26,7 @@ const ProductView = ({ data }: Props) => {
               <Typography variant="h5">{data?.Name}</Typography>
               <Typography variant="h5">{data?.Sku}</Typography>
               <Typography variant="h5">{data?.Ean}</Typography>
+              <Typography variant="h5">{data?.Healt}</Typography>
               <Box sx={{ width: '80%', pt: 2 }}>
                 <Grid container spacing={1}>
                   <Grid item xs={3}>

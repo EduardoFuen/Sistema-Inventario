@@ -83,6 +83,7 @@ const getInitialValues = () => {
     WarehouseIDS: '',
     SubstitutesIDS: '',
     UrlImage: '',
+    Healt: '',
     Tax: 0,
     IsTaxed: false,
     Status: false
@@ -159,7 +160,8 @@ function AddNewProduct() {
   const SubstSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
     Sku: Yup.string().max(255).required('Sku es requerido'),
-    Ean: Yup.string().max(255).required('Ean es requerido')
+    Ean: Yup.string().max(255).required('Ean es requerido'),
+    Healt: Yup.string().max(255).required('Registro Sanitario es requerido')
   });
 
   const formik = useFormik({
@@ -183,7 +185,8 @@ function AddNewProduct() {
           Weight: values?.Weight?.toString(),
           Width: values?.Width?.toString(),
           Height: values?.Height?.toString(),
-          Depth: values?.Depth?.toString()
+          Depth: values?.Depth?.toString(),
+          Healt: values?.Depth?.toString()
         };
 
         await dispatch(addProduct(data));
@@ -240,6 +243,17 @@ function AddNewProduct() {
                         error={Boolean(touched.Ean && errors.Ean)}
                         helperText={touched.Ean && errors.Ean}
                         placeholder="Ingresar EAN"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Registro Sanitario (INVIMA)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Healt')}
+                        error={Boolean(touched.Healt && errors.Healt)}
+                        helperText={touched.Healt && errors.Healt}
+                        placeholder="Ingresar Registro Sanitario (INVIMA)"
                         fullWidth
                       />
                     </Grid>

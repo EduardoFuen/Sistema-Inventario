@@ -94,7 +94,7 @@ const ProductList = () => {
         className: 'cell-center font-size'
       },
       {
-        Header: 'Registro Sanitario',
+        Header: 'Registro Sanitario (INVIMA)',
         accessor: '',
         className: 'cell-center font-size'
       },

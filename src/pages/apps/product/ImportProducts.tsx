@@ -56,6 +56,7 @@ const Import = ({ onCancel }: Props) => {
         Wrapper: item?.PackInfo?.toString()?.trim(),
         WrapperUnit: item?.WrapperUnit?.toString()?.trim(),
         Keywords: item?.Keywords?.toString(),
+        Healt: item?.Healt?.toString(),
         SubstancesIDS: item?.Substance ? ConvertToArray(item?.Substance?.toString(), todoListSubs) : '',
         WarehouseIDS: item?.WarehouseIDS ? ConvertToArray(item?.WarehouseIDS?.toString(), warehouseList) : '',
         SubstitutesIDS: item?.Substitutes ? ConvertToArray(item?.Substitutes?.toString(), products) : '',

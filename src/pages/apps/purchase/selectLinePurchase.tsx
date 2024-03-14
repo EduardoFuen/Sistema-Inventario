@@ -80,6 +80,19 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
         }
       },
       {
+        Header: 'Registro Sanitario (INVIMA)',
+        accessor: '',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography>{value?.Name}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
         Header: 'Maker',
         accessor: 'Maker',
         Cell: ({ value }: any) => {

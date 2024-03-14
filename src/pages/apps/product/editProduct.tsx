@@ -73,6 +73,7 @@ const getInitialValues = (product: FormikValues | null) => {
     Weight: product?.Weight || '',
     Width: product?.Width || '',
     PackInfo: product?.PackInfo,
+    Healt: product?.Healt || '',
     Height: product?.Height || '',
     WrapperUnit: product?.WrapperUnit || '',
     Depth: product?.Depth || '',
@@ -146,7 +147,8 @@ function UpdateProduct() {
   const SubstSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido'),
     Sku: Yup.string().max(255).required('Sku es requerido'),
-    Ean: Yup.string().max(255).required('Ean es requerido')
+    Ean: Yup.string().max(255).required('Ean es requerido'),
+    Healt: Yup.string().max(255).required('Registro Sanitario es requerido')
   });
 
   const onChange = (e: any) => {
@@ -180,6 +182,7 @@ function UpdateProduct() {
           Width: values?.Width?.toString(),
           Height: values?.Height?.toString(),
           Depth: values?.Depth?.toString(),
+          Healt: values?.Healt?.toString(),
           SubstitutesIDS: values.SubstitutesIDS ? idsToString(values.SubstitutesIDS) : '',
           WarehouseIDS: values.WarehouseIDS ? idsToString(values.WarehouseIDS) : '',
           SubstancesIDS: values.SubstancesIDS ? idsToString(values.SubstancesIDS) : ''
@@ -239,6 +242,17 @@ function UpdateProduct() {
                         error={Boolean(touched.Ean && errors.Ean)}
                         helperText={touched.Ean && errors.Ean}
                         placeholder="Ingresar EAN"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Registro Sanitario (INVIMA)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Healt')}
+                        error={Boolean(touched.Healt && errors.Healt)}
+                        helperText={touched.Healt && errors.Healt}
+                        placeholder="Ingresar Registro Sanitario (INVIMA)"
                         fullWidth
                       />
                     </Grid>
