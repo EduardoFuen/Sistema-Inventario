@@ -194,16 +194,4 @@ Your app is ready to be deployed.
 `yarn build`
 
 ------------
-
-
-### Deployed S3 Build
-
-[S3 - midas-front](https://s3.console.aws.amazon.com/s3/buckets/midas-front?region=sa-east-1&tab=objects "S3 - midas-front")
-
-------------
-
-
-### CloudFront 
-[https://dvccr31c6r8ly.cloudfront.net/dashboard](https://us-east-1.console.aws.amazon.com/cloudfront/v3/home?region=sa-east-1#/distributions/E130IZ3YYAKHQL "https://dvccr31c6r8ly.cloudfront.net/dashboard")
-
 ### End
