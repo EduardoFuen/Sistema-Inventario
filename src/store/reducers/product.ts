@@ -94,7 +94,7 @@ export function getProducts(page: number = 1, value: string = '', type: string =
         queryParams += `&Ean=${value?.trim()}`;
       }
 
-      const response = await axios.get(`${HOST}/product?${queryParams}`, HEADER);
+      const response = await axios.get(`${HOST}/product?${queryParams}`);
 
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;

@@ -7,8 +7,8 @@ import { DefaultArticle } from 'types/purchase';
 export const drawerWidth = 260;
 
 export const AWS_API = {
-  poolId: '',
-  appClientId: ''
+  poolId: 'us-east-1_m40dlq2m1',
+  appClientId: '2ujvdva5u5b1hdkrfrp2j00p1o'
 };
 export const AMZSECURITYTOKEN = '';
 

@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 
 // third-party
-import { CognitoUser, CognitoUserPool, CognitoUserSession, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserPool, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // action - state management
-import { LOGIN, LOGOUT, FAILED_LOGIN, LOADING } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, LOADING } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project imports
@@ -22,8 +22,8 @@ const initialState: InitialLoginContextProps = {
 };
 
 export const userPool: any = new CognitoUserPool({
-  UserPoolId: AWS_API.poolId || '',
-  ClientId: AWS_API.appClientId || ''
+  UserPoolId: AWS_API.poolId || 'us-east-1_m40dlq2m1',
+  ClientId: AWS_API.appClientId || '2ujvdva5u5b1hdkrfrp2j00p1o'
 });
 
 const setSession = (serviceToken?: string | null) => {
@@ -85,58 +85,27 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
       Username: email,
       Pool: userPool
     });
+    console.log(usr);
     const authData = new AuthenticationDetails({
       Username: email,
       Password: password
     });
-
-    usr.authenticateUser(authData, {
-      onSuccess: (session: CognitoUserSession) => {
-        setSession(session.getAccessToken().getJwtToken());
-        dispatch({
-          type: LOGIN,
-          payload: {
-            isLoggedIn: true,
-            user: {
-              email: authData.getUsername(),
-              name: authData.getUsername()
-            }
-          }
-        });
-        dispatch({
-          type: LOADING,
-          payload: {
-            isLoggedIn: true,
-            isLoading: false
-          }
-        });
-      },
-      onFailure: (_err) => {
-        dispatch({
-          type: FAILED_LOGIN,
-          payload: {
-            isLoggedIn: false,
-            error: _err.message
-          }
-        });
-        dispatch({
-          type: LOADING,
-          payload: {
-            isLoggedIn: true,
-            isLoading: false
-          }
-        });
-      },
-      newPasswordRequired: (userAttributes, requiredAttributes) => {
-        // // User was signed up by an admin and must provide new
-        // // password and required attributes, if any, to complete
-        // // authentication.
-        // // the api doesn't accept this field back
-        // delete userAttributes.email_verified;
-        // // unsure about this field, but I don't send this back
-        // delete userAttributes.phone_number_verified;
-        // // Get these details and call
-        // usr.completeNewPasswordChallenge(password, userAttributes, requiredAttributes);
+    console.log(authData);
+    dispatch({
+      type: LOGIN,
+      payload: {
+        isLoggedIn: true,
+        user: {
+          email: authData.getUsername(),
+          name: authData.getUsername()
+        }
+      }
+    });
+    dispatch({
+      type: LOADING,
+      payload: {
+        isLoggedIn: true,
+        isLoading: false
       }
     });
   };
