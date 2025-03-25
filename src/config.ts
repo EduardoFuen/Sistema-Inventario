@@ -18,7 +18,7 @@ export const HEADER = {
   }
 };
 
-export const HOST = '';
+export const HOST = 'https://eetf375sg0.execute-api.us-east-1.amazonaws.com';
 export const REDUCERVERSION = '';
 
 export const FILE_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
