@@ -17,7 +17,7 @@ export const HEADER = {
     'X-Amz-Security-Token': ''
   }
 };
-
+// eslint-disable-next-line
 export const HOST = 'https://eetf375sg0.execute-api.us-east-1.amazonaws.com';
 export const REDUCERVERSION = '';
 

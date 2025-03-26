@@ -69,7 +69,7 @@ export function addWarehouse(data: Warehouse) {
   return async () => {
     try {
       console.log('Warehouse 71');
-      const response = await axios.post(`${HOST}/warehouse`, { ...data }, { ...HEADER });
+      const response = await axios.post(`${HOST}/warehouse`, { ...data });
       dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
@@ -91,7 +91,7 @@ export function addWarehouse(data: Warehouse) {
 export function editWarehouse(id: number, data: Warehouse) {
   return async () => {
     try {
-      const response = await axios.put(`https://eetf375sg0.execute-api.us-east-1.amazonaws.com/warehouse`, { ID: id, ...data }, { ...HEADER });
+      const response = await axios.put(`${HOST}/warehouse`, { ID: id, ...data }, { ...HEADER });
       dispatch(wareHouse.actions.updateWarehouseSuccess(response.data));
       dispatch(
         openSnackbar({
