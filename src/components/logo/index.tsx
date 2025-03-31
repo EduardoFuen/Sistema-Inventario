@@ -4,7 +4,7 @@ import { To } from 'history';
 // material-ui
 import { ButtonBase } from '@mui/material';
 import { SxProps } from '@mui/system';
-import Farmu from 'assets/images/icons/farmu.svg';
+import Farmu from 'assets/images/icons/fina2.png';
 
 // ==============================|| MAIN LOGO ||============================== //
 
@@ -17,7 +17,7 @@ interface Props {
 
 const LogoSection = ({ sx, to }: Props) => (
   <ButtonBase disableRipple component={Link} to="/" sx={sx}>
-    <img src={Farmu} alt="Farmu" style={{ width: 150 }} />
+    <img src={Farmu} alt="Farmu" style={{ width: 100 }} />
   </ButtonBase>
 );
 

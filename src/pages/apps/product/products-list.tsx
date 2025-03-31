@@ -3,23 +3,20 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, Dialog, Box, CircularProgress } from '@mui/material';
+import {Stack, Tooltip, Box, CircularProgress } from '@mui/material';
 
 // project import
 import ProductView from './viewProduct';
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
-import Import from './ImportProducts';
+
 
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-import { SearchIDToArray } from 'utils/findName';
-import { productExport } from 'utils/ProductExportTransform';
 import { ProductDefault } from 'config';
 
 // assets
@@ -32,13 +29,11 @@ const ProductList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [addImport, setActiveImport] = useState<boolean>(false);
   const [typeSearch, setTypeSearch] = useState<any>('');
   const [valueSearch, setvalueSearch] = useState<any>('');
 
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
-  const { tradeMarkList } = useSelector((state) => state.trademark);
-  const { typeProductList } = useSelector((state) => state.typeProduct);
+
 
   useEffect(() => {
     dispatch(getProducts());
@@ -60,9 +55,6 @@ const ProductList = () => {
     }
   }, [error, dispatch]);
 
-  const getTradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
-
-  const productsExport: any = products && products.length > 0 ? productExport(products, typeProductList) : [];
 
   const handleAddProduct = () => {
     history(`/product-list/add`);
@@ -72,15 +64,13 @@ const ProductList = () => {
     history(`/product-list/edit/${id}`);
   };
 
-  const handleImport = () => {
-    setActiveImport(!addImport);
-  };
+
 
   const columnsProducts = useMemo(
     () => [
       {
         Header: 'ID',
-        accessor: 'ID',
+        accessor: 'sk',
         className: 'cell-center font-size'
       },
       {
@@ -89,64 +79,13 @@ const ProductList = () => {
         className: 'cell-center font-size'
       },
       {
-        Header: 'EAN',
-        accessor: 'Ean',
-        className: 'cell-center font-size'
-      },
-      {
-        Header: 'Registro Sanitario (INVIMA)',
-        accessor: '',
-        className: 'cell-center font-size'
-      },
-      {
         Header: 'Nombre Producto',
         accessor: 'Name',
-        Cell: ({ row }: any) => {
-          const { original } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar variant="rounded" alt={original?.Name} color="secondary" size="sm" src={original?.UrlImage} />
-              <Stack spacing={0}>
-                <Typography className="cell-center font-size">{original?.Name}</Typography>
-              </Stack>
-            </Stack>
-          );
-        }
       },
       {
-        Header: 'Maker',
-        accessor: 'Maker',
-        Cell: ({ value }: any) => {
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{value.Name}</Typography>}</Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Trademark',
-        accessor: 'TrademarkID',
-        Cell: ({ value }: any) => {
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getTradeMark(value)}</Typography>}</Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Estado',
-        accessor: 'Status',
-        Cell: ({ value }: any) => {
-          switch (value) {
-            case false:
-              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case true:
-            default:
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-          }
-        }
+        Header: 'Precio',
+        accessor: 'Price',
+        className: 'cell-center font-size'
       },
       {
         Header: 'Acciones',
@@ -178,7 +117,7 @@ const ProductList = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditProduct(row?.values?.ID);
+                    handleEditProduct(row?.values?.sk);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -190,7 +129,7 @@ const ProductList = () => {
                   onClick={async (e: any) => {
                     e.stopPropagation();
                     setIsLoading(true);
-                    await dispatch(deleteProduct(row?.values?.ID));
+                    await dispatch(deleteProduct(row?.values?.sk));
                     setIsLoading(false);
                   }}
                 >
@@ -222,12 +161,8 @@ const ProductList = () => {
         <ReactTable
           columns={columnsProducts}
           data={listProducts as []}
-          handleImport={handleImport}
           handleAdd={handleAddProduct}
           TitleButton="Agregar"
-          FileNameTemplate="Descargar Plantilla"
-          dataExport={productsExport}
-          download
           dataTemplate={ProductDefault as []}
           FileName="Productos"
           activeSearchType
@@ -257,9 +192,6 @@ const ProductList = () => {
           totalRows={totalPages}
         />
       </ScrollX>
-      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
-        {addImport && <Import onCancel={handleImport} />}
-      </Dialog>
     </MainCard>
   );
 };

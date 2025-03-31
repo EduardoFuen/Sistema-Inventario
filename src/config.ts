@@ -33,35 +33,11 @@ export const DATEFORMAT = 'dd-MM-yyyy';
 
 export const ProductDefault: Product[] = [
   {
-    HandlesBaq: '',
-    HandlesBog: '',
+  
     ID: '',
     Name: '',
     Sku: '',
-    Ean: '',
-    Maker: '',
-    TrademarkID: '',
-    TypesProductID: '',
-    Variation: '',
-    Grupo: '',
-    CategoryOneID: '',
-    CategoryTwoID: '',
-    Pack: '',
-    Quantity: '',
-    MakerUnit: '',
-    Weight: '',
-    Width: '',
-    PackInfo: '',
-    Height: '',
-    WrapperUnit: '',
-    Depth: '',
-    WarehouseIDS: '',
-    Substance: '',
-    Substitutes: '',
-    Keywords: '',
-    Tax: 0,
-    Status: false,
-    IsTaxed: false
+    Price: 0
   }
 ];
 

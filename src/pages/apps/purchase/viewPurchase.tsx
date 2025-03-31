@@ -262,7 +262,7 @@ function ViewPurchase() {
                       <Grid item xs={12} alignSelf="center">
                         <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
                           <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
-                            Agregar Productos
+                            Agregars Productos
                           </Button>
                         </Stack>
                       </Grid>
@@ -283,10 +283,6 @@ function ViewPurchase() {
                             <TableCell>PRODUCTO</TableCell>
                             <TableCell align="center">CANTIDAD</TableCell>
                             <TableCell align="center">PRECIO BASE</TableCell>
-                            <TableCell align="center">IVA</TableCell>
-                            <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
-                            <TableCell align="center">Descuento por nota credito %</TableCell>
-                            <TableCell align="center">BONIFICACIÓN</TableCell>
                             <TableCell align="center">SUBTOTAL</TableCell>
                             <TableCell align="center">TOTAL</TableCell>
                           </TableRow>
@@ -371,7 +367,7 @@ function ViewPurchase() {
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        Guardar Compra
+                        Guardars Compra
                       </Button>
                     )}
                   </Stack>

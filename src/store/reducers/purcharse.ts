@@ -92,20 +92,21 @@ export function getPurchaseList(page: number = 1) {
   return async () => {
     try {
       dispatch(slice.actions.loading());
-      // let queryParams: string = `limit=30&page=${page}`;
-      // const response = await axios.get(`${HOST}/purchase?${queryParams}`);
       const response = await axios.get(`${HOST}/purchase`, HEADER);
       if (response.data instanceof Object) {
         //const { Rows, totalRows, totalPages, page }: any = response.data;
-        let rowsNew: any = response.data
+
+        if(response.data.length > 0){
+          console.log("compra100")
+          console.log(response.data.length)
+          let rowsNew: any = response.data
           .map((item: any) => ({
             ...item,
-            NumberOrder: `Farmu-${item.ID}`,
-            BusinessName: item?.Supplier?.BusinessName,
-            Warehouse: item?.Warehouse?.Name,
+            NumberOrder: `DrAgua-${item.sk}`,
+            BusinessName: item?.BusinessName,
             CreatedAt: format(new Date(item?.CreatedAt), DATEFORMAT)
           }))
-          .sort((a: any, b: any) => a.ID - b.ID);
+          .sort((a: any, b: any) => a.sk - b.sk);
 
         if (rowsNew.length > 0) {
           let dataPurchase: any = {
@@ -117,6 +118,32 @@ export function getPurchaseList(page: number = 1) {
           dispatch(slice.actions.getPurchaseSuccess(dataPurchase));
           dispatch(slice.actions.hasError(null));
         }
+        }else{
+          console.log("compra122")
+          console.log(response.data.length)
+          let rowsNew: any = []
+          .map((item: any) => ({
+            ...item,
+            NumberOrder: `0`,
+            BusinessName: 0,
+            CreatedAt: 0
+          }))
+          .sort((a: any, b: any) => a.sk - b.sk);
+
+        if (rowsNew) {
+          let dataPurchase: any = {
+            Rows: rowsNew,
+            // totalRows,
+            // totalPages,
+            page
+          };
+          console.log("137")
+          console.log(dataPurchase)
+          dispatch(slice.actions.getPurchaseSuccess(dataPurchase));
+          dispatch(slice.actions.hasError(null));
+        }
+        }
+
       }
     } catch (error: any) {
       if (error?.response?.status === 404) {
@@ -150,8 +177,8 @@ export function addPurchase(data: Purchase) {
           close: false
         })
       );
-      await dispatch(slice.actions.addPurchaseSuccess(response.data));
-      window.location.href = `/purchase/view/${response.data.ID}`;
+      dispatch(slice.actions.addPurchaseSuccess(response.data));
+      //window.location.href = `/purchase/view/${response.data.sk}`;
     } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }

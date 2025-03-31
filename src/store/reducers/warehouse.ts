@@ -68,7 +68,6 @@ export function getWarehouseList() {
 export function addWarehouse(data: Warehouse) {
   return async () => {
     try {
-      console.log('Warehouse 71');
       const response = await axios.post(`${HOST}/warehouse`, { ...data });
       dispatch(wareHouse.actions.addWarehouseSuccess(response.data));
       dispatch(

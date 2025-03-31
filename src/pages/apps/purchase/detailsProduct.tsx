@@ -40,13 +40,13 @@ const DetailsPurchase = ({ product }: any) => {
     let newData = data?.map((item: Article) => ({
       Count: '',
       BasePrice: '',
-      Tax: '',
+      Tax: 0,
       DiscountAdditional: '',
       DiscountNegotiated: '',
       Bonus: '',
       SubTotal: '',
       Total: '',
-      ProductID: item?.ID || '',
+      ProductID: item?.sk || '',
       ...item
     }));
     setInputList(newData);
@@ -73,8 +73,8 @@ const DetailsPurchase = ({ product }: any) => {
     if (name === 'Bonus') {
       list[index]['Bonus'] = Number(value);
     }
-    list[index]['SubTotal'] = list[index]?.Count * list[index]?.BasePrice * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
-    list[index]['Total'] = list[index]?.SubTotal + (list[index]?.Count * list[index]?.BasePrice * list[index]?.Tax) / 100;
+    list[index]['SubTotal'] = list[index]?.Count * list[index]?.Price * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
+    list[index]['Total'] =  list[index]?.Count * list[index]?.Price * ((100 - list[index]?.DiscountNegotiated) / 100) || 0;
     setInputList(list);
     dispatch(editItemsPurchase(list));
   };
@@ -85,16 +85,10 @@ const DetailsPurchase = ({ product }: any) => {
         <Table sx={{ minWidth: 650 }} size="small">
           <TableHead>
             <TableRow>
-              <TableCell>PRODUCTO</TableCell>
+              <TableCell sx={{ minWidth: 300 }} >PRODUCTO</TableCell>
               <TableCell align="center">CANTIDAD</TableCell>
               <TableCell align="center">PRECIO BASE</TableCell>
-              <TableCell align="center">IVA</TableCell>
-              <TableCell align="center">DESCUENTO NEGOCIADO %</TableCell>
-              <TableCell align="center">Descuento por nota credito %</TableCell>
-              <TableCell align="center">BONIFICACIÓN</TableCell>
-              <TableCell align="center">SUBTOTAL</TableCell>
               <TableCell align="center">TOTAL</TableCell>
-              <TableCell align="center">ACCIONES</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -105,10 +99,7 @@ const DetailsPurchase = ({ product }: any) => {
                     <Stack spacing={0}>
                       <Typography className="font-size">{x.Name}</Typography>
                       <Typography variant="caption" color="textSecondary">
-                        Sku {x.Sku}
-                      </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        Ean {x.Ean}
+                        Codigo {x.Sku}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -132,68 +123,12 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Precio Base"
                     fullWidth
-                    name="BasePrice"
-                    value={x.BasePrice}
+                    name="Price"
+                    value={x.Price}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    placeholder="Ingresar IVA"
-                    fullWidth
-                    name="Tax"
-                    value={x.Tax}
-                    onChange={(e) => handleInputChange(e, i)}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    placeholder="Ingresar Descuento Negociado"
-                    fullWidth
-                    name="DiscountNegotiated"
-                    value={x.DiscountNegotiated}
-                    onChange={(e) => handleInputChange(e, i)}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    placeholder="Ingresar Descuento por nota credito"
-                    fullWidth
-                    name="DiscountAdditional"
-                    value={x.DiscountAdditional}
-                    onChange={(e) => handleInputChange(e, i)}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    placeholder="Ingresar Bonificación"
-                    fullWidth
-                    value={x.Bonus}
-                    name="Bonus"
-                    onChange={(e) => handleInputChange(e, i)}
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <Input
-                    id="SubTotal"
-                    onChange={(e) => handleInputChange(e, i)}
-                    name="SubTotal"
-                    value={x.SubTotal || 0}
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  />
-                </TableCell>
+
                 <TableCell align="center">
                   <Input
                     id="Total"

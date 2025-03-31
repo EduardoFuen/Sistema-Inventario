@@ -6,8 +6,6 @@ import axios from 'axios';
 import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
-import { getTrademarkList } from './trademark';
-import { getTypeProductList } from './typeProduct';
 
 // types
 import { DefaultRootStateProps, Product } from 'types/products';
@@ -90,16 +88,14 @@ export function getProducts(page: number = 1, value: string = '', type: string =
       if (type === 'Sku') {
         queryParams += `&Sku=${value?.trim()}`;
       }
-      if (type === 'Ean') {
-        queryParams += `&Ean=${value?.trim()}`;
+      if (type === 'Price') {
+        queryParams += `&Price=${value?.trim()}`;
       }
 
       const response = await axios.get(`${HOST}/product?${queryParams}`);
 
       if (response.data instanceof Object) {
         const { Rows, totalRows, totalPages, page }: any = response.data;
-        dispatch(getTrademarkList());
-        dispatch(getTypeProductList());
         dispatch(
           slice.actions.getProductsSuccess({
             totalRows,
@@ -144,7 +140,7 @@ export function addProduct(data: Product) {
     try {
       const response = await axios.post(`${HOST}/product`, { ...data }, { ...HEADER });
       await dispatch(getProducts());
-      await dispatch(slice.actions.addProductSuccess(response.data));
+      dispatch(slice.actions.addProductSuccess(response.data));
       dispatch(
         openSnackbar({
           open: true,
@@ -156,8 +152,9 @@ export function addProduct(data: Product) {
           close: false
         })
       );
-      window.location.href = `/product-list`;
+      //window.location.href = `/product-list`;
     } catch (error: any) {
+      console.log('errpr')
       dispatch(slice.actions.hasError(error));
     }
   };

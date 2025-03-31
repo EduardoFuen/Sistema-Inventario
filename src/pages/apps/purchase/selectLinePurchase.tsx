@@ -2,10 +2,9 @@ import { useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Chip, Grid, DialogContent, DialogActions, DialogTitle, Stack, Typography } from '@mui/material';
+import { Button, Grid, DialogContent, DialogActions, DialogTitle, Stack, Typography } from '@mui/material';
 
 // project import
-import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
@@ -13,7 +12,6 @@ import { useSelector, useDispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addItemsPurchase } from 'store/reducers/purcharse';
 import { IndeterminateCheckbox } from 'components/third-party/ReactTable';
-import { SearchIDToArray } from 'utils/findName';
 
 import { getProducts } from 'store/reducers/product';
 
@@ -31,9 +29,7 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
   const [valueSearch, setvalueSearch] = useState<any>('');
 
   const { products, page, totalPages, isLoading } = useSelector((state) => state.product);
-  const { tradeMarkList } = useSelector((state) => state.trademark);
 
-  const TradeMark = (id: number) => SearchIDToArray(tradeMarkList, id)?.Name || '';
 
   const handleSelect = (row: any) => {
     const index = itemsNew.findIndex((item) => item?.ID === row?.original?.ID);
@@ -65,14 +61,10 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
           const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Avatar variant="rounded" alt={original.Name} color="secondary" size="sm" src={original.UrlImage} />
               <Stack spacing={0}>
                 <Typography className="font-size">{original?.Name}</Typography>
                 <Typography variant="caption" color="textSecondary">
-                  Sku {original?.Sku}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Ean {original?.Ean}
+                  Codigo {original?.Sku}
                 </Typography>
               </Stack>
             </Stack>
@@ -80,55 +72,33 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
         }
       },
       {
-        Header: 'Registro Sanitario (INVIMA)',
-        accessor: '',
-        Cell: ({ value }: any) => {
+        Header: 'Codigo',
+        accessor: 'Sku',
+        Cell: ({ row }: any) => {
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography>{value?.Name}</Typography>
+                <Typography>{original?.Sku}</Typography>
               </Stack>
             </Stack>
           );
         }
       },
       {
-        Header: 'Maker',
-        accessor: 'Maker',
-        Cell: ({ value }: any) => {
+        Header: 'Precio',
+        accessor: 'Price',
+        Cell: ({ row }: any) => {
+          const { original } = row;
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
-                <Typography>{value?.Name}</Typography>
+                <Typography>{original?.Price}</Typography>
               </Stack>
             </Stack>
           );
         }
       },
-      {
-        Header: 'Trademark',
-        accessor: 'TrademarkID',
-        Cell: ({ value }: any) => {
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography>{TradeMark(value)}</Typography>}</Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Estado',
-        accessor: 'Status',
-        Cell: ({ value }: any) => {
-          switch (value) {
-            case false:
-              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case true:
-            default:
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-          }
-        }
-      }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]

@@ -2,48 +2,8 @@
 export type Product = {
   ID?: string | number | undefined;
   Name?: string;
-  Quantity?: number | string;
-  Discount?: number;
   Price?: number;
-  Maker?: any;
-  Status?: boolean;
-  IsTaxed?: boolean;
   Sku?: string;
-  Ean?: string;
-  Variation?: string;
-  Pack?: any;
-  MakerUnit?: string;
-  Weight?: string;
-  Width?: string;
-  PackInfo?: string;
-  Height?: string;
-  PackUnit?: string;
-  Depth?: string;
-  Warehouses?: string;
-  Substance?: string;
-  Keywords?: string;
-  Substitutes?: string;
-  HandlesBog?: string;
-  HandlesBaq?: string;
-  UrlImage?: string;
-  Healt?: string;
-  Wrapper?: string;
-  WrapperUnit?: string;
-  TrademarkID?: string;
-  TypesProductID?: string;
-  Grupo?: string;
-  CategoryOneID?: string;
-  CategoryThreeID?: string;
-  SubstitutesIDS?: string;
-  WarehouseIDS?: string;
-  SubstancesIDS?: string;
-  CategoryTwoID?: string;
-  MakerID?: string;
-  PackID?: string;
-  Iva?: number;
-  iva?: number | string;
-  Tax?: number;
-  Taxed?: boolean;
 };
 
 export interface ProductStateProps {

@@ -1,8 +1,8 @@
-import { useState, useMemo, useEffect, ChangeEvent, KeyboardEvent } from 'react';
+import { useState, useMemo, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // material-ui
-import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, MenuItem, Dialog, FormHelperText } from '@mui/material';
+import { Button, Grid, InputLabel, Stack, TextField, Typography, Autocomplete, Dialog, FormHelperText } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
@@ -13,10 +13,8 @@ import MainCard from 'components/MainCard';
 import summary from 'utils/calculation';
 import Import from './importLinePurchase';
 import SelectLinePurchase from './selectLinePurchase';
-import Export from 'components/ExportToFile';
 import SummaryTemplate from 'components/SummaryTemplate';
 import DetailsPurchase from './detailsProduct';
-import { ProductPurchaseDefault } from 'config';
 
 import { useSelector, useDispatch } from 'store';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
@@ -25,7 +23,6 @@ import { getWarehouseList } from 'store/reducers/warehouse';
 import { getSupplierList } from 'store/reducers/supplier';
 
 // types
-import { Warehouse } from 'types/products';
 import { Supplier } from 'types/supplier';
 import { Purchase } from 'types/purchase';
 // ==============================|| ADD NEW PURCHASE - MAIN ||============================== //
@@ -34,9 +31,11 @@ const getInitialValues = () => {
   const newSubstance = {
     Notes: '',
     Discount: '',
+    sk: '',
     SupplierID: '',
     WarehouseID: '',
-    DiscountEarliyPay: ''
+    DiscountEarliyPay: '',
+    CreatedAt: new Date()
   };
   return newSubstance;
 };
@@ -45,8 +44,7 @@ function AddPurchase() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [add, setAdd] = useState<boolean>(false);
-  const [discount, setDiscount] = useState<number>();
-  const [discountEarliyPay, setDiscountEarliyPay] = useState<number>();
+  const [discount] = useState<number>();
   const [addImport, setActiveImport] = useState<boolean>(false);
 
   useEffect(() => {
@@ -64,7 +62,6 @@ function AddPurchase() {
   };
 
   const { supplierList } = useSelector((state) => state.supplier);
-  const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
 
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
@@ -74,10 +71,7 @@ function AddPurchase() {
   };
 
   const SubstSchema = Yup.object().shape({
-    WarehouseID: Yup.string().required('Bodega es requerido'),
     SupplierID: Yup.string().required('Proveedor es requerido'),
-    Discount: Yup.number().required('Descuento es requerido'),
-    DiscountEarliyPay: Yup.number().required('Descuento pronto Pago es requerido')
   });
 
   const data = useMemo(
@@ -91,11 +85,13 @@ function AddPurchase() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         setSubmitting(true);
+        const sk = Date.now().toString()
         if (detailsPurchase.length > 0) {
           const newValue: Purchase = {
             ...values,
             Status: 0,
             ...data,
+            sk: sk,
             Articles: detailsPurchase,
             Discount: values?.Discount,
             DiscountEarliyPay: Number(values?.DiscountEarliyPay)
@@ -103,6 +99,7 @@ function AddPurchase() {
           await dispatch(addPurchase(newValue));
         }
         setSubmitting(false);
+        history(`/purchase/view/${sk}`);
       } catch (error: any) {
         setSubmitting(false);
         console.error(error);
@@ -130,15 +127,15 @@ function AddPurchase() {
                         id="supplier-list"
                         renderOption={(props, option) => {
                           return (
-                            <li {...props} key={option.ID}>
+                            <li {...props} key={option.sk}>
                               {option.BusinessName}
                             </li>
                           );
                         }}
-                        options={supplierList.filter((item: Supplier) => item.Status === true)}
+                        options={supplierList.filter((item: Supplier) => item.sk)}
                         getOptionLabel={(option: Supplier) => option.BusinessName ?? ''}
                         onChange={(event, newValue) => {
-                          setFieldValue('SupplierID', newValue === null ? '' : newValue?.ID);
+                          setFieldValue('SupplierID', newValue === null ? '' : newValue?.sk);
                         }}
                         renderInput={(params) => <TextField {...params} placeholder="" />}
                         sx={{
@@ -164,65 +161,6 @@ function AddPurchase() {
                         </FormHelperText>
                       )}
                     </Grid>
-                    <Grid item xs={3}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                      <TextField
-                        {...getFieldProps('WarehouseID')}
-                        select
-                        fullWidth
-                        error={Boolean(touched.WarehouseID && errors.WarehouseID)}
-                        helperText={touched.WarehouseID && errors.WarehouseID}
-                        onChange={(e) => {
-                          setFieldValue('WarehouseID', e.target.value);
-                        }}
-                      >
-                        {warehouseList
-                          .filter((item: Warehouse) => item.Status === true)
-                          .map((option: Warehouse) => (
-                            <MenuItem key={option.ID} value={option.ID}>
-                              {option.Name}
-                            </MenuItem>
-                          ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
-                        Descuento
-                        <Typography
-                          color="error"
-                          sx={{ display: 'inline-block', fontSize: 15, fontWeight: 600, paddingLeft: 1, height: 0 }}
-                        >
-                          *
-                        </Typography>
-                      </InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Discount')}
-                        placeholder="Ingresa Descuento %"
-                        fullWidth
-                        InputProps={{
-                          inputProps: { min: 0 },
-                          required: true
-                        }}
-                        type="number"
-                        error={Boolean(touched.Discount && errors.Discount)}
-                        helperText={touched.Discount && errors.Discount}
-                        onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
-                          const target = e.target as HTMLInputElement;
-                          if (e.key === 'Delete' || (e.key === 'Backspace' && target.value === '0')) {
-                            target.value = '';
-                            setFieldValue('Discount', '');
-                          }
-                        }}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                          let discount = Number(e.target.value);
-                          if (discount >= 0) {
-                            setDiscount(discount);
-                            setFieldValue('Discount', discount);
-                          }
-                        }}
-                      />
-                    </Grid>
                   </Grid>
                   <Grid
                     container
@@ -232,7 +170,7 @@ function AddPurchase() {
                       marginTop: 20
                     }}
                   >
-                    <Grid item xs={5}>
+                    <Grid item xs={5} >
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Notas</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
@@ -243,47 +181,9 @@ function AddPurchase() {
                         {...getFieldProps('Notes')}
                       />
                     </Grid>
-                    <Grid item xs={4} alignSelf="center">
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>
-                        Descuento pronto Pago
-                        <Typography
-                          color="error"
-                          sx={{ display: 'inline-block', fontSize: 15, fontWeight: 600, paddingLeft: 1, height: 0 }}
-                        >
-                          *
-                        </Typography>
-                      </InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('DiscountEarliyPay')}
-                        placeholder="Descuento pronto Pago %"
-                        type="number"
-                        fullWidth
-                        error={Boolean(touched.DiscountEarliyPay && errors.DiscountEarliyPay)}
-                        helperText={touched.DiscountEarliyPay && errors.DiscountEarliyPay}
-                        onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
-                          const target = e.target as HTMLInputElement;
-                          if (e.key === 'Delete' || (e.key === 'Backspace' && target.value === '0')) {
-                            target.value = '';
-                            setFieldValue('DiscountEarliyPay', '');
-                          }
-                        }}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                          let discount = Number(e.target.value);
-                          if (discount >= 0) {
-                            setDiscountEarliyPay(discountEarliyPay);
-                            setFieldValue('DiscountEarliyPay', discount);
-                          }
-                        }}
-                      />
-                    </Grid>
 
                     <Grid item xs={12} alignSelf="center">
-                      <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
-                        <Export excelData={ProductPurchaseDefault} fileName="Line Purchase" title="Descargar plantilla de productos" />
-                        <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleImport}>
-                          Importar Productos
-                        </Button>
+                      <Stack direction="row" spacing={2} justifyContent="center" alignItems="left" sx={{ mt: 3 }}>
                         <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
                           Agregar Productos
                         </Button>

@@ -2,12 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, capitalize, Typography, Dialog, Box, CircularProgress } from '@mui/material';
+import { Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
 // third-party
-import NumberFormat from 'react-number-format';
 import { useSelector, useDispatch } from 'store';
 
 // project import
@@ -54,24 +53,19 @@ const SupplierListPage = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'ID',
-        accessor: 'ID',
+        Header: 'Codigo',
+        accessor: 'Code',
         className: 'cell-center font-size'
       },
       {
-        Header: 'NIT',
-        accessor: 'Nit',
+        Header: 'RIF',
+        accessor: 'Rif',
         className: 'cell-center font-size'
       },
       {
-        Header: 'Razón social',
+        Header: 'Descripción',
         accessor: 'BusinessName',
         className: 'cell-center font-size',
-        Cell: ({ value }: any) => (
-          <Typography variant="h6" key={value}>
-            {capitalize(value)}
-          </Typography>
-        )
       },
       {
         Header: 'Email',
@@ -82,25 +76,11 @@ const SupplierListPage = () => {
         Header: 'Teléfono',
         className: 'cell-center font-size',
         accessor: 'PhoneContact',
-        Cell: ({ value }) => <NumberFormat displayType="text" format="+57 (###) ###-####" mask="_" defaultValue={value} />
       },
       {
         Header: 'Nombre Contacto',
         className: 'cell-center font-size',
         accessor: 'NameContact'
-      },
-      {
-        Header: 'Estado',
-        accessor: 'Status',
-        Cell: ({ value }: any) => {
-          switch (value) {
-            case false:
-              return <Chip color="error" label="Desactivado" size="small" variant="light" />;
-            case true:
-            default:
-              return <Chip color="success" label="Activo" size="small" variant="light" />;
-          }
-        }
       },
       {
         Header: 'Acciones',
@@ -133,7 +113,7 @@ const SupplierListPage = () => {
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditSupplier(row?.original?.ID);
+                    handleEditSupplier(row?.original?.sk);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -145,7 +125,7 @@ const SupplierListPage = () => {
                   onClick={async (e: any) => {
                     e.stopPropagation();
                     setIsLoading(true);
-                    await dispatch(deleteSupplier(row?.original?.ID));
+                    await dispatch(deleteSupplier(row?.original?.sk));
                     setIsLoading(false);
                   }}
                 >

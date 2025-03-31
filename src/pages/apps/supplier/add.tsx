@@ -8,11 +8,6 @@ import {
   Stack,
   TextField,
   Typography,
-  FormControlLabel,
-  Switch,
-  MenuItem,
-  Select,
-  FormHelperText
 } from '@mui/material';
 
 // third-party
@@ -24,7 +19,6 @@ import { useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
-import { DayPayment } from 'config';
 
 // types
 import { Supplier } from 'types/supplier';
@@ -37,14 +31,7 @@ const getInitialValues = () => {
     PhoneContact: 0,
     BusinessName: '',
     EmailContact: '',
-    Nit: '',
-    PaymenTerm: '',
-    LeadTimeBog: 0,
-    LeadTimeBaq: 0,
-    Discount: 0,
-    DaysPayment: '',
-    Cupo: 0,
-    Status: false
+    Rif: ''
   };
   return newSubstance;
 };
@@ -59,18 +46,14 @@ function AddSupplier() {
   };
 
   const SubstSchema = Yup.object().shape({
-    BusinessName: Yup.string().max(255).required('Razón social es requerido'),
-    Nit: Yup.string().max(255).required('NIT es requerido'),
-    NameContact: Yup.string().max(255).required('Nombre de Contacto es requerido'),
-    EmailContact: Yup.string().max(255).required('Email es requerido'),
-    PhoneContact: Yup.string().max(255).required('Teléfono es requerido'),
-    PaymenTerm: Yup.string().max(255).required('Plazo de pago es requerido')
+    BusinessName: Yup.string().max(255).required('Razón social es requerido')
   });
 
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
+      console.log('TEST66')
       try {
         await dispatch(createSupplier(values));
         dispatch(
@@ -117,18 +100,58 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>NIT</InputLabel>
+                  </Grid>
+                  <Grid container spacing={1} direction="row">
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Codigo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Nit')}
-                        error={Boolean(touched.Nit && errors.Nit)}
-                        helperText={touched.Nit && errors.Nit}
-                        placeholder="Ingresar NIT"
+                        {...getFieldProps('Code')}
+                        placeholder="Ingresar Codigo"
                         fullWidth
                       />
                     </Grid>
                   </Grid>
+                  <Grid container spacing={1} direction="row">
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>RIF</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Rif')}
+                        placeholder="Ingresar RIF"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Destino Tipo</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('DesT')}
+                        placeholder="Ingresar Destino Tipo"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Zona</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Zona')}
+                        placeholder="Ingresar Zona"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Zona Descarga</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('ZonaDes')}
+                        placeholder="Ingresar Zona Descarga"
+                        fullWidth
+                      />
+                    </Grid>
+               
+                  </Grid>
+           
                 </MainCard>
               </Grid>
 
@@ -139,13 +162,11 @@ function AddSupplier() {
                   </Typography>
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre de Contacto</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>FAX</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('NameContact')}
-                        error={Boolean(touched.NameContact && errors.NameContact)}
-                        helperText={touched.NameContact && errors.NameContact}
-                        placeholder="Ingresar Nombre de Contacto"
+                        placeholder="Ingresar Fax"
                         fullWidth
                       />
                     </Grid>
@@ -172,118 +193,40 @@ function AddSupplier() {
                         helperText={touched.EmailContact && errors.EmailContact}
                       />
                     </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Vendedor</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Vendedor')}
+                        placeholder="Ingresar Vendedor"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Vendedor Destino</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('VendedorDes')}
+                        placeholder="Ingresar Vendedor Destino"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Dir vendedor</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('VendedorDir')}
+                        placeholder="Ingresar Direccion vendedor"
+                        fullWidth
+                      />
+                    </Grid>
                   </Grid>
                 </MainCard>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12}>
-                    <MainCard>
-                      <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                        Datos de Entregas
-                      </Typography>
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Lead Time Bogota</InputLabel>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            {...getFieldProps('LeadTimeBog')}
-                            type="number"
-                            InputProps={{ inputProps: { min: 0 } }}
-                            error={Boolean(touched.LeadTimeBog && errors.LeadTimeBog)}
-                            helperText={touched.LeadTimeBog && errors.LeadTimeBog}
-                            placeholder="Ingresar Lead Time Bogota"
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Lead Time Barranquilla</InputLabel>
-                          <TextField
-                            sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                            type="number"
-                            InputProps={{ inputProps: { min: 0 } }}
-                            placeholder="Ingresar Lead Time Barranquilla"
-                            fullWidth
-                            {...getFieldProps('LeadTimeBaq')}
-                            error={Boolean(touched.LeadTimeBaq && errors.LeadTimeBaq)}
-                            helperText={touched.LeadTimeBaq && errors.LeadTimeBaq}
-                          />
-                        </Grid>
-                      </Grid>
-                    </MainCard>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <MainCard>
-                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos de Pago
-                  </Typography>
-                  <Grid container direction="row" spacing={2}>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Plazo de pago</InputLabel>
-                      <Select
-                        fullWidth
-                        {...getFieldProps('PaymenTerm')}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
-                      >
-                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
-                          Seleccionar Plazo de pago
-                        </MenuItem>
-                        {DayPayment.map((option: any) => {
-                          return (
-                            <MenuItem key={option.id} value={option.id}>
-                              {option.title}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cupo</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        type="number"
-                        InputProps={{ inputProps: { min: 0 } }}
-                        placeholder="Ingresar cupo"
-                        fullWidth
-                        {...getFieldProps('Cupo')}
-                        error={Boolean(touched.Cupo && errors.Cupo)}
-                        helperText={touched.Cupo && errors.Cupo}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días pronto pago</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        placeholder="Ingresar Días pronto pago"
-                        fullWidth
-                        {...getFieldProps('DaysPayment')}
-                        error={Boolean(touched.DaysPayment && errors.DaysPayment)}
-                        helperText={touched.DaysPayment && errors.DaysPayment}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto pago </InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        placeholder="Ingresar Descuento pronto pago %"
-                        fullWidth
-                        type="number"
-                        {...getFieldProps('Discount')}
-                        error={Boolean(touched.Discount && errors.Discount)}
-                        helperText={touched.Discount && errors.Discount}
-                      />
-                    </Grid>
-                  </Grid>
-                </MainCard>
-              </Grid>
+
               <Grid item xs={12}>
-                <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
-                  <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="top" {...getFieldProps('Status')} />
+                <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mt: 6 }}>
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancelar
                   </Button>

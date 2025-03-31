@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build && compress-cra -c /path/to/configfile",
+    "build": "react-scripts build --openssl-legacy-provider start && compress-cra -c /path/to/configfile",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

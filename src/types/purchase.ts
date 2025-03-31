@@ -24,6 +24,7 @@ export type Article = {
   Name?: string;
   Sku?: string;
   Ean?: string;
+  sk?: string;
 };
 
 export type Purchase = {

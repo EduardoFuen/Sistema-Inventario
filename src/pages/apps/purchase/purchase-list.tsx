@@ -13,6 +13,7 @@ import ReactTable from 'components/ReactTable';
 import PDF from 'components/PDF';
 import { newDataExport } from 'utils/PurchaseTransform';
 import { getProducts } from 'store/reducers/product';
+
 import { useSelector, useDispatch, store } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
@@ -95,50 +96,26 @@ const PurchaseList = () => {
         accessor: 'BusinessName',
         Cell: ({ row }: any) => {
           const { original } = row;
+          console.log('LISTA 101')
+          console.log(original)
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography variant="subtitle1" className="font-size">
-                  {original?.Supplier?.BusinessName || ''}
+                  {original?.BusinessName || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {original?.Supplier?.Nit || ''}
+                  {original?.Rif || ''}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {original?.Supplier?.EmailContact || ''}
+                  {original?.EmailContact || ''}
                 </Typography>
               </Stack>
             </Stack>
           );
         }
       },
-      {
-        Header: 'Bodega',
-        accessor: 'Warehouse',
-        Cell: ({ value }: any) => {
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1" className="font-size">
-                  {value || ''}
-                </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Subtotal',
-        accessor: 'SubTotal',
-        className: 'cell-center font-size',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
-      },
-      {
-        Header: 'IVA',
-        accessor: 'Tax',
-        className: 'cell-center font-size',
-        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
-      },
+
       {
         Header: 'Total',
         accessor: 'Total',

@@ -34,7 +34,7 @@ export const TransformsArticles = (data: object[], products: Product[]) =>
       DiscountNegotiated: item?.Discount,
       Name: product?.Name,
       Sku: product?.Sku,
-      Ean: product?.Ean,
+      Price: product?.Price,
       isSelected: true
     };
   });

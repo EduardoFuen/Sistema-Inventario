@@ -40,7 +40,7 @@ const applications: NavItemType = {
     },
     {
       id: 'supplier',
-      title: 'Proveedores',
+      title: 'Clientes',
       type: 'item',
       url: '/supplier',
       icon: icons.TeamOutlined
@@ -75,12 +75,14 @@ const applications: NavItemType = {
       title: 'Recepción',
       icon: icons.ApartmentOutlined,
       type: 'item',
+      hide: true,
       url: '/reception'
     },
     {
       id: 'inventario',
       title: 'Inventario',
       type: 'item',
+      hide: true,
       url: '/inventario',
       icon: icons.HddOutlined
     },

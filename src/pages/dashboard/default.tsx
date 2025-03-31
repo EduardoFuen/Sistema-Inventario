@@ -7,8 +7,7 @@ import { Grid, Typography, Box, Link } from '@mui/material';
 import products from 'assets/images/home/products.png';
 import proveedor from 'assets/images/home/proveedor.png';
 import shoppingcart from 'assets/images/home/shoppingcart.png';
-import confirmacion from 'assets/images/home/confirmacion.png';
-import inventario from 'assets/images/home/inventario.png';
+
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
@@ -28,7 +27,7 @@ const DashboardDefault = () => {
           <Box sx={{ width: { xs: 50, sm: '100%' } }}>
             <img src={proveedor} alt="proveedor" style={{ width: '35%', height: 'auto' }} />
           </Box>
-          <Typography variant="h4"> Proveedores</Typography>
+          <Typography variant="h4"> Clientes</Typography>
         </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -39,22 +38,7 @@ const DashboardDefault = () => {
           <Typography variant="h4"> Compras</Typography>
         </Link>
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="/reception" variant="caption" color="textPrimary">
-          <Box sx={{ width: { xs: 50, sm: '100%' } }}>
-            <img src={confirmacion} alt="confirmacion" style={{ width: '35%', height: 'auto' }} />
-          </Box>
-          <Typography variant="h4"> Recepción</Typography>
-        </Link>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={4}>
-        <Link component={RouterLink} to="/inventario" variant="caption" color="textPrimary">
-          <Box sx={{ width: { xs: 50, sm: '100%' } }}>
-            <img src={inventario} alt="inventario" style={{ width: '35%', height: 'auto' }} />
-          </Box>
-          <Typography variant="h4"> Inventario</Typography>
-        </Link>
-      </Grid>
+
     </Grid>
   );
 };

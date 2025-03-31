@@ -56,13 +56,6 @@ function TabProducts() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Lista Productos" {...a11yProps(0)} />
-            <Tab label="Sustancias o principios activos" {...a11yProps(1)} />
-            <Tab label="Tipo de Productos" {...a11yProps(2)} />
-            <Tab label="Categorias" {...a11yProps(3)} />
-            <Tab label="Envase" {...a11yProps(4)} />
-            <Tab label="Maker" {...a11yProps(5)} />
-            <Tab label="Trademark" {...a11yProps(6)} />
-            <Tab label="Bodegas" {...a11yProps(7)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>

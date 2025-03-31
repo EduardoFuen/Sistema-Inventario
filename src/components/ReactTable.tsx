@@ -23,7 +23,7 @@ import Export from 'components/ExportToFile';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 import { HeaderSort, SortingSelect, TablePagination, TableRowSelection, WareHouseSelect } from 'components/third-party/ReactTable';
 // assets
-import { PlusOutlined, ImportOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { initial } from 'lodash';
 
 // ==============================|| REACT TABLE ||============================== //
@@ -171,11 +171,7 @@ const ReactTable = ({
             {dataExport && dataExport.length > 0 && (
               <Export excelData={dataExport && dataExport.length > 0 ? dataExport : data} fileName={FileName} />
             )}
-            {hideButton && (
-              <Button variant="contained" startIcon={<ImportOutlined />} onClick={handleImport}>
-                Importar
-              </Button>
-            )}
+           
             <Stack direction="row" alignItems="center" spacing={1}>
               <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
               {TitleButton !== '' && (

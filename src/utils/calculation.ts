@@ -17,7 +17,7 @@ const summary = (details: Article | any, discount: number) => {
 
   return details.reduce((acc = initAcc, item: any) => {
     const itemTotal = item?.SubTotal || 0;
-    const tax = (item?.BasePrice * item?.Count * item?.Tax) / 100 || 0;
+    const tax = (item?.Price * item?.Count * item?.Tax) / 100 || 0;
 
     acc.SubTotal += itemTotal;
     acc.Tax += tax;
