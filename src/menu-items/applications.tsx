@@ -108,7 +108,7 @@ const applications: NavItemType = {
     {
       id: 'edit',
       type: 'item',
-      title: 'Ver Orden de Compra',
+      title: 'Ver Pedidos',
       url: '/purchase/view/:id',
       hide: true,
       param: true,

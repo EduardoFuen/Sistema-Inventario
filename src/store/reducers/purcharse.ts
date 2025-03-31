@@ -196,8 +196,9 @@ export function getIDPurchase(id: number) {
         dispatch(getWarehouseList())
       ]);
 
-      const response = await axios.get(`${HOST}/purchase?ID=${id}`, HEADER);
+      const response = await axios.get(`${HOST}/purchase/byid?ID=${id}`, HEADER);
       if (response.data) {
+        console.log(response.data)
         let Articles: Article[] = TransformsArticles(response.data?.Articles, response.data?.Products);
         await dispatch(addItemsPurchase(Articles));
         dispatch(
@@ -256,11 +257,8 @@ export function editPurchase(id: number, data: Purchase) {
 export function deletePurchase(id: number) {
   return async () => {
     try {
-      await dispatch(getIDPurchase(id));
-      let {
-        purchase: { order }
-      } = store.getState();
-      const response = await axios.put(`${HOST}/purchase`, { ID: id, ...order, status: 2 }, { ...HEADER });
+
+      const response = await axios.delete(`${HOST}/purchase`, { ...HEADER, data: { ID: id } });
       if (response) {
         dispatch(getPurchaseList());
         dispatch(

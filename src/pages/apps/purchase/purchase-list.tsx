@@ -10,17 +10,18 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
-import PDF from 'components/PDF';
+//import PDF from 'components/PDF';
 import { newDataExport } from 'utils/PurchaseTransform';
 import { getProducts } from 'store/reducers/product';
 
-import { useSelector, useDispatch, store } from 'store';
-import { deletePurchase, getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
+//import { useSelector, useDispatch, store } from 'store';
+import { useSelector, useDispatch } from 'store';
+import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 
 // types
 import { Purchase } from 'types/purchase';
 // assets
-import { DeleteTwoTone, EditTwoTone, FilePdfOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EyeTwoTone } from '@ant-design/icons';
 
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
@@ -42,20 +43,10 @@ const PurchaseList = () => {
   };
 
   const handleViewPurchase = (id: number) => {
-    dispatch(resetItemsPurchase());
+    //dispatch(resetItemsPurchase());
     history(`/purchase/view/${id}`);
   };
 
-  const handleInfoPDF = async (setIsLoading: any, id: number) => {
-    dispatch(getIDPurchase(id)).then(async () => {
-      let {
-        purchase: { order }
-      } = store.getState();
-
-      if (order) await PDF(order, 'Purchase');
-      setIsLoading(false);
-    });
-  };
 
   const columns = useMemo(
     () => [
@@ -142,40 +133,39 @@ const PurchaseList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
           const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
 
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="PDF">
+              <Tooltip title="Ver">
                 <IconButton
                   color="primary"
-                  disabled={isLoading}
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    setIsLoading(true);
-                    if (row?.original?.ID) handleInfoPDF(setIsLoading, row?.original?.ID);
+                    if (row?.original?.sk) handleViewPurchase(row?.original?.sk);
                   }}
                 >
-                  {!isLoading ? (
-                    <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
+                  <EyeTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Edit">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    if (row?.original?.ID) handleViewPurchase(row?.original?.ID);
-                  }}
-                >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                </IconButton>
+              <Tooltip title="Delete">
+              <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
               </Tooltip>
               {row.original?.ReceptionStatus === 0 && (
                 <Tooltip title="Cancelar">
@@ -184,7 +174,7 @@ const PurchaseList = () => {
                     onClick={async (e: any) => {
                       e.stopPropagation();
                       setIsLoadingDelete(true);
-                      await dispatch(deletePurchase(Number(row?.original?.ID)));
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
                       setIsLoadingDelete(false);
                     }}
                   >

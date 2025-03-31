@@ -32,10 +32,9 @@ import DetailsPurchase from './detailsProduct';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
-import { editPurchase, getIDPurchase, updateSummaryPurchase } from 'store/reducers/purcharse';
+import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // types
-import { Warehouse } from 'types/products';
 import { Supplier } from 'types/supplier';
 
 // assets
@@ -56,7 +55,6 @@ const getInitialValues = (order: FormikValues | null) => {
     EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), DATEFORMAT) : '',
     EstimatedDeliveryDateBaq: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBaq), DATEFORMAT) : ''
   };
-
   return newSubstance;
 };
 
@@ -68,7 +66,6 @@ function ViewPurchase() {
   const { id } = useParams();
 
   const { supplierList } = useSelector((state) => state.supplier);
-  const { warehouseList } = useSelector((state) => state.warehouse);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { order: orderPurchase, isLoading } = useSelector((state) => state.purchase);
 
@@ -120,8 +117,8 @@ function ViewPurchase() {
     }
   });
 
-  const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
-
+  const { handleSubmit, isSubmitting, getFieldProps } = formik;
+  
   return (
     <>
       {isLoading ? (
@@ -134,14 +131,14 @@ function ViewPurchase() {
                 <Grid item xs={12}>
                   <MainCard>
                     <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                      Detalles de la compra
+                      Detalles del Pedido
                     </Typography>
                     <Grid container spacing={1} direction="row">
                       <Grid item xs={4}>
                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
                         <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
-                          {supplierList
-                            .filter((item: Supplier) => item.Status === true)
+                          {
+                          supplierList.filter((item: Supplier) => item.Status == true)
                             .map((option: Supplier) => (
                               <MenuItem key={option.ID} value={option.ID}>
                                 {option.BusinessName}
@@ -149,45 +146,9 @@ function ViewPurchase() {
                             ))}
                         </TextField>
                       </Grid>
+ 
                       <Grid item xs={3}>
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Bodega</InputLabel>
-                        <TextField
-                          placeholder="Seleccionar Bodega"
-                          fullWidth
-                          select
-                          disabled={orderPurchase?.Status !== 0}
-                          {...getFieldProps('WarehouseID')}
-                        >
-                          {warehouseList
-                            .filter((item: Warehouse) => item.Status === true)
-                            .map((option: Warehouse) => (
-                              <MenuItem key={option.ID} value={option.ID}>
-                                {option.Name}
-                              </MenuItem>
-                            ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('Discount')}
-                          placeholder="Ingresa Descuento %"
-                          fullWidth
-                          type="text"
-                          InputProps={{ inputProps: { min: 0 } }}
-                          disabled={orderPurchase?.Status !== 0}
-                          onChange={(e) => {
-                            let discount = Number(e.target.value);
-                            if (!isNaN(discount)) {
-                              setFieldValue('Discount', discount);
-                              dispatch(updateSummaryPurchase(discount));
-                            }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Orden</InputLabel>
+                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pedido</InputLabel>
                         <TextField
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                           {...getFieldProps('CreatedAt')}
@@ -217,56 +178,28 @@ function ViewPurchase() {
                           {...getFieldProps('Notes')}
                         />
                       </Grid>
-                      <Grid item xs={2} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Descuento pronto Pago</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('DiscountEarliyPay')}
-                          placeholder="Descuento pronto Pago %"
-                          fullWidth
-                          disabled={orderPurchase?.Status !== 0}
-                        />
-                      </Grid>
+
                       <Grid item xs={3} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Pronto Pago</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('DaysPayment')}
-                          placeholder=""
-                          fullWidth
-                          disabled={orderPurchase?.Status !== 0}
-                        />
-                      </Grid>
-                      <Grid item xs={3} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Bogota</InputLabel>
+                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Coordenadas Envio Latitud</InputLabel>
                         <TextField
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                           {...getFieldProps('EstimatedDeliveryDateBog')}
                           placeholder=""
                           fullWidth
-                          disabled
+                          disabled={orderPurchase?.Status !== 0}
                         />
                       </Grid>
                       <Grid item xs={3} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Fecha Estimada Entrega Barranquilla</InputLabel>
+                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Coordenadas Envio Longitud</InputLabel>
                         <TextField
                           sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                           {...getFieldProps('EstimatedDeliveryDateBaq')}
                           placeholder=""
                           fullWidth
-                          disabled
+                          disabled={orderPurchase?.Status !== 0}
                         />
                       </Grid>
                     </Grid>
-                    {orderPurchase?.Status === 0 && (
-                      <Grid item xs={12} alignSelf="center">
-                        <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 3 }}>
-                          <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleAdd}>
-                            Agregars Productos
-                          </Button>
-                        </Stack>
-                      </Grid>
-                    )}
                   </MainCard>
                 </Grid>
                 <Grid item xs={12}>
@@ -297,8 +230,9 @@ function ViewPurchase() {
                                       <Typography className="font-size">{x.Name}</Typography>
                                       <Typography variant="caption" color="textSecondary">
                                         SKU {x.Sku}
+                                        
                                       </Typography>
-                                      <Typography variant="caption" color="textSecondary">
+                                      <Typography variant="caption" color="textSecondary" > 
                                         EAN :{x.Ean}
                                       </Typography>
                                     </Stack>
@@ -342,7 +276,7 @@ function ViewPurchase() {
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                     <Button variant="outlined" color="secondary" onClick={handleCancel}>
-                      Cancel
+                      Atras
                     </Button>
                     {orderPurchase?.Status === 0 && (
                       <Button
@@ -357,19 +291,7 @@ function ViewPurchase() {
                         Enviar
                       </Button>
                     )}
-                    {orderPurchase?.Status === 0 && (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          setSend(false);
-                        }}
-                        sx={{ textTransform: 'none' }}
-                        type="submit"
-                        disabled={isSubmitting}
-                      >
-                        Guardars Compra
-                      </Button>
-                    )}
+
                   </Stack>
                 </Grid>
               </Grid>

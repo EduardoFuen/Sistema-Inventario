@@ -27,6 +27,7 @@ export const Articles = (data: any) =>
 export const TransformsArticles = (data: object[], products: Product[]) =>
   data.map((item: any) => {
     const product = products.find((e: any) => e.ID === item.ProductID);
+    console.log(product)
     return {
       ...item,
       ID: item?.ID,
