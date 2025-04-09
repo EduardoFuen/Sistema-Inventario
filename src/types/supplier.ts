@@ -32,6 +32,10 @@ export type Supplier = {
   DaysPayment?: string;
   Cupo?: number;
   Status?: boolean;
+  Contribuyente?: string;
+  DesT?: string;
+  Zona?: string;
+  ZonaDes?: string;
 };
 
 /* Defining the state of the component. */

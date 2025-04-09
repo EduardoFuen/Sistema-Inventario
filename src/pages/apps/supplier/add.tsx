@@ -7,7 +7,10 @@ import {
   InputLabel,
   Stack,
   TextField,
+  Select,
+  MenuItem,
   Typography,
+  FormHelperText
 } from '@mui/material';
 
 // third-party
@@ -19,6 +22,7 @@ import { useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
+import { ClientType } from 'config';
 
 // types
 import { Supplier } from 'types/supplier';
@@ -31,7 +35,8 @@ const getInitialValues = () => {
     PhoneContact: 0,
     BusinessName: '',
     EmailContact: '',
-    Rif: ''
+    Rif: '',
+    Contribuyente: ''
   };
   return newSubstance;
 };
@@ -122,8 +127,29 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
+                      <Select
+                        fullWidth
+                        {...getFieldProps('PaymenTerm')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Seleccionar Tipo de cliente
+                        </MenuItem>
+                        {ClientType.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                    </Grid>
                     <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Destino Tipo</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion Empresa</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('DesT')}
@@ -132,24 +158,56 @@ function AddSupplier() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Zona</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Latitud (GOOGLEMAPS)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Zona')}
-                        placeholder="Ingresar Zona"
+                        placeholder="Ingresar Latitud"
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Zona Descarga</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (GOOGLEMAPS)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('ZonaDes')}
-                        placeholder="Ingresar Zona Descarga"
+                        placeholder="Ingresar Longitud"
                         fullWidth
                       />
                     </Grid>
-               
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de Credito</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        placeholder="Ingresar Días pronto pago"
+                        fullWidth
+                        {...getFieldProps('DaysPayment')}
+                        error={Boolean(touched.DaysPayment && errors.DaysPayment)}
+                        helperText={touched.DaysPayment && errors.DaysPayment}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                    <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Contribuyente</InputLabel>
+                      <Select
+                        fullWidth
+                        {...getFieldProps('PaymenTerm')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Tipo de Contribuyente
+                        </MenuItem>
+                        {ClientType.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                    </Grid>
+                  
                   </Grid>
            
                 </MainCard>
@@ -161,15 +219,6 @@ function AddSupplier() {
                     Datos de Contacto
                   </Typography>
                   <Grid container direction="row" spacing={2}>
-                    <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>FAX</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('NameContact')}
-                        placeholder="Ingresar Fax"
-                        fullWidth
-                      />
-                    </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Teléfono</InputLabel>
                       <TextField
@@ -194,29 +243,29 @@ function AddSupplier() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Vendedor</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Completo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Vendedor')}
-                        placeholder="Ingresar Vendedor"
+                        placeholder="Ingresar Nombre"
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Vendedor Destino</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('VendedorDes')}
-                        placeholder="Ingresar Vendedor Destino"
+                        {...getFieldProps('VendedorDir')}
+                        placeholder="Ingresar Direccion"
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Dir vendedor</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Telefono Alternativo</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('VendedorDir')}
-                        placeholder="Ingresar Direccion vendedor"
+                        {...getFieldProps('VendedorDes')}
+                        placeholder="Ingresar Telefono"
                         fullWidth
                       />
                     </Grid>

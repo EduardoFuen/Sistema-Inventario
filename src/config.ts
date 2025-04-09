@@ -1,5 +1,5 @@
 // types
-import { DefaultConfigProps, DayPaymentPropsOption } from 'types/config';
+import { DefaultConfigProps, DayPaymentPropsOption, ClientTypePropsOption, ClientContribuPropsOption } from 'types/config';
 import { Supplier } from 'types/supplier';
 import { Product } from 'types/products';
 import { DefaultArticle } from 'types/purchase';
@@ -111,6 +111,28 @@ export const DayPayment: DayPaymentPropsOption[] = [
   {
     title: '60 Días',
     id: '60'
+  }
+];
+
+export const ClientType: ClientTypePropsOption[] = [
+  {
+    title: 'Natural',
+    id: 'N'
+  },
+  {
+    title: 'Juridico',
+    id: 'J'
+  }
+];
+
+export const ClientContribu: ClientContribuPropsOption[] = [
+  {
+    title: 'Especial',
+    id: 'E'
+  },
+  {
+    title: 'Ordinario',
+    id: 'O'
   }
 ];
 

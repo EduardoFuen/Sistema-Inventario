@@ -44,3 +44,13 @@ export type DayPaymentPropsOption = {
   title: string;
   id: string;
 };
+
+export type ClientTypePropsOption = {
+  title: string;
+  id: string;
+};
+
+export type ClientContribuPropsOption = {
+  title: string;
+  id: string;
+};

@@ -79,26 +79,7 @@ const UserView = ({ data }: any) => {
                       </Grid>
                     </Grid>
                   </ListItem>
-                  <ListItem divider={!matchDownMD}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary" align="center">
-                            Lead Time Bogota
-                          </Typography>
-                          <Typography align="center">{data?.LeadTimeBog}</Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary" align="center">
-                            Lead Time Barraquilla
-                          </Typography>
-                          <Typography align="center">{data?.LeadTimeBaq}</Typography>
-                        </Stack>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
+            
                   <ListItem divider={!matchDownMD}>
                     <Grid container spacing={3}>
                       {data.PaymenTerm && (
