@@ -207,7 +207,15 @@ function AddSupplier() {
                       </Select>
                       {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
                     </Grid>
-                  
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Credito Maximo</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('credit')}
+                        placeholder="credito"
+                        fullWidth
+                      />
+                    </Grid>
                   </Grid>
            
                 </MainCard>

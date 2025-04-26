@@ -36,6 +36,7 @@ export type Supplier = {
   DesT?: string;
   Zona?: string;
   ZonaDes?: string;
+  Credit?: string;
 };
 
 /* Defining the state of the component. */
