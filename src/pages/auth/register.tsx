@@ -1,6 +1,7 @@
 import { useEffect, useState, SyntheticEvent } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { UserRol } from 'config';
 
 // material-ui
 import {
@@ -10,6 +11,8 @@ import {
   FormHelperText,
   Grid,
   Link,
+  Select,
+   MenuItem,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -64,13 +67,14 @@ const AuthRegister = () => {
   }, []);
 
   return (
-    <Grid container xs={12} item rowSpacing={7} columnSpacing={4} style={{ marginTop: '10%' }} alignSelf="center" className="cell-center">
+    <Grid container xs={10} item rowSpacing={7} columnSpacing={0} style={{ marginTop: '5%', marginLeft: '30%' }} alignSelf="center" className="cell-center">
       <Formik
         initialValues={{
           firstname: '',
           lastname: '',
           email: '',
           password: '',
+          role: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -81,7 +85,8 @@ const AuthRegister = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await register(values.email, values.password, values.firstname, values.lastname);
+            console.log(values)
+            await register(values.email, values.password, values.firstname, values.lastname, values.role);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -113,10 +118,10 @@ const AuthRegister = () => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} xs={6}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
+                  <InputLabel htmlFor="firstname-signup">Nombre*</InputLabel>
                   <OutlinedInput
                     id="firstname-login"
                     type="firstname"
@@ -137,7 +142,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
+                  <InputLabel htmlFor="lastname-signup">Apellido*</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.lastname && errors.lastname)}
@@ -159,7 +164,7 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
+                  <InputLabel htmlFor="email-signup">Email*</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -177,6 +182,34 @@ const AuthRegister = () => {
                       {errors.email}
                     </FormHelperText>
                   )}
+                </Stack>
+              </Grid>
+                   <Grid item xs={12} >
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="role-signup">Rol de usuario*</InputLabel>
+                     <Select
+                        fullWidth
+                        error={Boolean(touched.lastname && errors.lastname)}
+                        id="role-signup"
+                        type="role"
+                        value={values.role}
+                        name="role"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Seleccionar el rol
+                        </MenuItem>
+                        {UserRol.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+           
                 </Stack>
               </Grid>
               <Grid item xs={12}>
@@ -231,13 +264,9 @@ const AuthRegister = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">
-                  By Signing up, you agree to our &nbsp;
-                  <Link variant="subtitle2" component={RouterLink} to="#">
-                    Terms of Service
-                  </Link>
-                  &nbsp; and &nbsp;
-                  <Link variant="subtitle2" component={RouterLink} to="#">
-                    Privacy Policy
+                  Regresar a &nbsp;
+                  <Link variant="subtitle2" component={RouterLink} to="/">
+                    Menu Principal
                   </Link>
                 </Typography>
               </Grid>
@@ -249,7 +278,7 @@ const AuthRegister = () => {
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Create Account
+                    Crear Cuenta
                   </Button>
                 </AnimateButton>
               </Grid>

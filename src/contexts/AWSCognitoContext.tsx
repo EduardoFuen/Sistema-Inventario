@@ -1,14 +1,15 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-
+import axios from 'axios';
+import { HOST, HEADER } from 'config';
 // third-party
-import { CognitoUser, CognitoUserPool, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserPool,AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // action - state management
-import { LOGIN, LOGOUT, LOADING } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, LOADING} from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project imports
-import Loader from 'components/Loader';
+//import Loader from 'components/Loader';
 import { AWS_API } from 'config';
 import { AWSCognitoContextType, InitialLoginContextProps } from 'types/auth';
 
@@ -43,30 +44,10 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
 
   useEffect(() => {
     const init = async () => {
-      try {
-        const serviceToken = window.localStorage.getItem('serviceToken');
-        if (serviceToken && userPool.getCurrentUser() && userPool.getCurrentUser()?.username) {
-          setSession(serviceToken);
-          dispatch({
-            type: LOGIN,
-            payload: {
-              isLoggedIn: true,
-              user: {
-                name: userPool.getCurrentUser()?.username
-              }
-            }
-          });
-        } else {
-          dispatch({
-            type: LOGOUT
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        dispatch({
-          type: LOGOUT
-        });
-      }
+      console.log("pave47")
+      dispatch({
+        type: LOGOUT
+      });
     };
 
     init();
@@ -80,7 +61,6 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
         isLoading: true
       }
     });
-
     const usr = new CognitoUser({
       Username: email,
       Pool: userPool
@@ -91,43 +71,66 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
       Password: password
     });
     console.log(authData);
-    dispatch({
-      type: LOGIN,
-      payload: {
-        isLoggedIn: true,
-        user: {
-          email: authData.getUsername(),
-          name: authData.getUsername()
-        }
+    const data = {
+      email,
+      password
+    }
+    const response = await axios.post(`${HOST}/auth`, { ...data }, { ...HEADER });
+      if(response.data.username){
+        console.log("94")
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: true,
+            user: {
+              email: response.data.username,
+              name: response.data.username,
+              role: response.data.userRol
+            }
+          }
+        });
+        return response.data
+      }else{
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: false,
+            user: null
+          }
+        });
+        dispatch({
+          type: LOADING,
+          payload: {
+            isLoggedIn: false,
+            isLoading: false
+          }
+        });
+        dispatch({ type: LOGOUT });
+        
+        return null
       }
-    });
-    dispatch({
-      type: LOADING,
-      payload: {
-        isLoggedIn: true,
-        isLoading: false
-      }
-    });
+
   };
 
-  const register = (email: string, password: string, firstName: string, lastName: string) =>
+  const register = (email: string, password: string, firstName: string, lastName: string, role: string) =>
     new Promise((success, rej) => {
-      userPool.signUp(
+      const data = {
         email,
         password,
-        [
-          new CognitoUserAttribute({ Name: 'email', Value: email }),
-          new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` })
-        ],
-        [],
-        async (err: any, result: any) => {
-          if (err) {
-            rej(err);
-            return;
-          }
-          success(result);
-        }
-      );
+        firstName,
+        role,
+        lastName,
+      }
+      axios.post(`${HOST}/auth/register`, { ...data }, { ...HEADER })
+      .then(function (response) {
+        console.log(response);
+        success(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+        rej(error);
+      });
+  
     });
 
   const logout = () => {
@@ -143,9 +146,9 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
   const resetPassword = async (email: string) => {};
   const updateProfile = () => {};
 
-  if (state.isInitialized !== undefined && !state.isInitialized) {
+  /*if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
-  }
+  }*/
 
   return (
     <AWSCognitoContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>

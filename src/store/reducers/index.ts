@@ -13,6 +13,7 @@ import maker from './maker';
 import trademark from './trademark';
 import category from './category';
 import supplier from './supplier';
+import user from './user';
 import typeProduct from './typeProduct';
 import activeSubst from './activeSubst';
 import purchase from './purcharse';
@@ -65,6 +66,14 @@ const reducers = combineReducers({
       keyPrefix: REDUCERVERSION
     },
     supplier
+  ),
+    user: persistReducer(
+    {
+      key: 'user',
+      storage,
+      keyPrefix: REDUCERVERSION
+    },
+    user
   ),
   typeProduct: persistReducer(
     {

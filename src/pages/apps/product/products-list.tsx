@@ -63,9 +63,7 @@ const ProductList = () => {
   const handleEditProduct = (id: any) => {
     history(`/product-list/edit/${id}`);
   };
-
-
-
+ 
   const columnsProducts = useMemo(
     () => [
       {

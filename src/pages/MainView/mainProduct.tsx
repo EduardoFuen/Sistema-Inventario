@@ -59,7 +59,7 @@ function TabProducts() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <ProductList />
+         <ProductList />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ActiveSubstances />

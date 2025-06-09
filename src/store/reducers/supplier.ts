@@ -13,7 +13,7 @@ import { SupplierStateProps, Supplier } from 'types/supplier';
 // initial state
 const initialState: SupplierStateProps = {
   error: null,
-  supplierList: []
+  supplierList: [],
 };
 
 // ==============================||  SUPPLIER  REDUCER ||============================== //
@@ -42,10 +42,9 @@ const slice = createSlice({
     //ADD EXCEL SUPPLIER
     excelSuccess(state, action) {
       state.supplierList = [...state.supplierList, ...action.payload];
-    }
+    },
   }
 });
-
 // Reducer
 export default slice.reducer;
 
@@ -65,6 +64,7 @@ export function getSupplierList() {
     }
   };
 }
+
 
 export function createSupplier(data: Supplier) {
   return async () => {
@@ -111,6 +111,31 @@ export function deleteSupplier(id: number) {
     }
   };
 }
+
+export function deleteUser(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/supplier`, { ...HEADER, data: { ID: id } });
+      if (response) {
+        dispatch(getSupplierList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Proveedor delete successfully.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+      }
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function addExcel(data: Supplier[]) {
   return async () => {
     try {

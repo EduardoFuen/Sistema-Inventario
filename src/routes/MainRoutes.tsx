@@ -16,6 +16,8 @@ const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/viewPurc
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/viewReception')));
 
+const UserList = Loadable(lazy(() => import('pages/auth/listUser')));
+
 const SupplierList = Loadable(lazy(() => import('pages/apps/supplier/supplier-list')));
 const AppAddSupplier = Loadable(lazy(() => import('pages/apps/supplier/add')));
 const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/edit')));
@@ -93,6 +95,10 @@ const MainRoutes = {
                 {
                   path: 'supplier/edit/:id',
                   element: <AppEditSupplier />
+                },
+                {
+                  path: 'user',
+                  element: <UserList />
                 }
               ]
             },

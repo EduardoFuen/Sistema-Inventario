@@ -39,8 +39,19 @@ export type Supplier = {
   Credit?: string;
 };
 
+export type User = {
+  ID?: string | number | undefined;
+  sk?: string | number | undefined;
+  username?: string;
+  userRol?: number;
+};
+
 /* Defining the state of the component. */
 export interface SupplierStateProps {
   supplierList: Supplier[];
+  error: object | string | null;
+}
+export interface UserStateProps {
+  userList: User[];
   error: object | string | null;
 }

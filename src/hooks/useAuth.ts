@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-
 // auth provider
 import AuthContext from 'contexts/AWSCognitoContext';
 

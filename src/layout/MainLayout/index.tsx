@@ -30,6 +30,7 @@ const MainLayout = () => {
   const { drawerOpen } = menu;
 
   // drawer toggler
+
   const [open, setOpen] = useState(!miniDrawer || drawerOpen);
   const handleDrawerToggle = () => {
     setOpen(!open);

@@ -1,56 +1,51 @@
 import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, Box, CircularProgress } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 // project import
-import PDF from 'components/PDF';
-import ReactTable from 'components/ReactTable';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
+import ReactTable from 'components/ReactTable';
+//import PDF from 'components/PDF';
 import { newDataExport } from 'utils/PurchaseTransform';
-import { useSelector, useDispatch, store } from 'store';
-import { getPurchaseList, resetItemsPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import { getProducts } from 'store/reducers/product';
+
+//import { useSelector, useDispatch, store } from 'store';
+import { useSelector, useDispatch } from 'store';
+import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
+
 // types
 import { Purchase } from 'types/purchase';
 // assets
-import { PlusCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EyeTwoTone } from '@ant-design/icons';
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
 
-const ReceptionList = () => {
-  const theme = useTheme();
-  const history = useNavigate();
+const ReceptionList = () => { const theme = useTheme();
   const dispatch = useDispatch();
+  const history = useNavigate();
+
+  const { listPurchase } = useSelector((state) => state.purchase);
 
   useEffect(() => {
     dispatch(getPurchaseList());
+    dispatch(getProducts());
   }, [dispatch]);
 
-  const handleViewReception = (id: any) => {
+  const handleAddPurchase = () => {
     dispatch(resetItemsPurchase());
-    history(`/reception/view/${id}`);
+    history(`/purchase/add`);
   };
 
-  const {
-    listPurchase
-    /*  page, totalPages, isLoading  */
-  } = useSelector((state) => state.purchase);
-
-  const handleInfoPDF = async (setIsLoading: any, id: number) => {
-    dispatch(getIDPurchase(id)).then(async () => {
-      let {
-        purchase: { order }
-      } = store.getState();
-
-      if (order) await PDF(order, 'Recepción');
-      setIsLoading(false);
-    });
+  const handleViewPurchase = (id: number) => {
+    //dispatch(resetItemsPurchase());
+    history(`/purchase/view/${id}`);
   };
+
 
   const columns = useMemo(
     () => [
@@ -61,12 +56,12 @@ const ReceptionList = () => {
           </Stack>
         ),
         accessor: 'NumberOrder',
-        Cell: ({ value }: any) => {
+        Cell: ({  }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography variant="subtitle1" className="font-size">
-                  {value || ''}
+                  {'Total Diario'}
                 </Typography>
               </Stack>
             </Stack>
@@ -87,51 +82,14 @@ const ReceptionList = () => {
         }
       },
       {
-        Header: 'Proveedor',
-        accessor: 'BusinessName',
-        Cell: ({ row }: any) => {
-          const { original } = row;
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1" className="font-size">
-                  {original?.Supplier?.BusinessName || ''}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {original?.Supplier?.Nit || ''}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {original?.Supplier?.EmailContact || ''}
-                </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Bodega',
-        accessor: 'Warehouse',
-        Cell: ({ value }: any) => {
-          return (
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>
-                <Typography variant="subtitle1" className="font-size">
-                  {value || ''}
-                </Typography>
-              </Stack>
-            </Stack>
-          );
-        }
-      },
-      {
-        Header: 'Subtotal',
-        accessor: 'SubTotal',
+        Header: 'Sin verificar',
+        accessor: 'Total1',
         className: 'cell-center font-size',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
-        Header: 'IVA',
-        accessor: 'Tax',
+        Header: 'Verificado',
+        accessor: 'Total2',
         className: 'cell-center font-size',
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
@@ -143,17 +101,16 @@ const ReceptionList = () => {
       },
       {
         Header: 'Estado',
-        accessor: 'ReceptionStatus',
+        accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
-            case 3:
-              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 2:
-              return <Chip color="success" label="Completed" size="small" variant="light" />;
+              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
             case 1:
-              return <Chip color="warning" label="Partial" size="small" variant="light" />;
+              return <Chip color="info" label="Send" size="small" variant="light" />;
+            case 0:
             default:
-              return <Chip color="info" label="New" size="small" variant="light" />;
+              return <Chip color="warning" label="New" size="small" variant="light" />;
           }
         }
       },
@@ -162,39 +119,61 @@ const ReceptionList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
+          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="PDF">
-                <IconButton
-                  color="primary"
-                  disabled={isLoading}
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    setIsLoading(true);
-                    if (row?.original?.ID) handleInfoPDF(setIsLoading, row?.original?.ID);
-                  }}
-                >
-                  {!isLoading ? (
-                    <FilePdfOutlined twoToneColor={theme.palette.primary.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Ingresar">
+              <Tooltip title="Ver">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleViewReception(row?.original?.ID);
+                    if (row?.original?.sk) handleViewPurchase(row?.original?.sk);
                   }}
                 >
-                  <PlusCircleOutlined twoToneColor={theme.palette.primary.main} />
+                  <EyeTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+              <Tooltip title="Delete">
+              <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
+              </Tooltip>
+              {row.original?.ReceptionStatus === 0 && (
+                <Tooltip title="Cancelar">
+                  <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           );
         }
@@ -204,7 +183,7 @@ const ReceptionList = () => {
     [theme]
   );
 
-  let list: Purchase[] = listPurchase && listPurchase.length > 0 ? listPurchase.filter((item) => item.Status === 1) : [];
+  let list: Purchase[] = listPurchase && listPurchase.length > 0 ? listPurchase : [];
 
   return (
     <MainCard content={false}>
@@ -213,14 +192,16 @@ const ReceptionList = () => {
           columns={columns}
           data={list as []}
           handleImport={() => {}}
+          handleAdd={handleAddPurchase}
+          TitleButton="Agregar"
+          FileName="Purchase"
           hideButton={false}
-          FileName="Recepción"
           dataExport={newDataExport(list) as []}
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-          /*      handlePagination={(page: number) => {
+          /*     handlePagination={(page: number) => {
             dispatch(getPurchaseList(page + 1));
-          }}
-          isLoading={isLoading}
+          }} */
+          getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          /*        isLoading={isLoading}
           numberPage={page}
           totalRows={totalPages} */
         />

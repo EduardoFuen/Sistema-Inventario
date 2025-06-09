@@ -9,7 +9,7 @@ const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined,
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
-const applications: NavItemType = {
+const applications2: NavItemType = {
   id: 'group-applications',
   type: 'group',
   children: [
@@ -17,7 +17,6 @@ const applications: NavItemType = {
       id: 'products',
       title: 'Productos',
       type: 'item',
-      hide: true,
       url: '/product-list',
       icon: icons.DiffOutlined
     },
@@ -59,7 +58,6 @@ const applications: NavItemType = {
       id: 'compras',
       title: 'Compras',
       type: 'item',
-      hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -77,7 +75,6 @@ const applications: NavItemType = {
       title: 'Totales',
       icon: icons.ApartmentOutlined,
       type: 'item',
-      hide: true,
       url: '/reception'
     },
     {
@@ -134,10 +131,28 @@ const applications: NavItemType = {
       url: '/reception/view/:id',
       hide: true,
       param: true,
-      mainTitle: 'Recepción',
+      mainTitle: 'Totales',
       mainUrl: '/reception'
+    },
+    {
+      id: 'edit',
+      type: 'item',
+      title: 'Lista Usuarios',
+      url: '/user',
+      param: true,
+      mainTitle: 'Registro Usuario',
+      mainUrl: '/user'
     }
+    /*{
+      id: 'edit',
+      type: 'item',
+      title: 'Registrar Usuario',
+      url: '/auth/register',
+      param: true,
+      mainTitle: 'Registro Usuario',
+      mainUrl: '/register'
+    }*/
   ]
 };
 
-export default applications;
+export default applications2;

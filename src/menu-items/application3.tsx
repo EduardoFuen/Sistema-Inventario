@@ -9,7 +9,7 @@ const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined,
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
-const applications: NavItemType = {
+const applications3: NavItemType = {
   id: 'group-applications',
   type: 'group',
   children: [
@@ -17,7 +17,6 @@ const applications: NavItemType = {
       id: 'products',
       title: 'Productos',
       type: 'item',
-      hide: true,
       url: '/product-list',
       icon: icons.DiffOutlined
     },
@@ -59,7 +58,6 @@ const applications: NavItemType = {
       id: 'compras',
       title: 'Compras',
       type: 'item',
-      hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -140,4 +138,4 @@ const applications: NavItemType = {
   ]
 };
 
-export default applications;
+export default applications3;

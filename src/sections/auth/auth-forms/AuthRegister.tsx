@@ -71,17 +71,19 @@ const AuthRegister = () => {
           email: '',
           company: '',
           password: '',
+          role: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
           firstname: Yup.string().max(255).required('First Name is required'),
           lastname: Yup.string().max(255).required('Last Name is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          role: Yup.string().max(255).required('Role is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await register(values.email, values.password, values.firstname, values.lastname);
+            await register(values.email, values.password, values.firstname, values.lastname, values.role);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);

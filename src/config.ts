@@ -1,5 +1,5 @@
 // types
-import { DefaultConfigProps, DayPaymentPropsOption, ClientTypePropsOption, ClientContribuPropsOption } from 'types/config';
+import { DefaultConfigProps, DayPaymentPropsOption, ClientTypePropsOption, ClientContribuPropsOption, UserRolPropsOption } from 'types/config';
 import { Supplier } from 'types/supplier';
 import { Product } from 'types/products';
 import { DefaultArticle } from 'types/purchase';
@@ -125,6 +125,25 @@ export const ClientType: ClientTypePropsOption[] = [
   }
 ];
 
+export const UserRol: UserRolPropsOption[] = [
+  {
+    title: 'Administrador',
+    id: '1'
+  },
+  {
+    title: 'Administracion',
+    id: '2'
+  },
+  {
+    title: 'Almacen',
+    id: '3'
+  },
+  {
+    title: 'Asistente',
+    id: '4'
+  }
+];
+
 export const ClientContribu: ClientContribuPropsOption[] = [
   {
     title: 'Especial',
@@ -142,7 +161,7 @@ const config: DefaultConfigProps = {
   defaultPath: '/dashboard',
   fontFamily: `'Montserrat', sans-serif`,
   i18n: 'en',
-  miniDrawer: false,
+  miniDrawer: true,
   container: true,
   mode: 'light',
   presetColor: 'default',
