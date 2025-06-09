@@ -22,7 +22,7 @@ import { useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
-import { ClientType } from 'config';
+import { ClientType, ClientContribu } from 'config';
 
 // types
 import { Supplier } from 'types/supplier';
@@ -187,7 +187,7 @@ function AddSupplier() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                    <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Contribuyente</InputLabel>
+                    <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Contribuyente Especial</InputLabel>
                       <Select
                         fullWidth
                         {...getFieldProps('PaymenTerm')}
@@ -197,7 +197,7 @@ function AddSupplier() {
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Tipo de Contribuyente
                         </MenuItem>
-                        {ClientType.map((option: any) => {
+                        {ClientContribu.map((option: any) => {
                           return (
                             <MenuItem key={option.id} value={option.id}>
                               {option.title}

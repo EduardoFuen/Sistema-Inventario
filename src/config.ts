@@ -127,7 +127,7 @@ export const ClientType: ClientTypePropsOption[] = [
 
 export const UserRol: UserRolPropsOption[] = [
   {
-    title: 'Administrador',
+    title: 'Gerencia',
     id: '1'
   },
   {
@@ -139,7 +139,7 @@ export const UserRol: UserRolPropsOption[] = [
     id: '3'
   },
   {
-    title: 'Asistente',
+    title: 'Ventas',
     id: '4'
   }
 ];
