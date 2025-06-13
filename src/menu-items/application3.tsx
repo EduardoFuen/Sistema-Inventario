@@ -47,11 +47,11 @@ const applications3: NavItemType = {
     },
     {
       id: 'addSupplier',
-      title: 'Agregar Proveedores',
+      title: 'Agregar Cliente',
       type: 'item',
       url: '/supplier/add',
       hide: true,
-      mainTitle: 'Proveedores',
+      mainTitle: 'Cliente',
       mainUrl: '/supplier'
     },
     {

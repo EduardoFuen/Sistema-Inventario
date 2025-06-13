@@ -64,7 +64,7 @@ function AddSupplier() {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Proveedor Add successfully.',
+            message: 'Cliente Agregado Satisfactorio.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -91,7 +91,7 @@ function AddSupplier() {
               <Grid item xs={12} sm={6}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Básicos
+                    Datos Básicos - Fiscales
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={12}>
@@ -157,24 +157,7 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Latitud (GOOGLEMAPS)</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Zona')}
-                        placeholder="Ingresar Latitud"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (GOOGLEMAPS)</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('ZonaDes')}
-                        placeholder="Ingresar Longitud"
-                        fullWidth
-                      />
-                    </Grid>
+
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de Credito</InputLabel>
                       <TextField
@@ -224,7 +207,7 @@ function AddSupplier() {
               <Grid item xs={12} sm={6}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos de Contacto
+                    Datos de Contacto - Servicios
                   </Typography>
                   <Grid container direction="row" spacing={2}>
                     <Grid item xs={6}>
@@ -268,6 +251,24 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
+                                        <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Latitud (GOOGLEMAPS)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Zona')}
+                        placeholder="Ingresar Latitud"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (GOOGLEMAPS)</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('ZonaDes')}
+                        placeholder="Ingresar Longitud"
+                        fullWidth
+                      />
+                    </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Telefono Alternativo</InputLabel>
                       <TextField
@@ -288,7 +289,7 @@ function AddSupplier() {
                     Cancelar
                   </Button>
                   <Button variant="contained" sx={{ textTransform: 'none' }} type="submit" disabled={isSubmitting}>
-                    Agregar Proveedor
+                    Agregar Cliente
                   </Button>
                 </Stack>
               </Grid>

@@ -97,11 +97,11 @@ const applications2: NavItemType = {
     {
       id: 'edit',
       type: 'item',
-      title: 'Editar Proveedores',
+      title: 'Editar Cliente',
       url: '/supplier/edit/:id',
       hide: true,
       param: true,
-      mainTitle: 'Proveedores',
+      mainTitle: 'Cliente',
       mainUrl: '/supplier'
     },
     {
