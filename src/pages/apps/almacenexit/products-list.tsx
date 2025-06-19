@@ -3,25 +3,23 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Stack, Tooltip, Typography, Dialog, Box, CircularProgress, Button } from '@mui/material';
+import { Stack, Typography, Dialog,Button } from '@mui/material';
 
 // project import
 import ProductView from './viewProduct';
-import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
 import Import from './ImportProducts';
 
 import { useDispatch, useSelector } from 'store';
-import { getProductsExit, deleteProduct } from 'store/reducers/store';
+import { getProductsExit } from 'store/reducers/store';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 
 import { ProductDefault } from 'config';
 
 // assets
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { Store } from 'types/store';
 
 
@@ -70,9 +68,6 @@ const ProductList = () => {
     history(`/store-list/add`);
   };
 
-  const handleEditProduct = (id: any) => {
-    history(`/store-list/edit/${id}`);
-  };
 
   const handleImport = () => {
     setActiveImport(!addImport);
@@ -81,9 +76,23 @@ const ProductList = () => {
   const columnsProducts = useMemo(
     () => [
       {
-        Header: 'ID',
+        Header: 'Fecha salida',
         accessor: 'ID',
-        className: 'cell-center font-size'
+               Cell: ({ row }: any) => {
+          const { original } = row;
+          let fecha = original?.ID
+          fecha = parseInt(fecha)
+          fecha = new Date(fecha);
+          
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+            
+              <Stack spacing={0}>
+                <Typography className="cell-center font-size">{fecha.toLocaleString()}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
             {
         Header: 'Nombre Producto',
@@ -129,50 +138,7 @@ const ProductList = () => {
           );
         }
       },
-      {
-        Header: 'Acciones',
-        className: 'cell-center font-size',
-        disableSortBy: true,
-        Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
-          return (
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-            
-              <Tooltip title="Edit">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleEditProduct(row?.values?.ID);
-                  }}
-                >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={async (e: any) => {
-                    e.stopPropagation();
-                    setIsLoading(true);
-                    await dispatch(deleteProduct(row?.values?.ID));
-                    setIsLoading(false);
-                  }}
-                >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          );
-        }
-      }
+    
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]

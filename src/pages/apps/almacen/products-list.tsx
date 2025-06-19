@@ -21,7 +21,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { ProductDefault } from 'config';
 
 // assets
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone,PlusCircleOutlined } from '@ant-design/icons';
 import { Store } from 'types/store';
 
 
@@ -139,7 +139,7 @@ const ProductList = () => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
             
-              <Tooltip title="Edit">
+                <Tooltip title="Comprar">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
@@ -147,7 +147,7 @@ const ProductList = () => {
                     handleEditProduct(row?.values?.ID);
                   }}
                 >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
+                  <PlusCircleOutlined twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">

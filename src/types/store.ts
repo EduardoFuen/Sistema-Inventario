@@ -5,6 +5,7 @@ export type Store = {
   Quantity?: string | number | undefined;
   IdProvider?: string;
   Sku?: string;
+  Exist?: string | number | undefined;
 };
 
 
