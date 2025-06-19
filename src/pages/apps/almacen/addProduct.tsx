@@ -147,7 +147,7 @@ function AddNewProduct() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cantidad a comprar</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cantidad a comprar </InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Quantity')}
