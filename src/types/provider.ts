@@ -1,25 +1,17 @@
 // product
-export type Product = {
-  ID?: string | number | undefined;
+export type Provider = {
+  idProvider?: string | number | undefined;
   Name?: string;
-  Price?: number;
-  Sku?: string;
-};
-export type Maker = {
-  ID?: string | number | undefined;
-  Name?: string;
-  Status?: boolean;
+  ContactName?: string | number | undefined;
+  PhoneNumber?: string;
+  Adress?: string;
+  sk?: string;
+  pk?: string;
 };
 
-export interface MakerStateProps {
-  makerList: Maker[];
-  error: object | string | null;
-}
-
-
-export interface ProductStateProps {
-  products: Product[];
-  product: Product | null;
+export interface ProviderStateProps {
+  providers: Provider[];
+  provider: Provider | null;
   error: object | string | null | any;
   page: number | undefined;
   totalRows?: number | undefined;
@@ -27,10 +19,8 @@ export interface ProductStateProps {
   isLoading?: boolean;
 }
 
-
-
 export interface DefaultRootStateProps {
-  product: ProductStateProps;
+  product: ProviderStateProps;
 }
 
 // Pack
@@ -61,17 +51,14 @@ export interface WarehouseStateProps {
 }
 
 // Maker
-export type Provider = {
+export type Maker = {
   ID?: string | number | undefined;
   Name?: string;
-  Adress?: string;
-   PhoneNumber?: string;
-   idProvider?: string | number | undefined;
-   ContactName?: string;
+  Status?: boolean;
 };
 
-export interface ProviderStateProps {
-  providerList: Provider[];
+export interface MakerStateProps {
+  makerList: Maker[];
   error: object | string | null;
 }
 

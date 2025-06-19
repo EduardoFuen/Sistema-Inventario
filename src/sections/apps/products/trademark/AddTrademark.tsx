@@ -16,14 +16,14 @@ import {
   Tooltip,
   FormControlLabel,
   Switch,
-  MenuItem,
+
   Select,
   SelectChangeEvent
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useSelector } from 'store';
+
 
 // third-party
 import { merge } from 'lodash';
@@ -67,7 +67,6 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
   const dispatch = useDispatch();
   const isCreating = !tradeMark;
   const [MakerID, setMaker] = useState(tradeMark?.MakerID! || '');
-  const { makerList } = useSelector((state) => state.maker);
   const TrademarkSchema = Yup.object().shape({
     Name: Yup.string().max(255).required('Nombre es requerido')
   });
@@ -137,13 +136,7 @@ const AddTrademark = ({ tradeMark, onCancel }: Props) => {
                     <Stack spacing={1.25}>
                       <InputLabel htmlFor="personal-experience">Maker</InputLabel>
                       <Select fullWidth id="tradeMark-maker" {...getFieldProps('MakerID')} value={MakerID} onChange={handleChange}>
-                        {makerList
-                          .filter((item: any) => item.Status === true)
-                          .map((option: any) => (
-                            <MenuItem key={option.Name} value={option.ID}>
-                              {option.Name}
-                            </MenuItem>
-                          ))}
+                   
                       </Select>
                     </Stack>
                   </Grid>

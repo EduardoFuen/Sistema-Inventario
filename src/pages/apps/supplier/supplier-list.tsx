@@ -21,7 +21,7 @@ import { DefaultSupplier } from 'config';
 import { SupplierExport } from 'utils/SupplierTransform';
 
 // assets
-import { CloseOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| SUPPLIER - LIST ||============================== //
 
@@ -89,25 +89,11 @@ const SupplierListPage = () => {
         Cell: ({ row }: any) => {
           const [isLoading, setIsLoading] = useState<boolean>(false);
 
-          const collapseIcon = row.isExpanded ? (
-            <CloseOutlined style={{ color: theme.palette.error.main }} />
-          ) : (
-            <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-          );
+
 
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-              <Tooltip title="View">
-                <IconButton
-                  color="secondary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    row.toggleRowExpanded();
-                  }}
-                >
-                  {collapseIcon}
-                </IconButton>
-              </Tooltip>
+      
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"

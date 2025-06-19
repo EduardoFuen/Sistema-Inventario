@@ -13,6 +13,18 @@ const AppPurchaseList = Loadable(lazy(() => import('pages/apps/purchase/purchase
 const AppAddPurchase = Loadable(lazy(() => import('pages/apps/purchase/addPurchase')));
 const AppViewPurchase = Loadable(lazy(() => import('pages/apps/purchase/viewPurchase')));
 
+const AppStoreList = Loadable(lazy(() => import('pages/apps/almacen/products-list')));
+const AppStoreAdd = Loadable(lazy(() => import('pages/apps/almacen/addProduct')));
+const AppStoreEdit = Loadable(lazy(() => import('pages/apps/almacen/editProduct')));
+
+const AppStoreExitList = Loadable(lazy(() => import('pages/apps/almacenexit/products-list')));
+
+const AppStoreEntryList = Loadable(lazy(() => import('pages/apps/almacenentry/products-list')));
+
+const AppProviderList = Loadable(lazy(() => import('pages/apps/provider/products-list')));
+const AppProviderAdd = Loadable(lazy(() => import('pages/apps/provider/addProduct')));
+const AppProviderEdit = Loadable(lazy(() => import('pages/apps/provider/editProduct')));
+
 const AppReceptionList = Loadable(lazy(() => import('pages/apps/reception/reception-list')));
 const AppReceptionView = Loadable(lazy(() => import('pages/apps/reception/viewReception')));
 
@@ -80,6 +92,53 @@ const MainRoutes = {
             {
               path: 'inventario',
               element: <AppInventoryList />
+            },
+             {
+              path: '',
+              children: [
+                     {
+              path: 'store-list',
+              element: <AppStoreList />
+            },
+             {
+              path: 'store-list/add',
+              element: <AppStoreAdd />
+            },
+             {
+              path: 'store-list/edit/:id',
+              element: <AppStoreEdit />
+            },
+              ]
+            },
+               {
+              path: '',
+              children: [
+                     {
+              path: 'provider-list',
+              element: <AppProviderList />
+            },
+             {
+              path: 'provider-list/add',
+              element: <AppProviderAdd />
+            },
+             {
+              path: 'provider-list/edit/:id',
+              element: <AppProviderEdit />
+            },
+              ]
+            },
+                 {
+              path: '',
+              children: [
+                     {
+              path: '/store-list/exit',
+              element: <AppStoreExitList />
+            },
+             {
+              path: '/store-list/entry',
+              element: <AppStoreEntryList />
+            }
+              ]
             },
             {
               path: '',

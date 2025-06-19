@@ -83,7 +83,7 @@ const PurchaseList = () => {
         }
       },
       {
-        Header: 'Proveedor',
+        Header: 'Cliente',
         accessor: 'BusinessName',
         Cell: ({ row }: any) => {
           const { original } = row;
@@ -119,12 +119,12 @@ const PurchaseList = () => {
         Cell: ({ value }: any) => {
           switch (value) {
             case 2:
-              return <Chip color="error" label="Cancelled" size="small" variant="light" />;
+              return <Chip color="error" label="Cancelado" size="small" variant="light" />;
             case 1:
-              return <Chip color="info" label="Send" size="small" variant="light" />;
+              return <Chip color="info" label="Pagado" size="small" variant="light" />;
             case 0:
             default:
-              return <Chip color="warning" label="New" size="small" variant="light" />;
+              return <Chip color="warning" label="Sin Comprobar" size="small" variant="light" />;
           }
         }
       },

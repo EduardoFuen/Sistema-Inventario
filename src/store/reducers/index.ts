@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import menu from './menu';
 import snackbar from './snackbar';
 import productReducer from './product';
+import storeReducer from './store';
 import pack from './pack';
 import warehouse from './warehouse';
 import maker from './maker';
@@ -130,6 +131,14 @@ const reducers = combineReducers({
       keyPrefix: REDUCERVERSION
     },
     productReducer
+  ),
+   store: persistReducer(
+    {
+      key: 'storeReducer',
+      storage,
+      keyPrefix: REDUCERVERSION
+    },
+    storeReducer
   )
 });
 

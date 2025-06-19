@@ -55,6 +55,21 @@ const DashboardDefault = () => {
     
         </Grid>
       );
+    }else if(user.role == "3"){
+      return (
+
+        <Grid container xs={6} item rowSpacing={7} columnSpacing={4} style={{ marginTop: '10%' }} alignSelf="center" className="cell-center">
+          <Grid item xs={12} sm={6} md={4} lg={4}>
+            <Link component={RouterLink} to="/product-list" variant="caption" color="textPrimary">
+              <Box sx={{ width: { xs: 50, sm: '100%' } }}>
+                <img src={products} alt="products" style={{ width: '35%', height: 'auto' }} />
+              </Box>
+              <Typography variant="h4">Productos</Typography>
+            </Link>
+          </Grid>
+    
+        </Grid>
+      );
     }else{
       return (
 

@@ -53,6 +53,9 @@ const NavItem = ({ item, level }: Props) => {
     if (pathname && pathname.includes('product-list') && actions) {
       dispatch(activeItem({ openItem: ['products'] }));
     }
+    if (pathname && pathname.includes('store-list') && actions) {
+      dispatch(activeItem({ openItem: ['store'] }));
+    }
     if (pathname && pathname.includes('supplier') && actions) {
       dispatch(activeItem({ openItem: ['supplier'] }));
     }

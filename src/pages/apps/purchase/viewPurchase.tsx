@@ -10,7 +10,6 @@ import {
   Stack,
   TextField,
   Typography,
-  MenuItem,
   Dialog,
   Table,
   TableBody,
@@ -35,7 +34,6 @@ import { useSelector, useDispatch } from 'store';
 import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
 
 // types
-import { Supplier } from 'types/supplier';
 
 // assets
 import { SendOutlined } from '@ant-design/icons';
@@ -50,6 +48,7 @@ const getInitialValues = (order: FormikValues | null) => {
     SupplierID: order?.SupplierID || 0,
     WarehouseID: order?.WarehouseID || 0,
     Discount: order?.Discount || 0,
+    BusinessName: order?.BusinessName,
     DiscountEarliyPay: order?.DiscountEarliyPay || 0,
     DaysPayment: order?.Supplier?.DaysPayment ? format(addDays(new Date(), order?.Supplier?.DaysPayment), DATEFORMAT) : '',
     EstimatedDeliveryDateBog: order?.Supplier ? format(addDays(new Date(), order?.Supplier?.LeadTimeBog), DATEFORMAT) : '',
@@ -65,7 +64,6 @@ function ViewPurchase() {
   const [send, setSend] = useState<boolean>(false);
   const { id } = useParams();
 
-  const { supplierList } = useSelector((state) => state.supplier);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { order: orderPurchase, isLoading } = useSelector((state) => state.purchase);
 
@@ -78,6 +76,7 @@ function ViewPurchase() {
   const handleCancel = () => {
     history(`/purchase`);
   };
+
 
   const handleAdd = () => {
     setAdd(!add);
@@ -135,16 +134,14 @@ function ViewPurchase() {
                     </Typography>
                     <Grid container spacing={1} direction="row">
                       <Grid item xs={4}>
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
-                        <TextField placeholder="Seleccionar Proveedor" fullWidth select disabled {...getFieldProps('SupplierID')}>
-                          {
-                          supplierList.filter((item: Supplier) => item.Status == true)
-                            .map((option: Supplier) => (
-                              <MenuItem key={option.ID} value={option.ID}>
-                                {option.BusinessName}
-                              </MenuItem>
-                            ))}
-                        </TextField>
+                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cliente</InputLabel>
+                         <TextField
+                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                          {...getFieldProps('BusinessName')}
+                          placeholder=""
+                          fullWidth
+                          disabled
+                        />
                       </Grid>
  
                       <Grid item xs={3}>
@@ -179,26 +176,6 @@ function ViewPurchase() {
                         />
                       </Grid>
 
-                      <Grid item xs={3} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Coordenadas Envio Latitud</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('EstimatedDeliveryDateBog')}
-                          placeholder=""
-                          fullWidth
-                          disabled={orderPurchase?.Status !== 0}
-                        />
-                      </Grid>
-                      <Grid item xs={3} alignSelf="center">
-                        <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Coordenadas Envio Longitud</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                          {...getFieldProps('EstimatedDeliveryDateBaq')}
-                          placeholder=""
-                          fullWidth
-                          disabled={orderPurchase?.Status !== 0}
-                        />
-                      </Grid>
                     </Grid>
                   </MainCard>
                 </Grid>
@@ -288,7 +265,7 @@ function ViewPurchase() {
                           setSend(true);
                         }}
                       >
-                        Enviar
+                        Comprobar y Despachar
                       </Button>
                     )}
 

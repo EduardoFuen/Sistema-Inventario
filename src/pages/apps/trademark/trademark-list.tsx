@@ -17,7 +17,7 @@ import { getMakerList } from 'store/reducers/maker';
 import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
 
 // types
-import { Maker } from 'types/products';
+
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -41,14 +41,9 @@ const TradeMarkList = () => {
   };
 
   const { tradeMarkList } = useSelector((state) => state.trademark);
-  const { makerList } = useSelector((state) => state.maker);
 
-  const getMaker = (id: number) => {
-    if (id) {
-      let Maker: any = makerList.find((item: Maker) => item.ID === id);
-      return Maker?.Name;
-    }
-  };
+
+
 
   useEffect(() => {
     dispatch(getMakerList());
@@ -71,7 +66,7 @@ const TradeMarkList = () => {
         Cell: ({ value }: any) => {
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Stack spacing={0}>{value && <Typography className="cell-center font-size">{getMaker(value)}</Typography>}</Stack>
+              <Stack spacing={0}>{value && <Typography className="cell-center font-size">0</Typography>}</Stack>
             </Stack>
           );
         }

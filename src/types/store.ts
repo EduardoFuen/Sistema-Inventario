@@ -1,25 +1,25 @@
 // product
-export type Product = {
+export type Store = {
   ID?: string | number | undefined;
   Name?: string;
-  Price?: number;
+  Quantity?: string | number | undefined;
+  IdProvider?: string;
   Sku?: string;
 };
-export type Maker = {
-  ID?: string | number | undefined;
+
+
+export type Provider = {
+  idProvider?: string | number | undefined;
   Name?: string;
-  Status?: boolean;
+  Adress?: string | number | undefined;
+  ContactName?: string;
+  PhoneNumber?: string;
 };
-
-export interface MakerStateProps {
-  makerList: Maker[];
-  error: object | string | null;
-}
-
-
-export interface ProductStateProps {
-  products: Product[];
-  product: Product | null;
+export interface StoreStateProps {
+  stores: Store[];
+  store: Store | null;
+   providers: Provider[];
+  provider: Provider | null;
   error: object | string | null | any;
   page: number | undefined;
   totalRows?: number | undefined;
@@ -29,9 +29,24 @@ export interface ProductStateProps {
 
 
 
-export interface DefaultRootStateProps {
-  product: ProductStateProps;
+
+
+export interface ProviderStateProps {
+  providers: Provider[];
+  provider: Provider | null;
+  error: object | string | null | any;
+  page: number | undefined;
+  totalRows?: number | undefined;
+  totalPages?: number | undefined;
+  isLoading?: boolean;
 }
+
+
+export interface DefaultRootStateProps {
+  product: StoreStateProps;
+}
+
+
 
 // Pack
 export type Pack = {
@@ -61,17 +76,14 @@ export interface WarehouseStateProps {
 }
 
 // Maker
-export type Provider = {
+export type Maker = {
   ID?: string | number | undefined;
   Name?: string;
-  Adress?: string;
-   PhoneNumber?: string;
-   idProvider?: string | number | undefined;
-   ContactName?: string;
+  Status?: boolean;
 };
 
-export interface ProviderStateProps {
-  providerList: Provider[];
+export interface MakerStateProps {
+  makerList: Maker[];
   error: object | string | null;
 }
 

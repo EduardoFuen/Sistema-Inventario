@@ -118,11 +118,11 @@ function AddPurchase() {
               <Grid item xs={12}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Detalles de la compra
+                    Detalles del Pedido
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={4}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Proveedor</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cliente</InputLabel>
                       <Autocomplete
                         id="supplier-list"
                         renderOption={(props, option) => {

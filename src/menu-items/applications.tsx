@@ -13,6 +13,42 @@ const applications: NavItemType = {
   id: 'group-applications',
   type: 'group',
   children: [
+     {
+              id: 'store',
+              title: 'Almacen',
+              mainTitle: 'Almacen',
+              type: 'item',
+               hide: true,
+              url: '/store-list',
+              icon: icons.DiffOutlined
+            },
+                 {
+                  id: 'storeentry',
+                  title: 'Entrada a Almacen',
+                  type: 'item',
+                  mainTitle: 'Almacen',
+                  hide: true,
+                       mainUrl: '/store-list',
+                  url: '/store-list/entry',
+                  icon: icons.DiffOutlined
+                },
+                  {
+                  id: 'storeexit',
+                  title: 'Salida de Almacen',
+                  type: 'item',
+                  mainTitle: 'Almacen',
+                  hide: true,
+                       mainUrl: '/store-list',
+                  url: '/store-list/exit',
+                  icon: icons.DiffOutlined
+                },
+               {
+              id: 'provider',
+              title: 'Proveedor',
+              type: 'item',
+              url: '/provider-list',
+              icon: icons.DiffOutlined
+            },
     {
       id: 'products',
       title: 'Productos',
@@ -41,25 +77,24 @@ const applications: NavItemType = {
     },
     {
       id: 'supplier',
-      title: 'Clientes',
+      title: 'Registro clientes',
       type: 'item',
       url: '/supplier',
       icon: icons.TeamOutlined
     },
     {
       id: 'addSupplier',
-      title: 'Agregar Proveedores',
+      title: 'Agregar clientes',
       type: 'item',
       url: '/supplier/add',
       hide: true,
-      mainTitle: 'Proveedores',
+      mainTitle: 'Clientes',
       mainUrl: '/supplier'
     },
     {
       id: 'compras',
-      title: 'Compras',
+      title: 'Pedidos',
       type: 'item',
-      hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -74,10 +109,11 @@ const applications: NavItemType = {
     },
     {
       id: 'recepcion',
-      title: 'Totales',
+      title: 'Cobranzas',
       icon: icons.ApartmentOutlined,
       type: 'item',
       hide: true,
+      
       url: '/reception'
     },
     {

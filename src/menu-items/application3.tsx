@@ -15,11 +15,31 @@ const applications3: NavItemType = {
   children: [
     {
       id: 'products',
-      title: 'Productos',
+      title: 'Almacen',
       type: 'item',
       url: '/product-list',
       icon: icons.DiffOutlined
     },
+         {
+          id: 'storeentry',
+          title: 'Entrada a Almacen',
+          type: 'item',
+          mainTitle: 'Almacen',
+          hide: true,
+               mainUrl: '/store-list',
+          url: '/store-list/entry',
+          icon: icons.DiffOutlined
+        },
+         {
+                          id: 'storeexit',
+                          title: 'Salida de Almacen',
+                          type: 'item',
+                          mainTitle: 'Almacen',
+                          hide: true,
+                               mainUrl: '/store-list',
+                          url: '/store-list/exit',
+                          icon: icons.DiffOutlined
+                        },
     {
       id: 'AddProduct',
       type: 'item',
@@ -40,8 +60,9 @@ const applications3: NavItemType = {
     },
     {
       id: 'supplier',
-      title: 'Clientes',
+      title: 'Registro clientes',
       type: 'item',
+            hide: true,
       url: '/supplier',
       icon: icons.TeamOutlined
     },
@@ -58,6 +79,7 @@ const applications3: NavItemType = {
       id: 'compras',
       title: 'Compras',
       type: 'item',
+            hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },

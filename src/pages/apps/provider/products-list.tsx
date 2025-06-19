@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {Stack, Tooltip, Box, CircularProgress } from '@mui/material';
+import { Stack, Tooltip, Typography, Dialog, Box, CircularProgress } from '@mui/material';
 
 // project import
 import ProductView from './viewProduct';
@@ -11,17 +11,19 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
-
+import Import from './ImportProducts';
 
 import { useDispatch, useSelector } from 'store';
-import { getProducts, deleteProduct } from 'store/reducers/product';
+import { getProducts, deleteProduct } from 'store/reducers/provider';
 import { openSnackbar } from 'store/reducers/snackbar';
+
 
 import { ProductDefault } from 'config';
 
 // assets
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import { Product } from 'types/products';
+import {EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { Store } from 'types/store';
+
 
 // ==============================|| PRODUCT LIST - MAIN ||============================== //
 
@@ -29,10 +31,11 @@ const ProductList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [addImport, setActiveImport] = useState<boolean>(false);
   const [typeSearch, setTypeSearch] = useState<any>('');
   const [valueSearch, setvalueSearch] = useState<any>('');
 
-  const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
+  const { stores, error, page, totalPages, isLoading } = useSelector((state) => state.store);
 
 
   useEffect(() => {
@@ -56,34 +59,69 @@ const ProductList = () => {
   }, [error, dispatch]);
 
 
+
   const handleAddProduct = () => {
-    history(`/product-list/add`);
+    history(`/provider-list/add`);
   };
 
   const handleEditProduct = (id: any) => {
-    history(`/product-list/edit/${id}`);
+    history(`/provider-list/edit/${id}`);
   };
- 
+
+  const handleImport = () => {
+    setActiveImport(!addImport);
+  };
+
   const columnsProducts = useMemo(
     () => [
       {
         Header: 'ID',
-        accessor: 'sk',
+        accessor: 'idProvider',
         className: 'cell-center font-size'
       },
-      {
-        Header: 'SKU',
-        accessor: 'Sku',
-        className: 'cell-center font-size'
-      },
-      {
-        Header: 'Nombre Producto',
+            {
+        Header: 'Proveedor',
         accessor: 'Name',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+            
+              <Stack spacing={0}>
+                <Typography className="cell-center font-size">{original?.Name}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
       },
       {
-        Header: 'Precio',
-        accessor: 'Price',
-        className: 'cell-center font-size'
+        Header: 'Persona Contacto',
+        accessor: 'ContactName',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0} alignItems="center">
+                <Typography  className="cell-center font-size">{original?.ContactName}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+
+      {
+        Header: 'Telefono',
+        accessor: 'PhoneNumber',
+           Cell: ({ row }: any) => {
+             const { original } = row;
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography className="cell-center font-size">{original?.PhoneNumber}</Typography>
+                </Stack>
+            </Stack>
+          );
+        }
       },
       {
         Header: 'Acciones',
@@ -92,16 +130,15 @@ const ProductList = () => {
         Cell: ({ row }: any) => {
           const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-    
+        
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
                   onClick={(e: any) => {
                     e.stopPropagation();
-                    handleEditProduct(row?.values?.sk);
+                    handleEditProduct(row?.values?.ID);
                   }}
                 >
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
@@ -113,7 +150,7 @@ const ProductList = () => {
                   onClick={async (e: any) => {
                     e.stopPropagation();
                     setIsLoading(true);
-                    await dispatch(deleteProduct(row?.values?.sk));
+                    await dispatch(deleteProduct(row?.values?.idProvider));
                     setIsLoading(false);
                   }}
                 >
@@ -135,9 +172,9 @@ const ProductList = () => {
     [theme]
   );
 
-  const renderRowSubComponent = useCallback(({ row }: any) => <ProductView data={products[row.id]} />, [products]);
+  const renderRowSubComponent = useCallback(({ row }: any) => <ProductView data={stores[row.id]} />, [stores]);
 
-  let listProducts: Product[] = products && products.length > 0 ? products : [];
+  let listProducts: Store[] = stores && stores.length > 0 ? stores : [];
 
   return (
     <MainCard content={false}>
@@ -145,6 +182,7 @@ const ProductList = () => {
         <ReactTable
           columns={columnsProducts}
           data={listProducts as []}
+          handleImport={handleImport}
           handleAdd={handleAddProduct}
           TitleButton="Agregar"
           dataTemplate={ProductDefault as []}
@@ -176,6 +214,12 @@ const ProductList = () => {
           totalRows={totalPages}
         />
       </ScrollX>
+ 
+          
+      <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
+        {addImport && <Import onCancel={handleImport} />}
+      </Dialog>
+      
     </MainCard>
   );
 };

@@ -106,17 +106,7 @@ function AddSupplier() {
                       />
                     </Grid>
                   </Grid>
-                  <Grid container spacing={1} direction="row">
-                    <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Codigo</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Code')}
-                        placeholder="Ingresar Codigo"
-                        fullWidth
-                      />
-                    </Grid>
-                  </Grid>
+
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>RIF</InputLabel>

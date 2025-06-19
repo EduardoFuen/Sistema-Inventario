@@ -9,14 +9,14 @@ import ImportMarker from 'sections/apps/products/maker/ImportMarker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import ReactTable from 'components/ReactTable';
-import { useDispatch, useSelector } from 'store';
+
+import { useDispatch } from 'store';
 import { getMakerList, deleteMaker } from 'store/reducers/maker';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 // types
-import { Maker } from 'types/products';
+
 
 // ==============================|| MAKER - MAKER LIST ||============================== //
 
@@ -28,7 +28,7 @@ const MakersList = () => {
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
 
-  const { makerList } = useSelector((state) => state.maker);
+
 
   useEffect(() => {
     dispatch(getMakerList());
@@ -42,13 +42,7 @@ const MakersList = () => {
   const handleImport = () => {
     setActiveImport(!addImport);
   };
-  const newDataExport: Maker[] = makerList.map((item: Maker) => {
-    return {
-      ID: item?.ID,
-      Name: item?.Name,
-      Status: Boolean(item?.Status)
-    };
-  });
+
 
   const columns = useMemo(
     () => [
@@ -124,20 +118,10 @@ const MakersList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-
+console.log(columns)
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable
-          columns={columns}
-          data={makerList as []}
-          handleAdd={handleAdd}
-          handleImport={handleImport}
-          TitleButton="Agregar Makers"
-          dataExport={newDataExport as []}
-          FileName="Makers"
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-        />
       </ScrollX>
       {/* add Maker Dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>

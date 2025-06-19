@@ -9,60 +9,44 @@ const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined,
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
-const applications2: NavItemType = {
+const applications4: NavItemType = {
   id: 'group-applications',
   type: 'group',
   children: [
-      {
-      id: 'store',
-      title: 'Almacen',
-      type: 'item',
-      url: '/store-list',
-      icon: icons.DiffOutlined
-    },
      {
-      id: 'storeentry',
-      title: 'Entrada a Almacen',
-      type: 'item',
-      mainTitle: 'Almacen',
-      mainUrl: '/store-list',
-      hide: true,
-      url: '/store-list/entry',
-      icon: icons.DiffOutlined
-    },
-     {
-                      id: 'storeexit',
-                      title: 'Salida de Almacen',
-                      type: 'item',
-                     mainTitle: 'Almacen',
-                      hide: true,
-                           mainUrl: '/store-list',
-                      url: '/store-list/exit',
-                      icon: icons.DiffOutlined
-                    },
-               {
-                  id: 'provider',
-                  title: 'Proveedor',
+              id: 'store',
+              title: 'Almacen',
+              mainTitle: 'Almacen',
+              type: 'item',
+               hide: true,
+              url: '/store-list',
+              icon: icons.DiffOutlined
+            },
+                 {
+                  id: 'storeentry',
+                  title: 'Entrada a Almacen',
                   type: 'item',
-                  url: '/provider-list',
-                  icon: icons.TeamOutlined
+                  mainTitle: 'Almacen',
+                  hide: true,
+                       mainUrl: '/store-list',
+                  url: '/store-list/entry',
+                  icon: icons.DiffOutlined
                 },
-                   {
-      id: 'AddProvider',
-      type: 'item',
-      title: 'Agregar Proveedor',
-      url: '/provider-list/add',
-      
-      hide: true,
-      mainTitle: 'Proveedor',
-      mainUrl: '/provider-list'
-    },
-      {
+                 {
+                                  id: 'storeexit',
+                                  title: 'Salida de Almacen',
+                                  type: 'item',
+                                  mainTitle: 'Almacen',
+                                  hide: true,
+                                       mainUrl: '/store-list',
+                                  url: '/store-list/exit',
+                                  icon: icons.DiffOutlined
+                                },
+               {
       id: 'AddStore',
       type: 'item',
       title: 'Agregar Item Almacen',
       url: '/store-list/add',
-      
       hide: true,
       mainTitle: 'Almacen',
       mainUrl: '/store-list'
@@ -71,6 +55,7 @@ const applications2: NavItemType = {
       id: 'products',
       title: 'Productos',
       type: 'item',
+          hide: true,
       url: '/product-list',
       icon: icons.DiffOutlined
     },
@@ -96,6 +81,7 @@ const applications2: NavItemType = {
       id: 'supplier',
       title: 'Registro clientes',
       type: 'item',
+          hide: true,
       url: '/supplier',
       icon: icons.TeamOutlined
     },
@@ -112,6 +98,7 @@ const applications2: NavItemType = {
       id: 'compras',
       title: 'Compras',
       type: 'item',
+          hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -129,6 +116,7 @@ const applications2: NavItemType = {
       title: 'Totales',
       icon: icons.ApartmentOutlined,
       type: 'item',
+          hide: true,
       url: '/reception'
     },
     {
@@ -194,9 +182,17 @@ const applications2: NavItemType = {
       title: 'Lista Usuarios',
       url: '/user',
       param: true,
+                hide: true,
       mainTitle: 'Registro Usuario',
       mainUrl: '/user'
-    }
+    },
+      {
+          id: 'recepcion',
+          title: 'Cobranzas',
+          icon: icons.ApartmentOutlined,
+          type: 'item',
+          url: '/reception'
+        },
     /*{
       id: 'edit',
       type: 'item',
@@ -209,4 +205,4 @@ const applications2: NavItemType = {
   ]
 };
 
-export default applications2;
+export default applications4;

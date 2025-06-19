@@ -8,12 +8,12 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { MakerStateProps, Maker } from 'types/products';
+import { ProviderStateProps, Provider } from 'types/products';
 
 // initial state
-const initialState: MakerStateProps = {
+const initialState: ProviderStateProps = {
   error: null,
-  makerList: []
+  providerList: []
 };
 
 // ==============================||  MAKER  ||============================== //
@@ -28,20 +28,20 @@ const maker = createSlice({
     },
     // GET MAKER
     getMakerSuccess(state, action) {
-      state.makerList = action.payload;
+      state.providerList = action.payload;
     },
     // ADD MAKER
     addMakerSuccess(state, action) {
-      state.makerList.push(action.payload);
+      state.providerList.push(action.payload);
     },
     // UPDATE MAKER
     updateMakerSuccess(state, action) {
-      const index = state.makerList.findIndex((item) => item.ID === action.payload?.ID);
-      state.makerList[index] = action.payload;
+      const index = state.providerList.findIndex((item) => item.ID === action.payload?.ID);
+      state.providerList[index] = action.payload;
     },
     // ADD EXCEL MAKER
     addMakerExcelSuccess(state, action) {
-      state.makerList = [...state.makerList, ...action.payload];
+      state.providerList = [...state.providerList, ...action.payload];
     }
   }
 });
@@ -53,7 +53,7 @@ export default maker.reducer;
 export function getMakerList() {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/maker`, HEADER);
+      const response = await axios.get(`${HOST}/product/provider`, HEADER);
       if (response.data instanceof Array) {
         dispatch(maker.actions.getMakerSuccess(response.data));
       }
@@ -66,7 +66,7 @@ export function getMakerList() {
   };
 }
 
-export function addMaker(data: Maker) {
+export function addMaker(data: Provider) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/maker`, { ...data }, { ...HEADER });
@@ -87,7 +87,7 @@ export function addMaker(data: Maker) {
     }
   };
 }
-export function editMaker(id: number, data: Maker) {
+export function editMaker(id: number, data: Provider) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/maker`, { ID: id, ...data }, { ...HEADER });
@@ -132,7 +132,7 @@ export function deleteMaker(id: number) {
     }
   };
 }
-export function addMakerExcel(data: Maker[]) {
+export function addMakerExcel(data: Provider[]) {
   return async () => {
     try {
       const response = await axios.post(`${HOST}/maker`, data, { ...HEADER });
