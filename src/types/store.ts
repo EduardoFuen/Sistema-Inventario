@@ -21,6 +21,8 @@ export interface StoreStateProps {
   store: Store | null;
    providers: Provider[];
   provider: Provider | null;
+  cambios: Cambios[];
+  cambio: Cambios | null;
   error: object | string | null | any;
   page: number | undefined;
   totalRows?: number | undefined;
@@ -28,8 +30,24 @@ export interface StoreStateProps {
   isLoading?: boolean;
 }
 
+export type Cambios = {
+  ID?: string | number | undefined;
+  Base?: string;
+  BCV?: string | number | undefined;
+  Date?: string | number | undefined;
+};
 
-
+export interface CambiosStateProps {
+  cambios: Store[];
+  cambio: Store | null;
+   providers: Provider[];
+  provider: Provider | null;
+  error: object | string | null | any;
+  page: number | undefined;
+  totalRows?: number | undefined;
+  totalPages?: number | undefined;
+  isLoading?: boolean;
+}
 
 
 export interface ProviderStateProps {

@@ -22,7 +22,7 @@ import { useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { createSupplier } from 'store/reducers/supplier';
-import { ClientType, ClientContribu } from 'config';
+import { ClientType, ClientContribu, ClientType2 } from 'config';
 
 // types
 import { Supplier } from 'types/supplier';
@@ -94,7 +94,7 @@ function AddSupplier() {
                     Datos Básicos - Fiscales
                   </Typography>
                   <Grid container spacing={1} direction="row">
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Razón Social</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
@@ -105,19 +105,7 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
-                  </Grid>
-
-                  <Grid container spacing={1} direction="row">
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>RIF</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Rif')}
-                        placeholder="Ingresar RIF"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
+                                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
                       <Select
                         fullWidth
@@ -138,6 +126,39 @@ function AddSupplier() {
                       </Select>
                       {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
                     </Grid>
+                  </Grid>
+
+                  <Grid container spacing={1} direction="row">
+                      <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>-</InputLabel>
+                        <Select
+                        fullWidth
+                        {...getFieldProps('rif2')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Elija una opcion
+                        </MenuItem>
+                        {ClientType2.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Documento</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Rif')}
+                        placeholder="Ingresar Documento"
+                        fullWidth
+                      />
+                    </Grid>
+   
                     <Grid item xs={12}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion Empresa</InputLabel>
                       <TextField

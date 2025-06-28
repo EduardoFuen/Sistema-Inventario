@@ -125,6 +125,25 @@ export const ClientType: ClientTypePropsOption[] = [
   }
 ];
 
+export const ClientType2: ClientTypePropsOption[] = [
+  {
+    title: 'Venezolano',
+    id: 'V-'
+  },
+  {
+    title: 'Extrangero',
+    id: 'E-'
+  },
+  {
+    title: 'Empresa Privada',
+    id: 'J-'
+  },
+  {
+    title: 'Empresa Publica',
+    id: 'G-'
+  }
+];
+
 export const UserRol: UserRolPropsOption[] = [
   {
     title: 'Gerencia',

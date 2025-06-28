@@ -193,6 +193,24 @@ const applications4: NavItemType = {
           type: 'item',
           url: '/reception'
         },
+         {
+      id: 'edit',
+      type: 'item',
+      title: 'Precio Dolar',
+      url: '/cambios',
+      param: true,
+      mainTitle: 'Precio Dolar'
+    },
+     {
+      id: 'edit',
+      type: 'item',
+      title: 'Tasa de Cambio',
+      url: 'cambios/edit/:id',
+      hide: true,
+      param: true,
+      mainTitle: 'Cambios',
+      mainUrl: '/cambios'
+    },
     /*{
       id: 'edit',
       type: 'item',

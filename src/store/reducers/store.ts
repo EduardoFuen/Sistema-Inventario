@@ -14,6 +14,8 @@ const initialState: DefaultRootStateProps['product'] = {
   error: null,
   stores: [],
   store: null,
+   cambios: [],
+  cambio: null,
   providers: [],
   provider: null,
   page: 0,
@@ -45,6 +47,14 @@ const slice = createSlice({
     getProductsSuccess(state, action) {
       const { Rows, totalRows, totalPages, page } = action.payload;
       state.stores = Rows;
+      state.page = page;
+      state.totalRows = totalRows;
+      state.totalPages = totalPages;
+      state.isLoading = false;
+    },
+     getDolarSuccess(state, action) {
+      const { Rows, totalRows, totalPages, page } = action.payload;
+      state.cambios = Rows;
       state.page = page;
       state.totalRows = totalRows;
       state.totalPages = totalPages;
@@ -120,6 +130,45 @@ export function getProducts(page: number = 1, value: string = '', type: string =
     } catch (error: any) {
       if (error?.response?.status === 404) {
         dispatch(slice.actions.getProductsSuccess([]));
+        dispatch(slice.actions.hasError(error));
+      }
+      dispatch(slice.actions.loadingIs());
+    }
+  };
+}
+
+export function getDolar(page: number = 1, value: string = '', type: string = '') {
+  return async () => {
+    try {
+      dispatch(slice.actions.loading());
+      let queryParams: string = '';
+      queryParams = `limit=30&page=${page}`;
+      if (value !== '' && type === '') {
+        queryParams += `&Name=${value?.trim()}`;
+      }
+      if (type === 'Sku') {
+        queryParams += `&Sku=${value?.trim()}`;
+      }
+      if (type === 'Price') {
+        queryParams += `&Price=${value?.trim()}`;
+      }
+
+      const response = await axios.get(`${HOST}/product/dolar?${queryParams}`);
+
+      if (response.data instanceof Object) {
+        const { Rows, totalRows, totalPages, page }: any = response.data;
+        dispatch(
+          slice.actions.getDolarSuccess({
+            totalRows,
+            totalPages,
+            page,
+            Rows: Rows && Rows.length > 0 ? Rows : response.data || []
+          })
+        );
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getDolarSuccess([]));
         dispatch(slice.actions.hasError(error));
       }
       dispatch(slice.actions.loadingIs());
@@ -292,6 +341,35 @@ export function editProduct(id: number, data: Store) {
   return async () => {
     try {
       const response = await axios.put(`${HOST}/product/store`, { ID: id.toString(), ...data }, { ...HEADER });
+      dispatch(
+        slice.actions.editProductsSuccess({
+          id,
+          data: response.data
+        })
+      );
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Update successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      dispatch(getProducts());
+      dispatch(slice.actions.hasError(null));
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function editCambios(id: number, data: Store) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/product/cambios`, { ID: id.toString(), ...data }, { ...HEADER });
       dispatch(
         slice.actions.editProductsSuccess({
           id,
