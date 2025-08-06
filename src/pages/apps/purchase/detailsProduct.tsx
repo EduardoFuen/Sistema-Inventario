@@ -46,6 +46,8 @@ const DetailsPurchase = ({ product }: any) => {
       Bonus: '',
       SubTotal: '',
       Total: '',
+      Name: '',
+      Sku: '',
       ProductID: item?.sk || '',
       ...item
     }));
@@ -60,6 +62,9 @@ const DetailsPurchase = ({ product }: any) => {
     }
     if (name === 'BasePrice') {
       list[index]['BasePrice'] = Number(value);
+    }
+    if (name === 'Sku') {
+      list[index]['Sku'] = String(value);
     }
     if (name === 'Tax') {
       list[index]['Tax'] = Number(value);
@@ -97,10 +102,7 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell component="th" scope="row">
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <Stack spacing={0}>
-                      <Typography className="font-size">{x.Name}</Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        Codigo {x.Sku}
-                      </Typography>
+                      <Typography className="font-size">{x.ProductID}</Typography>
                     </Stack>
                   </Stack>
                 </TableCell>
@@ -112,6 +114,7 @@ const DetailsPurchase = ({ product }: any) => {
                     placeholder="Ingresar Cantidad"
                     fullWidth
                     name="Count"
+                    disabled
                     value={x.Count}
                     onChange={(e) => handleInputChange(e, i)}
                   />
@@ -123,8 +126,9 @@ const DetailsPurchase = ({ product }: any) => {
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Precio Base"
                     fullWidth
+                     disabled
                     name="Price"
-                    value={x.Price}
+                    value={x.BasePrice}
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
@@ -134,6 +138,7 @@ const DetailsPurchase = ({ product }: any) => {
                     id="Total"
                     onChange={(e) => handleInputChange(e, i)}
                     name="Total"
+                     disabled
                     value={x.Total || 0}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                   />
