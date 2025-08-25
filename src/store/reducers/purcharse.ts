@@ -20,6 +20,7 @@ import { PurchaseStateProps, Article, Purchase } from 'types/purchase';
 const initialState: PurchaseStateProps = {
   error: null,
   detailsPurchase: [],
+    deliveryList: [],
   listPurchase: [],
   detailsReption: [],
   order: {},
@@ -63,6 +64,9 @@ const slice = createSlice({
     addPurchaseSuccess(state, action) {
       state.listPurchase.push(action.payload);
       state.isLoading = false;
+    },
+    getMakerSuccess(state, action) {
+      state.deliveryList = action.payload;
     },
     // ADD DETAILS PURCHASE
     addDetailsPurchaseSuccess(state, action) {
@@ -250,6 +254,22 @@ export function addPurchase(data: Purchase) {
     }
   };
 }
+export function getDeliveryList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/purchase/delivery`, HEADER);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getMakerSuccess(response.data));
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getMakerSuccess([]));
+      }
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function getIDPurchase(id: number) {
   return async () => {
     dispatch(slice.actions.loading());

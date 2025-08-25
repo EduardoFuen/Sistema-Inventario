@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,ChangeEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 
@@ -12,6 +12,7 @@ import {
   Typography,
   Dialog,
   Table,
+    MenuItem,
   TableBody,
   TableCell,
   TableHead,
@@ -31,8 +32,11 @@ import DetailsPurchase from './detailsProduct';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
-import { editPurchase, getIDPurchase } from 'store/reducers/purcharse';
+import { editPurchase, getIDPurchase, getDeliveryList } from 'store/reducers/purcharse';
 
+import {
+  Delivery,
+} from 'types/products';
 // types
 
 // assets
@@ -43,6 +47,7 @@ import { SendOutlined } from '@ant-design/icons';
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes || '',
+    ID: '',
     CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
@@ -63,21 +68,22 @@ function ViewPurchase() {
   const [add, setAdd] = useState<boolean>(false);
   const [send, setSend] = useState<boolean>(false);
   const { id } = useParams();
-
+  const { deliveryList } = useSelector((state) => state.purchase);
   const { detailsPurchase } = useSelector((state) => state.purchase);
   const { order: orderPurchase, isLoading } = useSelector((state) => state.purchase);
 
   useEffect(() => {
     if (id) {
       dispatch(getIDPurchase(Number(id)));
+      dispatch(getDeliveryList());
     }
   }, [dispatch, id]);
 
   const handleCancel = () => {
     history(`/purchase`);
   };
-
-
+ const [maker_ID, setIsMakerID] = useState<string | number>();
+  console.log(maker_ID)
   const handleAdd = () => {
     setAdd(!add);
   };
@@ -116,8 +122,8 @@ function ViewPurchase() {
     }
   });
 
-  const { handleSubmit, isSubmitting, getFieldProps } = formik;
-  
+  const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+
   return (
     <>
       {isLoading ? (
@@ -174,6 +180,26 @@ function ViewPurchase() {
                           disabled={orderPurchase?.Status !== 0}
                           {...getFieldProps('Notes')}
                         />
+                      </Grid>
+                      <Grid item xs={5}>
+                         <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Delivery</InputLabel>
+                                              <TextField
+                                                placeholder="Seleccionar Maker"
+                                                fullWidth
+                                                select
+                                                {...getFieldProps('IDdely')}
+                                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                                  setIsMakerID(event.target.value);
+                                                  setFieldValue('IDdely', event.target.value);
+                                                }}
+                                              >
+                                                {deliveryList
+                                                  .map((option: Delivery) => (
+                                                    <MenuItem key={option.Name} value={option.phoneContact}>
+                                                      {option.Name}
+                                                    </MenuItem>
+                                                  ))}
+                                              </TextField>
                       </Grid>
 
                     </Grid>

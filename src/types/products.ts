@@ -70,8 +70,17 @@ export type Provider = {
    ContactName?: string;
 };
 
+export type Delivery = {
+  ID?: string | number | undefined;
+  Name?: string;
+  phoneContact?: string;
+};
+
+
+
 export interface ProviderStateProps {
   providerList: Provider[];
+  deliveryList: Delivery[];
   error: object | string | null;
 }
 

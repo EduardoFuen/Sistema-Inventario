@@ -13,7 +13,8 @@ import { ProviderStateProps, Provider } from 'types/products';
 // initial state
 const initialState: ProviderStateProps = {
   error: null,
-  providerList: []
+  providerList: [],
+  deliveryList: []
 };
 
 // ==============================||  MAKER  ||============================== //

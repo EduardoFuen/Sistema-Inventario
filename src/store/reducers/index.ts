@@ -100,6 +100,7 @@ const reducers = combineReducers({
     },
     maker
   ),
+  
   trademark: persistReducer(
     {
       key: 'trademark',

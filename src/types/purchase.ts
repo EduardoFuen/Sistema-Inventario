@@ -27,6 +27,13 @@ export type Article = {
   sk?: string;
 };
 
+export type Delivery = {
+  ID?: string | number | undefined;
+  Name?: string;
+  phoneContact?: string;
+};
+
+
 export type Purchase = {
   ID?: string | number | undefined;
   SupplierID?: number;
@@ -50,6 +57,7 @@ export type Purchase = {
 export interface PurchaseStateProps {
   detailsPurchase: any[];
   listPurchase: Purchase[];
+  deliveryList: Delivery[];
   detailsReption: any[];
   order: any;
   isLoading: boolean;
