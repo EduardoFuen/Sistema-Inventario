@@ -17,8 +17,6 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { DefaultSupplier } from 'config';
-
-
 // assets
 import { DeleteTwoTone } from '@ant-design/icons';
 
