@@ -223,6 +223,50 @@ export function getTotalPurchaseList(page: number = 1) {
     }
   };
 }
+export function addDelivery(data: Purchase) {
+  return async () => {
+    try {
+      dispatch(slice.actions.loading());
+      await dispatch(getPurchaseList());
+      const Newdata = {
+        ...data
+      };
+
+      const response = await axios.post(`${HOST}/purchase/delivery`, { ...Newdata }, { ...HEADER });
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Orden Creada successfully.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      dispatch(slice.actions.addPurchaseSuccess(response.data));
+      //window.location.href = `/purchase/view/${response.data.sk}`;
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function getDeliveryList() {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/purchase/delivery`, HEADER);
+      if (response.data instanceof Array) {
+        dispatch(slice.actions.getMakerSuccess(response.data));
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getMakerSuccess([]));
+      }
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function addPurchase(data: Purchase) {
   return async () => {
     try {
@@ -254,17 +298,26 @@ export function addPurchase(data: Purchase) {
     }
   };
 }
-export function getDeliveryList() {
+
+export function deleteDelivery(id: number) {
   return async () => {
     try {
-      const response = await axios.get(`${HOST}/purchase/delivery`, HEADER);
-      if (response.data instanceof Array) {
-        dispatch(slice.actions.getMakerSuccess(response.data));
+      const response = await axios.delete(`${HOST}/purchase/delivery`, { ...HEADER, data: { ID: id } });
+      if (response) {
+        dispatch(getDeliveryList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Delivery eliminado satisfactoriamente.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
       }
     } catch (error: any) {
-      if (error?.response?.status === 404) {
-        dispatch(slice.actions.getMakerSuccess([]));
-      }
       dispatch(slice.actions.hasError(error));
     }
   };

@@ -20,8 +20,8 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSelector, useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 
+import { addDelivery } from 'store/reducers/purcharse';
 
-import { addProduct } from 'store/reducers/provider';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { getMakerList } from 'store/reducers/maker';
 
@@ -86,7 +86,7 @@ function AddNewProduct() {
   }, [error, dispatch]);
 
   const handleCancel = () => {
-    history(`/provider-list`);
+    history(`/delivery-list`);
   };
 
 
@@ -103,9 +103,9 @@ function AddNewProduct() {
           ...values,
         };
 
-        await dispatch(addProduct(data));
+        await dispatch(addDelivery(data));
         setSubmitting(false);
-        history(`/provider-list`);
+        history(`/delivery-list`);
       } catch (error: any) {
         console.error(error);
         setSubmitting(false);

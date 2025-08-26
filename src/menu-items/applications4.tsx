@@ -211,6 +211,34 @@ const applications4: NavItemType = {
       mainTitle: 'Cambios',
       mainUrl: '/cambios'
     },
+    {
+      id: 'edit',
+      type: 'item',
+      title: 'Delivery',
+      url: '/delivery',
+      param: true,
+      mainTitle: 'Delivery'
+    },
+     {
+      id: 'edit',
+      type: 'item',
+      title: 'Add Delivery',
+      url: 'delivery/add',
+      hide: true,
+      param: true,
+      mainTitle: 'Delivery',
+      mainUrl: '/delivery'
+    },
+    {
+      id: 'edit',
+      type: 'item',
+      title: 'Editar Delivery',
+      url: 'delivery/edit/:id',
+      hide: true,
+      param: true,
+      mainTitle: 'Delivery',
+      mainUrl: '/delivery'
+    },
     /*{
       id: 'edit',
       type: 'item',
