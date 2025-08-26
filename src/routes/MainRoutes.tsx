@@ -41,7 +41,7 @@ const AppEditSupplier = Loadable(lazy(() => import('pages/apps/supplier/edit')))
 
 const DeliveryList = Loadable(lazy(() => import('pages/apps/delivery/delivery-list')));
 const AppAddDelivery = Loadable(lazy(() => import('pages/apps/delivery/add')));
-const AppEditDelivery = Loadable(lazy(() => import('pages/apps/delivery/edit')));
+
 
 const AppProductList = Loadable(lazy(() => import('pages/MainView/mainProduct')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/addProduct')));
@@ -188,10 +188,6 @@ const MainRoutes = {
                 {
                   path: 'delivery/add',
                   element: <AppAddDelivery />
-                },
-                {
-                  path: 'delivery/edit/:id',
-                  element: <AppEditDelivery />
                 },
                 {
                   path: 'user',
