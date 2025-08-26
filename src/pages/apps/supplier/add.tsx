@@ -91,11 +91,11 @@ function AddSupplier() {
               <Grid item xs={12} sm={6}>
                 <MainCard>
                   <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Básicos - Fiscales
+                    Datos Juridicos
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Razón Social</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Empresa</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('BusinessName')}
@@ -105,60 +105,20 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
-                                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
-                      <Select
-                        fullWidth
-                        {...getFieldProps('PaymenTerm')}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
-                      >
-                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
-                          Seleccionar Tipo de cliente
-                        </MenuItem>
-                        {ClientType.map((option: any) => {
-                          return (
-                            <MenuItem key={option.id} value={option.id}>
-                              {option.title}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={1} direction="row">
-                      <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>-</InputLabel>
-                        <Select
-                        fullWidth
-                        {...getFieldProps('rif2')}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
-                      >
-                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
-                          Elija una opcion
-                        </MenuItem>
-                        {ClientType2.map((option: any) => {
-                          return (
-                            <MenuItem key={option.id} value={option.id}>
-                              {option.title}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Documento</InputLabel>
+                     <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>RIF</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Rif')}
-                        placeholder="Ingresar Documento"
+                        {...getFieldProps('rifempresa')}
+                        placeholder="Ingresar RIF"
                         fullWidth
                       />
                     </Grid>
-   
+                                  
+                  </Grid>
+
+                  <Grid container spacing={1} direction="row">
+                   
                     <Grid item xs={12}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion Empresa</InputLabel>
                       <TextField
@@ -253,6 +213,57 @@ function AddSupplier() {
                         fullWidth
                       />
                     </Grid>
+                      <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
+                      <Select
+                        fullWidth
+                        {...getFieldProps('PaymenTerm')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Seleccionar Tipo de cliente
+                        </MenuItem>
+                        {ClientType.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                    </Grid>
+                     <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>-</InputLabel>
+                        <Select
+                        fullWidth
+                        {...getFieldProps('rif2')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Elija una opcion
+                        </MenuItem>
+                        {ClientType2.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Documento</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('Rif')}
+                        placeholder="Ingresar Documento"
+                        fullWidth
+                      />
+                    </Grid>
+                            
                     <Grid item xs={12}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion</InputLabel>
                       <TextField
@@ -263,7 +274,7 @@ function AddSupplier() {
                       />
                     </Grid>
                                         <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Latitud (GOOGLEMAPS)</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Latitud (Opcional)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Zona')}
@@ -272,20 +283,11 @@ function AddSupplier() {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (GOOGLEMAPS)</InputLabel>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (Opcional)</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('ZonaDes')}
                         placeholder="Ingresar Longitud"
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Telefono Alternativo</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('VendedorDes')}
-                        placeholder="Ingresar Telefono"
                         fullWidth
                       />
                     </Grid>
