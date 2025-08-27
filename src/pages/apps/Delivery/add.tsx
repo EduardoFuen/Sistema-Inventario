@@ -6,6 +6,8 @@ import {
   Grid,
   InputLabel,
   Stack,
+  Select,
+  MenuItem,
   TextField,
   Typography,
  
@@ -20,7 +22,7 @@ import { useDispatch } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-
+import { DeliveryType } from 'config';
 
 // types
 
@@ -33,7 +35,8 @@ const getInitialValues = () => {
   const newSubstance: Delivery = {
     Name: '',
     phoneContact: 0,
-    
+    typeDelivery:'',
+    document:''
   };
   return newSubstance;
 };
@@ -53,6 +56,8 @@ function AddDelivery() {
     .matches(/^[0-9]+$/, 'El teléfono solo debe contener dígitos') 
     .length(11, 'Por favor, revise el numero de telefono')
     .required('El número de teléfono es requerido'),
+    typeDelivery: Yup.string().max(255).required('Tipo es requerido'),
+    document: Yup.string().max(255).required('Documento es requerido'),
 });
 
  
@@ -117,6 +122,38 @@ function AddDelivery() {
                         placeholder="Ingresar numero telefonico"
                         fullWidth
                       />
+                    </Grid>
+                     <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cedula</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('document')}
+                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
+                        helperText={touched.PhoneContact && errors.PhoneContact}
+                        placeholder="Ingresar numero telefonico"
+                        fullWidth
+                      />
+                    </Grid>
+                       <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Delivery</InputLabel>
+                      <Select
+                        fullWidth
+                        {...getFieldProps('typeDelivery')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                       
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Seleccionar Tipo de delivery
+                        </MenuItem>
+                        {DeliveryType.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      
                     </Grid>
                                     
                   </Grid>

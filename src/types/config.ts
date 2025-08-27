@@ -49,6 +49,10 @@ export type ClientTypePropsOption = {
   title: string;
   id: string;
 };
+export type DeliveryTypePropsOption = {
+  title: string;
+  id: string;
+};
 export type UserRolPropsOption = {
   title: string;
   id: string;

@@ -14,6 +14,8 @@ export type Delivery = {
   PhoneContact?: string | number;
   phoneContact?: string | number;
   vehicle?: string;
+  typeDelivery?: string;
+  document?: string;
 
 };
 

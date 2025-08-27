@@ -1,5 +1,5 @@
 // types
-import { DefaultConfigProps, DayPaymentPropsOption, ClientTypePropsOption, ClientContribuPropsOption, UserRolPropsOption } from 'types/config';
+import { DefaultConfigProps, DayPaymentPropsOption, ClientTypePropsOption, DeliveryTypePropsOption, ClientContribuPropsOption, UserRolPropsOption } from 'types/config';
 import { Supplier } from 'types/supplier';
 import { Product } from 'types/products';
 import { DefaultArticle } from 'types/purchase';
@@ -125,6 +125,21 @@ export const ClientType: ClientTypePropsOption[] = [
   }
 ];
 
+export const DeliveryType: DeliveryTypePropsOption[] = [
+  {
+    title: 'Moto',
+    id: 'moto'
+  },
+  {
+    title: 'Camion',
+    id: 'camion'
+  },
+  {
+    title: 'Carrucha',
+    id: 'carrucha'
+  }
+];
+
 export const ClientType2: ClientTypePropsOption[] = [
   {
     title: 'Venezolano',
@@ -133,14 +148,6 @@ export const ClientType2: ClientTypePropsOption[] = [
   {
     title: 'Extrangero',
     id: 'E-'
-  },
-  {
-    title: 'Empresa Privada',
-    id: 'J-'
-  },
-  {
-    title: 'Empresa Publica',
-    id: 'G-'
   }
 ];
 
