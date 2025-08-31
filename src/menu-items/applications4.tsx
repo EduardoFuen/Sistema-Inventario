@@ -96,7 +96,7 @@ const applications4: NavItemType = {
     },
     {
       id: 'compras',
-      title: 'Compras',
+      title: 'Ventas',
       type: 'item',
           hide: true,
       url: '/purchase',
@@ -153,7 +153,7 @@ const applications4: NavItemType = {
       url: '/purchase/view/:id',
       hide: true,
       param: true,
-      mainTitle: 'Compras',
+      mainTitle: 'Ventas',
       mainUrl: '/purchase'
     },
     {

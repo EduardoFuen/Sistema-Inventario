@@ -25,6 +25,7 @@ export type Article = {
   Sku?: string;
   Ean?: string;
   sk?: string;
+  Montodelivery?: string | number | undefined;
 };
 
 export type Delivery = {
@@ -51,6 +52,7 @@ export type Purchase = {
   Status?: number;
   Articles?: Article[];
   detailsReption?: any;
+  Montodelivery?: string | number | undefined;
 };
 
 /* A type definition for the state of the component. */

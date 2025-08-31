@@ -11,6 +11,7 @@ interface Value {
   Tax: number;
   SubtotalWithDiscount: number;
   DiscountGlobal: number;
+  Montodelivery: number;
 }
 
 interface Props {
@@ -19,7 +20,9 @@ interface Props {
 
 const SummaryTemplate = ({ data }: Props) => (
   <MainCard>
-
+    <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
+      <Typography variant="subtitle1">Delivery: $ {data?.Montodelivery || 0}</Typography>
+    </Stack>
 
     <Stack direction="row" spacing={2} justifyContent="end" alignItems="rigth" sx={{ mt: 1 }}>
       <Typography variant="subtitle1">Total: $ {data?.Total || 0}</Typography>

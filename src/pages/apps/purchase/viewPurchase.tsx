@@ -219,7 +219,6 @@ function ViewPurchase() {
                             <TableCell>PRODUCTO</TableCell>
                             <TableCell align="center">CANTIDAD</TableCell>
                             <TableCell align="center">PRECIO BASE</TableCell>
-                            <TableCell align="center">SUBTOTAL</TableCell>
                             <TableCell align="center">TOTAL</TableCell>
                           </TableRow>
                         </TableHead>
@@ -230,14 +229,7 @@ function ViewPurchase() {
                                 <TableCell component="th" scope="row">
                                   <Stack direction="row" spacing={1.5} alignItems="center">
                                     <Stack spacing={0}>
-                                      <Typography className="font-size">{x.Name}</Typography>
-                                      <Typography variant="caption" color="textSecondary">
-                                        SKU {x.Sku}
-                                        
-                                      </Typography>
-                                      <Typography variant="caption" color="textSecondary" > 
-                                        EAN :{x.Ean}
-                                      </Typography>
+                                      <Typography className="font-size">{x.ProductID}</Typography>
                                     </Stack>
                                   </Stack>
                                 </TableCell>
@@ -245,15 +237,10 @@ function ViewPurchase() {
                                 <TableCell align="center">
                                   <NumberFormat value={x.BasePrice} displayType="text" prefix="$" />
                                 </TableCell>
-                                <TableCell align="center">
-                                  <NumberFormat value={x.Tax} displayType="text" suffix="%" />
-                                </TableCell>
-                                <TableCell align="center">{x.Discount}</TableCell>
-                                <TableCell align="center">{x.DiscountAdditional}</TableCell>
-                                <TableCell align="center">{x.Bonus}</TableCell>
-                                <TableCell align="center">
-                                  <NumberFormat value={x.SubTotal} displayType="text" prefix="$" />
-                                </TableCell>
+                            
+                    
+     
+
                                 <TableCell align="center">
                                   <NumberFormat value={x.Total} displayType="text" prefix="$" />
                                 </TableCell>

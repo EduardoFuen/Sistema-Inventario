@@ -110,7 +110,7 @@ const applications2: NavItemType = {
     },
     {
       id: 'compras',
-      title: 'Compras',
+      title: 'Ventas',
       type: 'item',
       url: '/purchase',
       icon: icons.ReconciliationOutlined
@@ -165,7 +165,7 @@ const applications2: NavItemType = {
       url: '/purchase/view/:id',
       hide: true,
       param: true,
-      mainTitle: 'Compras',
+      mainTitle: 'Ventas',
       mainUrl: '/purchase'
     },
     {
