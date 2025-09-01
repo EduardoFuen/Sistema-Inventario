@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 // third-party
 import { useSelector, useDispatch } from 'store';
-
+import useAuth from 'hooks/useAuth';
 // project import
 import ReactTable from 'components/ReactTable';
 import SupplierView from './view';
@@ -26,6 +26,7 @@ import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 // ==============================|| SUPPLIER - LIST ||============================== //
 
 const SupplierListPage = () => {
+    const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -105,6 +106,7 @@ const SupplierListPage = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+                   {user?.role == "1" && (
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
@@ -124,6 +126,7 @@ const SupplierListPage = () => {
                   )}
                 </IconButton>
               </Tooltip>
+              )}
             </Stack>
           );
         }

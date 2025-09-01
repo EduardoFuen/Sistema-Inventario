@@ -55,7 +55,7 @@ const applications4: NavItemType = {
       id: 'products',
       title: 'Productos',
       type: 'item',
-          hide: true,
+          hide: false,
       url: '/product-list',
       icon: icons.DiffOutlined
     },
@@ -81,7 +81,7 @@ const applications4: NavItemType = {
       id: 'supplier',
       title: 'Registro clientes',
       type: 'item',
-          hide: true,
+          hide: false,
       url: '/supplier',
       icon: icons.TeamOutlined
     },
@@ -98,7 +98,7 @@ const applications4: NavItemType = {
       id: 'compras',
       title: 'Ventas',
       type: 'item',
-          hide: true,
+          hide: false,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -190,6 +190,7 @@ const applications4: NavItemType = {
           id: 'recepcion',
           title: 'Cobranzas',
           icon: icons.ApartmentOutlined,
+          hide: true,
           type: 'item',
           url: '/reception'
         },

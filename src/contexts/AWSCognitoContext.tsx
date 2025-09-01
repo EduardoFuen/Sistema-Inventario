@@ -135,6 +135,21 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
 
   const logout = () => {
     const loggedInUser = userPool.getCurrentUser();
+     dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: false,
+            user: null
+          }
+        });
+        dispatch({
+          type: LOADING,
+          payload: {
+            isLoggedIn: false,
+            isLoading: false
+          }
+        });
+        dispatch({ type: LOGOUT });
     if (loggedInUser) {
       setSession(null);
       loggedInUser.signOut();

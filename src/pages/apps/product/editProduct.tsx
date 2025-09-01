@@ -33,7 +33,8 @@ const getInitialValues = (product: FormikValues | null) => {
   const newProduct: Product = {
     Name: product?.Name,
     Sku: product?.Sku,
-    Price: product?.Price
+    Price: product?.Price,
+    sk: product?.sk
   };
   return newProduct;
 };
@@ -54,7 +55,8 @@ function UpdateProduct() {
   
   const product = useMemo(() => {
     if (id) {
-      return products.find((item: Product) => item.ID === Number(id));
+   
+      return products.find((item: Product) => item.sk == id);
     }
   }, [id, products]);
 
@@ -78,6 +80,7 @@ function UpdateProduct() {
           ...values
         };
         await dispatch(editProduct(Number(id), data));
+        history(`/product-list`);
         setSubmitting(false);
       } catch (error: any) {
         setSubmitting(false);
@@ -106,31 +109,22 @@ function UpdateProduct() {
                         {...getFieldProps('Name')}
                         error={Boolean(touched.Name && errors.Name)}
                         helperText={touched.Name && errors.Name}
-                        placeholder="Ingresar Nombre"
+                        placeholder="Actualizar Nombre"
                         fullWidth
+                        disabled
                         rows={2}
                         multiline
                       />
                     </Grid>
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Referencia</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('Sku')}
-                        error={Boolean(touched.Sku && errors.Sku)}
-                        helperText={touched.Sku && errors.Sku}
-                        placeholder="Ingresar SKU"
-                        fullWidth
-                      />
-                    </Grid>
+          
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Precio</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Price')}
-                        error={Boolean(touched.Sku && errors.Sku)}
-                        helperText={touched.Sku && errors.Sku}
-                        placeholder="Ingresar SKU"
+                        error={Boolean(touched.Price && errors.Price)}
+                        helperText={touched.Price && errors.Price}
+                        placeholder="Actualizar precio"
                         fullWidth
                       />
                     </Grid>

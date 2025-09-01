@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
-
+import { openSnackbar } from 'store/reducers/snackbar';
 import { useNavigate } from 'react-router-dom';
 
 // third-party
@@ -16,10 +16,10 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 
-import { getUserList } from 'store/reducers/user';
+import { getUserList, deleteUser } from 'store/reducers/user';
 import { DefaultSupplier } from 'config';
 // assets
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone } from '@ant-design/icons';
 
 // ==============================|| SUPPLIER - LIST ||============================== //
 
@@ -33,11 +33,27 @@ const SupplierListPage = () => {
     dispatch(getUserList());
   }, [dispatch]);
 
-  const { userList } = useSelector((state) => state.user);
+  const { userList, error } = useSelector((state) => state.user);
 
-  const handleEditSupplier = (id: any) => {
+  /*const handleEditSupplier = (id: any) => {
     history(`/supplier/edit/${id}`);
-  };
+  };*/
+
+   useEffect(() => {
+      if (error && error?.response?.data?.Error && error?.response?.status !== 404) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: error?.response?.data?.Error,
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+      }
+    }, [error, dispatch]);
 
   const handleAddSupplier = () => {
     history(`/auth/register`);
@@ -71,22 +87,13 @@ const SupplierListPage = () => {
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
 
-              <Tooltip title="Edit">
-                <IconButton
-                  color="primary"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleEditSupplier(row?.original?.sk);
-                  }}
-                >
-                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
-                </IconButton>
-              </Tooltip>
+
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
                   onClick={async (e: any) => {
                     e.stopPropagation();
+                    await dispatch(deleteUser(row?.original?.sk));
                     setIsLoading(true);
                     setIsLoading(false);
                   }}

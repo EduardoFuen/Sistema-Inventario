@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { HOST, HEADER } from 'config';
 import { dispatch } from '../index';
-
+import { openSnackbar } from './snackbar';
 
 // types
 import { UserStateProps } from 'types/supplier';
@@ -45,6 +45,34 @@ export function getUserList() {
       if (response.data instanceof Array) {
         dispatch(slice.actions.getUserSuccess(response.data));
       }
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        dispatch(slice.actions.getUserSuccess([]));
+      }
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteUser(id: number) {
+  return async () => {
+    try {
+      const response = await axios.delete(`${HOST}/auth`, { ...HEADER, data: { ID: id } });
+       if (response) {
+              dispatch(getUserList());
+               dispatch(
+                       openSnackbar({
+                         open: true,
+                         message: 'Usuario eliminado...',
+                         variant: 'alert',
+                         alert: {
+                           color: 'success'
+                         },
+                         close: false
+                       })
+                     );
+                     dispatch(slice.actions.hasError(null));
+            }
     } catch (error: any) {
       if (error?.response?.status === 404) {
         dispatch(slice.actions.getUserSuccess([]));

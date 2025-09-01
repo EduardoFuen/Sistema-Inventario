@@ -4,6 +4,7 @@ export type Product = {
   Name?: string;
   Price?: number;
   Sku?: string;
+  sk?: string | undefined;
 };
 export type Maker = {
   ID?: string | number | undefined;

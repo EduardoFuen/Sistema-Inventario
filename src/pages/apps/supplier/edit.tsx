@@ -190,7 +190,7 @@ console.log(touched)
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre de Contacto</InputLabel>
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('NameContact')}
+                        {...getFieldProps('Vendedor')}
                         error={Boolean(touched.NameContact && errors.NameContact)}
                         helperText={
                           Boolean(touched.NameContact && errors.NameContact) ? String(touched.NameContact && errors.NameContact) : ''

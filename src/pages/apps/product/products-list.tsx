@@ -16,7 +16,7 @@ import ScrollX from 'components/ScrollX';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
-
+import useAuth from 'hooks/useAuth';
 import { ProductDefault } from 'config';
 
 // assets
@@ -26,6 +26,7 @@ import { Product } from 'types/products';
 // ==============================|| PRODUCT LIST - MAIN ||============================== //
 
 const ProductList = () => {
+   const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -107,6 +108,7 @@ const ProductList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+              {user?.role == "1" && (
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
@@ -126,6 +128,7 @@ const ProductList = () => {
                   )}
                 </IconButton>
               </Tooltip>
+                 )}
             </Stack>
           );
         }

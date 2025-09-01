@@ -17,7 +17,7 @@ import { getProducts } from 'store/reducers/product';
 //import { useSelector, useDispatch, store } from 'store';
 import { useSelector, useDispatch } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
-
+import useAuth from 'hooks/useAuth';
 // types
 import { Purchase } from 'types/purchase';
 // assets
@@ -26,6 +26,7 @@ import { DeleteTwoTone, EyeTwoTone } from '@ant-design/icons';
 // ==============================|| PURCHASE - LIST VIEW ||============================== //
 
 const PurchaseList = () => {
+  const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -148,6 +149,7 @@ const PurchaseList = () => {
                   <EyeTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+              {user?.role == "1" && (
               <Tooltip title="Delete">
               <IconButton
                     color="error"
@@ -167,6 +169,7 @@ const PurchaseList = () => {
                     )}
                   </IconButton>
               </Tooltip>
+               )}
               {row.original?.ReceptionStatus === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton

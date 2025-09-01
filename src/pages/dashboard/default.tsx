@@ -36,6 +36,14 @@ const DashboardDefault = () => {
               <Typography variant="h4"> Clientes</Typography>
             </Link>
           </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={4}>
+            <Link component={RouterLink} to="/purchase" variant="caption" color="textPrimary">
+              <Box sx={{ width: { xs: 50, sm: '100%' } }}>
+                <img src={shoppingcart} alt="shoppingcart" style={{ width: '35%', height: 'auto' }} />
+              </Box>
+              <Typography variant="h4"> Ventas</Typography>
+            </Link>
+          </Grid>
 
     
         </Grid>
@@ -95,7 +103,7 @@ const DashboardDefault = () => {
               <Box sx={{ width: { xs: 50, sm: '100%' } }}>
                 <img src={shoppingcart} alt="shoppingcart" style={{ width: '35%', height: 'auto' }} />
               </Box>
-              <Typography variant="h4"> Compras</Typography>
+              <Typography variant="h4"> Ventas</Typography>
             </Link>
           </Grid>
     

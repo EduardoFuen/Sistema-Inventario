@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, ButtonBase, CardContent, ClickAwayListener, Grid, Paper, Popper, Stack, Tooltip, Typography } from '@mui/material';
@@ -16,10 +16,11 @@ import { LogoutOutlined } from '@ant-design/icons';
 
 const Profile = () => {
   const theme = useTheme();
-
+const history = useNavigate();
   const { logout, user } = useAuth();
   const handleLogout = async () => {
     try {
+       history(`/login`);
       await logout();
     } catch (err) {
       console.error(err);

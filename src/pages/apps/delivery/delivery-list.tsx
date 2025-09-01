@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'store';
 
 // project import
 import ReactTable from 'components/ReactTable';
-
+import useAuth from 'hooks/useAuth';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
@@ -25,6 +25,7 @@ import { getDeliveryList,deleteDelivery } from 'store/reducers/purcharse';
 // ==============================|| SUPPLIER - LIST ||============================== //
 
 const DeliveryListPage = () => {
+  const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -75,7 +76,7 @@ const { deliveryList } = useSelector((state) => state.purchase);
 
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-      
+           {user?.role == "1" && (
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
@@ -95,6 +96,7 @@ const { deliveryList } = useSelector((state) => state.purchase);
                   )}
                 </IconButton>
               </Tooltip>
+               )}
             </Stack>
           );
         }

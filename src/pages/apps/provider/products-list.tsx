@@ -12,7 +12,7 @@ import MainCard from 'components/MainCard';
 import ReactTable from 'components/ReactTable';
 import ScrollX from 'components/ScrollX';
 import Import from './ImportProducts';
-
+import useAuth from 'hooks/useAuth';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/provider';
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -28,6 +28,7 @@ import { Store } from 'types/store';
 // ==============================|| PRODUCT LIST - MAIN ||============================== //
 
 const ProductList = () => {
+   const { user } = useAuth();
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -144,6 +145,7 @@ const ProductList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+                      {user?.role == "1" && (
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
@@ -163,6 +165,7 @@ const ProductList = () => {
                   )}
                 </IconButton>
               </Tooltip>
+                )}
             </Stack>
           );
         }

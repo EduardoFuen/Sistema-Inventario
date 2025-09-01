@@ -150,7 +150,7 @@ const applications: NavItemType = {
       url: '/purchase/view/:id',
       hide: true,
       param: true,
-      mainTitle: 'Compras',
+      mainTitle: 'Pedidos',
       mainUrl: '/purchase'
     },
     {

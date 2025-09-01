@@ -53,5 +53,5 @@ export interface SupplierStateProps {
 }
 export interface UserStateProps {
   userList: User[];
-  error: object | string | null;
+  error: object | string | null | any;
 }
