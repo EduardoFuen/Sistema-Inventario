@@ -1,7 +1,7 @@
 import { useState, useEffect,ChangeEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
-
+import * as Yup from 'yup';
 // material-ui
 import {
   Button,
@@ -48,6 +48,7 @@ const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes || '',
     ID: '',
+    IDdely: '',
     CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
@@ -87,9 +88,13 @@ function ViewPurchase() {
   const handleAdd = () => {
     setAdd(!add);
   };
+   const SubstSchema = Yup.object().shape({
+      IDdely: Yup.string().max(255).required('Delivery es requerido'),
+    });
 
   const formik = useFormik({
     enableReinitialize: true,
+    validationSchema: SubstSchema,
     initialValues: getInitialValues(orderPurchase!),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -122,7 +127,7 @@ function ViewPurchase() {
     }
   });
 
-  const { handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { handleSubmit,touched,errors, isSubmitting, getFieldProps, setFieldValue } = formik;
 
   return (
     <>
@@ -183,9 +188,12 @@ function ViewPurchase() {
                       </Grid>
                       <Grid item xs={5}>
                          <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Delivery</InputLabel>
+
                                               <TextField
                                                 placeholder="Seleccionar Maker"
                                                 fullWidth
+                                                 error={Boolean(touched.IDdely && errors.IDdely)}
+                                                  helperText={touched.IDdely && errors.IDdely}
                                                 select
                                                 {...getFieldProps('IDdely')}
                                                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -200,6 +208,7 @@ function ViewPurchase() {
                                                     </MenuItem>
                                                   ))}
                                               </TextField>
+                  
                       </Grid>
 
                     </Grid>

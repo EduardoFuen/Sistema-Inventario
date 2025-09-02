@@ -53,6 +53,7 @@ export type Purchase = {
   Articles?: Article[];
   detailsReption?: any;
   Montodelivery?: string | number | undefined;
+  Ispickup?: string | number | undefined;
 };
 
 /* A type definition for the state of the component. */
