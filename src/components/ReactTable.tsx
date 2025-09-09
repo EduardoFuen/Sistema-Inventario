@@ -124,7 +124,7 @@ const ReactTable = ({
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: numberPage > 0 ? numberPage - 1 : 0, pageSize: 10, sortBy: [sortBy] },
+      initialState: { pageIndex: numberPage > 0 ? numberPage - 1 : 0, pageSize: 50, sortBy: [sortBy] },
       onRowSelectionChange: setRowSelection
     },
     useGlobalFilter,
