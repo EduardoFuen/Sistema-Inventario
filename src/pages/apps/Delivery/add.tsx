@@ -101,9 +101,9 @@ function AddDelivery() {
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre del Delivery</InputLabel>
+                      <InputLabel sx={{ mb: 1, }}>Nombre del Delivery</InputLabel>
                       <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('Name')}
                         error={Boolean(touched.NameContact && errors.NameContact)}
                         helperText={touched.NameContact && errors.NameContact}
@@ -113,9 +113,9 @@ function AddDelivery() {
                     </Grid>
 
                      <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Numero de telefono</InputLabel>
+                      <InputLabel sx={{ mb: 1, }}>Numero de telefono</InputLabel>
                       <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('phoneContact')}
                         error={Boolean(touched.PhoneContact && errors.PhoneContact)}
                         helperText={touched.PhoneContact && errors.PhoneContact}
@@ -124,9 +124,9 @@ function AddDelivery() {
                       />
                     </Grid>
                      <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Cedula</InputLabel>
+                      <InputLabel sx={{ mb: 1, }}>Cedula</InputLabel>
                       <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('document')}
                         error={Boolean(touched.PhoneContact && errors.PhoneContact)}
                         helperText={touched.PhoneContact && errors.PhoneContact}
@@ -135,7 +135,7 @@ function AddDelivery() {
                       />
                     </Grid>
                        <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Delivery</InputLabel>
+                      <InputLabel sx={{ mb: 1, }}>Tipo Delivery</InputLabel>
                       <Select
                         fullWidth
                         {...getFieldProps('typeDelivery')}
