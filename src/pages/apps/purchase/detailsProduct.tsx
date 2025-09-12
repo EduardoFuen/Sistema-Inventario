@@ -109,7 +109,7 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell align="center">
                   <TextField
                     InputProps={{ inputProps: { min: 0 } }}
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                    sx={{ '& .MuiOutlinedInput-input': { } }}
                     type="number"
                     placeholder="Ingresar Cantidad"
                     fullWidth
@@ -121,7 +121,7 @@ const DetailsPurchase = ({ product }: any) => {
                 </TableCell>
                 <TableCell align="center">
                   <TextField
-                    sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                    sx={{ '& .MuiOutlinedInput-input': {  } }}
                     type="number"
                     InputProps={{ inputProps: { min: 0 } }}
                     placeholder="Ingresar Precio Base"
