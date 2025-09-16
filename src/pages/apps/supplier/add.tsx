@@ -53,7 +53,7 @@ function AddSupplier() {
   };
 
   const SubstSchema = Yup.object().shape({
-    BusinessName: Yup.string().max(255).required('Razón social es requerido')
+    PaymenTerm: Yup.string().max(255).required('Tipo de cliente es requerido')
   });
 
   const formik = useFormik({
