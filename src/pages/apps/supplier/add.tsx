@@ -136,7 +136,7 @@ function AddSupplier() {
                         fullWidth
                         {...getFieldProps('PaymenTerm')}
                         inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
                       >
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Tipo de Contribuyente
@@ -199,7 +199,7 @@ function AddSupplier() {
                         fullWidth
                         {...getFieldProps('rif2')}
                         inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
                       >
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Elija una opcion
