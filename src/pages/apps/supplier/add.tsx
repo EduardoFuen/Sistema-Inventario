@@ -96,6 +96,39 @@ function AddSupplier() {
                     Datos Cliente
                   </Typography>
                   <Grid container spacing={1} direction="row" >
+                     
+                      <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
+                      <Select
+                        fullWidth
+                        {...getFieldProps('PaymenTerm')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
+                      >
+                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
+                          Seleccionar Tipo de cliente
+                        </MenuItem>
+                        {ClientType.map((option: any) => {
+                          return (
+                            <MenuItem key={option.id} value={option.id}>
+                              {option.title}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                    </Grid>
+                    <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de Credito</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        placeholder="Ingresar Días pronto pago"
+                        fullWidth
+                        {...getFieldProps('DaysPayment')}
+                        error={Boolean(touched.DaysPayment && errors.DaysPayment)}
+                        helperText={touched.DaysPayment && errors.DaysPayment}
+                      />
+                    </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Empresa</InputLabel>
                       <TextField
@@ -121,15 +154,6 @@ function AddSupplier() {
 
                   <Grid container spacing={1} direction="row">
                    
-                    <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Direccion Empresa</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('DesT')}
-                        placeholder="Ingresar Destino Tipo"
-                        fullWidth
-                      />
-                    </Grid>
                        <Grid item xs={6}>
                     <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Contribuyente Especial</InputLabel>
                       <Select
@@ -152,27 +176,8 @@ function AddSupplier() {
                       {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
                     </Grid>
 
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de Credito</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        placeholder="Ingresar Días pronto pago"
-                        fullWidth
-                        {...getFieldProps('DaysPayment')}
-                        error={Boolean(touched.DaysPayment && errors.DaysPayment)}
-                        helperText={touched.DaysPayment && errors.DaysPayment}
-                      />
-                    </Grid>
                  
-                    <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Credito Maximo</InputLabel>
-                      <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
-                        {...getFieldProps('credit')}
-                        placeholder="credito"
-                        fullWidth
-                      />
-                    </Grid>
+                
                   </Grid>
 
                   <Grid container direction="row" spacing={2}>
@@ -237,28 +242,7 @@ function AddSupplier() {
                         helperText={touched.EmailContact && errors.EmailContact}
                       />
                     </Grid>
-                
-                      <Grid item xs={6}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Tipo Cliente</InputLabel>
-                      <Select
-                        fullWidth
-                        {...getFieldProps('PaymenTerm')}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PaymenTerm && errors.PaymenTerm)}
-                      >
-                        <MenuItem value="" sx={{ color: 'text.secondary' }}>
-                          Seleccionar Tipo de cliente
-                        </MenuItem>
-                        {ClientType.map((option: any) => {
-                          return (
-                            <MenuItem key={option.id} value={option.id}>
-                              {option.title}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
-                    </Grid>
+               
                    
                             
                     <Grid item xs={12}>
