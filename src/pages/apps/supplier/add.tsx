@@ -89,13 +89,13 @@ function AddSupplier() {
       <MainCard>
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <Grid container spacing={5} alignItems="center" justifyContent="center">
+              <Grid  item xs={12} sm={6} >
                 <MainCard>
-                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Juridicos
+                  <Typography  variant="h5" component="div" sx={{ mb: 3 }}>
+                    Datos Cliente
                   </Typography>
-                  <Grid container spacing={1} direction="row">
+                  <Grid container spacing={1} direction="row" >
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Empresa</InputLabel>
                       <TextField
@@ -174,15 +174,7 @@ function AddSupplier() {
                       />
                     </Grid>
                   </Grid>
-           
-                </MainCard>
-              </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <MainCard>
-                  <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-                    Datos Personales
-                  </Typography>
                   <Grid container direction="row" spacing={2}>
                         <Grid item xs={12}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre Completo</InputLabel>
@@ -298,8 +290,12 @@ function AddSupplier() {
                       />
                     </Grid>
                   </Grid>
+
+           
                 </MainCard>
               </Grid>
+
+         
 
 
               <Grid item xs={12}>
