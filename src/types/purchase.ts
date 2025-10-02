@@ -52,6 +52,8 @@ export type Purchase = {
   Status?: number;
   Articles?: Article[];
   detailsReption?: any;
+  latitude?: any;
+  longitude?: any;
   Montodelivery?: string | number | undefined;
   Ispickup?: string | number | undefined;
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect,ChangeEvent } from 'react';
+import { Map, Marker } from "pigeon-maps"
 import { useNavigate, useParams } from 'react-router-dom';
 import { addDays, format } from 'date-fns';
 import * as Yup from 'yup';
@@ -157,8 +158,8 @@ function ViewPurchase() {
  
                       <Grid item xs={3}>
                         <InputLabel sx={{ mb: 1,  }}>Fecha Pedido</InputLabel>
-                        <TextField
-                          sx={{ '& .MuiOutlinedInput-input': {  } }}
+                       <TextField
+                          sx={{ '& .MuiOutlinedInput-input': { opacity: 10 } }}
                           {...getFieldProps('CreatedAt')}
                           placeholder=""
                           fullWidth
@@ -210,7 +211,15 @@ function ViewPurchase() {
                                               </TextField>
                   
                       </Grid>
-
+                  <Grid item xs={5}>
+                    <InputLabel sx={{ mb: 1,  }}>Punto de Entrega</InputLabel>
+                  {orderPurchase?.latitude &&(
+                    <Map height={300} defaultCenter={[orderPurchase?.latitude, orderPurchase?.longitude]} defaultZoom={15}>
+                                <Marker color='Red' width={50} anchor={[10.2262838, -67.4943038]} />
+                            </Map>
+                  )}
+                         
+                      </Grid>
                     </Grid>
                   </MainCard>
                 </Grid>
