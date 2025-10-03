@@ -215,7 +215,7 @@ function ViewPurchase() {
                     <InputLabel sx={{ mb: 1,  }}>Punto de Entrega</InputLabel>
                   {orderPurchase?.latitude &&(
                     <Map height={300} defaultCenter={[orderPurchase?.latitude, orderPurchase?.longitude]} defaultZoom={15}>
-                                <Marker color='Red' width={50} anchor={[10.2262838, -67.4943038]} />
+                                <Marker color='Red' width={50} anchor={[orderPurchase?.latitude, orderPurchase?.longitude]} />
                             </Map>
                   )}
                          
