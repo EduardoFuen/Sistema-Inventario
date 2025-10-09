@@ -73,11 +73,8 @@ function UpdateSuplier() {
 
   const SubstSchema = Yup.object().shape({
     BusinessName: Yup.string().max(255).required('Razón social es requerido'),
-    Nit: Yup.string().max(255).required('NIT es requerido'),
-    NameContact: Yup.string().max(255).required('Nombre de Contacto es requerido'),
-    EmailContact: Yup.string().max(255).required('Email es requerido'),
     PhoneContact: Yup.string().max(255).required('Teléfono es requerido'),
-    PaymenTerm: Yup.string().max(255).required('Plazo de pago es requerido')
+    DaysPayment: Yup.string().max(255).required('Plazo de pago es requerido')
   });
 
   const formik = useFormik({
@@ -165,6 +162,15 @@ console.log(touched)
                         fullWidth
                       />
                     </Grid>
+                      <Grid item xs={6}>
+                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de crédito</InputLabel>
+                      <TextField
+                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
+                        {...getFieldProps('DaysPayment')}
+                        placeholder="Ingresar días de crédito"
+                        fullWidth
+                      />
+                    </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Longitud (GOOGLEMAPS)</InputLabel>
                       <TextField
@@ -191,10 +197,6 @@ console.log(touched)
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('Vendedor')}
-                        error={Boolean(touched.NameContact && errors.NameContact)}
-                        helperText={
-                          Boolean(touched.NameContact && errors.NameContact) ? String(touched.NameContact && errors.NameContact) : ''
-                        }
                         placeholder="Ingresar Nombre de Contacto"
                         fullWidth
                       />
@@ -220,10 +222,6 @@ console.log(touched)
                         placeholder="Ingresar Email"
                         fullWidth
                         {...getFieldProps('EmailContact')}
-                        error={Boolean(touched.EmailContact && errors.EmailContact)}
-                        helperText={
-                          Boolean(touched.EmailContact && errors.EmailContact) ? String(touched.EmailContact && errors.EmailContact) : ''
-                        }
                       />
                     </Grid>
                   </Grid>
