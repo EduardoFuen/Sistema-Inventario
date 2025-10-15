@@ -176,6 +176,31 @@ const applications4: NavItemType = {
       mainTitle: 'Totales',
       mainUrl: '/reception'
     },
+     {
+          id: 'collection',
+          title: 'Cobranzas',
+          type: 'item',
+          url: '/collection',
+          icon: icons.ReconciliationOutlined
+        },
+        {
+          id: 'addCollection',
+          type: 'item',
+          title: 'Generar nueva orden de Cobranzas',
+          url: '/collection/add',
+          hide: true,
+          mainTitle: 'Cobranzas',
+          mainUrl: '/collection'
+        },
+        {
+          id: 'viewCollection',
+          type: 'item',
+          title: 'Cobranza',
+          url: '/collection/view',
+          hide: true,
+          mainTitle: 'Cobranzas',
+          mainUrl: '/collection'
+        },
     {
       id: 'edit',
       type: 'item',
