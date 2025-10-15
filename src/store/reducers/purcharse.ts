@@ -299,6 +299,39 @@ export function addPurchase(data: Purchase) {
   };
 }
 
+export function addEmergency(data: Purchase, message: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.loading());
+      await dispatch(getPurchaseList());
+      const Newdata = {
+        ...data,
+        Mensage: message,
+        Discount: data?.Discount || 0,
+        DiscountEarliyPay: data?.DiscountEarliyPay || 0,
+        Articles: Articles(data?.Articles)
+      };
+
+      const response = await axios.post(`${HOST}/purchase/emergency`, { ...Newdata }, { ...HEADER });
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Notificacion Enviada.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      dispatch(slice.actions.addPurchaseSuccess(response.data));
+      //window.location.href = `/purchase/view/${response.data.sk}`;
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function deleteDelivery(id: number) {
   return async () => {
     try {

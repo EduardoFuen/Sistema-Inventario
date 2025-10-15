@@ -33,7 +33,7 @@ import DetailsPurchase from './detailsProduct';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
-import { editPurchase, getIDPurchase, getDeliveryList } from 'store/reducers/purcharse';
+import { editPurchase, getIDPurchase, getDeliveryList, addEmergency } from 'store/reducers/purcharse';
 
 import {
   Delivery,
@@ -44,12 +44,13 @@ import {
 import { SendOutlined } from '@ant-design/icons';
 
 // ==============================||VIEW PURCHASE - MAIN ||============================== //
-
+let MensajeEmergencia : any
 const getInitialValues = (order: FormikValues | null) => {
   const newSubstance = {
     Notes: order?.Notes || '',
     ID: '',
     IDdely: '',
+    Emergency: '',
     CreatedAt: order?.CreatedAt ? format(new Date(order?.CreatedAt), DATEFORMAT) : '',
     DiscountGlobal: order?.DiscountGlobal || 0,
     SupplierID: order?.SupplierID || 0,
@@ -84,8 +85,13 @@ function ViewPurchase() {
   const handleCancel = () => {
     history(`/purchase`);
   };
+  const handleEmergency = (compra: any) => {
+    console.log(MensajeEmergencia)
+    dispatch(addEmergency(compra,MensajeEmergencia))
+    //history(`/purchase`);
+  };
  const [maker_ID, setIsMakerID] = useState<string | number>();
-  console.log(maker_ID)
+ console.log(maker_ID)
   const handleAdd = () => {
     setAdd(!add);
   };
@@ -109,6 +115,7 @@ function ViewPurchase() {
             Bonus: item?.Bonus || 0,
             Count: item?.Count || 0,
             Tax: item?.Tax || 0,
+            Emergency: item?.Emergency || 0,
             BasePrice: item?.BasePrice || 0,
             ID: 0
           }))
@@ -220,6 +227,23 @@ function ViewPurchase() {
                   )}
                          
                       </Grid>
+                      <Grid item xs={5}>
+                    <InputLabel sx={{ mb: 1,  }}>Mensaje Emergencia</InputLabel>
+                        <TextField
+                          sx={{ '& .MuiOutlinedInput-input': {  } }}
+                          multiline
+                          rows={2}
+                          placeholder="Ingresar Mensaje de emergencia"
+                          fullWidth
+                          {...getFieldProps('Emergency')}
+                           onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                                  MensajeEmergencia = event.target.value;
+                                                  setIsMakerID(event.target.value);
+                                                  setFieldValue('Emergency', event.target.value);
+                                                }}
+                        />
+                         
+                      </Grid>
                     </Grid>
                   </MainCard>
                 </Grid>
@@ -283,6 +307,16 @@ function ViewPurchase() {
                 </Grid>
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
+                    {orderPurchase?.Status === 0 && (
+                    <Button variant="contained"
+                    color="warning"
+                    onClick={(e: any) => {
+                    e.stopPropagation();
+                    if (orderPurchase) handleEmergency(orderPurchase);
+                      }}>
+                      Emergencia
+                    </Button>
+                       )}
                     <Button variant="outlined" color="secondary" onClick={handleCancel}>
                       Atras
                     </Button>
