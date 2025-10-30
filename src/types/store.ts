@@ -21,6 +21,7 @@ export interface StoreStateProps {
   store: Store | null;
    providers: Provider[];
   provider: Provider | null;
+  emergency : Emergency | null;
   cambios: Cambios[];
   cambio: Cambios | null;
   error: object | string | null | any;
@@ -37,8 +38,15 @@ export type Cambios = {
   Date?: string | number | undefined;
 };
 
+export type Emergency = {
+  ID?: string | number | undefined;
+  Base?: string;
+  active?: string | number | undefined;
+};
+
 export interface CambiosStateProps {
   cambios: Store[];
+  
   cambio: Store | null;
    providers: Provider[];
   provider: Provider | null;

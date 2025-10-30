@@ -223,7 +223,7 @@ const applications2: NavItemType = {
       mainUrl: '/user'
     },
     {
-      id: 'edit',
+      id: 'edit4',
       type: 'item',
       title: 'Precio Dolar',
       url: '/cambios',
@@ -241,12 +241,20 @@ const applications2: NavItemType = {
       mainUrl: '/cambios'
     },
     {
-      id: 'edit',
+      id: 'edit3',
       type: 'item',
       title: 'Delivery',
       url: '/delivery',
       param: true,
       mainTitle: 'Delivery'
+    },
+    {
+      id: 'edit2',
+      type: 'item',
+      title: 'Emergencia',
+      url: '/emergency',
+      param: true,
+      mainTitle: 'Emergencia'
     },
      {
       id: 'edit',

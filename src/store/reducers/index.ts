@@ -149,6 +149,14 @@ const reducers = combineReducers({
       keyPrefix: REDUCERVERSION
     },
     storeReducer
+  ),
+   emergency: persistReducer(
+    {
+      key: 'emergencyReducer',
+      storage,
+      keyPrefix: REDUCERVERSION
+    },
+    storeReducer
   )
 });
 

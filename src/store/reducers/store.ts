@@ -8,12 +8,13 @@ import { dispatch } from '../index';
 import { openSnackbar } from './snackbar';
 
 // types
-import { DefaultRootStateProps, Store } from 'types/store';
+import { DefaultRootStateProps, Store, Emergency } from 'types/store';
 
 const initialState: DefaultRootStateProps['product'] = {
   error: null,
   stores: [],
   store: null,
+  emergency: null,
    cambios: [],
   cambio: null,
   providers: [],
@@ -71,6 +72,9 @@ const slice = createSlice({
     // GET ID PRODUCT
     getProductIDSuccess(state, action) {
       state.store = action.payload;
+    },
+    getEmergencyIDSuccess(state, action) {
+      state.emergency = action.payload.emergency[0];
     },
     // GET SKU PRODUCT
     getProductSKUSuccess(state, action) {
@@ -394,6 +398,43 @@ export function editCambios(id: number, data: Store) {
     }
   };
 }
+
+export function getEmergencyID(id: number) {
+  return async () => {
+    try {
+      const response = await axios.get(`${HOST}/product/emergency?ID=${id}`, HEADER);
+      dispatch(slice.actions.getEmergencyIDSuccess(response.data));
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function emergencyes(id: number, data: Emergency) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/product/emergency`, { ID: id.toString(), ...data }, { ...HEADER });
+   console.log(response)
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Cambios Realizados!',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      
+      dispatch(slice.actions.hasError(null));
+    } catch (error: any) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+
 export function deleteProduct(id: number) {
   return async () => {
     try {

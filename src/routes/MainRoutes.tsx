@@ -28,6 +28,7 @@ const AppStoreEntryList = Loadable(lazy(() => import('pages/apps/almacenentry/pr
 
 const AppCambiosList = Loadable(lazy(() => import('pages/apps/cambio/products-list')));
 const AppCambiosEdit = Loadable(lazy(() => import('pages/apps/cambio/editProduct')));
+const AppEmergencyEdit = Loadable(lazy(() => import('pages/apps/cambio/emergency')));
 
 const AppProviderList = Loadable(lazy(() => import('pages/apps/provider/products-list')));
 const AppProviderAdd = Loadable(lazy(() => import('pages/apps/provider/addProduct')));
@@ -237,6 +238,15 @@ const MainRoutes = {
                 {
                   path: 'product-list/category/edit/:id/:index',
                   element: <AppAddCategory />
+                }
+              ]
+            },
+                {
+              path: '',
+              children: [
+                {
+                  path: 'emergency',
+                  element: <AppEmergencyEdit />
                 }
               ]
             }
