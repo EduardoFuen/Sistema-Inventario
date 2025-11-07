@@ -336,7 +336,7 @@ function ViewPurchase() {
                     <Button variant="outlined" color="secondary" onClick={handleCancel}>
                       Atras
                     </Button>
-                    {orderPurchase?.Status === 4 && (
+                    {orderPurchase?.Status === 0 && (
                       <Button
                         type="submit"
                         variant="contained"
