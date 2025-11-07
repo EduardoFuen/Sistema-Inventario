@@ -33,7 +33,7 @@ import DetailsPurchase from './detailsProduct';
 import AddSelectProduct from './selectLinePurchase';
 import { DATEFORMAT } from 'config';
 import { useSelector, useDispatch } from 'store';
-import { editPurchase, getIDPurchase, getDeliveryList, addEmergency } from 'store/reducers/purcharse';
+import { editPurchase, getIDPurchase, getDeliveryList, addEmergency,handleSMSDelivery } from 'store/reducers/purcharse';
 
 import {
   Delivery,
@@ -88,6 +88,11 @@ function ViewPurchase() {
   const handleEmergency = (compra: any) => {
     console.log(MensajeEmergencia)
     dispatch(addEmergency(compra,MensajeEmergencia))
+    //history(`/purchase`);
+  };
+  const sendSMSDelivery = (compra: any) => {
+    console.log(MensajeEmergencia)
+    dispatch(handleSMSDelivery(compra,MensajeEmergencia))
     //history(`/purchase`);
   };
  const [maker_ID, setIsMakerID] = useState<string | number>();
@@ -317,6 +322,17 @@ function ViewPurchase() {
                       Emergencia
                     </Button>
                        )}
+                        {orderPurchase?.Status === 4 && (
+                    <Button variant="contained"
+                    color="warning"
+                    onClick={(e: any) => {
+                    e.stopPropagation();
+                    if (orderPurchase) sendSMSDelivery(orderPurchase);
+                      }}>
+                      Reenvio SMS a Delivery
+                    </Button>
+                       )}
+                       
                     <Button variant="outlined" color="secondary" onClick={handleCancel}>
                       Atras
                     </Button>
