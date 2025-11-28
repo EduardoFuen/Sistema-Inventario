@@ -115,6 +115,12 @@ const PurchaseList = () => {
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
       },
       {
+        Header: 'MontoBCV',
+        accessor: 'MontoBCV',
+        className: 'cell-center font-size',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="Bs " />
+      },
+      {
         Header: 'Modalidad',
         accessor: 'Ispickup',
         className: 'cell-center font-size',

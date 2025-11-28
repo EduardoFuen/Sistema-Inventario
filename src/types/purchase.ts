@@ -56,6 +56,7 @@ export type Purchase = {
   longitude?: any;
   Montodelivery?: string | number | undefined;
   Ispickup?: string | number | undefined;
+  MontoBCV?: string | number | undefined;
 };
 
 /* A type definition for the state of the component. */
