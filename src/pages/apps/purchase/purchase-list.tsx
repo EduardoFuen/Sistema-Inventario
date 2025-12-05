@@ -121,18 +121,17 @@ const PurchaseList = () => {
         Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="Bs " />
       },
       {
-        Header: 'Modalidad',
-        accessor: 'Ispickup',
+        Header: 'Delivery',
+        accessor: 'deliveryName',
         className: 'cell-center font-size',
         Cell: ({ value }: any) => {
-          switch (value) {
-            case 0:
-              return <Chip color="info" label="Delivery" size="small" variant="light" />;
-            case 1:
-              return <Chip color="info" label="PickUp" size="small" variant="light" />;
-            default:
-              return <Chip color="info" label="No tiene" size="small" variant="light" />;
-          }
+           return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography className="cell-center font-size">{value || 'NO ASIGNADO'}</Typography>
+              </Stack>
+            </Stack>
+          );
         }
       },
       {

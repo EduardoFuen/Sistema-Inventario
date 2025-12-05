@@ -57,6 +57,7 @@ export type Purchase = {
   Montodelivery?: string | number | undefined;
   Ispickup?: string | number | undefined;
   MontoBCV?: string | number | undefined;
+  deliveryName?: string | number | undefined;
 };
 
 /* A type definition for the state of the component. */
