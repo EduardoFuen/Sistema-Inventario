@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, CircularProgress, Box, Button } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 // project import
@@ -37,10 +37,6 @@ const PurchaseList = () => {
     dispatch(getPurchaseList());
     dispatch(getProducts());
   }, [dispatch]);
-
-  const filtrar = () => {
-    history('/filter');
-  };
 
   const handleAddPurchase = () => {
     dispatch(resetItemsPurchase());
@@ -129,7 +125,7 @@ const PurchaseList = () => {
         accessor: 'deliveryName',
         className: 'cell-center font-size',
         Cell: ({ value }: any) => {
-          return (
+           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
                 <Typography className="cell-center font-size">{value || 'NO ASIGNADO'}</Typography>
@@ -177,8 +173,8 @@ const PurchaseList = () => {
                 </IconButton>
               </Tooltip>
               {user?.role == "1" && (
-                <Tooltip title="Delete">
-                  <IconButton
+              <Tooltip title="Delete">
+              <IconButton
                     color="error"
                     onClick={async (e: any) => {
                       e.stopPropagation();
@@ -195,8 +191,8 @@ const PurchaseList = () => {
                       </Box>
                     )}
                   </IconButton>
-                </Tooltip>
-              )}
+              </Tooltip>
+               )}
               {row.original?.ReceptionStatus === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton
@@ -232,16 +228,10 @@ const PurchaseList = () => {
   return (
     <MainCard content={false}>
       <ScrollX>
-        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-          <Button variant="contained" sx={{ marginTop: 2, marginRight: 3 }} onClick={filtrar}>
-            {' '}
-            Filtrar fecha{' '}
-          </Button>
-        </Box>
         <ReactTable
           columns={columns}
           data={list as []}
-          handleImport={() => { }}
+          handleImport={() => {}}
           handleAdd={handleAddPurchase}
           TitleButton="Agregar"
           FileName="Purchase"
@@ -251,9 +241,9 @@ const PurchaseList = () => {
             dispatch(getPurchaseList(page + 1));
           }} */
           getHeaderProps={(column: any) => column.getSortByToggleProps()}
-        /*        isLoading={isLoading}
-        numberPage={page}
-        totalRows={totalPages} */
+          /*        isLoading={isLoading}
+          numberPage={page}
+          totalRows={totalPages} */
         />
       </ScrollX>
     </MainCard>

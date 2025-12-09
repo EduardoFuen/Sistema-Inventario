@@ -25,8 +25,6 @@ const AppStoreExitList = Loadable(lazy(() => import('pages/apps/almacenexit/prod
 
 const AppStoreEntryList = Loadable(lazy(() => import('pages/apps/almacenentry/products-list')));
 
-const AppFilter = Loadable(lazy(() => import('pages/apps/filter/filter')));
-const AppFilterList = Loadable(lazy(() => import('pages/apps/filter/filterList')));
 
 const AppCambiosList = Loadable(lazy(() => import('pages/apps/cambio/products-list')));
 const AppCambiosEdit = Loadable(lazy(() => import('pages/apps/cambio/editProduct')));
@@ -92,14 +90,6 @@ const MainRoutes = {
             {
               path: 'cambios/edit/:id',
               element: <AppCambiosEdit />
-            },
-            {
-              path: 'filter',
-              element: <AppFilter />
-            },
-            {
-              path: 'filter/list',
-              element: <AppFilterList />
             },
             {
               path: 'reception/view/:id',
