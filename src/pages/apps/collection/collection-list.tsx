@@ -1,0 +1,227 @@
+import { useMemo, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+// material-ui
+import { useTheme } from '@mui/material/styles';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
+// third-party
+import NumberFormat from 'react-number-format';
+// project import
+import IconButton from 'components/@extended/IconButton';
+import MainCard from 'components/MainCard';
+import ScrollX from 'components/ScrollX';
+import ReactTable from 'components/ReactTable';
+//import PDF from 'components/PDF';
+import { newDataExport } from 'utils/CollectionsTransform';
+import { getProducts } from 'store/reducers/product';
+
+//import { useSelector, useDispatch, store } from 'store';
+import { useSelector, useDispatch } from 'store';
+import { deleteCollection, getCollectionList, resetItemsCollection } from 'store/reducers/collections';
+
+// types
+import { Collection } from 'types/collection';
+// assets
+import { DeleteTwoTone, EyeTwoTone } from '@ant-design/icons';
+
+// ==============================|| Collection - LIST VIEW ||============================== //
+
+const CollectionList = () => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const history = useNavigate();
+
+  const { listCollection } = useSelector((state) => state.collection);
+
+  useEffect(() => {
+    dispatch(getCollectionList());
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  const handleAddCollection = () => {
+    dispatch(resetItemsCollection());
+    history(`/collection/add`);
+  };
+
+  const handleViewCollection = (id: number) => {
+    //dispatch(resetItemsCollection());
+    history(`/collection/view/${id}`);
+  };
+
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: () => (
+          <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="center" sx={{ textAlign: 'center', width: 90 }}>
+            #
+          </Stack>
+        ),
+        accessor: 'NumberOrder',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1" className="font-size">
+                  {value || ''}
+                </Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
+        Header: 'Fecha OC',
+        accessor: 'CreatedAt',
+        Cell: ({ value }: any) => {
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography className="cell-center font-size">{value || ''}</Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+      {
+        Header: 'Cliente',
+        accessor: 'BusinessName',
+        Cell: ({ row }: any) => {
+          const { original } = row;
+          console.log('LISTA 101')
+          console.log(original)
+          return (
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Stack spacing={0}>
+                <Typography variant="subtitle1" className="font-size">
+                  {original?.BusinessName || ''}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  {original?.Rif || ''}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  {original?.EmailContact || ''}
+                </Typography>
+              </Stack>
+            </Stack>
+          );
+        }
+      },
+
+      {
+        Header: 'Total',
+        accessor: 'Total',
+        className: 'cell-center font-size',
+        Cell: ({ value }: any) => <NumberFormat value={value} displayType="text" prefix="$" />
+      },
+      {
+        Header: 'Estado',
+        accessor: 'Status',
+        Cell: ({ value }: any) => {
+          switch (value) {
+            case 2:
+              return <Chip color="success" label="Pagado" size="small" variant="light" />;
+            case 1:
+              return <Chip color="info" label="Enviado-Crédito-No Pagado" size="small" variant="light" />;
+            case 0:
+            default:
+              return <Chip color="warning" label="Sin Despachar" size="small" variant="light" />;
+          }
+        }
+      },
+      {
+        Header: 'Acciones',
+        className: 'cell-center font-size',
+        disableSortBy: true,
+        Cell: ({ row }: any) => {
+          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+
+          return (
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
+              <Tooltip title="Ver">
+                <IconButton
+                  color="primary"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    if (row?.original?.sk) handleViewCollection(row?.original?.sk);
+                  }}
+                >
+                  <EyeTwoTone twoToneColor={theme.palette.primary.main} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+              <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deleteCollection(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
+              </Tooltip>
+              {row.original?.ReceptionStatus === 0 && (
+                <Tooltip title="Cancelar">
+                  <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deleteCollection(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Stack>
+          );
+        }
+      }
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [theme]
+  );
+
+  let list: Collection[] = listCollection && listCollection.length > 0 ? listCollection : [];
+
+  return (
+    <MainCard content={false}>
+      <ScrollX>
+        <ReactTable
+          columns={columns}
+          data={list as []}
+          handleImport={() => {}}
+          handleAdd={handleAddCollection}
+          TitleButton="Agregar"
+          FileName="Collection"
+          hideButton={false}
+          dataExport={newDataExport(list) as []}
+          /*     handlePagination={(page: number) => {
+            dispatch(getCollectionList(page + 1));
+          }} */
+          getHeaderProps={(column: any) => column.getSortByToggleProps()}
+          /*        isLoading={isLoading}
+          numberPage={page}
+          totalRows={totalPages} */
+        />
+      </ScrollX>
+    </MainCard>
+  );
+};
+
+export default CollectionList;
