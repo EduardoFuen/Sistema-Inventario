@@ -22,7 +22,7 @@ import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reduc
 // types
 import { FilterPurchase } from 'types/filterPurchase';
 // assets
-import { DeleteTwoTone, EyeTwoTone, CalendarOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EyeTwoTone, CalendarOutlined, HomeOutlined } from '@ant-design/icons';
 import { useFilterContext } from 'contexts/Filter.context';
 import { findTopComprador, findTopVenta } from './filter';
 import useAuth from 'hooks/useAuth';
@@ -74,6 +74,11 @@ const FilterList = () => {
   const filtrar = () => {
     history('/filter');
   };
+
+  const handleGoHome = () => {
+    history('/dashboard');
+  };
+
 
   const columns = useMemo(
     () => [
@@ -309,43 +314,53 @@ const FilterList = () => {
           </Typography>
         </Box>
       )}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 2, marginRight: 3, marginTop: 2, marginBottom: 2 }}>
-        <Autocomplete
-          sx={{ minWidth: 250 }}
-          options={deliveryOptions}
-          value={selectedDelivery}
-          onChange={(event, newValue) => {
-            setSelectedDelivery(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} label="Filtrar por Delivery" placeholder="Seleccione un delivery" />}
-          clearOnEscape
-        />
-
-        <Autocomplete
-          sx={{ minWidth: 280 }}
-          options={statusOptions}
-          getOptionLabel={(option) => option.label}
-          value={statusOptions.find((opt) => opt.value === selectedStatus) || null}
-          onChange={(event, newValue) => {
-            setSelectedStatus(newValue ? newValue.value : null);
-          }}
-          renderInput={(params) => <TextField {...params} label="Filtrar por Estado" placeholder="Seleccione un estado" />}
-          clearOnEscape
-        />
-
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginLeft: 3, marginRight: 3, marginTop: 2, marginBottom: 2 }}>
         <Button
-          variant="outlined"
-          onClick={() => {
-            setSelectedDelivery(null);
-            setSelectedStatus(null);
-          }}
+          variant="contained"
+          color="success"
+          startIcon={<HomeOutlined />}
+          onClick={handleGoHome}
         >
-          Limpiar Filtros
+          Ir a Inicio
         </Button>
 
-        <Button variant="contained" onClick={filtrar}>
-          Cambiar Fecha
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button variant="contained" onClick={filtrar}>
+            Cambiar Fecha
+          </Button>
+          <Autocomplete
+            sx={{ minWidth: 250 }}
+            options={deliveryOptions}
+            value={selectedDelivery}
+            onChange={(event, newValue) => {
+              setSelectedDelivery(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} label="Filtrar por Delivery" placeholder="Seleccione un delivery" />}
+            clearOnEscape
+          />
+
+          <Autocomplete
+            sx={{ minWidth: 280 }}
+            options={statusOptions}
+            getOptionLabel={(option) => option.label}
+            value={statusOptions.find((opt) => opt.value === selectedStatus) || null}
+            onChange={(event, newValue) => {
+              setSelectedStatus(newValue ? newValue.value : null);
+            }}
+            renderInput={(params) => <TextField {...params} label="Filtrar por Estado" placeholder="Seleccione un estado" />}
+            clearOnEscape
+          />
+
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setSelectedDelivery(null);
+              setSelectedStatus(null);
+            }}
+          >
+            Limpiar Filtros
+          </Button>
+        </Box>
       </Box>
       <ScrollX>
         <ReactTable

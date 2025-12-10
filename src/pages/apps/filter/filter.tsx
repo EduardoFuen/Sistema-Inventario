@@ -8,10 +8,32 @@ import React, { useState } from 'react';
 import { FilterPurchase } from 'types/filterPurchase';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'store';
+import { es } from 'date-fns/locale';
 
 
 export const listafiltrada = [];
+
+// Función para parsear fechas en múltiples formatos
 const parseDDMMYYYY = (dateString: string): Date | null => {
+    if (!dateString) return null;
+
+    // Detectar si es formato ISO (YYYY-MM-DD o YYYY-MM-DDTHH:mm:ss)
+    const isISOFormat = /^\d{4}-\d{2}-\d{2}/.test(dateString);
+
+    if (isISOFormat) {
+        // Extraer componentes de la fecha ISO directamente
+        const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (match) {
+            const year = parseInt(match[1], 10);
+            const month = parseInt(match[2], 10);
+            const day = parseInt(match[3], 10);
+
+            // Crear fecha normalizada a medianoche UTC
+            return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+        }
+    }
+
+    // Intentar parsear como DD/MM/YYYY o DD-MM-YYYY
     const parts = dateString.split(/[\/-]/);
 
     if (parts.length !== 3) {
@@ -26,8 +48,10 @@ const parseDDMMYYYY = (dateString: string): Date | null => {
         return null;
     }
 
-    const dateObject = new Date(Date.UTC(year, month - 1, day));
+    // Crear fecha normalizada a medianoche UTC
+    const dateObject = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
 
+    // Validar que la fecha sea válida
     if (dateObject.getUTCFullYear() !== year || dateObject.getUTCMonth() !== month - 1 || dateObject.getUTCDate() !== day) {
         return null;
     }
@@ -57,7 +81,6 @@ export const filterByRange = (data: FilterPurchase[], property: keyof FilterPurc
         return numericValue >= range.min && numericValue <= range.max;
     });
 };
-//funcion para filtrar por rango de fechas
 export function Filter() {
     const { listPurchase } = useSelector((state) => state.purchase);
     const history = useNavigate();
@@ -80,9 +103,9 @@ export function Filter() {
         const fromDate = dataForm.dateFrom;
         const toDate = dataForm.dateTo;
 
-        const min = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()).getTime();
-
-        const max = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 23, 59, 59, 999).getTime();
+        // Normalizar las fechas a medianoche UTC para comparación precisa
+        const min = new Date(Date.UTC(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0, 0)).getTime();
+        const max = new Date(Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 23, 59, 59, 999)).getTime();
 
         const filteredData = filterByRange(listPurchase, 'CreatedAt', { min, max });
         setLista(filteredData);
@@ -94,7 +117,7 @@ export function Filter() {
         history('/filter/list');
     };
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
             <Grid container spacing={3}>
                 <Grid item xs={8}>
                     <DatePicker
@@ -104,7 +127,13 @@ export function Filter() {
                         onChange={(newValue: Date | null) => {
                             setDataForm({ ...dataForm, dateFrom: newValue });
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        inputFormat="dd/MM/yyyy"
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="DD/MM/AAAA"
+                            />
+                        )}
                     />
                 </Grid>
                 <Grid item xs={8}>
@@ -116,7 +145,13 @@ export function Filter() {
                         onChange={(newValue: Date | null) => {
                             setDataForm({ ...dataForm, dateTo: newValue });
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        inputFormat="dd/MM/yyyy"
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="DD/MM/AAAA"
+                            />
+                        )}
                     />
                 </Grid>
                 <Grid item xs={8}>
