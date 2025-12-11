@@ -1,11 +1,11 @@
 // assets
-import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined } from '@ant-design/icons';
+import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, ShoppingCartOutlined, DollarOutlined, CarOutlined, WarningOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined };
+const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, ShoppingCartOutlined, DollarOutlined, CarOutlined, WarningOutlined };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -20,26 +20,26 @@ const applications3: NavItemType = {
       url: '/product-list',
       icon: icons.DiffOutlined
     },
-         {
-          id: 'storeentry',
-          title: 'Entrada a Almacen',
-          type: 'item',
-          mainTitle: 'Almacen',
-          hide: true,
-               mainUrl: '/store-list',
-          url: '/store-list/entry',
-          icon: icons.DiffOutlined
-        },
-         {
-                          id: 'storeexit',
-                          title: 'Salida de Almacen',
-                          type: 'item',
-                          mainTitle: 'Almacen',
-                          hide: true,
-                               mainUrl: '/store-list',
-                          url: '/store-list/exit',
-                          icon: icons.DiffOutlined
-                        },
+    {
+      id: 'storeentry',
+      title: 'Entrada a Almacen',
+      type: 'item',
+      mainTitle: 'Almacen',
+      hide: true,
+      mainUrl: '/store-list',
+      url: '/store-list/entry',
+      icon: icons.DiffOutlined
+    },
+    {
+      id: 'storeexit',
+      title: 'Salida de Almacen',
+      type: 'item',
+      mainTitle: 'Almacen',
+      hide: true,
+      mainUrl: '/store-list',
+      url: '/store-list/exit',
+      icon: icons.DiffOutlined
+    },
     {
       id: 'AddProduct',
       type: 'item',
@@ -62,7 +62,7 @@ const applications3: NavItemType = {
       id: 'supplier',
       title: 'Registro clientes',
       type: 'item',
-            hide: true,
+      hide: true,
       url: '/supplier',
       icon: icons.TeamOutlined
     },
@@ -79,7 +79,7 @@ const applications3: NavItemType = {
       id: 'compras',
       title: 'Ventas',
       type: 'item',
-            hide: true,
+      hide: true,
       url: '/purchase',
       icon: icons.ReconciliationOutlined
     },
@@ -100,31 +100,31 @@ const applications3: NavItemType = {
       hide: true,
       url: '/reception'
     },
-     {
-          id: 'collections',
-          title: 'Cobranzas',
-          type: 'item',
-          url: '/collection',
-          icon: icons.ReconciliationOutlined
-        },
-        {
-          id: 'addCollection',
-          type: 'item',
-          title: 'Generar nueva orden de Cobranzas',
-          url: '/collection/add',
-          hide: true,
-          mainTitle: 'Cobranzas',
-          mainUrl: '/collection'
-        },
-         {
-          id: 'viewCollection',
-          type: 'item',
-          title: 'Cobranza',
-          url: '/collection/view',
-          hide: true,
-          mainTitle: 'Cobranzas',
-          mainUrl: '/collection'
-        },
+    {
+      id: 'collections',
+      title: 'Cobranzas',
+      type: 'item',
+      url: '/collection',
+      icon: icons.ReconciliationOutlined
+    },
+    {
+      id: 'addCollection',
+      type: 'item',
+      title: 'Generar nueva orden de Cobranzas',
+      url: '/collection/add',
+      hide: true,
+      mainTitle: 'Cobranzas',
+      mainUrl: '/collection'
+    },
+    {
+      id: 'viewCollection',
+      type: 'item',
+      title: 'Cobranza',
+      url: '/collection/view',
+      hide: true,
+      mainTitle: 'Cobranzas',
+      mainUrl: '/collection'
+    },
     {
       id: 'inventario',
       title: 'Inventario',
@@ -182,15 +182,16 @@ const applications3: NavItemType = {
       mainTitle: 'Recepción',
       mainUrl: '/reception'
     },
-     {
+    {
       id: 'edit',
       type: 'item',
       title: 'Precio Dolar',
       url: '/cambios',
       param: true,
+      icon: icons.DollarOutlined,
       mainTitle: 'Precio Dolar'
     },
-     {
+    {
       id: 'edit',
       type: 'item',
       title: 'Tasa de Cambio',
