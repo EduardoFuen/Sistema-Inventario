@@ -35,10 +35,12 @@ const Locales = ({ children }: Props) => {
 
   return (
     <>
-      {messages && (
+       {messages ? (
         <IntlProvider locale={i18n} defaultLocale="en" messages={messages}>
           {children}
         </IntlProvider>
+      ) : (
+        children
       )}
     </>
   );
