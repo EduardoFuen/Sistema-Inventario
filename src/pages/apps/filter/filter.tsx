@@ -9,6 +9,7 @@ import { FilterPurchase } from 'types/filterPurchase';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'store';
 import { es } from 'date-fns/locale';
+import { HomeOutlined } from '@ant-design/icons';
 
 
 export const listafiltrada = [];
@@ -159,7 +160,18 @@ export function Filter() {
                         Filtrar
                     </Button>
                 </Grid>
+                <Grid item xs={8}>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        startIcon={<HomeOutlined />}
+                        onClick={() => history('/dashboard')}
+                    >
+                        Ir a Inicio
+                    </Button>
+                </Grid>
             </Grid>
+
         </LocalizationProvider>
     );
 }

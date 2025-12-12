@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, CircularProgress, Box, Button, Autocomplete, TextField } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box, Button, Autocomplete, TextField, Grid, Card, CardContent, Divider } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 import { format } from 'date-fns';
@@ -22,7 +22,7 @@ import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reduc
 // types
 import { FilterPurchase } from 'types/filterPurchase';
 // assets
-import { DeleteTwoTone, EyeTwoTone, CalendarOutlined, HomeOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, EyeTwoTone, CalendarOutlined } from '@ant-design/icons';
 import { useFilterContext } from 'contexts/Filter.context';
 import { findTopComprador, findTopVenta } from './filter';
 import useAuth from 'hooks/useAuth';
@@ -38,23 +38,12 @@ const FilterList = () => {
 
   const context = useFilterContext();
   const { lista, dateFrom, dateTo } = context;
-  console.log('Lista completa:', lista);
-  console.log('Primer elemento de la lista:', lista[0]);
-  console.log('Fecha desde:', dateFrom);
-  console.log('Fecha hasta:', dateTo);
+
 
   // Estados para los filtros
   const [selectedDelivery, setSelectedDelivery] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
 
-  const topComprador = findTopComprador(lista);
-  console.log('Top Comprador:', topComprador);
-
-  const topVenta = findTopVenta(lista);
-  console.log('Top Venta completo:', topVenta);
-  console.log('Top Venta Total:', topVenta?.Total);
-  console.log('Top Venta BusinessName:', topVenta?.BusinessName);
-  console.log('Top Venta Supplier:', topVenta?.Supplier);
 
   useEffect(() => {
     dispatch(getPurchaseList());
@@ -75,9 +64,7 @@ const FilterList = () => {
     history('/filter');
   };
 
-  const handleGoHome = () => {
-    history('/dashboard');
-  };
+
 
 
   const columns = useMemo(
@@ -287,81 +274,251 @@ const FilterList = () => {
     return filteredList;
   }, [lista, selectedDelivery, selectedStatus]);
 
+  // Calcular estadísticas basadas en la lista filtrada
+  const topComprador = useMemo(() => findTopComprador(list), [list]);
+  const topVenta = useMemo(() => findTopVenta(list), [list]);
+
+  // Calcular suma total de las ventas filtradas
+  const totalVentas = useMemo(() => {
+    return list.reduce((sum, item) => sum + (Number(item.Total) || 0), 0);
+  }, [list]);
+
   return (
     <MainCard content={false}>
-
-
+      {/* Header con rango de fechas */}
       {dateFrom && dateTo && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginLeft: 2, marginBottom: 1 }}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <CalendarOutlined style={{ fontSize: '20px', color: '#1890ff' }} />
-            <Typography variant="h6" component="h2" color="text.secondary">
+        <Box sx={{ p: 3, pb: 0 }}>
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <CalendarOutlined style={{ fontSize: '24px', color: theme.palette.primary.main }} />
+            <Typography variant="h5" color="text.primary">
               Rango de fechas:
             </Typography>
-            <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
+            <Typography variant="h5" color="primary" sx={{ fontWeight: 600 }}>
               {format(dateFrom, 'dd/MM/yyyy')} - {format(dateTo, 'dd/MM/yyyy')}
             </Typography>
           </Stack>
         </Box>
       )}
+
+      {/* Sección de estadísticas con Grid */}
+      <Box sx={{ p: 3 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{
+                height: '100%',
+                background: `linear-gradient(135deg, ${theme.palette.primary.lighter} 0%, ${theme.palette.primary.light} 100%)`,
+                border: `1px solid ${theme.palette.primary.light}`,
+                boxShadow: theme.shadows[2],
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: theme.shadows[4]
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                <Typography
+                  variant="overline"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: 1.2,
+                    display: 'block',
+                    mb: 1.5
+                  }}
+                >
+                  Comprador Más Frecuente
+                </Typography>
+                <Typography
+                  variant="h4"
+                  color="primary.dark"
+                  sx={{
+                    fontWeight: 700,
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {topComprador || 'N/A'}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{
+                height: '100%',
+                background: `linear-gradient(135deg, ${theme.palette.success.lighter} 0%, ${theme.palette.success.light} 100%)`,
+                border: `1px solid ${theme.palette.success.light}`,
+                boxShadow: theme.shadows[2],
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: theme.shadows[4]
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                <Typography
+                  variant="overline"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: 1.2,
+                    display: 'block',
+                    mb: 1.5
+                  }}
+                >
+                  Top Venta
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="success.dark"
+                  sx={{
+                    fontWeight: 600,
+                    mb: 0.5,
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {topVenta?.BusinessName || topVenta?.Supplier?.BusinessName || 'N/A'}
+                </Typography>
+                <Typography
+                  variant="h4"
+                  color="success.dark"
+                  sx={{ fontWeight: 700 }}
+                >
+                  <NumberFormat value={topVenta?.Total || 0} displayType="text" prefix="$" thousandSeparator={true} decimalScale={2} fixedDecimalScale />
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={4}>
+            <Card
+              sx={{
+                height: '100%',
+                background: `linear-gradient(135deg, ${theme.palette.warning.lighter} 0%, ${theme.palette.warning.light} 100%)`,
+                border: `1px solid ${theme.palette.warning.light}`,
+                boxShadow: theme.shadows[2],
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: theme.shadows[4]
+                }
+              }}
+            >
+              <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                <Typography
+                  variant="overline"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: 1.2,
+                    display: 'block',
+                    mb: 1.5
+                  }}
+                >
+                  Total Ventas Filtradas
+                </Typography>
+                <Typography
+                  variant="h3"
+                  color="warning.dark"
+                  sx={{ fontWeight: 700 }}
+                >
+                  <NumberFormat value={totalVentas} displayType="text" prefix="$" thousandSeparator={true} decimalScale={2} fixedDecimalScale />
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Divider />
+
+      {/* Contador de registros filtrados */}
       {(selectedDelivery || selectedStatus !== null) && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginLeft: 2, marginTop: 1 }}>
-          <Typography variant="body1" component="h2">
-            Mostrando:
-          </Typography>
-          <Typography variant="body1" color="secondary" sx={{ marginLeft: 1, fontWeight: 'bold' }}>
-            {list.length} de {lista.length} registros
-          </Typography>
+        <Box sx={{ px: 3, pt: 2 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body1" color="text.secondary">
+              Mostrando:
+            </Typography>
+            <Chip
+              label={`${list.length} de ${lista.length} registros`}
+              color="secondary"
+              size="small"
+              variant="outlined"
+            />
+          </Stack>
         </Box>
       )}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginLeft: 3, marginRight: 3, marginTop: 2, marginBottom: 2 }}>
-        <Button
-          variant="contained"
-          color="success"
-          startIcon={<HomeOutlined />}
-          onClick={handleGoHome}
-        >
-          Ir a Inicio
-        </Button>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button variant="contained" onClick={filtrar}>
+      {/* Controles de filtrado */}
+      <Box sx={{ p: 3, pt: 2 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          alignItems={{ xs: 'stretch', sm: 'center' }}
+          justifyContent="flex-end"
+        >
+          <Button
+            variant="contained"
+            onClick={filtrar}
+            sx={{ minWidth: { xs: '100%', sm: 'auto' } }}
+          >
             Cambiar Fecha
           </Button>
+
           <Autocomplete
-            sx={{ minWidth: 250 }}
+            sx={{ minWidth: { xs: '100%', sm: 250 } }}
             options={deliveryOptions}
             value={selectedDelivery}
             onChange={(event, newValue) => {
               setSelectedDelivery(newValue);
             }}
-            renderInput={(params) => <TextField {...params} label="Filtrar por Delivery" placeholder="Seleccione un delivery" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Filtrar por Delivery"
+                placeholder="Seleccione un delivery"
+                size="medium"
+              />
+            )}
             clearOnEscape
           />
 
           <Autocomplete
-            sx={{ minWidth: 280 }}
+            sx={{ minWidth: { xs: '100%', sm: 280 } }}
             options={statusOptions}
             getOptionLabel={(option) => option.label}
             value={statusOptions.find((opt) => opt.value === selectedStatus) || null}
             onChange={(event, newValue) => {
               setSelectedStatus(newValue ? newValue.value : null);
             }}
-            renderInput={(params) => <TextField {...params} label="Filtrar por Estado" placeholder="Seleccione un estado" />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Filtrar por Estado"
+                placeholder="Seleccione un estado"
+                size="medium"
+              />
+            )}
             clearOnEscape
           />
 
           <Button
             variant="outlined"
+            color="secondary"
             onClick={() => {
               setSelectedDelivery(null);
               setSelectedStatus(null);
             }}
+            sx={{ minWidth: { xs: '100%', sm: 'auto' } }}
           >
             Limpiar Filtros
           </Button>
-        </Box>
+        </Stack>
       </Box>
+
       <ScrollX>
         <ReactTable
           columns={columns}
