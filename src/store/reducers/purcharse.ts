@@ -101,8 +101,8 @@ export function getPurchaseList(page: number = 1) {
         //const { Rows, totalRows, totalPages, page }: any = response.data;
 
         if(response.data.length > 0){
-          console.log("compra100")
-          console.log(response.data.length)
+          console.log("compra102")
+          console.log(response.data.length) 
           let rowsNew: any = response.data
           .map((item: any) => ({
             ...item,
@@ -111,14 +111,16 @@ export function getPurchaseList(page: number = 1) {
             CreatedAt: format(new Date(item?.CreatedAt), DATEFORMAT)
           }))
           .sort((a: any, b: any) => a.sk - b.sk);
-
+          console.log(rowsNew)
         if (rowsNew.length > 0) {
           let dataPurchase: any = {
             Rows: rowsNew,
             // totalRows,
             // totalPages,
             page
+            
           };
+          
           dispatch(slice.actions.getPurchaseSuccess(dataPurchase));
           dispatch(slice.actions.hasError(null));
         }
@@ -535,14 +537,14 @@ export function updateSummaryPurchase(discount: number) {
     }
   };
 }
-export function deleteItemsPurchase(id: number) {
+export function deleteItemsPurchase(id: string) {
   return async () => {
     try {
       let {
         purchase: { order, detailsPurchase }
       } = store.getState();
 
-      let items: any = detailsPurchase.filter((item: Article) => item.ID !== id);
+      let items: any = detailsPurchase.filter((item: Article) => item.sk != id);
 
       let summaryOrder = summary(items, parseFloat(order?.Discount));
       let newData: any = {

@@ -86,7 +86,7 @@ const applications3: NavItemType = {
     {
       id: 'addPurchase',
       type: 'item',
-      title: 'Generar nueva orden de Compras',
+      title: 'Compras desde el sistema',
       url: '/purchase/add',
       hide: true,
       mainTitle: 'Compras',
