@@ -143,6 +143,8 @@ const PurchaseList = () => {
         accessor: 'Status',
         Cell: ({ value }: any) => {
           switch (value) {
+            case 5:
+              return <Chip color="info" label="Pagado en Caja" size="small" variant="light" />;
             case 4:
               return <Chip color="warning" label="Pagado - No Aceptado por delivery" size="small" variant="light" />;
             case 2:

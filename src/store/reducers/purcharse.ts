@@ -535,14 +535,14 @@ export function updateSummaryPurchase(discount: number) {
     }
   };
 }
-export function deleteItemsPurchase(id: number) {
+export function deleteItemsPurchase(id: string) {
   return async () => {
     try {
       let {
         purchase: { order, detailsPurchase }
       } = store.getState();
 
-      let items: any = detailsPurchase.filter((item: Article) => item.ID !== id);
+      let items: any = detailsPurchase.filter((item: Article) => item.sk !== id);
 
       let summaryOrder = summary(items, parseFloat(order?.Discount));
       let newData: any = {

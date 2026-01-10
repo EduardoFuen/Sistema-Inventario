@@ -15,6 +15,7 @@ const initialState: DefaultRootStateProps['product'] = {
   products: [],
   product: null,
   page: 0,
+  dolar:null,
   totalRows: 0,
   totalPages: 0,
   isLoading: false
