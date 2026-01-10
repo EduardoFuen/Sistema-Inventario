@@ -39,7 +39,8 @@ const DetailsPurchase2 = ({ product }: any) => {
   useEffect(() => {
     let newData = data?.map((item: Article) => ({
       Count: '',
-      BasePrice: item?.BasePrice || '',
+      BasePrice: item?.Price || '',
+      Price: item?.Price || '',
       Tax: 0,
       DiscountAdditional: '',
       DiscountNegotiated: '',
@@ -47,8 +48,8 @@ const DetailsPurchase2 = ({ product }: any) => {
       SubTotal: '',
       Total: '',
       Name: item?.Name || '',
-      Sku: item?.Sku || '',
-      ProductID: item?.sk || '',
+      Sku: item?.Name || '',
+      ProductID: item?.Name || '',
       ...item
     }));
     setInputList(newData);
@@ -62,6 +63,9 @@ const DetailsPurchase2 = ({ product }: any) => {
     }
     if (name === 'BasePrice') {
       list[index]['BasePrice'] = Number(value);
+    }
+    if (name === 'Price') {
+      list[index]['Price'] = Number(value);
     }
     if (name === 'Sku') {
       list[index]['Sku'] = String(value);

@@ -14,6 +14,7 @@ export type Article = {
   ProductID?: number;
   Count?: number;
   BasePrice?: string;
+  Price?: string | number | undefined;
   Bonus?: number;
   Discount?: number;
   DiscountAdditional?: number;

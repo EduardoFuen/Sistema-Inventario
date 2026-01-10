@@ -257,7 +257,7 @@ function ViewPurchase() {
                     <DetailsPurchase product={detailsPurchase} />
                   )}
 
-                  {(orderPurchase?.Status === 1 || orderPurchase?.Status === 2 || orderPurchase?.Status === 4) &&
+                  {(orderPurchase?.Status === 1 || orderPurchase?.Status === 2 || orderPurchase?.Status === 4  || orderPurchase?.Status === 5) &&
                     orderPurchase?.Articles &&
                     orderPurchase?.Articles?.length > 0 && (
                       <Table sx={{ minWidth: 650 }} size="small">
