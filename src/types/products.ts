@@ -6,13 +6,6 @@ export type Product = {
   Sku?: string;
   sk?: string | undefined;
 };
-
-export type Dolar = {
-  ID?: string | number | undefined;
-  Base?: string;
-  BCV?: string | undefined;
-  sk?: string | undefined;
-};
 export type Maker = {
   ID?: string | number | undefined;
   Name?: string;
@@ -28,7 +21,6 @@ export interface MakerStateProps {
 export interface ProductStateProps {
   products: Product[];
   product: Product | null;
-  dolar: Dolar | null;
   error: object | string | null | any;
   page: number | undefined;
   totalRows?: number | undefined;

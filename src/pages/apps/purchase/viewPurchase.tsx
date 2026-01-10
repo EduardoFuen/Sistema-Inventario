@@ -284,6 +284,10 @@ function ViewPurchase() {
                                 <TableCell align="center">
                                   <NumberFormat value={x.BasePrice} displayType="text" prefix="$" />
                                 </TableCell>
+                            
+                    
+     
+
                                 <TableCell align="center">
                                   <NumberFormat value={x.Total} displayType="text" prefix="$" />
                                 </TableCell>

@@ -32,7 +32,7 @@ const SelectLinePurchase = ({ onCancel }: PropsSelect) => {
 
 
   const handleSelect = (row: any) => {
-    const index = itemsNew.findIndex((item) => item?.sk === row?.original?.sk);
+    const index = itemsNew.findIndex((item) => item?.ID === row?.original?.ID);
     if (index > -1) {
       itemsNew.splice(index, 1);
     }

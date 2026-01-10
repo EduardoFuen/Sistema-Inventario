@@ -13,13 +13,12 @@ import MainCard from 'components/MainCard';
 import summary from 'utils/calculation';
 import Import from './importLinePurchase';
 import SelectLinePurchase from './selectLinePurchase';
-import SummaryTemplate2 from 'components/SummaryTemplate2';
-import DetailsPurchase2 from './detailsProduct2';
+import SummaryTemplate from 'components/SummaryTemplate';
+import DetailsPurchase from './detailsProduct';
 
 import { useSelector, useDispatch } from 'store';
 import { addPurchase, resetItemsPurchase } from 'store/reducers/purcharse';
 import { getProducts } from 'store/reducers/product';
-import { getDolar } from 'store/reducers/store';
 import { getWarehouseList } from 'store/reducers/warehouse';
 import { getSupplierList } from 'store/reducers/supplier';
 
@@ -52,7 +51,6 @@ function AddPurchase() {
     dispatch(getProducts());
     dispatch(getWarehouseList());
     dispatch(getSupplierList());
-     dispatch(getDolar());
   }, [dispatch]);
 
   const handleImport = () => {
@@ -65,9 +63,7 @@ function AddPurchase() {
 
   const { supplierList } = useSelector((state) => state.supplier);
   const { detailsPurchase } = useSelector((state) => state.purchase);
-  const { cambios }= useSelector((state) => state.store);
 
-  console.log(cambios[0])
   useMemo(() => dispatch(resetItemsPurchase()), [dispatch]);
 
   const handleCancel = () => {
@@ -82,12 +78,7 @@ function AddPurchase() {
     () => detailsPurchase && detailsPurchase.length > 0 && summary(detailsPurchase, Number(discount) || 0),
     [detailsPurchase, discount]
   );
-if(data){
-data.dolar = cambios[0].BCV
-data.proviene = "sistema"
-}
 
-console.log(data)
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
@@ -203,7 +194,7 @@ console.log(data)
               </Grid>
               <Grid item xs={12}>
                 {detailsPurchase && detailsPurchase.length > 0 ? (
-                  <DetailsPurchase2 />
+                  <DetailsPurchase />
                 ) : (
                   <MainCard>
                     Detalles Productos
@@ -225,7 +216,7 @@ console.log(data)
                 )}
               </Grid>
               <Grid item xs={12}>
-                {detailsPurchase && detailsPurchase.length > 0 && <SummaryTemplate2 data={data} />}
+                {detailsPurchase && detailsPurchase.length > 0 && <SummaryTemplate data={data} />}
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>

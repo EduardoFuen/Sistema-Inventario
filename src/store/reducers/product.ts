@@ -14,7 +14,6 @@ const initialState: DefaultRootStateProps['product'] = {
   error: null,
   products: [],
   product: null,
-  dolar:null,
   page: 0,
   totalRows: 0,
   totalPages: 0,
