@@ -55,8 +55,8 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build --openssl-legacy-provider start && compress-cra -c /path/to/configfile",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build && compress-cra -c /path/to/configfile",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
+import { Stack, Tooltip, Dialog } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ import Import from './ImportSupplier';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
 import { DefaultSupplier } from 'config';
 import { SupplierExport } from 'utils/SupplierTransform';
+import AlertSupplierDelete from './AlertSupplierDelete';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -31,6 +32,8 @@ const SupplierListPage = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<any>(null);
 
   useEffect(() => {
     dispatch(getSupplierList());
@@ -49,6 +52,13 @@ const SupplierListPage = () => {
 
   const handleImport = () => {
     setActiveImport(!addImport);
+  };
+
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selectedSupplier) {
+      await dispatch(deleteSupplier(selectedSupplier.sk));
+    }
+    setOpenAlert(false);
   };
 
   const columns = useMemo(
@@ -88,10 +98,6 @@ const SupplierListPage = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
-
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       
@@ -112,18 +118,11 @@ const SupplierListPage = () => {
                   color="error"
                   onClick={async (e: any) => {
                     e.stopPropagation();
-                    setIsLoading(true);
-                    await dispatch(deleteSupplier(row?.original?.sk));
-                    setIsLoading(false);
+                    setSelectedSupplier(row?.original);
+                    setOpenAlert(true);
                   }}
                 >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
+                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                 </IconButton>
               </Tooltip>
               )}
@@ -159,6 +158,7 @@ const SupplierListPage = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
+      <AlertSupplierDelete title={selectedSupplier?.BusinessName || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

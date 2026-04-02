@@ -20,7 +20,7 @@ export type Supplier = {
   ID?: string | number | undefined;
   sk?: string | number | undefined;
   NameContact?: string;
-  PhoneContact?: number;
+  PhoneContact?: string | number;
   BusinessName?: string;
   EmailContact?: string;
   Nit?: string;

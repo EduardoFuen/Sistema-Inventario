@@ -25,20 +25,25 @@ import { createSupplier } from 'store/reducers/supplier';
 import { ClientType, ClientContribu, ClientType2 } from 'config';
 
 // types
-import { Supplier } from 'types/supplier';
 
 // ==============================|| ADD SUPPLIER - MAIN ||============================== //
 
 const getInitialValues = () => {
-  const newSubstance: Supplier = {
+  const newSubstance: any = {
     NameContact: '',
     PhoneContact: 0,
     BusinessName: '',
     EmailContact: '',
     Rif: '',
+    rif2: '',
+    rifempresa: '',
     Contribuyente: '',
     Zona: '',
-    ZonaDes: ''
+    ZonaDes: '',
+    PaymenTerm: '',
+    DaysPayment: '',
+    Vendedor: '',
+    VendedorDir: ''
   };
   return newSubstance;
 };
@@ -59,10 +64,32 @@ function AddSupplier() {
   const formik = useFormik({
     initialValues: getInitialValues(),
     validationSchema: SubstSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      console.log('TEST66')
+    onSubmit: async (values: any, { setSubmitting }) => {
       try {
-        await dispatch(createSupplier(values));
+        // Construir payload con todos los campos que el backend requiere
+        const payload = {
+          BusinessName: values.BusinessName || '',
+          NameContact: values.Vendedor || values.NameContact || '',
+          PhoneContact: String(values.PhoneContact || ''),
+          EmailContact: values.EmailContact || '',
+          Nit: values.rifempresa || '',
+          Rif: (values.rif2 || '') + (values.Rif || ''),
+          PaymenTerm: values.PaymenTerm || '',
+          DaysPayment: values.DaysPayment || '',
+          Contribuyente: values.Contribuyente || '',
+          Zona: values.Zona || '',
+          ZonaDes: values.ZonaDes || '',
+          DesT: values.VendedorDir || '',
+          LeadTimeBog: 0,
+          LeadTimeBaq: 0,
+          Discount: 0,
+          Cupo: 0,
+          Status: true,
+        };
+        console.log('Payload enviado:', JSON.stringify(payload, null, 2));
+        await dispatch(createSupplier(payload as any));
+
+
         dispatch(
           openSnackbar({
             open: true,
@@ -74,8 +101,9 @@ function AddSupplier() {
             close: false
           })
         );
-        history(`/supplier`);
         setSubmitting(false);
+        history(`/supplier`);
+
       } catch (error: any) {
         console.error(error);
       }
@@ -116,7 +144,7 @@ function AddSupplier() {
                           );
                         })}
                       </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                      {touched.PaymenTerm && <FormHelperText error>{String(formik.errors.PaymenTerm)} </FormHelperText>}
                     </Grid>
                     <Grid item xs={6}>
                       <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Días de Credito</InputLabel>
@@ -126,7 +154,7 @@ function AddSupplier() {
                         fullWidth
                         {...getFieldProps('DaysPayment')}
                         error={Boolean(touched.DaysPayment && errors.DaysPayment)}
-                        helperText={touched.DaysPayment && errors.DaysPayment}
+                        helperText={touched.DaysPayment && errors.DaysPayment ? String(errors.DaysPayment) : ''}
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -135,7 +163,7 @@ function AddSupplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('BusinessName')}
                         error={Boolean(touched.BusinessName && errors.BusinessName)}
-                        helperText={touched.BusinessName && errors.BusinessName}
+                        helperText={touched.BusinessName && errors.BusinessName ? String(errors.BusinessName) : ''}
                         placeholder="Ingresar Razón Social"
                         fullWidth
                       />
@@ -158,9 +186,9 @@ function AddSupplier() {
                     <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Contribuyente Especial</InputLabel>
                       <Select
                         fullWidth
-                        {...getFieldProps('PaymenTerm')}
+                        {...getFieldProps('Contribuyente')}
                         inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
+                        error={Boolean(touched.Contribuyente && errors.Contribuyente)}
                       >
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Tipo de Contribuyente
@@ -173,7 +201,7 @@ function AddSupplier() {
                           );
                         })}
                       </Select>
-                      {touched.PaymenTerm && <FormHelperText error>{formik.errors.PaymenTerm} </FormHelperText>}
+                      {touched.Contribuyente && <FormHelperText error>{String(formik.errors.Contribuyente)} </FormHelperText>}
                     </Grid>
 
                  
@@ -196,7 +224,7 @@ function AddSupplier() {
                         fullWidth
                         {...getFieldProps('rif2')}
                         inputProps={{ 'aria-label': 'Without label' }}
-                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
+                        error={Boolean(touched.rif2 && errors.rif2)}
                       >
                         <MenuItem value="" sx={{ color: 'text.secondary' }}>
                           Elija una opcion
@@ -225,7 +253,7 @@ function AddSupplier() {
                         sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         {...getFieldProps('PhoneContact')}
                         error={Boolean(touched.PhoneContact && errors.PhoneContact)}
-                        helperText={touched.PhoneContact && errors.PhoneContact}
+                        helperText={touched.PhoneContact && errors.PhoneContact ? String(errors.PhoneContact) : ''}
                         placeholder="Ingresar Teléfono"
                         fullWidth
                       />
@@ -239,7 +267,7 @@ function AddSupplier() {
                         fullWidth
                         {...getFieldProps('EmailContact')}
                         error={Boolean(touched.EmailContact && errors.EmailContact)}
-                        helperText={touched.EmailContact && errors.EmailContact}
+                        helperText={touched.EmailContact && errors.EmailContact ? String(errors.EmailContact) : ''}
                       />
                     </Grid>
                

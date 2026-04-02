@@ -62,8 +62,10 @@ const slice = createSlice({
     // EDIT PRODUCT
     editProductsSuccess(state, action) {
       const { id, data } = action.payload;
-      const index = state.products.findIndex((item) => item.ID === id);
-      state.products[index] = data;
+      const index = state.products.findIndex((item) => (item.ID == id || item.sk == id));
+      if (index !== -1) {
+        state.products[index] = data;
+      }
     },
     // ADD EXCEL PRODUCT
     excelSuccess(state, action) {
@@ -163,7 +165,7 @@ export function addProduct(data: Product) {
 export function editProduct(id: number, data: Product) {
   return async () => {
     try {
-      const response = await axios.put(`${HOST}/product`, { ID: id.toString(), ...data }, { ...HEADER });
+      const response = await axios.put(`${HOST}/product`, { sk: id.toString(), ID: id.toString(), ...data }, { ...HEADER });
       dispatch(
         slice.actions.editProductsSuccess({
           id,

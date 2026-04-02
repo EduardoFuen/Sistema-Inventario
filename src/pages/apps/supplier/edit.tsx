@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -17,38 +17,37 @@ import {
 
 // third-party
 import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
+import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
 import { useDispatch, useSelector } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
+import { editSupplier, deleteSupplier, getSupplierList } from 'store/reducers/supplier';
 
 
-// types
-import { Supplier } from 'types/supplier';
 
 // ==============================|| EDIT SUPPLIER - MAIN ||============================== //
 
-const getInitialValues = (supplier: FormikValues | Supplier) => {
+const getInitialValues = (supplier: any) => {
   const newSubstance = {
-    NameContact: supplier?.NameContact,
-    PhoneContact: supplier?.PhoneContact,
-    BusinessName: supplier?.BusinessName,
-    EmailContact: supplier?.EmailContact,
-    Nit: supplier?.Nit,
-    LeadTimeBog: supplier?.LeadTimeBog,
-    PaymenTerm: supplier?.PaymenTerm,
-    LeadTimeBaq: supplier?.LeadTimeBaq,
-    Discount: supplier?.Discount,
-    DaysPayment: supplier?.DaysPayment,
-    Cupo: supplier?.Cupo,
-    Status: supplier?.Status,
-    Rif : supplier?.Rif,
-    DesT: supplier?.DesT,
-    Zona: supplier?.Zona,
-    ZonaDes: supplier?.ZonaDes,
+    NameContact: supplier?.NameContact || '',
+    PhoneContact: String(supplier?.PhoneContact || ''),
+    BusinessName: supplier?.BusinessName || '',
+    EmailContact: supplier?.EmailContact || '',
+    Nit: supplier?.Nit || '',
+    LeadTimeBog: supplier?.LeadTimeBog || 0,
+    PaymenTerm: supplier?.PaymenTerm || '',
+    LeadTimeBaq: supplier?.LeadTimeBaq || 0,
+    Discount: supplier?.Discount || 0,
+    DaysPayment: supplier?.DaysPayment || '',
+    Cupo: supplier?.Cupo || 0,
+    Status: supplier?.Status ?? true,
+    Rif: supplier?.Rif || '',
+    DesT: supplier?.DesT || '',
+    Zona: supplier?.Zona || '',
+    ZonaDes: supplier?.ZonaDes || '',
+    Vendedor: supplier?.NameContact || '',
   };
   return newSubstance;
 };
@@ -60,12 +59,19 @@ function UpdateSuplier() {
   const { id } = useParams();
   const { supplierList } = useSelector((state) => state.supplier);
 
-  const supplier = useMemo(() => {
-    if (id) {
-      return supplierList.find((item) => item.sk === String(id));
+  // Cargar la lista si aún no está disponible (acceso directo por URL)
+  useEffect(() => {
+    if (!supplierList || supplierList.length === 0) {
+      dispatch(getSupplierList());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
+
+  const supplier = useMemo(() => {
+    if (id && supplierList) {
+      return supplierList.find((item) => item.sk === String(id) || String(item.ID) === String(id));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, supplierList]);
 
   const handleCancel = () => {
     history(`/supplier`);
@@ -73,16 +79,17 @@ function UpdateSuplier() {
 
   const SubstSchema = Yup.object().shape({
     BusinessName: Yup.string().max(255).required('Razón social es requerido'),
-    PhoneContact: Yup.string().max(255).required('Teléfono es requerido'),
-    DaysPayment: Yup.string().max(255).required('Plazo de pago es requerido')
+    PhoneContact: Yup.string().max(255).nullable(),
+    DaysPayment: Yup.string().max(255).nullable()
   });
 
   const formik = useFormik({
-    initialValues: getInitialValues(supplier!),
+    enableReinitialize: true,
+    initialValues: getInitialValues(supplier || {}),
     validationSchema: SubstSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await dispatch(editSupplier(Number(id), values));
+        await dispatch(editSupplier(id!, values, supplier?.ID));
         dispatch(
           openSnackbar({
             open: true,
@@ -94,8 +101,8 @@ function UpdateSuplier() {
             close: false
           })
         );
-        history(`/supplier`);
         setSubmitting(false);
+        history(`/supplier`);
       } catch (error: any) {
         console.error(error);
       }
@@ -103,7 +110,7 @@ function UpdateSuplier() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-console.log(touched)
+
   return (
     <>
       <MainCard>
