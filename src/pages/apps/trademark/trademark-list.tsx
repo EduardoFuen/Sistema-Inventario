@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Dialog, Stack, Tooltip, Typography, Box, CircularProgress } from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip, Typography } from '@mui/material';
 
 // project import
 import AddTrademark from 'sections/apps/products/trademark/AddTrademark';
@@ -15,6 +15,7 @@ import ReactTable from 'components/ReactTable';
 import { useDispatch, useSelector } from 'store';
 import { getMakerList } from 'store/reducers/maker';
 import { getTrademarkList, deleteTrademark } from 'store/reducers/trademark';
+import AlertDelete from 'components/AlertDelete';
 
 // types
 
@@ -31,6 +32,8 @@ const TradeMarkList = () => {
   const [tradeMark, setTrademark] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   const handleAdd = () => {
     setAdd(!add);
@@ -38,6 +41,13 @@ const TradeMarkList = () => {
   };
   const handleImport = () => {
     setActiveImport(!addImport);
+  };
+
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteTrademark(selected.ID));
+    }
+    setOpenAlert(false);
   };
 
   const { tradeMarkList } = useSelector((state) => state.trademark);
@@ -89,8 +99,6 @@ const TradeMarkList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -106,24 +114,17 @@ const TradeMarkList = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={async (e: any) => {
-                    e.stopPropagation();
-                    setIsLoading(true);
-                    await dispatch(deleteTrademark(row?.original?.ID));
-                    setIsLoading(false);
-                  }}
-                >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
-                </IconButton>
-              </Tooltip>
+                 <IconButton
+                   color="error"
+                   onClick={(e: any) => {
+                     e.stopPropagation();
+                     setSelected(row.original);
+                     setOpenAlert(true);
+                   }}
+                 >
+                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                 </IconButton>
+               </Tooltip>
             </Stack>
           );
         }
@@ -156,6 +157,7 @@ const TradeMarkList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
+      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

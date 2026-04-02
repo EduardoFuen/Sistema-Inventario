@@ -19,7 +19,7 @@ import Import from './ImportSupplier';
 import { getSupplierList, deleteSupplier } from 'store/reducers/supplier';
 import { DefaultSupplier } from 'config';
 import { SupplierExport } from 'utils/SupplierTransform';
-import AlertSupplierDelete from './AlertSupplierDelete';
+import AlertDelete from 'components/AlertDelete';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -158,7 +158,7 @@ const SupplierListPage = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
-      <AlertSupplierDelete title={selectedSupplier?.BusinessName || ''} open={openAlert} handleClose={handleAlertClose} />
+      <AlertDelete title={selectedSupplier?.BusinessName || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

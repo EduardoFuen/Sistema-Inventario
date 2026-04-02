@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
+import { Stack, Tooltip, Dialog } from '@mui/material';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import ScrollX from 'components/ScrollX';
 
 import { getUserList, deleteUser } from 'store/reducers/user';
 import { DefaultSupplier } from 'config';
+import AlertDelete from 'components/AlertDelete';
 // assets
 import { DeleteTwoTone } from '@ant-design/icons';
 
@@ -28,6 +29,8 @@ const SupplierListPage = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   useEffect(() => {
     dispatch(getUserList());
@@ -63,6 +66,13 @@ const SupplierListPage = () => {
     setActiveImport(!addImport);
   };
 
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteUser(selected.sk));
+    }
+    setOpenAlert(false);
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -80,10 +90,6 @@ const SupplierListPage = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
 
@@ -91,20 +97,13 @@ const SupplierListPage = () => {
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={async (e: any) => {
+                  onClick={(e: any) => {
                     e.stopPropagation();
-                    await dispatch(deleteUser(row?.original?.sk));
-                    setIsLoading(true);
-                    setIsLoading(false);
+                    setSelected(row?.original);
+                    setOpenAlert(true);
                   }}
                 >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
+                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                 </IconButton>
               </Tooltip>
             </Stack>
@@ -134,6 +133,7 @@ const SupplierListPage = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport}
       </Dialog>
+      <AlertDelete title={selected?.username || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

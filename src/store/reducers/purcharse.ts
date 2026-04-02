@@ -223,7 +223,7 @@ export function getTotalPurchaseList(page: number = 1) {
     }
   };
 }
-export function addDelivery(data: Purchase) {
+export function addDelivery(data: any) {
   return async () => {
     try {
       dispatch(slice.actions.loading());
@@ -365,7 +365,7 @@ export function handleSMSDelivery(data: Purchase, message: any) {
   };
 }
 
-export function deleteDelivery(id: number) {
+export function deleteDelivery(id: number | string) {
   return async () => {
     try {
       const response = await axios.delete(`${HOST}/purchase/delivery`, { ...HEADER, data: { ID: id } });
@@ -572,6 +572,29 @@ export function resetOrder() {
     try {
       dispatch(slice.actions.resetOrderSuccess());
     } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function editDelivery(id: number | string, data: any) {
+  return async () => {
+    try {
+      const response = await axios.put(`${HOST}/purchase/delivery`, { ID: id, ...data }, { ...HEADER });
+      if (response) {
+        dispatch(getDeliveryList());
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Delivery actualizado satisfactoriamente.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+      }
+    } catch (error: any) {
       dispatch(slice.actions.hasError(error));
     }
   };

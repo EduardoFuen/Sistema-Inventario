@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-
+import { useMemo, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // material-ui
@@ -12,69 +11,71 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-
 } from '@mui/material';
 
 // third-party
 import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider, FormikValues } from 'formik';
+import { useFormik, Form, FormikProvider } from 'formik';
 
 // project import
 import { useDispatch, useSelector } from 'store';
 import MainCard from 'components/MainCard';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { editSupplier, deleteSupplier } from 'store/reducers/supplier';
-
+import { getDeliveryList, editDelivery, deleteDelivery } from 'store/reducers/purcharse';
 
 // types
 
-import { Delivery } from 'types/delivery';
+// ==============================|| EDIT DELIVERY - MAIN ||============================== //
 
-// ==============================|| EDIT SUPPLIER - MAIN ||============================== //
-
-const getInitialValues = (delivery: FormikValues | Delivery) => {
-  const newSubstance = {
-    NameContact: delivery?.NameContact,
-    PhoneContact: delivery?.PhoneContact,
-    vehicle:delivery?.vehicle
+const getInitialValues = (delivery: any) => {
+  const newDelivery = {
+    NameContact: delivery?.NameContact || '',
+    PhoneContact: String(delivery?.PhoneContact || ''),
+    vehicle: delivery?.vehicle || '',
+    Status: delivery?.Status ?? true
   };
-  return newSubstance;
+  return newDelivery;
 };
 
 function UpdateDelivery() {
   const history = useNavigate();
-
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { supplierList } = useSelector((state) => state.supplier);
+  const { deliveryList } = useSelector((state) => state.purchase);
 
-  const supplier = useMemo(() => {
-    if (id) {
-      return supplierList.find((item) => item.sk === String(id));
+  useEffect(() => {
+    if (!deliveryList || deliveryList.length === 0) {
+      dispatch(getDeliveryList());
+    }
+  }, [dispatch]);
+
+  const delivery = useMemo(() => {
+    if (id && deliveryList) {
+      return deliveryList.find((item: any) => item.sk === String(id) || String(item.ID) === String(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, deliveryList]);
 
   const handleCancel = () => {
     history(`/delivery`);
   };
 
-  const SubstSchema = Yup.object().shape({
+  const DeliverySchema = Yup.object().shape({
     NameContact: Yup.string().max(255).required('Nombre de Contacto es requerido'),
     PhoneContact: Yup.string().max(255).required('Teléfono es requerido'),
-    
   });
 
   const formik = useFormik({
-    initialValues: getInitialValues(supplier!),
-    validationSchema: SubstSchema,
+    enableReinitialize: true,
+    initialValues: getInitialValues(delivery || {}),
+    validationSchema: DeliverySchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await dispatch(editSupplier(Number(id), values));
+        await dispatch(editDelivery(Number(id), values));
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Supplier Update successfully.',
+            message: 'Delivery actualizado satisfactoriamente.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -82,8 +83,8 @@ function UpdateDelivery() {
             close: false
           })
         );
-        history(`/supplier`);
         setSubmitting(false);
+        history(`/delivery`);
       } catch (error: any) {
         console.error(error);
       }
@@ -91,7 +92,7 @@ function UpdateDelivery() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
-console.log(touched)
+
   return (
     <>
       <MainCard>
@@ -105,13 +106,10 @@ console.log(touched)
                   </Typography>
                   <Grid container spacing={1} direction="row">
                     <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Nombre y Apellido</InputLabel>
+                      <InputLabel sx={{ mb: 1 }}>Nombre y Apellido</InputLabel>
                       <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         error={Boolean(touched.NameContact && errors.NameContact)}
-                        helperText={
-                          !Boolean(touched.NameContact && errors.NameContact) ? '' : String(touched.NameContact && errors.NameContact)
-                        }
+                        helperText={touched.NameContact && errors.NameContact ? (errors.NameContact as string) : ''}
                         placeholder="Ingresar Nombre y Apellido"
                         fullWidth
                         {...getFieldProps('NameContact')}
@@ -119,39 +117,46 @@ console.log(touched)
                     </Grid>
 
                     <Grid item xs={12}>
-                      <InputLabel sx={{ mb: 1, opacity: 0.5 }}>Numero Telefonico</InputLabel>
+                      <InputLabel sx={{ mb: 1 }}>Numero Telefonico</InputLabel>
                       <TextField
-                        sx={{ '& .MuiOutlinedInput-input': { opacity: 0.5 } }}
                         error={Boolean(touched.PhoneContact && errors.PhoneContact)}
-                        helperText={
-                          !Boolean(touched.PhoneContact && errors.PhoneContact) ? '' : String(touched.PhoneContact && errors.PhoneContact)
-                        }
+                        helperText={touched.PhoneContact && errors.PhoneContact ? (errors.PhoneContact as string) : ''}
                         placeholder="Ingresar Numero Telefonico"
                         fullWidth
-                        {...getFieldProps('NameContact')}
+                        {...getFieldProps('PhoneContact')}
                       />
                     </Grid>
-                 
+
+                    <Grid item xs={12}>
+                      <InputLabel sx={{ mb: 1 }}>Vehículo</InputLabel>
+                      <TextField
+                        placeholder="Ingresar Vehículo"
+                        fullWidth
+                        {...getFieldProps('vehicle')}
+                      />
+                    </Grid>
                   </Grid>
                 </MainCard>
               </Grid>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" sx={{ mt: 6 }}>
                   <FormControlLabel
-                    control={<Switch sx={{ mt: 0 }} defaultChecked={supplier?.Status} value={supplier?.Status} />}
-                    label=""
-                    labelPlacement="top"
+                    control={<Switch sx={{ mt: 0 }} checked={formik.values.Status} />}
+                    label="Estado"
+                    labelPlacement="start"
                     {...getFieldProps('Status')}
                   />
                   <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => {
-                      dispatch(deleteSupplier(Number(id)));
-                      history(`/supplier`);
+                    onClick={async () => {
+                      if (window.confirm('¿Estás seguro de que quieres eliminar este delivery?')) {
+                        await dispatch(deleteDelivery(Number(id)));
+                        history(`/delivery`);
+                      }
                     }}
                   >
-                    Delete
+                    Eliminar
                   </Button>
                   <Button variant="outlined" color="secondary" onClick={handleCancel}>
                     Cancelar

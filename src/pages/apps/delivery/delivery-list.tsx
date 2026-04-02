@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 // material-ui
 
 import { useTheme } from '@mui/material/styles';
-import { Stack, Tooltip, Box, CircularProgress } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -18,9 +18,10 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { DefaultSupplier } from 'config';
 // assets
-import { DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
 
 import { getDeliveryList,deleteDelivery } from 'store/reducers/purcharse';
+import AlertDelete from 'components/AlertDelete';
 
 // ==============================|| SUPPLIER - LIST ||============================== //
 
@@ -30,6 +31,8 @@ const DeliveryListPage = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   useEffect(() => {
     dispatch(getDeliveryList());
@@ -38,9 +41,9 @@ const DeliveryListPage = () => {
 const { deliveryList } = useSelector((state) => state.purchase);
 
 
-  /*const handleEditDelivery = (id: any) => {
+  const handleEditDelivery = (id: any) => {
     history(`/delivery/edit/${id}`);
-  };*/
+  };
 
   const handleAddDelivery = () => {
     history(`/delivery/add`);
@@ -48,6 +51,13 @@ const { deliveryList } = useSelector((state) => state.purchase);
 
   const handleImport = () => {
     setActiveImport(!addImport);
+  };
+
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteDelivery(selected.sk));
+    }
+    setOpenAlert(false);
   };
 
   const columns = useMemo(
@@ -70,32 +80,32 @@ const { deliveryList } = useSelector((state) => state.purchase);
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
-
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-           {user?.role == "1" && (
-              <Tooltip title="Delete">
+              <Tooltip title="Edit">
                 <IconButton
-                  color="error"
-                  onClick={async (e: any) => {
+                  color="primary"
+                  onClick={(e: any) => {
                     e.stopPropagation();
-                    setIsLoading(true);
-                    await dispatch(deleteDelivery(row?.original?.sk));
-                    setIsLoading(false);
+                    handleEditDelivery(row?.original?.sk);
                   }}
                 >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
+                  <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
+           {user?.role == "1" && (
+               <Tooltip title="Delete">
+                 <IconButton
+                   color="error"
+                   onClick={(e: any) => {
+                     e.stopPropagation();
+                     setSelected(row?.original);
+                     setOpenAlert(true);
+                   }}
+                 >
+                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                 </IconButton>
+               </Tooltip>
                )}
             </Stack>
           );
@@ -119,6 +129,7 @@ const { deliveryList } = useSelector((state) => state.purchase);
         />
       </ScrollX>
    
+      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

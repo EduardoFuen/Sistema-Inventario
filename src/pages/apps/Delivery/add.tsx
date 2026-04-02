@@ -105,8 +105,8 @@ function AddDelivery() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('Name')}
-                        error={Boolean(touched.NameContact && errors.NameContact)}
-                        helperText={touched.NameContact && errors.NameContact}
+                        error={Boolean(touched.Name && errors.Name)}
+                        helperText={touched.Name && errors.Name ? (errors.Name as string) : ''}
                         placeholder="Ingresar Nombre y Apellido"
                         fullWidth
                       />
@@ -117,8 +117,8 @@ function AddDelivery() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('phoneContact')}
-                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
-                        helperText={touched.PhoneContact && errors.PhoneContact}
+                        error={Boolean(touched.phoneContact && errors.phoneContact)}
+                        helperText={touched.phoneContact && errors.phoneContact ? (errors.phoneContact as string) : ''}
                         placeholder="Ingresar numero telefonico"
                         fullWidth
                       />
@@ -128,8 +128,8 @@ function AddDelivery() {
                       <TextField
                         sx={{ '& .MuiOutlinedInput-input': { } }}
                         {...getFieldProps('document')}
-                        error={Boolean(touched.PhoneContact && errors.PhoneContact)}
-                        helperText={touched.PhoneContact && errors.PhoneContact}
+                        error={Boolean(touched.document && errors.document)}
+                        helperText={touched.document && errors.document ? (errors.document as string) : ''}
                         placeholder="Ingresar numero telefonico"
                         fullWidth
                       />

@@ -16,8 +16,8 @@ interface Props {
 }
 
 const LogoSection = ({ sx, to }: Props) => (
-  <ButtonBase disableRipple component={Link} to="/" sx={sx}>
-    <img src={Farmu} alt="Farmu" style={{ width: 100 }} />
+  <ButtonBase disableRipple component={Link} to={to || "/"} sx={sx}>
+    <img src={Farmu} alt="Farmu" style={{ width: '100%', maxWidth: 100, height: 'auto' }} />
   </ButtonBase>
 );
 
