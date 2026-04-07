@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Stack, Tooltip, Typography, Dialog, Box, CircularProgress, Button } from '@mui/material';
+import { Stack, Tooltip, Typography, Dialog, Button } from '@mui/material';
 
 // project import
 import ProductView from './viewProduct';
@@ -16,7 +16,7 @@ import Import from './ImportProducts';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/store';
 import { openSnackbar } from 'store/reducers/snackbar';
-
+import AlertDelete from 'components/AlertDelete';
 
 import { ProductDefault } from 'config';
 
@@ -34,6 +34,8 @@ const ProductList = () => {
   const [addImport, setActiveImport] = useState<boolean>(false);
   const [typeSearch, setTypeSearch] = useState<any>('');
   const [valueSearch, setvalueSearch] = useState<any>('');
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   const { stores, error, page, totalPages, isLoading } = useSelector((state) => state.store);
 
@@ -56,6 +58,13 @@ const ProductList = () => {
       );
     }
   }, [error, dispatch]);
+
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteProduct(selected.ID));
+    }
+    setOpenAlert(false);
+  };
 
  const handleCancel = () => {
     history(`/store-list/exit`);
@@ -134,8 +143,6 @@ const ProductList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoading, setIsLoading] = useState<boolean>(false);
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
             
@@ -150,25 +157,18 @@ const ProductList = () => {
                   <PlusCircleOutlined twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={async (e: any) => {
-                    e.stopPropagation();
-                    setIsLoading(true);
-                    await dispatch(deleteProduct(row?.values?.ID));
-                    setIsLoading(false);
-                  }}
-                >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
-                </IconButton>
-              </Tooltip>
+               <Tooltip title="Delete">
+                 <IconButton
+                   color="error"
+                   onClick={(e: any) => {
+                     e.stopPropagation();
+                     setSelected(row?.original);
+                     setOpenAlert(true);
+                   }}
+                 >
+                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                 </IconButton>
+               </Tooltip>
             </Stack>
           );
         }
@@ -230,7 +230,7 @@ const ProductList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
-      
+      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

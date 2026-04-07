@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Dialog, Stack, Tooltip, Box, CircularProgress } from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip } from '@mui/material';
 
 // project import
 import AddWarehouse from 'sections/apps/products/warehouse/AddWarehouse';
@@ -13,6 +13,7 @@ import ScrollX from 'components/ScrollX';
 import ReactTable from 'components/ReactTable';
 import { useDispatch, useSelector } from 'store';
 import { getWarehouseList, deleteWarehouse } from 'store/reducers/warehouse';
+import AlertDelete from 'components/AlertDelete';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -26,6 +27,8 @@ const WarehouseList = () => {
   const [warehouse, setWarehouse] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   const handleImport = () => {
     setActiveImport(!addImport);
@@ -36,9 +39,11 @@ const WarehouseList = () => {
     if (warehouse && !add) setWarehouse(null);
   };
 
-  const deleteHandler = async (setIsLoading: any, id: number) => {
-    await dispatch(deleteWarehouse(id));
-    setIsLoading(false);
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteWarehouse(selected.ID));
+    }
+    setOpenAlert(false);
   };
 
   useEffect(() => {
@@ -88,7 +93,6 @@ const WarehouseList = () => {
         disableSortBy: true,
         Cell: ({ row }: any) => {
           const { original } = row;
-          const [isLoading, setIsLoading] = useState<boolean>(false);
 
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -105,23 +109,17 @@ const WarehouseList = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    setIsLoading(true);
-                    deleteHandler(setIsLoading, original.ID);
-                  }}
-                >
-                  {!isLoading ? (
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                  ) : (
-                    <Box sx={{ display: 'flex' }}>
-                      <CircularProgress color="success" size={20} />
-                    </Box>
-                  )}
-                </IconButton>
-              </Tooltip>
+                 <IconButton
+                   color="error"
+                   onClick={(e: any) => {
+                     e.stopPropagation();
+                     setSelected(original);
+                     setOpenAlert(true);
+                   }}
+                 >
+                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                 </IconButton>
+               </Tooltip>
             </Stack>
           );
         }
@@ -154,6 +152,7 @@ const WarehouseList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
+      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

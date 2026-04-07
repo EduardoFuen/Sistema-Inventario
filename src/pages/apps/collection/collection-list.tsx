@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, CircularProgress, Box } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 // project import
@@ -17,6 +17,7 @@ import { getProducts } from 'store/reducers/product';
 //import { useSelector, useDispatch, store } from 'store';
 import { useSelector, useDispatch } from 'store';
 import { deleteCollection, getCollectionList, resetItemsCollection } from 'store/reducers/collections';
+import AlertDelete from 'components/AlertDelete';
 
 // types
 import { Collection } from 'types/collection';
@@ -29,6 +30,8 @@ const CollectionList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>(null);
 
   const { listCollection } = useSelector((state) => state.collection);
 
@@ -45,6 +48,13 @@ const CollectionList = () => {
   const handleViewCollection = (id: number) => {
     //dispatch(resetItemsCollection());
     history(`/collection/view/${id}`);
+  };
+
+  const handleAlertClose = async (status: boolean) => {
+    if (status && selected) {
+      await dispatch(deleteCollection(Number(selected.sk)));
+    }
+    setOpenAlert(false);
   };
 
 
@@ -133,8 +143,6 @@ const CollectionList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
-          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
-
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Ver">
@@ -151,40 +159,26 @@ const CollectionList = () => {
               <Tooltip title="Delete">
               <IconButton
                     color="error"
-                    onClick={async (e: any) => {
+                    onClick={(e: any) => {
                       e.stopPropagation();
-                      setIsLoadingDelete(true);
-                      await dispatch(deleteCollection(Number(row?.original?.sk)));
-                      setIsLoadingDelete(false);
+                      setSelected(row?.original);
+                      setOpenAlert(true);
                     }}
                   >
-                    {!isLoadingDelete ? (
-                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                    ) : (
-                      <Box sx={{ display: 'flex' }}>
-                        <CircularProgress color="success" size={20} />
-                      </Box>
-                    )}
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                   </IconButton>
               </Tooltip>
               {row.original?.ReceptionStatus === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton
                     color="error"
-                    onClick={async (e: any) => {
+                    onClick={(e: any) => {
                       e.stopPropagation();
-                      setIsLoadingDelete(true);
-                      await dispatch(deleteCollection(Number(row?.original?.sk)));
-                      setIsLoadingDelete(false);
+                      setSelected(row?.original);
+                      setOpenAlert(true);
                     }}
                   >
-                    {!isLoadingDelete ? (
-                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                    ) : (
-                      <Box sx={{ display: 'flex' }}>
-                        <CircularProgress color="success" size={20} />
-                      </Box>
-                    )}
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
                   </IconButton>
                 </Tooltip>
               )}
@@ -220,6 +214,7 @@ const CollectionList = () => {
           totalRows={totalPages} */
         />
       </ScrollX>
+      <AlertDelete title={selected?.BusinessName || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };
