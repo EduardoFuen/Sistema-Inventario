@@ -50,6 +50,7 @@ const DeliveryList = Loadable(lazy(() => import('pages/apps/delivery/delivery-li
 const AppAddDelivery = Loadable(lazy(() => import('pages/apps/Delivery/add')));
 
 const AppEditDelivery = Loadable(lazy(() => import('pages/apps/delivery/edit')));
+const AppEditDelivery = Loadable(lazy(() => import('pages/apps/Delivery/edit')));
 
 const AppProductList = Loadable(lazy(() => import('pages/MainView/mainProduct')));
 const AppAddProduct = Loadable(lazy(() => import('pages/apps/product/addProduct')));
