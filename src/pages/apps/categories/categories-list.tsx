@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Box, Tab, Tabs, Dialog, Typography } from '@mui/material';
+import { Chip, Stack, Tooltip, Box, Tab, Tabs, Dialog, Typography, CircularProgress } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'store';
 import { CATEGORY } from 'config';
 import { getCategoryListOne, getCategoryListTwo, getCategoryListThree, deleteCategory } from 'store/reducers/category';
 import { SearchIDToArray } from 'utils/findName';
-import AlertDelete from 'components/AlertDelete';
 
 // types
 import { CategoryTwo, CategoryThree } from 'types/products';
@@ -54,9 +53,6 @@ const CategoriesList = () => {
   const history = useNavigate();
   const [value, setValue] = useState(0);
   const [addImport, setActiveImport] = useState<boolean>(false);
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
-
   const { categoryListOne, categoryListTwo, categoryListThree } = useSelector((state) => state.category);
 
   useEffect(() => {
@@ -74,25 +70,6 @@ const CategoriesList = () => {
 
   const handleImport = () => {
     setActiveImport(!addImport);
-  };
-
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-        let index: number = 0;
-        switch (value) {
-          case 0:
-            index = CATEGORY.CategoryOne;
-            break;
-          case 1:
-            index = CATEGORY.CategoryTwo;
-            break;
-          case 2:
-            index = CATEGORY.CategoryThree;
-            break;
-        }
-      await dispatch(deleteCategory(selected.ID, index));
-    }
-    setOpenAlert(false);
   };
 
   let Grupo: string = '';
@@ -248,6 +225,8 @@ const CategoriesList = () => {
       className: 'cell-center font-size',
       disableSortBy: true,
       Cell: ({ row }: any) => {
+        const [isLoading, setIsLoading] = useState<boolean>(false);
+
         return (
           <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
             <Tooltip title="Edit">
@@ -276,13 +255,32 @@ const CategoriesList = () => {
             <Tooltip title="Delete">
               <IconButton
                 color="error"
-                onClick={(e: any) => {
+                onClick={async (e: any) => {
                   e.stopPropagation();
-                  setSelected(row.original);
-                  setOpenAlert(true);
+                  setIsLoading(true);
+                  let index: number = 0;
+                  switch (value) {
+                    case 0:
+                      index = CATEGORY.CategoryOne;
+                      break;
+                    case 1:
+                      index = CATEGORY.CategoryTwo;
+                      break;
+                    case 2:
+                      index = CATEGORY.CategoryThree;
+                      break;
+                  }
+                  await dispatch(deleteCategory(row.original?.ID, index));
+                  setIsLoading(false);
                 }}
               >
-                <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                {!isLoading ? (
+                  <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                ) : (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress color="success" size={20} />
+                  </Box>
+                )}
               </IconButton>
             </Tooltip>
           </Stack>
@@ -342,7 +340,6 @@ const CategoriesList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} value={value} />}
       </Dialog>
-      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

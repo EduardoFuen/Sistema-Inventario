@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, Box, Button, Autocomplete, TextField } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box, Button, Autocomplete, TextField } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 import { format } from 'date-fns';
@@ -26,7 +26,6 @@ import { DeleteTwoTone, EyeTwoTone, CalendarOutlined, HomeOutlined } from '@ant-
 import { useFilterContext } from 'contexts/FilterContext';
 import { findTopComprador, findTopVenta } from './filter';
 import useAuth from 'hooks/useAuth';
-import AlertDelete from 'components/AlertDelete';
 
 
 // ==============================|| RECEPTION - LIST VIEW ||============================== //
@@ -36,8 +35,6 @@ const FilterList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const { user } = useAuth();
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
 
   const context = useFilterContext();
   const { lista, dateFrom, dateTo } = context;
@@ -80,14 +77,6 @@ const FilterList = () => {
 const handleGoHome = () => {
     history('/dashboard');
   };
-
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-      await dispatch(deletePurchase(Number(selected.sk)));
-    }
-    setOpenAlert(false);
-  };
-
   const columns = useMemo(
     () => [
       {
@@ -196,6 +185,8 @@ const handleGoHome = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Ver">
@@ -213,13 +204,20 @@ const handleGoHome = () => {
                 <Tooltip title="Delete">
                   <IconButton
                     color="error"
-                    onClick={(e: any) => {
+                    onClick={async (e: any) => {
                       e.stopPropagation();
-                      setSelected(row.original);
-                      setOpenAlert(true);
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
                     }}
                   >
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
                   </IconButton>
                 </Tooltip>
               )}
@@ -227,13 +225,20 @@ const handleGoHome = () => {
                 <Tooltip title="Cancelar">
                   <IconButton
                     color="error"
-                    onClick={(e: any) => {
+                    onClick={async (e: any) => {
                       e.stopPropagation();
-                      setSelected(row.original);
-                      setOpenAlert(true);
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
                     }}
                   >
-                     <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
                   </IconButton>
                 </Tooltip>
               )}
@@ -374,7 +379,6 @@ const handleGoHome = () => {
         totalRows={totalPages} */
         />
       </ScrollX>
-      <AlertDelete title={selected?.sk || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

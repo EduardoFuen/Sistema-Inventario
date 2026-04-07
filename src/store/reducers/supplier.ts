@@ -36,10 +36,8 @@ const slice = createSlice({
     },
     // UPDATE SUPPLIER
     updateSupplierSuccess(state, action) {
-      const index = state.supplierList.findIndex((item) => (item.ID === action.payload?.ID) || (item.sk === action.payload?.sk));
-      if (index !== -1) {
-        state.supplierList[index] = action.payload;
-      }
+      const index = state.supplierList.findIndex((item) => item.ID === action.payload?.ID);
+      state.supplierList[index] = action.payload;
     },
     //ADD EXCEL SUPPLIER
     excelSuccess(state, action) {
@@ -74,52 +72,18 @@ export function createSupplier(data: Supplier) {
       const response = await axios.post(`${HOST}/supplier`, { ...data }, { ...HEADER });
       dispatch(slice.actions.addSupplierSuccess(response.data));
     } catch (error: any) {
-      // Log detallado para diagnóstico
-        console.error('Error al crear proveedor:', error?.response?.data || error?.message);
-      console.error('Status:', error?.response?.status);
-      console.error('Detalle:', JSON.stringify(error?.response?.data, null, 2));
-      dispatch(slice.actions.hasError(error?.response?.data?.message || error?.message));
+      dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function editSupplier(sk: string | number, data: any, originalId?: string | number) {
+export function editSupplier(id: number, data: Supplier) {
   return async () => {
     try {
-    const numericId = originalId !== undefined ? Number(originalId) : Number(sk);
-
-      const payload = {
-        sk: String(sk),
-        ID: numericId,
-        BusinessName: data.BusinessName || '',
-        NameContact: data.Vendedor || data.NameContact || '',
-        PhoneContact: String(data.PhoneContact || ''),
-        EmailContact: data.EmailContact || '',
-        Nit: data.Nit || '',
-        Rif: data.Rif || '',
-        PaymenTerm: data.PaymenTerm || '',
-        DaysPayment: data.DaysPayment || '',
-        Contribuyente: data.Contribuyente || '',
-        Zona: data.Zona || '',
-        ZonaDes: data.ZonaDes || '',
-        DesT: data.DesT || '',
-        LeadTimeBog: Number(data.LeadTimeBog) || 0,
-        LeadTimeBaq: Number(data.LeadTimeBaq) || 0,
-        Discount: Number(data.Discount) || 0,
-        Cupo: Number(data.Cupo) || 0,
-        Status: Boolean(data.Status),
-      };
-
-      console.log('Edit payload (PUT):', JSON.stringify(payload, null, 2));
-      const response = await axios.put(`${HOST}/supplier`, payload, { ...HEADER });
-      console.log('Edit response:', JSON.stringify(response.data, null, 2));
-      
-      dispatch(getSupplierList());
+      const response = await axios.put(`${HOST}/supplier`, { ID: id, ...data }, { ...HEADER });
+      dispatch(slice.actions.updateSupplierSuccess(response.data));
     } catch (error: any) {
-       console.error('Error al editar proveedor:', error?.response?.data || error?.message);
-      console.error('Status:', error?.response?.status);
-      console.error('Detalle:', JSON.stringify(error?.response?.data, null, 2));
-      dispatch(slice.actions.hasError(error?.response?.data?.message || error?.message));
+      dispatch(slice.actions.hasError(error));
     }
   };
 }

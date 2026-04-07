@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Dialog } from '@mui/material';
+import { Chip, Stack, Tooltip, Dialog, Box, CircularProgress } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -13,7 +13,6 @@ import AddActiveSustances from 'sections/apps/products/activeSubstances/AddActiv
 import Import from 'sections/apps/products/activeSubstances/ImportActiveSubstances';
 import { useDispatch, useSelector } from 'store';
 import { getSubsList, deleteSubs } from 'store/reducers/activeSubst';
-import AlertDelete from 'components/AlertDelete';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
@@ -29,8 +28,6 @@ const ActiveSubstancesList = () => {
   const [subst, setSubst] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
 
   const handleAdd = () => {
     setAdd(!add);
@@ -39,13 +36,6 @@ const ActiveSubstancesList = () => {
 
   const handleImport = () => {
     setActiveImport(!addImport);
-  };
-
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-      await dispatch(deleteSubs(selected.ID));
-    }
-    setOpenAlert(false);
   };
 
   const { todoListSubs } = useSelector((state) => state.substances);
@@ -92,6 +82,8 @@ const ActiveSubstancesList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -107,17 +99,24 @@ const ActiveSubstancesList = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                 <IconButton
-                   color="error"
-                   onClick={(e: any) => {
-                     e.stopPropagation();
-                     setSelected(row.original);
-                     setOpenAlert(true);
-                   }}
-                 >
-                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                 </IconButton>
-               </Tooltip>
+                <IconButton
+                  color="error"
+                  onClick={async (e: any) => {
+                    e.stopPropagation();
+                    setIsLoading(true);
+                    await dispatch(deleteSubs(row.original?.ID));
+                    setIsLoading(false);
+                  }}
+                >
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
+                </IconButton>
+              </Tooltip>
             </Stack>
           );
         }
@@ -149,7 +148,6 @@ const ActiveSubstancesList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <Import onCancel={handleImport} />}
       </Dialog>
-      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

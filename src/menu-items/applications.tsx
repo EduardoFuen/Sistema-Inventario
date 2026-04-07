@@ -1,11 +1,11 @@
 // assets
-import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, DollarOutlined } from '@ant-design/icons';
+import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, DollarOutlined };
+const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -204,8 +204,7 @@ const applications: NavItemType = {
       title: 'Precio Dolar',
       url: '/cambios',
       param: true,
-      mainTitle: 'Precio Dolar',
-      icon: icons.DollarOutlined
+      mainTitle: 'Precio Dolar'
     },
      {
       id: 'edit',

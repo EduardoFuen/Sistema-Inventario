@@ -39,15 +39,15 @@ const DetailsPurchase = ({ product }: any) => {
   useEffect(() => {
     let newData = data?.map((item: Article) => ({
       Count: '',
-      BasePrice: item?.BasePrice || '',
+      BasePrice: '',
       Tax: 0,
       DiscountAdditional: '',
       DiscountNegotiated: '',
       Bonus: '',
       SubTotal: '',
       Total: '',
-      Name: item?.Name || '',
-      Sku: item?.Sku || '',
+      Name: '',
+      Sku: '',
       ProductID: item?.sk || '',
       ...item
     }));
@@ -113,8 +113,8 @@ const DetailsPurchase = ({ product }: any) => {
                     type="number"
                     placeholder="Ingresar Cantidad"
                     fullWidth
-                    disabled
                     name="Count"
+                    disabled
                     value={x.Count}
                     onChange={(e) => handleInputChange(e, i)}
                   />
@@ -122,8 +122,9 @@ const DetailsPurchase = ({ product }: any) => {
                 <TableCell align="center">
                   <TextField
                     sx={{ '& .MuiOutlinedInput-input': {  } }}
-                    type="text"
-                    placeholder="Precio Base"
+                    type="number"
+                    InputProps={{ inputProps: { min: 0 } }}
+                    placeholder="Ingresar Precio Base"
                     fullWidth
                      disabled
                     name="Price"
@@ -159,7 +160,7 @@ const DetailsPurchase = ({ product }: any) => {
                             close: false
                           })
                         );
-                        dispatch(deleteItemsPurchase(x.sk));
+                        dispatch(deleteItemsPurchase(x.ID));
                       }}
                     >
                       <DeleteTwoTone twoToneColor={theme.palette.error.main} />

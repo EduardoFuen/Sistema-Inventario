@@ -1,11 +1,11 @@
 // assets
-import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, UserOutlined, DollarOutlined, CarOutlined } from '@ant-design/icons';
+import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, UserOutlined, DollarOutlined, CarOutlined };
+const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -209,8 +209,7 @@ const applications4: NavItemType = {
       param: true,
                 hide: true,
       mainTitle: 'Registro Usuario',
-      mainUrl: '/user',
-      icon: icons.UserOutlined
+      mainUrl: '/user'
     },
       {
           id: 'recepcion',
@@ -226,8 +225,7 @@ const applications4: NavItemType = {
       title: 'Precio Dolar',
       url: '/cambios',
       param: true,
-      mainTitle: 'Precio Dolar',
-      icon: icons.DollarOutlined
+      mainTitle: 'Precio Dolar'
     },
      {
       id: 'edit',
@@ -245,8 +243,7 @@ const applications4: NavItemType = {
       title: 'Delivery',
       url: '/delivery',
       param: true,
-      mainTitle: 'Delivery',
-      icon: icons.CarOutlined
+      mainTitle: 'Delivery'
     },
      {
       id: 'edit',

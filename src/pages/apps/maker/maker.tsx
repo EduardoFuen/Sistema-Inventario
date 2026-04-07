@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Dialog, Stack, Tooltip } from '@mui/material';
+import { Chip, Dialog, Stack, Tooltip, Box, CircularProgress } from '@mui/material';
 
 // project import
 import AddMaker from 'sections/apps/products/maker/AddMaker';
@@ -9,14 +9,14 @@ import ImportMarker from 'sections/apps/products/maker/ImportMarker';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import ReactTable from 'components/ReactTable';
 
-import { useDispatch, useSelector } from 'store';
+import { useDispatch } from 'store';
 import { getMakerList, deleteMaker } from 'store/reducers/maker';
-import AlertDelete from 'components/AlertDelete';
 
 // assets
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+// types
+
 
 // ==============================|| MAKER - MAKER LIST ||============================== //
 
@@ -27,10 +27,8 @@ const MakersList = () => {
   const [maker, setWarehouse] = useState<any>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [addImport, setActiveImport] = useState<boolean>(false);
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
 
-  const { providerList } = useSelector((state) => state.maker);
+
 
   useEffect(() => {
     dispatch(getMakerList());
@@ -45,12 +43,6 @@ const MakersList = () => {
     setActiveImport(!addImport);
   };
 
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-      await dispatch(deleteMaker(selected.ID));
-    }
-    setOpenAlert(false);
-  };
 
   const columns = useMemo(
     () => [
@@ -60,7 +52,7 @@ const MakersList = () => {
         className: 'cell-center font-size'
       },
       {
-        Header: 'Laboratorio',
+        Header: 'Maker',
         accessor: 'Name',
         className: 'cell-center font-size'
       },
@@ -83,6 +75,8 @@ const MakersList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Edit">
@@ -98,17 +92,24 @@ const MakersList = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete">
-                 <IconButton
-                   color="error"
-                   onClick={(e: any) => {
-                     e.stopPropagation();
-                     setSelected(row.original);
-                     setOpenAlert(true);
-                   }}
-                 >
-                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                 </IconButton>
-               </Tooltip>
+                <IconButton
+                  color="error"
+                  onClick={async (e: any) => {
+                    e.stopPropagation();
+                    setIsLoading(true);
+                    await dispatch(deleteMaker(row?.original?.ID));
+                    setIsLoading(false);
+                  }}
+                >
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
+                </IconButton>
+              </Tooltip>
             </Stack>
           );
         }
@@ -117,20 +118,10 @@ const MakersList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-
+console.log(columns)
   return (
     <MainCard content={false}>
       <ScrollX>
-        <ReactTable
-          columns={columns}
-          handleAdd={handleAdd}
-          handleImport={handleImport}
-          data={providerList as []}
-          dataExport={providerList as []}
-          TitleButton="Agregar Laboratorio"
-          FileName="Laboratorios"
-          getHeaderProps={(column: any) => column.getSortByToggleProps()}
-        />
       </ScrollX>
       {/* add Maker Dialog */}
       <Dialog maxWidth="sm" fullWidth onClose={handleAdd} open={add} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
@@ -140,7 +131,6 @@ const MakersList = () => {
       <Dialog maxWidth="sm" fullWidth onClose={handleImport} open={addImport} sx={{ '& .MuiDialog-paper': { p: 0 } }}>
         {addImport && <ImportMarker onCancel={handleImport} />}
       </Dialog>
-      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

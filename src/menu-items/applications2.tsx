@@ -1,11 +1,11 @@
 // assets
-import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, UserOutlined, DollarOutlined, CarOutlined, AlertOutlined } from '@ant-design/icons';
+import { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined, UserOutlined, DollarOutlined, CarOutlined, AlertOutlined };
+const icons = { TeamOutlined, ReconciliationOutlined, DiffOutlined, HddOutlined, ApartmentOutlined };
 
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -220,8 +220,7 @@ const applications2: NavItemType = {
       url: '/user',
       param: true,
       mainTitle: 'Registro Usuario',
-      mainUrl: '/user',
-      icon: icons.UserOutlined
+      mainUrl: '/user'
     },
     {
       id: 'edit4',
@@ -229,8 +228,7 @@ const applications2: NavItemType = {
       title: 'Precio Dolar',
       url: '/cambios',
       param: true,
-      mainTitle: 'Precio Dolar',
-      icon: icons.DollarOutlined
+      mainTitle: 'Precio Dolar'
     },
      {
       id: 'edit',
@@ -248,8 +246,7 @@ const applications2: NavItemType = {
       title: 'Delivery',
       url: '/delivery',
       param: true,
-      mainTitle: 'Delivery',
-      icon: icons.CarOutlined
+      mainTitle: 'Delivery'
     },
     {
       id: 'edit2',
@@ -257,8 +254,7 @@ const applications2: NavItemType = {
       title: 'Emergencia',
       url: '/emergency',
       param: true,
-      mainTitle: 'Emergencia',
-      icon: icons.AlertOutlined
+      mainTitle: 'Emergencia'
     },
      {
       id: 'edit',

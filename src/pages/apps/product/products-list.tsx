@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {Stack, Tooltip } from '@mui/material';
+import {Stack, Tooltip, Box, CircularProgress } from '@mui/material';
 
 // project import
 import ProductView from './viewProduct';
@@ -16,7 +16,6 @@ import ScrollX from 'components/ScrollX';
 import { useDispatch, useSelector } from 'store';
 import { getProducts, deleteProduct } from 'store/reducers/product';
 import { openSnackbar } from 'store/reducers/snackbar';
-import AlertDelete from 'components/AlertDelete';
 import useAuth from 'hooks/useAuth';
 import { ProductDefault } from 'config';
 
@@ -33,8 +32,6 @@ const ProductList = () => {
   const history = useNavigate();
   const [typeSearch, setTypeSearch] = useState<any>('');
   const [valueSearch, setvalueSearch] = useState<any>('');
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
 
   const { products, error, page, totalPages, isLoading } = useSelector((state) => state.product);
 
@@ -58,13 +55,6 @@ const ProductList = () => {
       );
     }
   }, [error, dispatch]);
-
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-      await dispatch(deleteProduct(selected.sk));
-    }
-    setOpenAlert(false);
-  };
 
 
   const handleAddProduct = () => {
@@ -101,6 +91,9 @@ const ProductList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoading, setIsLoading] = useState<boolean>(false);
+
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
     
@@ -115,19 +108,26 @@ const ProductList = () => {
                   <EditTwoTone twoToneColor={theme.palette.primary.main} />
                 </IconButton>
               </Tooltip>
-               {user?.role == "1" && (
+              {user?.role == "1" && (
               <Tooltip title="Delete">
-                 <IconButton
-                   color="error"
-                   onClick={(e: any) => {
-                     e.stopPropagation();
-                     setSelected(row?.original);
-                     setOpenAlert(true);
-                   }}
-                 >
-                   <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                 </IconButton>
-               </Tooltip>
+                <IconButton
+                  color="error"
+                  onClick={async (e: any) => {
+                    e.stopPropagation();
+                    setIsLoading(true);
+                    await dispatch(deleteProduct(row?.values?.sk));
+                    setIsLoading(false);
+                  }}
+                >
+                  {!isLoading ? (
+                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                  ) : (
+                    <Box sx={{ display: 'flex' }}>
+                      <CircularProgress color="success" size={20} />
+                    </Box>
+                  )}
+                </IconButton>
+              </Tooltip>
                  )}
             </Stack>
           );
@@ -179,7 +179,6 @@ const ProductList = () => {
           totalRows={totalPages}
         />
       </ScrollX>
-      <AlertDelete title={selected?.Name || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };

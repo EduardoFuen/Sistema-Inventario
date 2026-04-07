@@ -9,7 +9,6 @@
 
 export type Delivery = {
   ID?: string | number | undefined;
-  sk?: string | number | undefined;
   NameContact?: string;
   Name?: string;
   PhoneContact?: string | number;
@@ -17,7 +16,7 @@ export type Delivery = {
   vehicle?: string;
   typeDelivery?: string;
   document?: string;
-  Status?: boolean;
+
 };
 
 export type User = {

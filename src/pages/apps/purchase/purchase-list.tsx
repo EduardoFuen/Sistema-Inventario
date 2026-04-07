@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Chip, Stack, Tooltip, Typography, Button, Box } from '@mui/material';
+import { Chip, Stack, Tooltip, Typography, CircularProgress, Box, Button } from '@mui/material';
 // third-party
 import NumberFormat from 'react-number-format';
 // project import
@@ -18,8 +18,6 @@ import { getProducts } from 'store/reducers/product';
 import { useSelector, useDispatch } from 'store';
 import { deletePurchase, getPurchaseList, resetItemsPurchase } from 'store/reducers/purcharse';
 import useAuth from 'hooks/useAuth';
-import AlertDelete from 'components/AlertDelete';
-
 // types
 import { Purchase } from 'types/purchase';
 // assets
@@ -32,8 +30,6 @@ const PurchaseList = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>(null);
 
   const { listPurchase } = useSelector((state) => state.purchase);
 
@@ -54,13 +50,6 @@ const PurchaseList = () => {
   const handleViewPurchase = (id: number) => {
     //dispatch(resetItemsPurchase());
     history(`/purchase/view/${id}`);
-  };
-
-  const handleAlertClose = async (status: boolean) => {
-    if (status && selected) {
-      await dispatch(deletePurchase(Number(selected.sk)));
-    }
-    setOpenAlert(false);
   };
 
 
@@ -103,6 +92,8 @@ const PurchaseList = () => {
         accessor: 'BusinessName',
         Cell: ({ row }: any) => {
           const { original } = row;
+          console.log('LISTA 101')
+          console.log(original)
           return (
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Stack spacing={0}>
@@ -172,6 +163,8 @@ const PurchaseList = () => {
         className: 'cell-center font-size',
         disableSortBy: true,
         Cell: ({ row }: any) => {
+          const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
               <Tooltip title="Ver">
@@ -186,30 +179,44 @@ const PurchaseList = () => {
                 </IconButton>
               </Tooltip>
               {user?.role == "1" && (
-                <Tooltip title="Delete">
-                 <IconButton
-                      color="error"
-                      onClick={(e: any) => {
-                        e.stopPropagation();
-                        setSelected(row.original);
-                        setOpenAlert(true);
-                      }}
-                    >
+              <Tooltip title="Delete">
+              <IconButton
+                    color="error"
+                    onClick={async (e: any) => {
+                      e.stopPropagation();
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
+                    }}
+                  >
+                    {!isLoadingDelete ? (
                       <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-                    </IconButton>
-                </Tooltip>
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
+                  </IconButton>
+              </Tooltip>
                )}
               {row.original?.ReceptionStatus === 0 && (
                 <Tooltip title="Cancelar">
                   <IconButton
                     color="error"
-                    onClick={(e: any) => {
+                    onClick={async (e: any) => {
                       e.stopPropagation();
-                      setSelected(row.original);
-                      setOpenAlert(true);
+                      setIsLoadingDelete(true);
+                      await dispatch(deletePurchase(Number(row?.original?.sk)));
+                      setIsLoadingDelete(false);
                     }}
                   >
-                    <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    {!isLoadingDelete ? (
+                      <DeleteTwoTone twoToneColor={theme.palette.error.main} />
+                    ) : (
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress color="success" size={20} />
+                      </Box>
+                    )}
                   </IconButton>
                 </Tooltip>
               )}
@@ -251,7 +258,6 @@ const PurchaseList = () => {
           totalRows={totalPages} */
         />
       </ScrollX>
-      <AlertDelete title={selected?.sk || ''} open={openAlert} handleClose={handleAlertClose} />
     </MainCard>
   );
 };
